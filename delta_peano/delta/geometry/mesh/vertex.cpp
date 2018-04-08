@@ -5,7 +5,7 @@
  *      Author: konstantinos
  */
 
-#include <delta/geometry/mesh/vertex.h>
+#include <delta/geometry/mesh/Vertex.h>
 
 delta::geometry::mesh::Vertex::Vertex(iREAL x, iREAL y, iREAL z)
 {

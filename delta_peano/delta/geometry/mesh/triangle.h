@@ -8,11 +8,11 @@
 #ifndef GEOMETRY_MESH_TRIANGLE_H_
 #define GEOMETRY_MESH_TRIANGLE_H_
 
-#include "delta/geometry/mesh/vertex.h"
 #include <map>
 #include <vector>
 #include <array>
 #include <cmath>
+#include <delta/geometry/mesh/Vertex.h>
 
 namespace delta {
   namespace geometry {
@@ -56,7 +56,7 @@ class delta::geometry::mesh::Triangle {
 		std::vector<iREAL>& yCoordinates,
 		std::vector<iREAL>& zCoordinates);
 
-	double getTriangleLength();
+	iREAL getTriangleLength();
 
 	iREAL getXYZWidth();
 	iREAL getXZWidth();

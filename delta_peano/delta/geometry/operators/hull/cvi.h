@@ -49,9 +49,9 @@ namespace delta {
    * the adjacency structure in the returned mesh is not set;
    * 'pv' if not NULL, points to the vertex memory (part of 'tri' memory block);
    * 'nv' if not NULL, is the number of vertices of the intersection convex */
-  TRI* cvi (double *va, int nva, double *pa, int npa,
-			double *vb, int nvb, double *pb, int npb,
-		CVIKIND kind, int *m, double **pv, int *nv);
+  TRI* cvi (iREAL *va, int nva, iREAL *pa, int npa,
+			iREAL *vb, int nvb, iREAL *pb, int npb,
+		CVIKIND kind, int *m, iREAL **pv, int *nv);
   }
 }
 

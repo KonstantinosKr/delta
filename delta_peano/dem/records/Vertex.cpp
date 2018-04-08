@@ -172,7 +172,7 @@
                  MPI_CXX_BOOL		 //isHangingNode
                , MPI_INT		 //refinementControl
                , MPI_INT		 //insideOutsideDomain
-               , MPI_DOUBLE		 //x
+               , MPI_double		 //x
                , MPI_INT		 //level
                , MPI_INT		 //adjacentRanks
                , MPI_CXX_BOOL		 //adjacentSubtreeForksIntoOtherRank
@@ -303,12 +303,12 @@
             MPI_Datatype subtypes[Attributes] = {
                  MPI_INT		 //particles
                , MPI_INT		 //particlesOnCoarserLevels
-               , MPI_DOUBLE		 //numberOfParticlesInUnrefinedVertex
+               , MPI_double		 //numberOfParticlesInUnrefinedVertex
                , MPI_CXX_BOOL		 //isHangingNode
                , MPI_INT		 //refinementControl
                , MPI_INT		 //adjacentCellsHeight
                , MPI_INT		 //insideOutsideDomain
-               , MPI_DOUBLE		 //x
+               , MPI_double		 //x
                , MPI_INT		 //level
                , MPI_INT		 //adjacentRanks
                , MPI_CXX_BOOL		 //adjacentSubtreeForksIntoOtherRank
@@ -887,7 +887,7 @@
             const int Attributes = 6;
             #endif
             MPI_Datatype subtypes[Attributes] = {
-                 MPI_DOUBLE		 //x
+                 MPI_double		 //x
                , MPI_INT		 //level
                , MPI_INT		 //adjacentRanks
                , MPI_SHORT		 //_packedRecords0
@@ -986,9 +986,9 @@
             MPI_Datatype subtypes[Attributes] = {
                  MPI_INT		 //particles
                , MPI_INT		 //particlesOnCoarserLevels
-               , MPI_DOUBLE		 //numberOfParticlesInUnrefinedVertex
+               , MPI_double		 //numberOfParticlesInUnrefinedVertex
                , MPI_INT		 //adjacentCellsHeight
-               , MPI_DOUBLE		 //x
+               , MPI_double		 //x
                , MPI_INT		 //level
                , MPI_INT		 //adjacentRanks
                , MPI_SHORT		 //_packedRecords0
@@ -1502,7 +1502,7 @@
                     MPI_CXX_BOOL		 //isHangingNode
                   , MPI_INT		 //refinementControl
                   , MPI_INT		 //insideOutsideDomain
-                  , MPI_DOUBLE		 //x
+                  , MPI_double		 //x
                   , MPI_INT		 //level
                   , MPI_CXX_BOOL		 //parentRegularPersistentSubgrid
                   , MPI_CXX_BOOL		 //parentRegularPersistentSubgridInPreviousIteration
@@ -1619,12 +1619,12 @@
                MPI_Datatype subtypes[Attributes] = {
                     MPI_INT		 //particles
                   , MPI_INT		 //particlesOnCoarserLevels
-                  , MPI_DOUBLE		 //numberOfParticlesInUnrefinedVertex
+                  , MPI_double		 //numberOfParticlesInUnrefinedVertex
                   , MPI_CXX_BOOL		 //isHangingNode
                   , MPI_INT		 //refinementControl
                   , MPI_INT		 //adjacentCellsHeight
                   , MPI_INT		 //insideOutsideDomain
-                  , MPI_DOUBLE		 //x
+                  , MPI_double		 //x
                   , MPI_INT		 //level
                   , MPI_CXX_BOOL		 //parentRegularPersistentSubgrid
                   , MPI_CXX_BOOL		 //parentRegularPersistentSubgridInPreviousIteration
@@ -2177,7 +2177,7 @@
                const int Attributes = 5;
                #endif
                MPI_Datatype subtypes[Attributes] = {
-                    MPI_DOUBLE		 //x
+                    MPI_double		 //x
                   , MPI_INT		 //level
                   , MPI_SHORT		 //_packedRecords0
                   , MPI_INT		 //numberOfAdjacentRefinedCells
@@ -2269,9 +2269,9 @@
                MPI_Datatype subtypes[Attributes] = {
                     MPI_INT		 //particles
                   , MPI_INT		 //particlesOnCoarserLevels
-                  , MPI_DOUBLE		 //numberOfParticlesInUnrefinedVertex
+                  , MPI_double		 //numberOfParticlesInUnrefinedVertex
                   , MPI_INT		 //adjacentCellsHeight
-                  , MPI_DOUBLE		 //x
+                  , MPI_double		 //x
                   , MPI_INT		 //level
                   , MPI_SHORT		 //_packedRecords0
                   , MPI_INT		 //adjacentCellsHeightOfPreviousIteration
@@ -2785,7 +2785,7 @@
                     MPI_CXX_BOOL		 //isHangingNode
                   , MPI_INT		 //refinementControl
                   , MPI_INT		 //insideOutsideDomain
-                  , MPI_DOUBLE		 //x
+                  , MPI_double		 //x
                   , MPI_INT		 //level
                   , MPI_INT		 //adjacentRanks
                   , MPI_CXX_BOOL		 //adjacentSubtreeForksIntoOtherRank
@@ -2902,12 +2902,12 @@
                MPI_Datatype subtypes[Attributes] = {
                     MPI_INT		 //particles
                   , MPI_INT		 //particlesOnCoarserLevels
-                  , MPI_DOUBLE		 //numberOfParticlesInUnrefinedVertex
+                  , MPI_double		 //numberOfParticlesInUnrefinedVertex
                   , MPI_CXX_BOOL		 //isHangingNode
                   , MPI_INT		 //refinementControl
                   , MPI_INT		 //adjacentCellsHeight
                   , MPI_INT		 //insideOutsideDomain
-                  , MPI_DOUBLE		 //x
+                  , MPI_double		 //x
                   , MPI_INT		 //level
                   , MPI_INT		 //adjacentRanks
                   , MPI_CXX_BOOL		 //adjacentSubtreeForksIntoOtherRank
@@ -3464,7 +3464,7 @@
                const int Attributes = 6;
                #endif
                MPI_Datatype subtypes[Attributes] = {
-                    MPI_DOUBLE		 //x
+                    MPI_double		 //x
                   , MPI_INT		 //level
                   , MPI_INT		 //adjacentRanks
                   , MPI_SHORT		 //_packedRecords0
@@ -3563,9 +3563,9 @@
                MPI_Datatype subtypes[Attributes] = {
                     MPI_INT		 //particles
                   , MPI_INT		 //particlesOnCoarserLevels
-                  , MPI_DOUBLE		 //numberOfParticlesInUnrefinedVertex
+                  , MPI_double		 //numberOfParticlesInUnrefinedVertex
                   , MPI_INT		 //adjacentCellsHeight
-                  , MPI_DOUBLE		 //x
+                  , MPI_double		 //x
                   , MPI_INT		 //level
                   , MPI_INT		 //adjacentRanks
                   , MPI_SHORT		 //_packedRecords0
@@ -4192,7 +4192,7 @@
                MPI_Datatype subtypes[Attributes] = {
                     MPI_INT		 //particles
                   , MPI_INT		 //particlesOnCoarserLevels
-                  , MPI_DOUBLE		 //numberOfParticlesInUnrefinedVertex
+                  , MPI_double		 //numberOfParticlesInUnrefinedVertex
                   , MPI_CXX_BOOL		 //isHangingNode
                   , MPI_INT		 //refinementControl
                   , MPI_INT		 //adjacentCellsHeight
@@ -4835,7 +4835,7 @@
                MPI_Datatype subtypes[Attributes] = {
                     MPI_INT		 //particles
                   , MPI_INT		 //particlesOnCoarserLevels
-                  , MPI_DOUBLE		 //numberOfParticlesInUnrefinedVertex
+                  , MPI_double		 //numberOfParticlesInUnrefinedVertex
                   , MPI_INT		 //adjacentCellsHeight
                   , MPI_INT		 //adjacentRanks
                   , MPI_SHORT		 //_packedRecords0
@@ -5422,7 +5422,7 @@
                MPI_Datatype subtypes[Attributes] = {
                     MPI_INT		 //particles
                   , MPI_INT		 //particlesOnCoarserLevels
-                  , MPI_DOUBLE		 //numberOfParticlesInUnrefinedVertex
+                  , MPI_double		 //numberOfParticlesInUnrefinedVertex
                   , MPI_CXX_BOOL		 //isHangingNode
                   , MPI_INT		 //refinementControl
                   , MPI_INT		 //adjacentCellsHeight
@@ -6032,7 +6032,7 @@
                MPI_Datatype subtypes[Attributes] = {
                     MPI_INT		 //particles
                   , MPI_INT		 //particlesOnCoarserLevels
-                  , MPI_DOUBLE		 //numberOfParticlesInUnrefinedVertex
+                  , MPI_double		 //numberOfParticlesInUnrefinedVertex
                   , MPI_INT		 //adjacentCellsHeight
                   , MPI_SHORT		 //_packedRecords0
                   , MPI_INT		 //adjacentCellsHeightOfPreviousIteration
@@ -6618,7 +6618,7 @@
                MPI_Datatype subtypes[Attributes] = {
                     MPI_INT		 //particles
                   , MPI_INT		 //particlesOnCoarserLevels
-                  , MPI_DOUBLE		 //numberOfParticlesInUnrefinedVertex
+                  , MPI_double		 //numberOfParticlesInUnrefinedVertex
                   , MPI_CXX_BOOL		 //isHangingNode
                   , MPI_INT		 //refinementControl
                   , MPI_INT		 //adjacentCellsHeight
@@ -7239,7 +7239,7 @@
                MPI_Datatype subtypes[Attributes] = {
                     MPI_INT		 //particles
                   , MPI_INT		 //particlesOnCoarserLevels
-                  , MPI_DOUBLE		 //numberOfParticlesInUnrefinedVertex
+                  , MPI_double		 //numberOfParticlesInUnrefinedVertex
                   , MPI_INT		 //adjacentCellsHeight
                   , MPI_INT		 //adjacentRanks
                   , MPI_SHORT		 //_packedRecords0
@@ -7734,7 +7734,7 @@
                     MPI_CXX_BOOL		 //isHangingNode
                   , MPI_INT		 //refinementControl
                   , MPI_INT		 //insideOutsideDomain
-                  , MPI_DOUBLE		 //x
+                  , MPI_double		 //x
                   , MPI_INT		 //level
                   , MPI_INT		 //numberOfAdjacentRefinedCells
                   #ifndef MPI2
@@ -7837,12 +7837,12 @@
                MPI_Datatype subtypes[Attributes] = {
                     MPI_INT		 //particles
                   , MPI_INT		 //particlesOnCoarserLevels
-                  , MPI_DOUBLE		 //numberOfParticlesInUnrefinedVertex
+                  , MPI_double		 //numberOfParticlesInUnrefinedVertex
                   , MPI_CXX_BOOL		 //isHangingNode
                   , MPI_INT		 //refinementControl
                   , MPI_INT		 //adjacentCellsHeight
                   , MPI_INT		 //insideOutsideDomain
-                  , MPI_DOUBLE		 //x
+                  , MPI_double		 //x
                   , MPI_INT		 //level
                   , MPI_INT		 //adjacentCellsHeightOfPreviousIteration
                   , MPI_INT		 //numberOfAdjacentRefinedCells
@@ -8373,7 +8373,7 @@
                const int Attributes = 5;
                #endif
                MPI_Datatype subtypes[Attributes] = {
-                    MPI_DOUBLE		 //x
+                    MPI_double		 //x
                   , MPI_INT		 //level
                   , MPI_SHORT		 //_packedRecords0
                   , MPI_INT		 //numberOfAdjacentRefinedCells
@@ -8465,9 +8465,9 @@
                MPI_Datatype subtypes[Attributes] = {
                     MPI_INT		 //particles
                   , MPI_INT		 //particlesOnCoarserLevels
-                  , MPI_DOUBLE		 //numberOfParticlesInUnrefinedVertex
+                  , MPI_double		 //numberOfParticlesInUnrefinedVertex
                   , MPI_INT		 //adjacentCellsHeight
-                  , MPI_DOUBLE		 //x
+                  , MPI_double		 //x
                   , MPI_INT		 //level
                   , MPI_SHORT		 //_packedRecords0
                   , MPI_INT		 //adjacentCellsHeightOfPreviousIteration
@@ -9037,7 +9037,7 @@
                MPI_Datatype subtypes[Attributes] = {
                     MPI_INT		 //particles
                   , MPI_INT		 //particlesOnCoarserLevels
-                  , MPI_DOUBLE		 //numberOfParticlesInUnrefinedVertex
+                  , MPI_double		 //numberOfParticlesInUnrefinedVertex
                   , MPI_CXX_BOOL		 //isHangingNode
                   , MPI_INT		 //refinementControl
                   , MPI_INT		 //adjacentCellsHeight
@@ -9625,7 +9625,7 @@
                MPI_Datatype subtypes[Attributes] = {
                     MPI_INT		 //particles
                   , MPI_INT		 //particlesOnCoarserLevels
-                  , MPI_DOUBLE		 //numberOfParticlesInUnrefinedVertex
+                  , MPI_double		 //numberOfParticlesInUnrefinedVertex
                   , MPI_INT		 //adjacentCellsHeight
                   , MPI_SHORT		 //_packedRecords0
                   , MPI_INT		 //adjacentCellsHeightOfPreviousIteration

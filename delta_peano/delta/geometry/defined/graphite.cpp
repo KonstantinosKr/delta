@@ -1,16 +1,4 @@
-#include <cmath>
-#include <stdlib.h>
-#include <assert.h>
-#include <float.h>
-#include <algorithm>
-#include <vector>
-#include <iostream>
-#include <fstream>
-#include <iomanip>
-#include <string.h>
-#include "delta/core/read.h"
 #include <delta/geometry/defined/graphite.h>
-#include "delta/geometry/mesh/mesh.h"
 
 //Intact Poly Brick
 delta::geometry::mesh::Mesh *delta::geometry::defined::generateBrickFB(

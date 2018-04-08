@@ -42,27 +42,27 @@ std::ofstream delta::core::Sys::_checkpointFile;
 
 void delta::core::Sys::saveScenario(int particles, int obstacles)
 {
-	_noOfParticles = particles;
-	_noOfObstacles = obstacles;
+  _noOfParticles = particles;
+  _noOfObstacles = obstacles;
 }
 
 void delta::core::Sys::saveIteration(iREAL timeStepSize, int currentIteration, int totalIterations)
 {
-	_timeStepSize = timeStepSize;
-	_currentIteration = currentIteration;
-	_totalIterations = totalIterations;
+  _timeStepSize = timeStepSize;
+  _currentIteration = currentIteration;
+  _totalIterations = totalIterations;
 }
 
 void delta::core::Sys::initCheckpoint(int iteration){
-	//std::string filename = "checkpoint_"+std::to_string(iteration)+".delta";
-	std::string filename = "checkpoint_.delta";
+  //std::string filename = "checkpoint_"+std::to_string(iteration)+".delta";
+  std::string filename = "checkpoint_.delta";
 
-	_checkpointFile.open (filename);
+  _checkpointFile.open (filename);
 
-	_checkpointFile << "#THIS IS A DELTA CHECKPOINT FILE\n";
-	_checkpointFile << "#NOPARTICLE|NOOBSTACLES|TIMESTEPSIZE|ITERATION|TOTALITERATIONS\n";
-	_checkpointFile << "%:" << _noOfParticles << ":" << _noOfObstacles+":" <<
-					   _timeStepSize<<":" << _currentIteration << ":" << _totalIterations<<"\n";
+  _checkpointFile << "#THIS IS A DELTA CHECKPOINT FILE\n";
+  _checkpointFile << "#NOPARTICLE|NOOBSTACLES|TIMESTEPSIZE|ITERATION|TOTALITERATIONS\n";
+  _checkpointFile << "%:" << _noOfParticles << ":" << _noOfObstacles+":" <<
+					 _timeStepSize<<":" << _currentIteration << ":" << _totalIterations<<"\n";
 }
 
 void delta::core::Sys::closeCheckpoint(){
@@ -79,18 +79,18 @@ void delta::core::Sys::saveParticleProperties(
 	iREAL orientation[9],
 	iREAL mass)
 {
-	_checkpointFile << "@:"<< ":" << id <<":"<<
-					   positionSpatial[0] << "," << positionSpatial[1] << "," << positionSpatial[2] << ":" <<
-					   positionReferential[0] << "," << positionReferential[1] << "," << positionReferential[2] << ":" <<
-					   linear[0] << "," << linear[1] << "," << linear[2] << ":" <<
-					   angular[0] << "," << angular[1] << "," << angular[2] << ":" <<
-					   inertia[0] << "," << inertia[1] << "," << inertia[2] <<
-					   inertia[3] << "," << inertia[4] << "," << inertia[5] <<
-					   inertia[6] << "," << inertia[7] << "," << inertia[8] << ":" <<
-					   orientation[0] << "," << orientation[1] << "," << orientation[2] <<
-					   orientation[3] << "," << orientation[4] << "," << orientation[5] <<
-					   orientation[6] << "," << orientation[7] << "," << orientation[8] << ":" <<
-					   mass << "\n";
+  _checkpointFile << "@:"<< ":" << id <<":"<<
+					 positionSpatial[0] << "," << positionSpatial[1] << "," << positionSpatial[2] << ":" <<
+					 positionReferential[0] << "," << positionReferential[1] << "," << positionReferential[2] << ":" <<
+					 linear[0] << "," << linear[1] << "," << linear[2] << ":" <<
+					 angular[0] << "," << angular[1] << "," << angular[2] << ":" <<
+					 inertia[0] << "," << inertia[1] << "," << inertia[2] <<
+					 inertia[3] << "," << inertia[4] << "," << inertia[5] <<
+					 inertia[6] << "," << inertia[7] << "," << inertia[8] << ":" <<
+					 orientation[0] << "," << orientation[1] << "," << orientation[2] <<
+					 orientation[3] << "," << orientation[4] << "," << orientation[5] <<
+					 orientation[6] << "," << orientation[7] << "," << orientation[8] << ":" <<
+					 mass << "\n";
 }
 
 void delta::core::Sys::saveParticleGeometry(
@@ -102,15 +102,14 @@ void delta::core::Sys::saveParticleGeometry(
 	std::vector<iREAL> yCoordinatesRef,
 	std::vector<iREAL> zCoordinatesRef)
 {
-
-	for(unsigned i=0;i<xCoordinatesSpatial.size();i++)
-	{
-		_checkpointFile << "$:" << id << ":" <<
-								xCoordinatesSpatial[i] << ":" <<
-								yCoordinatesSpatial[i] << ":" <<
-								zCoordinatesSpatial[i] << ":" <<
-							    xCoordinatesRef[i] << ":" <<
-							    yCoordinatesRef[i] << ":" <<
-								zCoordinatesRef[i] << "\n";
-	}
+  for(unsigned i=0;i<xCoordinatesSpatial.size();i++)
+  {
+	  _checkpointFile << "$:" << id << ":" <<
+							  xCoordinatesSpatial[i] << ":" <<
+							  yCoordinatesSpatial[i] << ":" <<
+							  zCoordinatesSpatial[i] << ":" <<
+							  xCoordinatesRef[i] << ":" <<
+							  yCoordinatesRef[i] << ":" <<
+							  zCoordinatesRef[i] << "\n";
+  }
 }

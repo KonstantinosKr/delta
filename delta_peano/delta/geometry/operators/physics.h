@@ -5,8 +5,8 @@
  *      Author: konstantinos
  */
 
-#include "delta/geometry/material.h"
-#include "delta/core/algo.h"
+#include <delta/geometry/material.h>
+#include <delta/core/algo.h>
 
 #include <vector>
 

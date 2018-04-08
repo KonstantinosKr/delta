@@ -33,9 +33,9 @@ metrics =  [
            ]
          
 counters = [
-            ["FP_ARITH_INST_RETIRED_128B_PACKED_DOUBLE", "Sum"],
-            ["FP_ARITH_INST_RETIRED_SCALAR_DOUBLE",      "Sum"],
-            ["FP_ARITH_INST_RETIRED_256B_PACKED_DOUBLE", "Sum"]
+            ["FP_ARITH_INST_RETIRED_128B_PACKED_double", "Sum"],
+            ["FP_ARITH_INST_RETIRED_SCALAR_double",      "Sum"],
+            ["FP_ARITH_INST_RETIRED_256B_PACKED_double", "Sum"]
            ]
 
 def parseResultFile(filePath):
@@ -256,7 +256,7 @@ def parseLikwidMetrics(filePath,singlecore=False):
                 if singlecore:
                     if counter[0] in line:
                         segments = line.split('|')
-                        #    |    FP_ARITH_INST_RETIRED_SCALAR_DOUBLE   |   PMC1  |  623010105225  | ...
+                        #    |    FP_ARITH_INST_RETIRED_SCALAR_double   |   PMC1  |  623010105225  | ...
                         value  = float(segments[3].strip());
                         values = {}                         
                         values["Sum"] = value
@@ -267,7 +267,7 @@ def parseLikwidMetrics(filePath,singlecore=False):
                 else:
                     if counter[0]+" STAT" in line:
                         segments = line.split('|')
-                        #    |    FP_ARITH_INST_RETIRED_SCALAR_DOUBLE STAT   |   PMC1  |  623010105225  | ...
+                        #    |    FP_ARITH_INST_RETIRED_SCALAR_double STAT   |   PMC1  |  623010105225  | ...
                         values = {}                                                 
                         values["Sum"] = float(segments[3].strip());
                         values["Min"] = float(segments[4].strip());

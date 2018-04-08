@@ -120,7 +120,7 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
 {
   logTraceInWith1Argument( "endIteration(State)", solverState );
 
-  //TODO print mesh epsilon by resizing mess and creating a double
+  //TODO print mesh epsilon by resizing mess and creating a iREAL
   assertion( Collision::_collisionsOfNextTraversal.empty() );
   assertion( solverState.getNumberOfContactPoints()==0 || !Collision::_activeCollisions.empty() );
 
@@ -138,7 +138,7 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
         //loop every contact point
         for (auto ppp:pp._contactPoints)
         {
-          tarch::la::Vector<3,double> v;
+          tarch::la::Vector<3,iREAL> v;
           v = ppp.x[0], ppp.x[1], ppp.x[2];
           int contactPointVertexIndex = _vertexWriter->plotVertex( v );
           int contactPointIndex       = _cellWriter->plotPoint(contactPointVertexIndex);
@@ -148,9 +148,9 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
 
           _velocitiesAndNormals->plotVertex(contactPointVertexIndex,v);
 
-          double force[]  = {0.0,0.0,0.0};
-          double torque[] = {0.0,0.0,0.0};
-          double friction [] = {0.0, 0.0, 0.0};
+          iREAL force[]  = {0.0,0.0,0.0};
+          iREAL torque[] = {0.0,0.0,0.0};
+          iREAL friction [] = {0.0, 0.0, 0.0};
 
           /* check if it is master so that normal points towards it
           bool isMaster = false;
@@ -165,7 +165,7 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
           {
             _velocitiesAndNormals->plotVertex(contactPointVertexIndex,v);
           } else {
-            tarch::la::Vector<3, double> t = {0, 1, 0};
+            tarch::la::Vector<3, iREAL> t = {0, 1, 0};
             _velocitiesAndNormals->plotVertex(contactPointVertexIndex,t);
           }*/
 
@@ -320,9 +320,9 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
                   << "friction=" << std::fixed << std::setprecision(10) << ppp.friction << std::endl
                   << "distance=" << std::fixed << std::setprecision(10) << ppp.getDistance() << ", depth=" << std::fixed << std::setprecision(10) << ppp.depth << ", epsilonTotal=" << std::fixed << std::setprecision(10) << ppp.epsilonTotal << std::endl;
 
-        double rforce[3]  = {0.0,0.0,0.0};
-        double rtorque[3] = {0.0,0.0,0.0};
-        double rfriction[3] = {0.0,0.0,0.0};
+        iREAL rforce[3]  = {0.0,0.0,0.0};
+        iREAL rtorque[3] = {0.0,0.0,0.0};
+        iREAL rfriction[3] = {0.0,0.0,0.0};
         delta::forces::getContactForce(ppp,
                                       centreOfMass,
                                       referentialCentreOfMass,
@@ -363,8 +363,8 @@ void dem::mappings::Plot::endIteration( dem::State&  solverState)
 
 void dem::mappings::Plot::touchVertexFirstTime(
       dem::Vertex&               fineGridVertex,
-      const tarch::la::Vector<DIMENSIONS,double>&         fineGridX,
-      const tarch::la::Vector<DIMENSIONS,double>&         fineGridH,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&         fineGridX,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&         fineGridH,
       dem::Vertex * const        coarseGridVertices,
       const peano::grid::VertexEnumerator&                coarseGridVerticesEnumerator,
       dem::Cell&                 coarseGridCell,
@@ -405,8 +405,8 @@ void dem::mappings::Plot::leaveCell(
 
 void dem::mappings::Plot::touchVertexLastTime(
   dem::Vertex&                                  fineGridVertex,
-  const tarch::la::Vector<DIMENSIONS,double>&   fineGridX,
-  const tarch::la::Vector<DIMENSIONS,double>&   fineGridH,
+  const tarch::la::Vector<DIMENSIONS,iREAL>&   fineGridX,
+  const tarch::la::Vector<DIMENSIONS,iREAL>&   fineGridH,
   dem::Vertex * const                           coarseGridVertices,
   const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator,
   dem::Cell&                                    coarseGridCell,
@@ -446,7 +446,7 @@ void dem::mappings::Plot::touchVertexLastTime(
       if(!particle.getIsObstacle())
       {
         //it will only accept diameter not radius to plot the sphere thus multiply epsilon by 2
-        tarch::la::Vector<3,double> v = {particle._persistentRecords._velocity(0), particle._persistentRecords._velocity(1), particle._persistentRecords._velocity(2)};
+        tarch::la::Vector<3,iREAL> v = {particle._persistentRecords._velocity(0), particle._persistentRecords._velocity(1), particle._persistentRecords._velocity(2)};
         _velocitiesAndNormals->plotVertex(particleVertexLink[1],v);
 
         _particleVelocity->plotVertex(particleVertexLink[1],std::sqrt(
@@ -482,11 +482,11 @@ void dem::mappings::Plot::touchVertexLastTime(
       _level->plotCell(particleCentre,coarseGridVerticesEnumerator.getLevel()+1);
       _faceVertexAssociation->plotCell(particleCentre,_vertexCounter);
 
-      double* x = fineGridVertex.getXCoordinates(i);
-      double* y = fineGridVertex.getYCoordinates(i);
-      double* z = fineGridVertex.getZCoordinates(i);
+      iREAL* x = fineGridVertex.getXCoordinates(i);
+      iREAL* y = fineGridVertex.getYCoordinates(i);
+      iREAL* z = fineGridVertex.getZCoordinates(i);
 
-      std::vector<double> xCoordinatesWider, yCoordinatesWider, zCoordinatesWider;
+      std::vector<iREAL> xCoordinatesWider, yCoordinatesWider, zCoordinatesWider;
 
       for(int k=0; k<particle.getNumberOfTriangles()*3; k++)
       {
@@ -495,9 +495,9 @@ void dem::mappings::Plot::touchVertexLastTime(
         zCoordinatesWider.push_back(z[k]);
       }
 
-      double center[3] = {particle.getCentre(0), particle.getCentre(1), particle.getCentre(2)};
+      iREAL center[3] = {particle.getCentre(0), particle.getCentre(1), particle.getCentre(2)};
 
-      //double resizePercentage = (particle.getDiameter()+particle.getEpsilon())/ particle.getDiameter();
+      //iREAL resizePercentage = (particle.getDiameter()+particle.getEpsilon())/ particle.getDiameter();
       //delta::geometry::properties::scaleXYZ(resizePercentage, center, xCoordinatesWider, yCoordinatesWider, zCoordinatesWider);
 
       //delta::geometry::properties::explode(xCoordinatesWider, yCoordinatesWider, zCoordinatesWider, 5);
@@ -505,7 +505,7 @@ void dem::mappings::Plot::touchVertexLastTime(
       for (int j=0; j<particle.getNumberOfTriangles(); j++)
       {
         int vertexIndex[3];
-        tarch::la::Vector<3,double> p;
+        tarch::la::Vector<3,iREAL> p;
 
         p = {xCoordinatesWider[j*3+0], yCoordinatesWider[j*3+0], zCoordinatesWider[j*3+0]};
         vertexIndex[0] = _vertexWriter->plotVertex(p);
@@ -554,10 +554,10 @@ void dem::mappings::Plot::touchVertexLastTime(
         _level->plotCell(faceIndex,coarseGridVerticesEnumerator.getLevel()+1);
         _faceVertexAssociation->plotCell(faceIndex,_vertexCounter);
 
-        tarch::la::Vector<3,double> A;
-        tarch::la::Vector<3,double> B;
-        tarch::la::Vector<3,double> C;
-        tarch::la::Vector<3,double> np;
+        tarch::la::Vector<3,iREAL> A;
+        tarch::la::Vector<3,iREAL> B;
+        tarch::la::Vector<3,iREAL> C;
+        tarch::la::Vector<3,iREAL> np;
 
         A = {xCoordinatesWider[j*3+0], yCoordinatesWider[j*3+0], zCoordinatesWider[j*3+0]};
         B = {xCoordinatesWider[j*3+1], yCoordinatesWider[j*3+1], zCoordinatesWider[j*3+1]};
@@ -605,7 +605,7 @@ void dem::mappings::Plot::touchVertexLastTime(
       for (int j=0; j<particle.getNumberOfTriangles(); j++)
       {
         int vertexIndex[3];
-        tarch::la::Vector<3,double> p;
+        tarch::la::Vector<3,iREAL> p;
 
         p = {x[j*3+0], y[j*3+0], z[j*3+0]};
         vertexIndex[0] = _vertexWriter->plotVertex(p);
@@ -654,10 +654,10 @@ void dem::mappings::Plot::touchVertexLastTime(
         _level->plotCell(faceIndex,coarseGridVerticesEnumerator.getLevel()+1);
         _faceVertexAssociation->plotCell(faceIndex,_vertexCounter);
 
-        tarch::la::Vector<3,double> A;
-        tarch::la::Vector<3,double> B;
-        tarch::la::Vector<3,double> C;
-        tarch::la::Vector<3,double> np;
+        tarch::la::Vector<3,iREAL> A;
+        tarch::la::Vector<3,iREAL> B;
+        tarch::la::Vector<3,iREAL> C;
+        tarch::la::Vector<3,iREAL> np;
 
         A = {x[j*3+0], y[j*3+0], z[j*3+0]};
         B = {x[j*3+1], y[j*3+1], z[j*3+1]};
@@ -750,8 +750,8 @@ void dem::mappings::Plot::touchVertexLastTime(
 
 void dem::mappings::Plot::createHangingVertex(
       dem::Vertex&     fineGridVertex,
-      const tarch::la::Vector<DIMENSIONS,double>&   fineGridX,
-      const tarch::la::Vector<DIMENSIONS,double>&   fineGridH,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&   fineGridX,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&   fineGridH,
       dem::Vertex * const   coarseGridVertices,
       const peano::grid::VertexEnumerator&      coarseGridVerticesEnumerator,
       dem::Cell&       coarseGridCell,
@@ -764,8 +764,8 @@ void dem::mappings::Plot::createHangingVertex(
 
 void dem::mappings::Plot::destroyHangingVertex(
       const dem::Vertex&   fineGridVertex,
-      const tarch::la::Vector<DIMENSIONS,double>&   fineGridX,
-      const tarch::la::Vector<DIMENSIONS,double>&   fineGridH,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&   fineGridX,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&   fineGridH,
       dem::Vertex * const  coarseGridVertices,
       const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator,
       dem::Cell&           coarseGridCell,
@@ -778,8 +778,8 @@ void dem::mappings::Plot::destroyHangingVertex(
 
 void dem::mappings::Plot::createInnerVertex(
       dem::Vertex&               fineGridVertex,
-      const tarch::la::Vector<DIMENSIONS,double>&         fineGridX,
-      const tarch::la::Vector<DIMENSIONS,double>&         fineGridH,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&         fineGridX,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&         fineGridH,
       dem::Vertex * const        coarseGridVertices,
       const peano::grid::VertexEnumerator&                coarseGridVerticesEnumerator,
       dem::Cell&                 coarseGridCell,
@@ -798,8 +798,8 @@ void dem::mappings::Plot::createInnerVertex(
 
 void dem::mappings::Plot::createBoundaryVertex(
       dem::Vertex&               fineGridVertex,
-      const tarch::la::Vector<DIMENSIONS,double>&         fineGridX,
-      const tarch::la::Vector<DIMENSIONS,double>&         fineGridH,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&         fineGridX,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&         fineGridH,
       dem::Vertex * const        coarseGridVertices,
       const peano::grid::VertexEnumerator&                coarseGridVerticesEnumerator,
       dem::Cell&                 coarseGridCell,
@@ -812,8 +812,8 @@ void dem::mappings::Plot::createBoundaryVertex(
 
 void dem::mappings::Plot::destroyVertex(
       const dem::Vertex&   fineGridVertex,
-      const tarch::la::Vector<DIMENSIONS,double>&   fineGridX,
-      const tarch::la::Vector<DIMENSIONS,double>&   fineGridH,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&   fineGridX,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&   fineGridH,
       dem::Vertex * const  coarseGridVertices,
       const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator,
       dem::Cell&           coarseGridCell,
@@ -857,8 +857,8 @@ void dem::mappings::Plot::mergeWithNeighbour(
   dem::Vertex&  vertex,
   const dem::Vertex&  neighbour,
   int                                           fromRank,
-  const tarch::la::Vector<DIMENSIONS,double>&   fineGridX,
-  const tarch::la::Vector<DIMENSIONS,double>&   fineGridH,
+  const tarch::la::Vector<DIMENSIONS,iREAL>&   fineGridX,
+  const tarch::la::Vector<DIMENSIONS,iREAL>&   fineGridH,
   int                                           level
 ) {
   logTraceInWith6Arguments( "mergeWithNeighbour(...)", vertex, neighbour, fromRank, fineGridX, fineGridH, level );
@@ -869,8 +869,8 @@ void dem::mappings::Plot::mergeWithNeighbour(
 void dem::mappings::Plot::prepareSendToNeighbour(
   dem::Vertex&  vertex,
       int                                           toRank,
-      const tarch::la::Vector<DIMENSIONS,double>&   x,
-      const tarch::la::Vector<DIMENSIONS,double>&   h,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&   x,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&   h,
       int                                           level
 ) {
   logTraceInWith3Arguments( "prepareSendToNeighbour(...)", vertex, toRank, level );
@@ -881,8 +881,8 @@ void dem::mappings::Plot::prepareSendToNeighbour(
 void dem::mappings::Plot::prepareCopyToRemoteNode(
   dem::Vertex&  localVertex,
       int                                           toRank,
-      const tarch::la::Vector<DIMENSIONS,double>&   x,
-      const tarch::la::Vector<DIMENSIONS,double>&   h,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&   x,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&   h,
       int                                           level
 ) {
   logTraceInWith5Arguments( "prepareCopyToRemoteNode(...)", localVertex, toRank, x, h, level );
@@ -893,8 +893,8 @@ void dem::mappings::Plot::prepareCopyToRemoteNode(
 void dem::mappings::Plot::prepareCopyToRemoteNode(
   dem::Cell&  localCell,
       int                                           toRank,
-      const tarch::la::Vector<DIMENSIONS,double>&   cellCentre,
-      const tarch::la::Vector<DIMENSIONS,double>&   cellSize,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&   cellCentre,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&   cellSize,
       int                                           level
 ) {
   logTraceInWith5Arguments( "prepareCopyToRemoteNode(...)", localCell, toRank, cellCentre, cellSize, level );
@@ -906,8 +906,8 @@ void dem::mappings::Plot::mergeWithRemoteDataDueToForkOrJoin(
   dem::Vertex&  localVertex,
   const dem::Vertex&  masterOrWorkerVertex,
   int                                       fromRank,
-  const tarch::la::Vector<DIMENSIONS,double>&  x,
-  const tarch::la::Vector<DIMENSIONS,double>&  h,
+  const tarch::la::Vector<DIMENSIONS,iREAL>&  x,
+  const tarch::la::Vector<DIMENSIONS,iREAL>&  h,
   int                                       level
 ) {
   logTraceInWith6Arguments( "mergeWithRemoteDataDueToForkOrJoin(...)", localVertex, masterOrWorkerVertex, fromRank, x, h, level );
@@ -919,8 +919,8 @@ void dem::mappings::Plot::mergeWithRemoteDataDueToForkOrJoin(
   dem::Cell&  localCell,
   const dem::Cell&  masterOrWorkerCell,
   int                                       fromRank,
-  const tarch::la::Vector<DIMENSIONS,double>&  cellCentre,
-  const tarch::la::Vector<DIMENSIONS,double>&  cellSize,
+  const tarch::la::Vector<DIMENSIONS,iREAL>&  cellCentre,
+  const tarch::la::Vector<DIMENSIONS,iREAL>&  cellSize,
   int                                       level
 ) {
   logTraceInWith3Arguments( "mergeWithRemoteDataDueToForkOrJoin(...)", localCell, masterOrWorkerCell, fromRank );
@@ -998,8 +998,8 @@ void dem::mappings::Plot::receiveDataFromMaster(
 void dem::mappings::Plot::mergeWithWorker(
   dem::Cell&           localCell, 
   const dem::Cell&     receivedMasterCell,
-  const tarch::la::Vector<DIMENSIONS,double>&  cellCentre,
-  const tarch::la::Vector<DIMENSIONS,double>&  cellSize,
+  const tarch::la::Vector<DIMENSIONS,iREAL>&  cellCentre,
+  const tarch::la::Vector<DIMENSIONS,iREAL>&  cellSize,
   int                                          level
 ) {
   logTraceInWith2Arguments( "mergeWithWorker(...)", localCell.toString(), receivedMasterCell.toString() );
@@ -1010,8 +1010,8 @@ void dem::mappings::Plot::mergeWithWorker(
 void dem::mappings::Plot::mergeWithWorker(
   dem::Vertex&        localVertex,
   const dem::Vertex&  receivedMasterVertex,
-  const tarch::la::Vector<DIMENSIONS,double>&   x,
-  const tarch::la::Vector<DIMENSIONS,double>&   h,
+  const tarch::la::Vector<DIMENSIONS,iREAL>&   x,
+  const tarch::la::Vector<DIMENSIONS,iREAL>&   h,
   int                                           level
 ) {
   logTraceInWith2Arguments( "mergeWithWorker(...)", localVertex.toString(), receivedMasterVertex.toString() );

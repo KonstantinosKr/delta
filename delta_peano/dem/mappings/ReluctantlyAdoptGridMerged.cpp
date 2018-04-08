@@ -154,10 +154,10 @@ void dem::mappings::ReluctantlyAdoptGridMerged::endIteration(
   if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::HybridStat)
   {
     logInfo( "endIteration(State)", std::endl
-                                 << "Penalty Fails: " << delta::contact::detection::getPenaltyFails() << " PenaltyFail avg: " << (double)delta::contact::detection::getPenaltyFails()/(double)delta::contact::detection::getBatchSize() << std::endl
+                                 << "Penalty Fails: " << delta::contact::detection::getPenaltyFails() << " PenaltyFail avg: " << (iREAL)delta::contact::detection::getPenaltyFails()/(iREAL)delta::contact::detection::getBatchSize() << std::endl
                                  << "Batch Size: " << delta::contact::detection::getBatchSize() << std::endl
-                                 << "Batch Fails: " << delta::contact::detection::getBatchFails() << " BatchFail avg: " << (double)delta::contact::detection::getBatchFails()/(double)delta::contact::detection::getBatchSize() << std::endl
-                                 << "BatchError avg: " << (double)delta::contact::detection::getBatchError()/(double)delta::contact::detection::getBatchSize());
+                                 << "Batch Fails: " << delta::contact::detection::getBatchFails() << " BatchFail avg: " << (iREAL)delta::contact::detection::getBatchFails()/(iREAL)delta::contact::detection::getBatchSize() << std::endl
+                                 << "BatchError avg: " << (iREAL)delta::contact::detection::getBatchError()/(iREAL)delta::contact::detection::getBatchSize());
   }
 
   logTraceOutWith1Argument( "endIteration(State)", solverState);
@@ -165,8 +165,8 @@ void dem::mappings::ReluctantlyAdoptGridMerged::endIteration(
 
 void dem::mappings::ReluctantlyAdoptGridMerged::touchVertexFirstTime(
       dem::Vertex&               fineGridVertex,
-      const tarch::la::Vector<DIMENSIONS,double>&                          fineGridX,
-      const tarch::la::Vector<DIMENSIONS,double>&                          fineGridH,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&                          fineGridX,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&                          fineGridH,
       dem::Vertex * const        coarseGridVertices,
       const peano::grid::VertexEnumerator&                coarseGridVerticesEnumerator,
       dem::Cell&                 coarseGridCell,
@@ -185,7 +185,7 @@ void dem::mappings::ReluctantlyAdoptGridMerged::touchVertexFirstTime(
     fineGridVertex.setNumberOfParticlesInUnrefinedVertex(fineGridVertex.getNumberOfParticlesInUnrefinedVertex() * dem::mappings::ReluctantlyAdoptGrid::_coarsenCoefficientReluctant);
   }
 
-  double timeStepSize = _state.getTimeStepSize();
+  iREAL timeStepSize = _state.getTimeStepSize();
 
   for(int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
   {
@@ -194,17 +194,17 @@ void dem::mappings::ReluctantlyAdoptGridMerged::touchVertexFirstTime(
     //if value doesn't exist in map - no collision - skip particle
     if(dem::mappings::Collision::_activeCollisions.count(currentParticle.getGlobalParticleId())==0) {continue;}
 
-    //double force[3]  = {0.0,gravity*currentParticle._persistentRecords.getMass()*(-10),0.0};
-    double force[3]  = {0.0,0.0,0.0};
-    double torque[3] = {0.0,0.0,0.0};
+    //iREAL force[3]  = {0.0,gravity*currentParticle._persistentRecords.getMass()*(-10),0.0};
+    iREAL force[3]  = {0.0,0.0,0.0};
+    iREAL torque[3] = {0.0,0.0,0.0};
 
     //collisions with partner particles
     for(std::vector<dem::mappings::Collision::Collisions>::iterator p = dem::mappings::Collision::_activeCollisions[currentParticle.getGlobalParticleId()].begin();
                                           p != dem::mappings::Collision::_activeCollisions[currentParticle.getGlobalParticleId()].end();
                                           p++)
     {
-      double rforce[3]  = {0.0,0.0,0.0};
-      double rtorque[3] = {0.0,0.0,0.0};
+      iREAL rforce[3]  = {0.0,0.0,0.0};
+      iREAL rtorque[3] = {0.0,0.0,0.0};
 
       delta::contact::forces::getContactsForces(p->_contactPoints,
                                        &(currentParticle._persistentRecords._centreOfMass(0)),
@@ -301,7 +301,7 @@ void dem::mappings::ReluctantlyAdoptGridMerged::leaveCell(
 
   if(_state.getTwoParticlesAreClose() <= 0.0 && _backgroundTaskState.getTwoParticlesAreClose() <= 0.0) return;
 
-  double minDiameter  = std::numeric_limits<double>::max();
+  iREAL minDiameter  = std::numeric_limits<iREAL>::max();
   int numberOfRealParticles = 0;
   int numberOfVirtualAndRealParticles = 0;
 
@@ -336,8 +336,8 @@ void dem::mappings::ReluctantlyAdoptGridMerged::leaveCell(
 
 void dem::mappings::ReluctantlyAdoptGridMerged::touchVertexLastTime(
       dem::Vertex&         fineGridVertex,
-      const tarch::la::Vector<DIMENSIONS,double>&                    fineGridX,
-      const tarch::la::Vector<DIMENSIONS,double>&                    fineGridH,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&                    fineGridX,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&                    fineGridH,
       dem::Vertex * const  coarseGridVertices,
       const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator,
       dem::Cell&           coarseGridCell,
@@ -422,8 +422,8 @@ void dem::mappings::ReluctantlyAdoptGridMerged::touchVertexLastTime(
 
 void dem::mappings::ReluctantlyAdoptGridMerged::createHangingVertex(
       dem::Vertex&     fineGridVertex,
-      const tarch::la::Vector<DIMENSIONS,double>&                fineGridX,
-      const tarch::la::Vector<DIMENSIONS,double>&                fineGridH,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&                fineGridX,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&                fineGridH,
       dem::Vertex * const   coarseGridVertices,
       const peano::grid::VertexEnumerator&      coarseGridVerticesEnumerator,
       dem::Cell&       coarseGridCell,
@@ -438,8 +438,8 @@ void dem::mappings::ReluctantlyAdoptGridMerged::createHangingVertex(
 
 void dem::mappings::ReluctantlyAdoptGridMerged::destroyHangingVertex(
       const dem::Vertex&   fineGridVertex,
-      const tarch::la::Vector<DIMENSIONS,double>&                    fineGridX,
-      const tarch::la::Vector<DIMENSIONS,double>&                    fineGridH,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&                    fineGridX,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&                    fineGridH,
       dem::Vertex * const  coarseGridVertices,
       const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator,
       dem::Cell&           coarseGridCell,
@@ -458,8 +458,8 @@ void dem::mappings::ReluctantlyAdoptGridMerged::destroyHangingVertex(
 
 void dem::mappings::ReluctantlyAdoptGridMerged::createInnerVertex(
       dem::Vertex&               fineGridVertex,
-      const tarch::la::Vector<DIMENSIONS,double>&                          fineGridX,
-      const tarch::la::Vector<DIMENSIONS,double>&                          fineGridH,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&                          fineGridX,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&                          fineGridH,
       dem::Vertex * const        coarseGridVertices,
       const peano::grid::VertexEnumerator&                coarseGridVerticesEnumerator,
       dem::Cell&                 coarseGridCell,
@@ -474,8 +474,8 @@ void dem::mappings::ReluctantlyAdoptGridMerged::createInnerVertex(
 
 void dem::mappings::ReluctantlyAdoptGridMerged::createBoundaryVertex(
       dem::Vertex&               fineGridVertex,
-      const tarch::la::Vector<DIMENSIONS,double>&                          fineGridX,
-      const tarch::la::Vector<DIMENSIONS,double>&                          fineGridH,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&                          fineGridX,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&                          fineGridH,
       dem::Vertex * const        coarseGridVertices,
       const peano::grid::VertexEnumerator&                coarseGridVerticesEnumerator,
       dem::Cell&                 coarseGridCell,
@@ -490,8 +490,8 @@ void dem::mappings::ReluctantlyAdoptGridMerged::createBoundaryVertex(
 
 void dem::mappings::ReluctantlyAdoptGridMerged::destroyVertex(
       const dem::Vertex&   fineGridVertex,
-      const tarch::la::Vector<DIMENSIONS,double>&                    fineGridX,
-      const tarch::la::Vector<DIMENSIONS,double>&                    fineGridH,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&                    fineGridX,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&                    fineGridH,
       dem::Vertex * const  coarseGridVertices,
       const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator,
       dem::Cell&           coarseGridCell,
@@ -542,8 +542,8 @@ void dem::mappings::ReluctantlyAdoptGridMerged::mergeWithNeighbour(
   dem::Vertex&  vertex,
   const dem::Vertex&  neighbour,
   int                                           fromRank,
-  const tarch::la::Vector<DIMENSIONS,double>&   fineGridX,
-  const tarch::la::Vector<DIMENSIONS,double>&   fineGridH,
+  const tarch::la::Vector<DIMENSIONS,iREAL>&   fineGridX,
+  const tarch::la::Vector<DIMENSIONS,iREAL>&   fineGridH,
   int                                           level
 ) {
   logTraceInWith6Arguments( "mergeWithNeighbour(...)", vertex, neighbour, fromRank, fineGridX, fineGridH, level );
@@ -554,8 +554,8 @@ void dem::mappings::ReluctantlyAdoptGridMerged::mergeWithNeighbour(
 void dem::mappings::ReluctantlyAdoptGridMerged::prepareSendToNeighbour(
   dem::Vertex&  vertex,
       int                                           toRank,
-      const tarch::la::Vector<DIMENSIONS,double>&   x,
-      const tarch::la::Vector<DIMENSIONS,double>&   h,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&   x,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&   h,
       int                                           level
 ) {
   logTraceInWith3Arguments( "prepareSendToNeighbour(...)", vertex, toRank, level );
@@ -566,8 +566,8 @@ void dem::mappings::ReluctantlyAdoptGridMerged::prepareSendToNeighbour(
 void dem::mappings::ReluctantlyAdoptGridMerged::prepareCopyToRemoteNode(
   dem::Vertex&  localVertex,
       int                                           toRank,
-      const tarch::la::Vector<DIMENSIONS,double>&   x,
-      const tarch::la::Vector<DIMENSIONS,double>&   h,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&   x,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&   h,
       int                                           level
 ) {
   logTraceInWith5Arguments( "prepareCopyToRemoteNode(...)", localVertex, toRank, x, h, level );
@@ -578,8 +578,8 @@ void dem::mappings::ReluctantlyAdoptGridMerged::prepareCopyToRemoteNode(
 void dem::mappings::ReluctantlyAdoptGridMerged::prepareCopyToRemoteNode(
   dem::Cell&  localCell,
       int                                           toRank,
-      const tarch::la::Vector<DIMENSIONS,double>&   cellCentre,
-      const tarch::la::Vector<DIMENSIONS,double>&   cellSize,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&   cellCentre,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&   cellSize,
       int                                           level
 ) {
   logTraceInWith5Arguments( "prepareCopyToRemoteNode(...)", localCell, toRank, cellCentre, cellSize, level );
@@ -591,8 +591,8 @@ void dem::mappings::ReluctantlyAdoptGridMerged::mergeWithRemoteDataDueToForkOrJo
   dem::Vertex&  localVertex,
   const dem::Vertex&  masterOrWorkerVertex,
   int                                       fromRank,
-  const tarch::la::Vector<DIMENSIONS,double>&  x,
-  const tarch::la::Vector<DIMENSIONS,double>&  h,
+  const tarch::la::Vector<DIMENSIONS,iREAL>&  x,
+  const tarch::la::Vector<DIMENSIONS,iREAL>&  h,
   int                                       level
 ) {
   logTraceInWith6Arguments( "mergeWithRemoteDataDueToForkOrJoin(...)", localVertex, masterOrWorkerVertex, fromRank, x, h, level );
@@ -604,8 +604,8 @@ void dem::mappings::ReluctantlyAdoptGridMerged::mergeWithRemoteDataDueToForkOrJo
   dem::Cell&  localCell,
   const dem::Cell&  masterOrWorkerCell,
   int                                       fromRank,
-  const tarch::la::Vector<DIMENSIONS,double>&  cellCentre,
-  const tarch::la::Vector<DIMENSIONS,double>&  cellSize,
+  const tarch::la::Vector<DIMENSIONS,iREAL>&  cellCentre,
+  const tarch::la::Vector<DIMENSIONS,iREAL>&  cellSize,
   int                                       level
 ) {
   logTraceInWith3Arguments( "mergeWithRemoteDataDueToForkOrJoin(...)", localCell, masterOrWorkerCell, fromRank );
@@ -683,8 +683,8 @@ void dem::mappings::ReluctantlyAdoptGridMerged::receiveDataFromMaster(
 void dem::mappings::ReluctantlyAdoptGridMerged::mergeWithWorker(
   dem::Cell&           localCell, 
   const dem::Cell&     receivedMasterCell,
-  const tarch::la::Vector<DIMENSIONS,double>&  cellCentre,
-  const tarch::la::Vector<DIMENSIONS,double>&  cellSize,
+  const tarch::la::Vector<DIMENSIONS,iREAL>&  cellCentre,
+  const tarch::la::Vector<DIMENSIONS,iREAL>&  cellSize,
   int                                          level
 ) {
   logTraceInWith2Arguments( "mergeWithWorker(...)", localCell.toString(), receivedMasterCell.toString() );
@@ -695,8 +695,8 @@ void dem::mappings::ReluctantlyAdoptGridMerged::mergeWithWorker(
 void dem::mappings::ReluctantlyAdoptGridMerged::mergeWithWorker(
   dem::Vertex&        localVertex,
   const dem::Vertex&  receivedMasterVertex,
-  const tarch::la::Vector<DIMENSIONS,double>&   x,
-  const tarch::la::Vector<DIMENSIONS,double>&   h,
+  const tarch::la::Vector<DIMENSIONS,iREAL>&   x,
+  const tarch::la::Vector<DIMENSIONS,iREAL>&   h,
   int                                           level
 ) {
   logTraceInWith2Arguments( "mergeWithWorker(...)", localVertex.toString(), receivedMasterVertex.toString() );

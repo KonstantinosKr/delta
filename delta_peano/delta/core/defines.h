@@ -17,7 +17,7 @@
 
 
 #if !defined(iREAL)
-#define iREAL iREAL
+#define iREAL double
 #endif
 
 #endif

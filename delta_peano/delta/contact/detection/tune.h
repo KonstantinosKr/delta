@@ -23,12 +23,13 @@
  SOFTWARE.
  */
 
-#include <delta/contact/detection/bf.h>
-#include <delta/contact/contactpoint.h>
+#include <map>
 #include <vector>
 #include <limits>
 #include <float.h>
 #include "delta/core/algo.h"
+#include <delta/contact/detection/bf.h>
+#include <delta/contact/contactpoint.h>
 
 namespace delta {
   namespace contact {
@@ -38,13 +39,13 @@ namespace delta {
       iREAL T1A[3], T1B[3], T1C[3];
       iREAL T2A[3], T2B[3], T2C[3];
 
-      std::vector<double> epsilonHistory;
+      std::vector<iREAL> epsilonHistory;
 
-      std::vector<double> rpointDifference;
-      std::vector<double> rdistanceDifference;
+      std::vector<iREAL> rpointDifference;
+      std::vector<iREAL> rdistanceDifference;
 
-      std::vector<double> pointFail;
-      std::vector<double> distanceFail;
+      std::vector<iREAL> pointFail;
+      std::vector<iREAL> distanceFail;
     };
 
     void computeHistogram(std::vector<triangleSetStat> particleTriangleSet);

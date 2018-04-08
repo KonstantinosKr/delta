@@ -72,7 +72,7 @@ std::map<int, std::vector<dem::mappings::Collision::Collisions> >   dem::mapping
 dem::mappings::Collision::CollisionModel                            dem::mappings::Collision::_collisionModel;
 bool																   dem::mappings::Collision::_enableOverlapCheck;
 tarch::multicore::BooleanSemaphore                                  dem::mappings::Collision::_collisionSemaphore;
-double                                                              dem::mappings::Collision::gravity = 0.0;
+iREAL                                                              dem::mappings::Collision::gravity = 0.0;
 
 bool dem::mappings::Collision::RunGridTraversalInParallel           = true;
 bool dem::mappings::Collision::RunParticleLoopInParallel            = true;
@@ -254,8 +254,8 @@ bool dem::mappings::Collision::triggerParticleTooClose(
     state.setMaximumVelocityApproach(vBA);
   }
 
-  double rA = particleA.getHaloDiameter()/2.0;
-  double rB = particleB.getHaloDiameter()/2.0;
+  iREAL rA = particleA.getHaloDiameter()/2.0;
+  iREAL rB = particleB.getHaloDiameter()/2.0;
 
   iREAL currentMinHaloDistance = (d - rA - rB);
   iREAL predictedMinHaloDistance = (pd - rA - rB); //two steps after (current, after currect)
@@ -268,13 +268,13 @@ bool dem::mappings::Collision::triggerParticleTooClose(
   if(-pvBA  >= pdistancePerStep)
   {
     //printf("entered TRIGER %f >= %f\n", -pvBA, pdistancePerStep);
-    double rrA = particleA.getDiameter()/2.0;
-    double rrB = particleB.getDiameter()/2.0;
+    iREAL rrA = particleA.getDiameter()/2.0;
+    iREAL rrB = particleB.getDiameter()/2.0;
 
-    double epsilonA = particleA.getEpsilon();
-    double epsilonB = particleB.getEpsilon();
+    iREAL epsilonA = particleA.getEpsilon();
+    iREAL epsilonB = particleB.getEpsilon();
 
-    double remainingDistance = (d -rrA -rrB -epsilonA -epsilonB);
+    iREAL remainingDistance = (d -rrA -rrB -epsilonA -epsilonB);
     if(remainingDistance < 0.0)
     {
       remainingDistance = remainingDistance * -1.1;
@@ -298,14 +298,14 @@ bool dem::mappings::Collision::triggerParticleTooClose(
 void dem::mappings::Collision::collisionDetection(
   dem::records::Particle   particleA,
   int                      numberOfTrianglesA,
-  const double*            xCoordinatesA,
-  const double*            yCoordinatesA,
-  const double*            zCoordinatesA,
+  const iREAL*            xCoordinatesA,
+  const iREAL*            yCoordinatesA,
+  const iREAL*            zCoordinatesA,
   dem::records::Particle   particleB,
   int                      numberOfTrianglesB,
-  const double*            xCoordinatesB,
-  const double*            yCoordinatesB,
-  const double*            zCoordinatesB,
+  const iREAL*            xCoordinatesB,
+  const iREAL*            yCoordinatesB,
+  const iREAL*            zCoordinatesB,
   State* state,
   bool   protectStateAccess)
 {
@@ -542,7 +542,7 @@ void dem::mappings::Collision::collisionDetection(
 
       break;
     case CollisionModel::GJK:
-      assertionMsg(false,"Konstantinos, bf has to use const double* and not double* as input" );
+      assertionMsg(false,"Konstantinos, bf has to use const iREAL* and not iREAL* as input" );
 /*
       newContactPoints = delta::collision::gjk(
         numberOfTrianglesA,
@@ -933,10 +933,10 @@ void dem::mappings::Collision::endIteration(
 	if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::HybridStat)
 	{
 	logInfo( "endIteration(State)", std::endl
-								 << "Penalty Fails: " << delta::contact::detection::getPenaltyFails() << " PenaltyFail avg: " << (double)delta::contact::detection::getPenaltyFails()/(double)delta::contact::detection::getBatchSize() << std::endl
+								 << "Penalty Fails: " << delta::contact::detection::getPenaltyFails() << " PenaltyFail avg: " << (iREAL)delta::contact::detection::getPenaltyFails()/(iREAL)delta::contact::detection::getBatchSize() << std::endl
 								 << "Batch Size: " << delta::contact::detection::getBatchSize() << std::endl
-								 << "Batch Fails: " << delta::contact::detection::getBatchFails() << " BatchFail avg: " << (double)delta::contact::detection::getBatchFails()/(double)delta::contact::detection::getBatchSize() << std::endl
-								 << "BatchError avg: " << (double)delta::contact::detection::getBatchError()/(double)delta::contact::detection::getBatchSize());
+								 << "Batch Fails: " << delta::contact::detection::getBatchFails() << " BatchFail avg: " << (iREAL)delta::contact::detection::getBatchFails()/(iREAL)delta::contact::detection::getBatchSize() << std::endl
+								 << "BatchError avg: " << (iREAL)delta::contact::detection::getBatchError()/(iREAL)delta::contact::detection::getBatchSize());
 	}
 
 	while (tarch::multicore::jobs::getNumberOfWaitingBackgroundJobs()>0) {
@@ -948,8 +948,8 @@ void dem::mappings::Collision::endIteration(
 
 void dem::mappings::Collision::touchVertexFirstTime(
 		dem::Vertex&                                 fineGridVertex,
-		const tarch::la::Vector<DIMENSIONS,double>&  fineGridX,
-		const tarch::la::Vector<DIMENSIONS,double>&  fineGridH,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&  fineGridX,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&  fineGridH,
 		dem::Vertex * const                          coarseGridVertices,
 		const peano::grid::VertexEnumerator&         coarseGridVerticesEnumerator,
 		dem::Cell&                                   coarseGridCell,
@@ -957,7 +957,7 @@ void dem::mappings::Collision::touchVertexFirstTime(
 ) {
 	logTraceInWith6Arguments( "touchVertexFirstTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
-	double timeStepSize = _state.getTimeStepSize();
+	iREAL timeStepSize = _state.getTimeStepSize();
 
 	for(int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
 	{
@@ -966,17 +966,17 @@ void dem::mappings::Collision::touchVertexFirstTime(
 		//if value doesn't exist in map - no collision - skip particle
 		if(_activeCollisions.count(currentParticle.getGlobalParticleId())==0) {continue;}
 
-		//double force[3]  = {0.0,gravity*currentParticle._persistentRecords.getMass()*(-10),0.0};
-		double force[3]  = {0.0,0.0,0.0};
-		double torque[3] = {0.0,0.0,0.0};
+		//iREAL force[3]  = {0.0,gravity*currentParticle._persistentRecords.getMass()*(-10),0.0};
+		iREAL force[3]  = {0.0,0.0,0.0};
+		iREAL torque[3] = {0.0,0.0,0.0};
 
 		//collisions with partner particles
 		for(std::vector<Collisions>::iterator p = _activeCollisions[currentParticle.getGlobalParticleId()].begin();
 		                                      p != _activeCollisions[currentParticle.getGlobalParticleId()].end();
 		                                      p++)
 		{
-			double rforce[3]  = {0.0,0.0,0.0};
-			double rtorque[3] = {0.0,0.0,0.0};
+			iREAL rforce[3]  = {0.0,0.0,0.0};
+			iREAL rtorque[3] = {0.0,0.0,0.0};
 
 			delta::contact::forces::getContactsForces(p->_contactPoints,
                                        &(currentParticle._persistentRecords._centreOfMass(0)),
@@ -1063,8 +1063,8 @@ void dem::mappings::Collision::leaveCell(
 
 void dem::mappings::Collision::touchVertexLastTime(
     dem::Vertex&         fineGridVertex,
-    const tarch::la::Vector<DIMENSIONS,double>&                    fineGridX,
-    const tarch::la::Vector<DIMENSIONS,double>&                    fineGridH,
+    const tarch::la::Vector<DIMENSIONS,iREAL>&                    fineGridX,
+    const tarch::la::Vector<DIMENSIONS,iREAL>&                    fineGridH,
     dem::Vertex * const  coarseGridVertices,
     const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator,
     dem::Cell&           coarseGridCell,
@@ -1139,8 +1139,8 @@ void dem::mappings::Collision::touchVertexLastTime(
 
 void dem::mappings::Collision::createHangingVertex(
 		dem::Vertex&     fineGridVertex,
-		const tarch::la::Vector<DIMENSIONS,double>&                fineGridX,
-		const tarch::la::Vector<DIMENSIONS,double>&                fineGridH,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&                fineGridX,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&                fineGridH,
 		dem::Vertex * const   coarseGridVertices,
 		const peano::grid::VertexEnumerator&      coarseGridVerticesEnumerator,
 		dem::Cell&       coarseGridCell,
@@ -1153,8 +1153,8 @@ void dem::mappings::Collision::createHangingVertex(
 
 void dem::mappings::Collision::destroyHangingVertex(
 		const dem::Vertex&   fineGridVertex,
-		const tarch::la::Vector<DIMENSIONS,double>&                    fineGridX,
-		const tarch::la::Vector<DIMENSIONS,double>&                    fineGridH,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&                    fineGridX,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&                    fineGridH,
 		dem::Vertex * const  coarseGridVertices,
 		const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator,
 		dem::Cell&           coarseGridCell,
@@ -1167,8 +1167,8 @@ void dem::mappings::Collision::destroyHangingVertex(
 
 void dem::mappings::Collision::createInnerVertex(
 		dem::Vertex&               fineGridVertex,
-		const tarch::la::Vector<DIMENSIONS,double>&                          fineGridX,
-		const tarch::la::Vector<DIMENSIONS,double>&                          fineGridH,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&                          fineGridX,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&                          fineGridH,
 		dem::Vertex * const        coarseGridVertices,
 		const peano::grid::VertexEnumerator&                coarseGridVerticesEnumerator,
 		dem::Cell&                 coarseGridCell,
@@ -1181,8 +1181,8 @@ void dem::mappings::Collision::createInnerVertex(
 
 void dem::mappings::Collision::createBoundaryVertex(
 		dem::Vertex&               fineGridVertex,
-		const tarch::la::Vector<DIMENSIONS,double>&                          fineGridX,
-		const tarch::la::Vector<DIMENSIONS,double>&                          fineGridH,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&                          fineGridX,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&                          fineGridH,
 		dem::Vertex * const        coarseGridVertices,
 		const peano::grid::VertexEnumerator&                coarseGridVerticesEnumerator,
 		dem::Cell&                 coarseGridCell,
@@ -1195,8 +1195,8 @@ void dem::mappings::Collision::createBoundaryVertex(
 
 void dem::mappings::Collision::destroyVertex(
 		const dem::Vertex&   fineGridVertex,
-		const tarch::la::Vector<DIMENSIONS,double>&                    fineGridX,
-		const tarch::la::Vector<DIMENSIONS,double>&                    fineGridH,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&                    fineGridX,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&                    fineGridH,
 		dem::Vertex * const  coarseGridVertices,
 		const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator,
 		dem::Cell&           coarseGridCell,
@@ -1240,8 +1240,8 @@ void dem::mappings::Collision::mergeWithNeighbour(
 		dem::Vertex&  vertex,
 		const dem::Vertex&  neighbour,
 		int                                           fromRank,
-		const tarch::la::Vector<DIMENSIONS,double>&   fineGridX,
-		const tarch::la::Vector<DIMENSIONS,double>&   fineGridH,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&   fineGridX,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&   fineGridH,
 		int                                           level
 ) {
 	logTraceInWith6Arguments( "mergeWithNeighbour(...)", vertex, neighbour, fromRank, fineGridX, fineGridH, level );
@@ -1252,8 +1252,8 @@ void dem::mappings::Collision::mergeWithNeighbour(
 void dem::mappings::Collision::prepareSendToNeighbour(
 		dem::Vertex&  vertex,
 		int                                           toRank,
-		const tarch::la::Vector<DIMENSIONS,double>&   x,
-		const tarch::la::Vector<DIMENSIONS,double>&   h,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&   x,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&   h,
 		int                                           level
 ) {
 	logTraceInWith3Arguments( "prepareSendToNeighbour(...)", vertex, toRank, level );
@@ -1264,8 +1264,8 @@ void dem::mappings::Collision::prepareSendToNeighbour(
 void dem::mappings::Collision::prepareCopyToRemoteNode(
 		dem::Vertex&  localVertex,
 		int                                           toRank,
-		const tarch::la::Vector<DIMENSIONS,double>&   x,
-		const tarch::la::Vector<DIMENSIONS,double>&   h,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&   x,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&   h,
 		int                                           level
 ) {
 	logTraceInWith5Arguments( "prepareCopyToRemoteNode(...)", localVertex, toRank, x, h, level );
@@ -1276,8 +1276,8 @@ void dem::mappings::Collision::prepareCopyToRemoteNode(
 void dem::mappings::Collision::prepareCopyToRemoteNode(
 		dem::Cell&  localCell,
 		int                                           toRank,
-		const tarch::la::Vector<DIMENSIONS,double>&   cellCentre,
-		const tarch::la::Vector<DIMENSIONS,double>&   cellSize,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&   cellCentre,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&   cellSize,
 		int                                           level
 ) {
 	logTraceInWith5Arguments( "prepareCopyToRemoteNode(...)", localCell, toRank, cellCentre, cellSize, level );
@@ -1289,8 +1289,8 @@ void dem::mappings::Collision::mergeWithRemoteDataDueToForkOrJoin(
 		dem::Vertex&  localVertex,
 		const dem::Vertex&  masterOrWorkerVertex,
 		int                                       fromRank,
-		const tarch::la::Vector<DIMENSIONS,double>&  x,
-		const tarch::la::Vector<DIMENSIONS,double>&  h,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&  x,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&  h,
 		int                                       level
 ) {
 	logTraceInWith6Arguments( "mergeWithRemoteDataDueToForkOrJoin(...)", localVertex, masterOrWorkerVertex, fromRank, x, h, level );
@@ -1302,8 +1302,8 @@ void dem::mappings::Collision::mergeWithRemoteDataDueToForkOrJoin(
 		dem::Cell&  localCell,
 		const dem::Cell&  masterOrWorkerCell,
 		int                                       fromRank,
-		const tarch::la::Vector<DIMENSIONS,double>&  cellCentre,
-		const tarch::la::Vector<DIMENSIONS,double>&  cellSize,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&  cellCentre,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&  cellSize,
 		int                                       level
 ) {
 	logTraceInWith3Arguments( "mergeWithRemoteDataDueToForkOrJoin(...)", localCell, masterOrWorkerCell, fromRank );
@@ -1381,8 +1381,8 @@ void dem::mappings::Collision::receiveDataFromMaster(
 void dem::mappings::Collision::mergeWithWorker(
 		dem::Cell&           localCell,
 		const dem::Cell&     receivedMasterCell,
-		const tarch::la::Vector<DIMENSIONS,double>&  cellCentre,
-		const tarch::la::Vector<DIMENSIONS,double>&  cellSize,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&  cellCentre,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&  cellSize,
 		int                                          level
 ) {
 	logTraceInWith2Arguments( "mergeWithWorker(...)", localCell.toString(), receivedMasterCell.toString() );
@@ -1393,8 +1393,8 @@ void dem::mappings::Collision::mergeWithWorker(
 void dem::mappings::Collision::mergeWithWorker(
 		dem::Vertex&        localVertex,
 		const dem::Vertex&  receivedMasterVertex,
-		const tarch::la::Vector<DIMENSIONS,double>&   x,
-		const tarch::la::Vector<DIMENSIONS,double>&   h,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&   x,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&   h,
 		int                                           level
 ) {
 	logTraceInWith2Arguments( "mergeWithWorker(...)", localVertex.toString(), receivedMasterVertex.toString() );

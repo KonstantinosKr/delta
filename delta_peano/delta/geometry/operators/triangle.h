@@ -25,13 +25,16 @@
 #ifndef DELTA_geometry_TRIANGLE_H_
 #define DELTA_geometry_TRIANGLE_H_
 
+#include <stdlib.h>
+#include <assert.h>
+#include <cmath>
 #include <vector>
 #include <array>
-#include "delta/geometry/material.h"
-#include "delta/geometry/Object.h"
-#include "delta/geometry/mesh/mesh.h"
-#include "delta/geometry/primitive/surface.h"
-#include "delta/geometry/operators/physics.h"
+#include <delta/geometry/material.h>
+#include <delta/geometry/Object.h>
+#include <delta/geometry/primitive/surface.h>
+#include <delta/geometry/operators/physics.h>
+#include <delta/geometry/mesh/Mesh.h>
 
 namespace delta {
   namespace geometry {
@@ -71,7 +74,7 @@ namespace delta {
 
 		void meshDenser(
 			int meshRefinement,
-			double gridH,
+			iREAL gridH,
 			std::vector<iREAL>&  xCoordinates,
 			std::vector<iREAL>&  yCoordinates,
 			std::vector<iREAL>&  zCoordinates);
@@ -100,7 +103,7 @@ namespace delta {
 			std::vector<std::vector<iREAL>>&  zCoordinatesMultiLevel,
 			std::vector<std::array<iREAL, 3>>& centroid);
 
-		double getTriangleLength(
+		iREAL getTriangleLength(
 			iREAL A[3],
 			iREAL B[3],
 			iREAL C[3]);

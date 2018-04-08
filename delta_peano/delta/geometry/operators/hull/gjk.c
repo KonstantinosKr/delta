@@ -35,7 +35,7 @@
 
 /* auxiliary point structure used to describe
  * points in the Minkowski difference set (A - B) */
-typedef struct { double w[3], *a, *b; } point;
+typedef struct { iREAL w[3], *a, *b; } point;
 
 /* simple bit lighting macro for vertex sets */
 #define set(i,j,k,l) ((i*8)|(j*4)|(k*2)|(l*1))
@@ -73,9 +73,9 @@ static const int last [] =
 {0, 0, 3, 7, 15};
 
 /* find minimal point in set (c, n) along the direction of 'v' */
-inline static double* minimal_support_point (double *c, int n, double *v)
+inline static iREAL* minimal_support_point (iREAL *c, int n, iREAL *v)
 {
-  double dot, dotmin = DBL_MAX, *out = NULL;
+  iREAL dot, dotmin = DBL_MAX, *out = NULL;
 
   for (; n > 0; n --, c += 3)
   {
@@ -87,9 +87,9 @@ inline static double* minimal_support_point (double *c, int n, double *v)
 }
 
 /* find maximal point in set (c, n) along the direction of 'v' */
-inline static double* maximal_support_point (double *c, int n, double *v)
+inline static iREAL* maximal_support_point (iREAL *c, int n, iREAL *v)
 {
-  double dot, dotmax = -DBL_MAX, *out = NULL;
+  iREAL dot, dotmax = -DBL_MAX, *out = NULL;
 
   for (; n > 0; n --, c += 3)
   {
@@ -101,9 +101,9 @@ inline static double* maximal_support_point (double *c, int n, double *v)
 }
 
 /* allocate output point for curved primitives */
-inline static double* output_point (point *w, int n, double x [4][3], short maximal)
+inline static iREAL* output_point (point *w, int n, iREAL x [4][3], short maximal)
 {
-  double *out = NULL;
+  iREAL *out = NULL;
   int i, j;
 
   /* identify a spare return
@@ -129,9 +129,9 @@ inline static double* output_point (point *w, int n, double x [4][3], short maxi
 }
 
 /* find minimal point in the sphere (c, r) along the direction of 'v' */
-inline static double* minimal_sphere_support_point (point *w, int n, double (*x) [3], double *c, double r, double *v)
+inline static iREAL* minimal_sphere_support_point (point *w, int n, iREAL (*x) [3], iREAL *c, iREAL r, iREAL *v)
 {
-  double *out = output_point (w, n, x, 0);
+  iREAL *out = output_point (w, n, x, 0);
 
   COPY (v, out);
   NORMALIZE (out);
@@ -142,9 +142,9 @@ inline static double* minimal_sphere_support_point (point *w, int n, double (*x)
 }
 
 /* find maximal point in the sphere (c, r) along the direction of 'v' */
-inline static double* maximal_sphere_support_point (point *w, int n, double (*x) [3], double *c, double r, double *v)
+inline static iREAL* maximal_sphere_support_point (point *w, int n, iREAL (*x) [3], iREAL *c, iREAL r, iREAL *v)
 {
-  double *out = output_point (w, n, x, 1);
+  iREAL *out = output_point (w, n, x, 1);
 
   COPY (v, out);
   NORMALIZE (out);
@@ -155,7 +155,7 @@ inline static double* maximal_sphere_support_point (point *w, int n, double (*x)
 }
 
 /* find minimal point in the ellipsoid (c, sca, rot) along the direction of 'v' */
-inline static double* minimal_ellip_support_point (point *w, int n, double (*x) [3], double *c, double *sca, double *rot, double *v)
+inline static iREAL* minimal_ellip_support_point (point *w, int n, iREAL (*x) [3], iREAL *c, iREAL *sca, iREAL *rot, iREAL *v)
 {
   /* (paraphrase of a comment from OpenTissue engine)
    * An ellipsoid E is a scaled, rotated and translated unit, zero-centered ball B.
@@ -173,8 +173,8 @@ inline static double* minimal_ellip_support_point (point *w, int n, double (*x) 
    * S_{A(B)}(v)  =   A(S_B(T'v))
    */
 
-  double *out = output_point (w, n, x, 0);
-  double T [9], q [3];
+  iREAL *out = output_point (w, n, x, 0);
+  iREAL T [9], q [3];
 
   NNCOPY (rot, T);
   SCALE (T, sca[0]);
@@ -191,7 +191,7 @@ inline static double* minimal_ellip_support_point (point *w, int n, double (*x) 
 }
 
 /* find maximal point in the ellipsoid (c, sca, rot) along the direction of 'v' */
-inline static double* maximal_ellip_support_point (point *w, int n, double (*x) [3], double *c, double *sca, double *rot, double *v)
+inline static iREAL* maximal_ellip_support_point (point *w, int n, iREAL (*x) [3], iREAL *c, iREAL *sca, iREAL *rot, iREAL *v)
 {
   /* (paraphrase of a comment from OpenTissue engine)
    * An ellipsoid E is a scaled, rotated and translated unit, zero-centered ball B.
@@ -209,8 +209,8 @@ inline static double* maximal_ellip_support_point (point *w, int n, double (*x) 
    * S_{A(B)}(v)  =   A(S_B(T'v))
    */
 
-  double *out = output_point (w, n, x, 1);
-  double T [9], q [3];
+  iREAL *out = output_point (w, n, x, 1);
+  iREAL T [9], q [3];
 
   NNCOPY (rot, T);
   SCALE (T, sca[0]);
@@ -231,9 +231,9 @@ inline static double* maximal_ellip_support_point (point *w, int n, double (*x) 
  * onto it is the same as the projection onto the original hull; the
  * new dimension of 'w' is returend; 'l' contains barycentric coordinates
  * of the projection point; 'v' contains the point itslef */
-static int project (point *w, int n, double *l, double *v)
+static int project (point *w, int n, iREAL *l, iREAL *v)
 {
-  double dot [4][4], delta [16][4], sum;
+  iREAL dot [4][4], delta [16][4], sum;
   int i, j, k, m, s, c, o, f;
 
   if (n == 1)
@@ -347,10 +347,10 @@ static int project (point *w, int n, double *l, double *v)
 
 /* public driver routine => input two polytopes A = (a, na) and B = (b, nb); outputs
  * p in A and q in B such that d = |p - q| is minimal; the distance d is returned */
-double gjk (double *a, int na, double *b, int nb, double *p, double *q)
+iREAL gjk (iREAL *a, int na, iREAL *b, int nb, iREAL *p, iREAL *q)
 {
   point w [4];
-  double v [3],
+  iREAL v [3],
 	 vlen,
 	 delta,
 	 mi = 0.0,
@@ -400,10 +400,10 @@ double gjk (double *a, int na, double *b, int nb, double *p, double *q)
 
 /* public driver routine => input polytope A = (a, na) and sphere B = (c, r); outputs
  * p in A and q in B such that d = |p - q| is minimal; the distance d is returned */
-double gjk_convex_sphere (double *a, int na, double *c, double r, double *p, double *q)
+iREAL gjk_convex_sphere (iREAL *a, int na, iREAL *c, iREAL r, iREAL *p, iREAL *q)
 {
   point w [4];
-  double v [3],
+  iREAL v [3],
 	 b [4][3], /* support points for the sphere */
 	 vlen,
 	 delta,
@@ -456,10 +456,10 @@ double gjk_convex_sphere (double *a, int na, double *c, double r, double *p, dou
 
 /* (a,na) and (b,bsca, brot) are the input polyhedron and ellipsoid; 'p' and 'q' are the two outputed
  * closest points, respectively in polyhedron (a,na) and ellipsoid (b, bsca, brot); the distance is returned */
-double gjk_convex_ellip (double *a, int na, double *b, double *bsca, double *brot, double *p, double *q)
+iREAL gjk_convex_ellip (iREAL *a, int na, iREAL *b, iREAL *bsca, iREAL *brot, iREAL *p, iREAL *q)
 {
   point w [4];
-  double v [3],
+  iREAL v [3],
 	 z [4][3], /* support points for the ellipsoid */
 	 vlen,
 	 delta,
@@ -515,10 +515,10 @@ double gjk_convex_ellip (double *a, int na, double *b, double *bsca, double *bro
 
 /* (a,na) and p are the input polyhedron and point; 'q' is the outputed
  * closest point on the polyhedron; the distance is returned */
-double gjk_convex_point (double *a, int na, double *p, double *q)
+iREAL gjk_convex_point (iREAL *a, int na, iREAL *p, iREAL *q)
 {
   point w [4];
-  double v [3],
+  iREAL v [3],
 	 vlen,
 	 delta,
 	 mi = 0.0,
@@ -565,9 +565,9 @@ double gjk_convex_point (double *a, int na, double *p, double *q)
 
 /* public driver routine => input sphere A = (a, ra) and sphere B = (b, rb); outputs
  * p in A and q in B such that d = |p - q| is minimal; the distance d is returned */
-double gjk_sphere_sphere (double *a, double ra, double *b, double rb, double *p, double *q)
+iREAL gjk_sphere_sphere (iREAL *a, iREAL ra, iREAL *b, iREAL rb, iREAL *p, iREAL *q)
 {
-  double d [3], dlen, deno;
+  iREAL d [3], dlen, deno;
 
   SUB (a, b, d);
   dlen = LEN (d);
@@ -593,10 +593,10 @@ double gjk_sphere_sphere (double *a, double ra, double *b, double rb, double *p,
 
 /* (a,ra) and (b,bsca,brot)) are the input sphere and ellipsoid; 'p' and 'q' are the two outputed
  * closest points, respectively in sphere (a,ra) and ellipsoid (b,bsca,brot); the distance is returned */
-double gjk_sphere_ellip (double *a, double ra, double *b, double *bsca, double *brot, double *p, double *q)
+iREAL gjk_sphere_ellip (iREAL *a, iREAL ra, iREAL *b, iREAL *bsca, iREAL *brot, iREAL *p, iREAL *q)
 {
   point w [4];
-  double v [3],
+  iREAL v [3],
 	 y [4][3], /* support points for the sphere */
 	 z [4][3], /* support points for the ellipsoid */
 	 vlen,
@@ -656,10 +656,10 @@ double gjk_sphere_ellip (double *a, double ra, double *b, double *bsca, double *
 
 /* (a,asca,arot) and (b,bsca,brot) are the two input ellipsoids; 'p' and 'q' are the two outputed
  * closest points, respectively in (a,asca,arot) and (b,bsca,brot); the distance is returned */
-double gjk_ellip_ellip (double *a, double *asca, double *arot, double *b, double *bsca, double *brot, double *p, double *q)
+iREAL gjk_ellip_ellip (iREAL *a, iREAL *asca, iREAL *arot, iREAL *b, iREAL *bsca, iREAL *brot, iREAL *p, iREAL *q)
 {
   point w [4];
-  double v [3],
+  iREAL v [3],
 	 y [4][3], /* support points for the first ellipsoid */
 	 z [4][3], /* support points for the second ellipsoid */
 	 vlen,
@@ -721,10 +721,10 @@ double gjk_ellip_ellip (double *a, double *asca, double *arot, double *b, double
 
 /* (a,asca,arot) and p are the input ellipsoid and point; 'q' is the outputed
  * closest point on the ellipsoid; the distance is returned */
-double gjk_ellip_point (double *a, double *asca, double *arot, double *p, double *q)
+iREAL gjk_ellip_point (iREAL *a, iREAL *asca, iREAL *arot, iREAL *p, iREAL *q)
 {
   point w [4];
-  double v [3],
+  iREAL v [3],
 	 y [4][3], /* support points for the ellipsoid */
 	 vlen,
 	 delta,
@@ -777,9 +777,9 @@ double gjk_ellip_point (double *a, double *asca, double *arot, double *p, double
 
 /* compute gap function betwen two primitives along the given unit normal;
  * the normal direction is assumed to be outward to the first primitive */
-double gjk_convex_convex_gap (double *a, int na, double *b, int nb, double *normal)
+iREAL gjk_convex_convex_gap (iREAL *a, int na, iREAL *b, int nb, iREAL *normal)
 {
-  double *p, *q, d [3];
+  iREAL *p, *q, d [3];
 
   p = maximal_support_point (a, na, normal);
   q = minimal_support_point (b, nb, normal);
@@ -788,9 +788,9 @@ double gjk_convex_convex_gap (double *a, int na, double *b, int nb, double *norm
   return DOT (normal, d);
 }
 
-double gjk_convex_sphere_gap (double *a, int na, double *b, double rb, double *normal)
+iREAL gjk_convex_sphere_gap (iREAL *a, int na, iREAL *b, iREAL rb, iREAL *normal)
 {
-  double *p, *q, d [3], y [1][3];
+  iREAL *p, *q, d [3], y [1][3];
 
   p = maximal_support_point (a, na, normal);
   q = minimal_sphere_support_point (NULL, 0, y, b, rb, normal);
@@ -799,9 +799,9 @@ double gjk_convex_sphere_gap (double *a, int na, double *b, double rb, double *n
   return DOT (normal, d);
 }
 
-double gjk_convex_ellip_gap (double *a, int na, double *b, double *bsca, double *brot, double *normal)
+iREAL gjk_convex_ellip_gap (iREAL *a, int na, iREAL *b, iREAL *bsca, iREAL *brot, iREAL *normal)
 {
-  double *p, *q, d [3], y [1][3];
+  iREAL *p, *q, d [3], y [1][3];
 
   p = maximal_support_point (a, na, normal);
   q = minimal_ellip_support_point (NULL, 0, y, b, bsca, brot, normal);
@@ -810,9 +810,9 @@ double gjk_convex_ellip_gap (double *a, int na, double *b, double *bsca, double 
   return DOT (normal, d);
 }
 
-double gjk_sphere_sphere_gap (double *a, double ra, double *b, double rb, double *normal)
+iREAL gjk_sphere_sphere_gap (iREAL *a, iREAL ra, iREAL *b, iREAL rb, iREAL *normal)
 {
-  double *p, *q, d [3], y [1][3], z [1][3];
+  iREAL *p, *q, d [3], y [1][3], z [1][3];
 
   p = maximal_sphere_support_point (NULL, 0, y, a, ra, normal);
   q = minimal_sphere_support_point (NULL, 0, z, b, rb, normal);
@@ -821,9 +821,9 @@ double gjk_sphere_sphere_gap (double *a, double ra, double *b, double rb, double
   return DOT (normal, d);
 }
 
-double gjk_sphere_ellip_gap (double *a, double ra, double *b, double *bsca, double *brot, double *normal)
+iREAL gjk_sphere_ellip_gap (iREAL *a, iREAL ra, iREAL *b, iREAL *bsca, iREAL *brot, iREAL *normal)
 {
-  double *p, *q, d [3], y [1][3], z [1][3];
+  iREAL *p, *q, d [3], y [1][3], z [1][3];
 
   p = maximal_sphere_support_point (NULL, 0, y, a, ra, normal);
   q = minimal_ellip_support_point (NULL, 0, z, b, bsca, brot, normal);
@@ -832,9 +832,9 @@ double gjk_sphere_ellip_gap (double *a, double ra, double *b, double *bsca, doub
   return DOT (normal, d);
 }
 
-double gjk_ellip_ellip_gap (double *a, double *asca, double *arot, double *b, double *bsca, double *brot, double *normal)
+iREAL gjk_ellip_ellip_gap (iREAL *a, iREAL *asca, iREAL *arot, iREAL *b, iREAL *bsca, iREAL *brot, iREAL *normal)
 {
-  double *p, *q, d [3], y [1][3], z [1][3];
+  iREAL *p, *q, d [3], y [1][3], z [1][3];
 
   p = maximal_ellip_support_point (NULL, 0, y, a, asca, arot, normal);
   q = minimal_ellip_support_point (NULL, 0, z, b, bsca, brot, normal);
@@ -844,8 +844,8 @@ double gjk_ellip_ellip_gap (double *a, double *asca, double *arot, double *b, do
 }
 
 /* compute furthest or closest (near == 0 or 1) point 'p' of a primitive along given normal direction */
-void gjk_ellip_support_point (double *a, double *sca, double *rot, double *normal, short near, double *p)
+void gjk_ellip_support_point (iREAL *a, iREAL *sca, iREAL *rot, iREAL *normal, short near, iREAL *p)
 {
-  if (near) minimal_ellip_support_point (NULL, 0, (double (*) [3])p, a, sca, rot, normal);
-  else maximal_ellip_support_point (NULL, 0, (double (*) [3])p, a, sca, rot, normal);
+  if (near) minimal_ellip_support_point (NULL, 0, (iREAL (*) [3])p, a, sca, rot, normal);
+  else maximal_ellip_support_point (NULL, 0, (iREAL (*) [3])p, a, sca, rot, normal);
 }

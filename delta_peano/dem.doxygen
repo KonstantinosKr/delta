@@ -32,7 +32,7 @@
  <h1>Compiler settings (if you want to write your own makefile)</h1>
 
  - Compile with -DDim3 at least. -DAsserts is recommended for non-production runs.
- - Set the compile flag -DiREAL=double
+ - Set the compile flag -Ddouble=double
  - Set search directory to src, i.e. adopt -I...
  - Change C++ standard to C++11 (in GNU it is -std=c++0x)
  - If you use Eclipse rather than the makefile, you might want to exclude insituvis from your build (see Resource Configuration dialogue)
@@ -43,6 +43,9 @@
   export TBB_SHLIB="-L/opt/intel/tbb/lib/ -ltbb"
   export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:/opt/intel/compilers_and_libraries/linux/lib/intel64/
   export PATH=/opt/intel/bin/:$PATH
+
+  export ASSIMP_INC=-I/Users/konstantinos/Devel/libraries/assimp/include/
+  export ASSIMP_LIB="-L/Users/konstantinos/Devel/libraries/assimp/lib/ -lassimp"
 
   Hamilton
   module load intel/xe_2017.2

@@ -5,7 +5,7 @@
  *      Author: konstantinos
  */
 
-#include <delta/geometry/mesh/triangle.h>
+#include <delta/geometry/mesh/Triangle.h>
 
 delta::geometry::mesh::Triangle::Triangle(
 	delta::geometry::mesh::Vertex &A,
@@ -78,7 +78,7 @@ void delta::geometry::mesh::Triangle::flatten (
 	zCoordinates.push_back(this->_A->getZ());
 }
 
-double delta::geometry::mesh::Triangle::getTriangleLength()
+iREAL delta::geometry::mesh::Triangle::getTriangleLength()
 {
   std::vector<iREAL> xCoordinates;
   std::vector<iREAL> yCoordinates;

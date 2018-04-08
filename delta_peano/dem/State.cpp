@@ -34,19 +34,19 @@ void dem::State::clearAccumulatedData() {
   _stateData.setMaxVelocityTravel(0.0); //this is required to track travel velocities when there is no collision such that there is a maxdt all the time
 }
 
-double dem::State::getNumberOfContactPoints() const {
+iREAL dem::State::getNumberOfContactPoints() const {
   return _stateData.getNumberOfContactPoints();
 }
 
-double dem::State::getNumberOfParticleReassignments() const {
+iREAL dem::State::getNumberOfParticleReassignments() const {
   return _stateData.getNumberOfParticleReassignments();
 }
 
-double dem::State::getNumberOfTriangleComparisons() const {
+iREAL dem::State::getNumberOfTriangleComparisons() const {
   return _stateData.getNumberOfTriangleComparisons();
 }
 
-double dem::State::getNumberOfParticleComparisons() const {
+iREAL dem::State::getNumberOfParticleComparisons() const {
   return _stateData.getNumberOfParticleComparisons();
 }
 
@@ -102,15 +102,15 @@ void dem::State::merge( const State& otherState ) {
   }
 }
 
-double dem::State::getTimeStepSize() const {
+iREAL dem::State::getTimeStepSize() const {
   return _stateData.getTimeStepSize();
 }
 
-double dem::State::getTime() const {
+iREAL dem::State::getTime() const {
   return _stateData.getCurrentTime();
 }
 
-void dem::State::setInitialTimeStepSize(double value) {
+void dem::State::setInitialTimeStepSize(iREAL value) {
   if(value < 0.0) {
    _stateData.setAdaptiveStepSize(true);
     value = value * -1;
@@ -119,7 +119,7 @@ void dem::State::setInitialTimeStepSize(double value) {
   _stateData.setCurrentTime(0.0);
 }
 
-void dem::State::informStateThatTwoParticlesAreClose(double decrementFactor) {
+void dem::State::informStateThatTwoParticlesAreClose(iREAL decrementFactor) {
 
   if(decrementFactor < _stateData.getTwoParticlesAreClose() &&  _stateData.getTwoParticlesAreClose() != 0.0)
   {
@@ -134,7 +134,7 @@ void dem::State::informStateThatTwoParticlesAreSeparate() {
   _stateData.setTwoParticlesSeparate(true);
 }
 
-void dem::State::finishedTimeStep(double initialTimestep) {
+void dem::State::finishedTimeStep(iREAL initialTimestep) {
   _stateData.setCurrentTime(_stateData.getCurrentTime() + _stateData.getTimeStepSize());
 
   if(_stateData.getAdaptiveStepSize())
@@ -143,14 +143,14 @@ void dem::State::finishedTimeStep(double initialTimestep) {
   }
 }
 
-double dem::State::_maxdt;
+iREAL dem::State::_maxdt;
 
 void dem::State::adaptiveTimeStep()
 {
-  double increaseFactor = 1.1;
+  iREAL increaseFactor = 1.1;
   _stateData.setStepIncrement(increaseFactor);
 
-  const double mindt = 1E-4;
+  const iREAL mindt = 1E-4;
   _maxdt = _stateData.getMinMeshWidth()(0)/(2.0 * increaseFactor * _stateData.getMaxVelocityApproach()) * 0.80;
 
   if(_maxdt > _stateData.getMaxMeshWidth()(0))
@@ -163,7 +163,7 @@ void dem::State::adaptiveTimeStep()
   {
     if(_stateData.getTimeStepSize() >= mindt) //critical approach
     {
-      double decrementStep = _stateData.getTwoParticlesAreClose();
+      iREAL decrementStep = _stateData.getTwoParticlesAreClose();
       //increment carefully
       if(decrementStep > increaseFactor * _stateData.getTimeStepSize())
       {
@@ -200,7 +200,7 @@ void dem::State::adaptiveTimeStep()
   //printf("maxdt:%f\n", maxdt);
 }
 
-double dem::State::getTwoParticlesAreClose() {
+iREAL dem::State::getTwoParticlesAreClose() {
   return _stateData.getTwoParticlesAreClose();
 }
 
@@ -212,11 +212,11 @@ int dem::State::getTimeStep() {
   return _stateData.getTimeStep();
 }
 
-void dem::State::setStepIncrement(double number) {//name
+void dem::State::setStepIncrement(iREAL number) {//name
   _stateData.setStepIncrement(number);
 }
 
-double dem::State::getStepIncrement() {
+iREAL dem::State::getStepIncrement() {
   return _stateData.getStepIncrement();
 }
 
@@ -228,22 +228,22 @@ void dem::State::incNumberOfObstacles(int delta) {
 	_stateData.setNumberOfObstacles(_stateData.getNumberOfObstacles()+delta);
 }
 
-void dem::State::setMaximumVelocityApproach(double v)
+void dem::State::setMaximumVelocityApproach(iREAL v)
 {
   _stateData.setMaxVelocityApproach(v);
 }
 
-double dem::State::getMaximumVelocityApproach()
+iREAL dem::State::getMaximumVelocityApproach()
 {
   return _stateData.getMaxVelocityApproach();
 }
 
-void dem::State::setMaximumVelocityTravel(double v)
+void dem::State::setMaximumVelocityTravel(iREAL v)
 {
   _stateData.setMaxVelocityTravel(v);
 }
 
-double dem::State::getMaximumVelocityTravel()
+iREAL dem::State::getMaximumVelocityTravel()
 {
   return _stateData.getMaxVelocityTravel();
 }
@@ -256,22 +256,22 @@ int dem::State::getNumberOfObstacles() const {
 	return _stateData.getNumberOfObstacles();
 }
 
-double dem::State::getMaxDt() {
+iREAL dem::State::getMaxDt() {
   return _maxdt;
 }
 
-void dem::State::setPrescribedMinimumMeshWidth(double minwidth) {
+void dem::State::setPrescribedMinimumMeshWidth(iREAL minwidth) {
   _stateData.setPrescribedMinimumMeshWidth(minwidth);
 }
 
-void dem::State::setPrescribedMaximumMeshWidth(double maxwidth) {
+void dem::State::setPrescribedMaximumMeshWidth(iREAL maxwidth) {
   _stateData.setPrescribedMaximumMeshWidth(maxwidth);
 }
 
-double dem::State::getPrescribedMinimumMeshWidth() const {
+iREAL dem::State::getPrescribedMinimumMeshWidth() const {
   return _stateData.getPrescribedMinimumMeshWidth();
 }
 
-double dem::State::getPrescribedMaximumMeshWidth() const {
+iREAL dem::State::getPrescribedMaximumMeshWidth() const {
   return _stateData.getPrescribedMaximumMeshWidth();
 }

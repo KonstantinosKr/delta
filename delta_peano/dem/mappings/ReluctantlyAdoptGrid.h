@@ -61,8 +61,8 @@ class dem::mappings::ReluctantlyAdoptGrid {
         dem::Vertex&  vertexA);
 
   public:
-    static double _coarsenCoefficientReluctant;
-    static double _refinementCoefficientReluctant;
+    static iREAL _coarsenCoefficientReluctant;
+    static iREAL _refinementCoefficientReluctant;
 
   public:
   /**
@@ -277,8 +277,8 @@ class dem::mappings::ReluctantlyAdoptGrid {
    */
   void createInnerVertex(
                          dem::Vertex&               fineGridVertex,
-                         const tarch::la::Vector<DIMENSIONS,double>&                          fineGridX,
-                         const tarch::la::Vector<DIMENSIONS,double>&                          fineGridH,
+                         const tarch::la::Vector<DIMENSIONS,iREAL>&                          fineGridX,
+                         const tarch::la::Vector<DIMENSIONS,iREAL>&                          fineGridH,
                          dem::Vertex * const        coarseGridVertices,
                          const peano::grid::VertexEnumerator&                coarseGridVerticesEnumerator,
                          dem::Cell&                 coarseGridCell,
@@ -373,8 +373,8 @@ class dem::mappings::ReluctantlyAdoptGrid {
    */
   void createBoundaryVertex(
                             dem::Vertex&               fineGridVertex,
-                            const tarch::la::Vector<DIMENSIONS,double>&                          fineGridX,
-                            const tarch::la::Vector<DIMENSIONS,double>&                          fineGridH,
+                            const tarch::la::Vector<DIMENSIONS,iREAL>&                          fineGridX,
+                            const tarch::la::Vector<DIMENSIONS,iREAL>&                          fineGridH,
                             dem::Vertex * const        coarseGridVertices,
                             const peano::grid::VertexEnumerator&                coarseGridVerticesEnumerator,
                             dem::Cell&                 coarseGridCell,
@@ -423,8 +423,8 @@ class dem::mappings::ReluctantlyAdoptGrid {
    */
   void createHangingVertex(
                            dem::Vertex&               fineGridVertex,
-                           const tarch::la::Vector<DIMENSIONS,double>&                          fineGridX,
-                           const tarch::la::Vector<DIMENSIONS,double>&                          fineGridH,
+                           const tarch::la::Vector<DIMENSIONS,iREAL>&                          fineGridX,
+                           const tarch::la::Vector<DIMENSIONS,iREAL>&                          fineGridH,
                            dem::Vertex * const        coarseGridVertices,
                            const peano::grid::VertexEnumerator&                coarseGridVerticesEnumerator,
                            dem::Cell&                 coarseGridCell,
@@ -453,8 +453,8 @@ class dem::mappings::ReluctantlyAdoptGrid {
    */
   void destroyHangingVertex(
                             const dem::Vertex&   fineGridVertex,
-                            const tarch::la::Vector<DIMENSIONS,double>&                    fineGridX,
-                            const tarch::la::Vector<DIMENSIONS,double>&                    fineGridH,
+                            const tarch::la::Vector<DIMENSIONS,iREAL>&                    fineGridX,
+                            const tarch::la::Vector<DIMENSIONS,iREAL>&                    fineGridH,
                             dem::Vertex * const  coarseGridVertices,
                             const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator,
                             dem::Cell&           coarseGridCell,
@@ -486,8 +486,8 @@ class dem::mappings::ReluctantlyAdoptGrid {
    */
   void destroyVertex(
                      const dem::Vertex&   fineGridVertex,
-                     const tarch::la::Vector<DIMENSIONS,double>&                    fineGridX,
-                     const tarch::la::Vector<DIMENSIONS,double>&                    fineGridH,
+                     const tarch::la::Vector<DIMENSIONS,iREAL>&                    fineGridX,
+                     const tarch::la::Vector<DIMENSIONS,iREAL>&                    fineGridH,
                      dem::Vertex * const  coarseGridVertices,
                      const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator,
                      dem::Cell&           coarseGridCell,
@@ -502,7 +502,7 @@ class dem::mappings::ReluctantlyAdoptGrid {
    * due to moving boundaries), it afterwards invokes this operation. Here you
    * can add your PDE-specific initialisation. The grid management already has
    * found out that this cell will be an inner cell, so you don't have to
-   * doublecheck this again. Instead, you can focuse on PDE-specific stuff.
+   * iREALcheck this again. Instead, you can focuse on PDE-specific stuff.
    *
    * @image html peano/grid/geometry-cell-inside-outside.png
    *
@@ -629,8 +629,8 @@ class dem::mappings::ReluctantlyAdoptGrid {
                           dem::Vertex&  vertex,
                           const dem::Vertex&  neighbour,
                           int                                           fromRank,
-                          const tarch::la::Vector<DIMENSIONS,double>&   x,
-                          const tarch::la::Vector<DIMENSIONS,double>&   h,
+                          const tarch::la::Vector<DIMENSIONS,iREAL>&   x,
+                          const tarch::la::Vector<DIMENSIONS,iREAL>&   h,
                           int                                           level
                           );
   
@@ -655,8 +655,8 @@ class dem::mappings::ReluctantlyAdoptGrid {
   void prepareSendToNeighbour(
                               dem::Vertex&  vertex,
                               int                                           toRank,
-                              const tarch::la::Vector<DIMENSIONS,double>&   x,
-                              const tarch::la::Vector<DIMENSIONS,double>&   h,
+                              const tarch::la::Vector<DIMENSIONS,iREAL>&   x,
+                              const tarch::la::Vector<DIMENSIONS,iREAL>&   h,
                               int                                           level
                               );
   
@@ -682,8 +682,8 @@ class dem::mappings::ReluctantlyAdoptGrid {
   void prepareCopyToRemoteNode(
                                dem::Vertex&  localVertex,
                                int                                           toRank,
-                               const tarch::la::Vector<DIMENSIONS,double>&   x,
-                               const tarch::la::Vector<DIMENSIONS,double>&   h,
+                               const tarch::la::Vector<DIMENSIONS,iREAL>&   x,
+                               const tarch::la::Vector<DIMENSIONS,iREAL>&   h,
                                int                                           level
                                );
   
@@ -694,8 +694,8 @@ class dem::mappings::ReluctantlyAdoptGrid {
   void prepareCopyToRemoteNode(
                                dem::Cell&  localCell,
                                int                                           toRank,
-                               const tarch::la::Vector<DIMENSIONS,double>&   cellCentre,
-                               const tarch::la::Vector<DIMENSIONS,double>&   cellSize,
+                               const tarch::la::Vector<DIMENSIONS,iREAL>&   cellCentre,
+                               const tarch::la::Vector<DIMENSIONS,iREAL>&   cellSize,
                                int                                           level
                                );
   
@@ -717,8 +717,8 @@ class dem::mappings::ReluctantlyAdoptGrid {
                                           dem::Vertex&  localVertex,
                                           const dem::Vertex&  masterOrWorkerVertex,
                                           int                                          fromRank,
-                                          const tarch::la::Vector<DIMENSIONS,double>&  x,
-                                          const tarch::la::Vector<DIMENSIONS,double>&  h,
+                                          const tarch::la::Vector<DIMENSIONS,iREAL>&  x,
+                                          const tarch::la::Vector<DIMENSIONS,iREAL>&  h,
                                           int                                          level
                                           );
   
@@ -740,8 +740,8 @@ class dem::mappings::ReluctantlyAdoptGrid {
                                           dem::Cell&  localCell,
                                           const dem::Cell&  masterOrWorkerCell,
                                           int                                          fromRank,
-                                          const tarch::la::Vector<DIMENSIONS,double>&  cellCentre,
-                                          const tarch::la::Vector<DIMENSIONS,double>&  cellSize,
+                                          const tarch::la::Vector<DIMENSIONS,iREAL>&  cellCentre,
+                                          const tarch::la::Vector<DIMENSIONS,iREAL>&  cellSize,
                                           int                                          level
                                           );
   
@@ -973,8 +973,8 @@ class dem::mappings::ReluctantlyAdoptGrid {
   void mergeWithWorker(
                        dem::Cell&           localCell,
                        const dem::Cell&     receivedMasterCell,
-                       const tarch::la::Vector<DIMENSIONS,double>&  cellCentre,
-                       const tarch::la::Vector<DIMENSIONS,double>&  cellSize,
+                       const tarch::la::Vector<DIMENSIONS,iREAL>&  cellCentre,
+                       const tarch::la::Vector<DIMENSIONS,iREAL>&  cellSize,
                        int                                          level
                        );
   
@@ -988,8 +988,8 @@ class dem::mappings::ReluctantlyAdoptGrid {
   void mergeWithWorker(
                        dem::Vertex&        localVertex,
                        const dem::Vertex&  receivedMasterVertex,
-                       const tarch::la::Vector<DIMENSIONS,double>&   x,
-                       const tarch::la::Vector<DIMENSIONS,double>&   h,
+                       const tarch::la::Vector<DIMENSIONS,iREAL>&   x,
+                       const tarch::la::Vector<DIMENSIONS,iREAL>&   h,
                        int                                           level
                        );
 #endif
@@ -1044,8 +1044,8 @@ class dem::mappings::ReluctantlyAdoptGrid {
    */
   void touchVertexFirstTime(
                             dem::Vertex&               fineGridVertex,
-                            const tarch::la::Vector<DIMENSIONS,double>&                          fineGridX,
-                            const tarch::la::Vector<DIMENSIONS,double>&                          fineGridH,
+                            const tarch::la::Vector<DIMENSIONS,iREAL>&                          fineGridX,
+                            const tarch::la::Vector<DIMENSIONS,iREAL>&                          fineGridH,
                             dem::Vertex * const        coarseGridVertices,
                             const peano::grid::VertexEnumerator&                coarseGridVerticesEnumerator,
                             dem::Cell&                 coarseGridCell,
@@ -1101,8 +1101,8 @@ class dem::mappings::ReluctantlyAdoptGrid {
    */
   void touchVertexLastTime(
                            dem::Vertex&         fineGridVertex,
-                           const tarch::la::Vector<DIMENSIONS,double>&                    fineGridX,
-                           const tarch::la::Vector<DIMENSIONS,double>&                    fineGridH,
+                           const tarch::la::Vector<DIMENSIONS,iREAL>&                    fineGridX,
+                           const tarch::la::Vector<DIMENSIONS,iREAL>&                    fineGridH,
                            dem::Vertex * const  coarseGridVertices,
                            const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator,
                            dem::Cell&           coarseGridCell,

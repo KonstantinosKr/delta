@@ -5,7 +5,7 @@
  *      Author: konstantinos
  */
 
-#include <delta/geometry/mesh/mesh.h>
+#include <delta/geometry/mesh/Mesh.h>
 
 delta::geometry::mesh::Mesh::Mesh()
 {
@@ -69,17 +69,17 @@ void delta::geometry::mesh::Mesh::replace (
   }
 }
 
-std::vector<double> delta::geometry::mesh::Mesh::getxCoordinates()
+std::vector<iREAL> delta::geometry::mesh::Mesh::getxCoordinates()
 {
   return _xCoordinates;
 }
 
-std::vector<double> delta::geometry::mesh::Mesh::getyCoordinates()
+std::vector<iREAL> delta::geometry::mesh::Mesh::getyCoordinates()
 {
   return _yCoordinates;
 }
 
-std::vector<double> delta::geometry::mesh::Mesh::getzCoordinates()
+std::vector<iREAL> delta::geometry::mesh::Mesh::getzCoordinates()
 {
   return _zCoordinates;
 }

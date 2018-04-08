@@ -1,10 +1,10 @@
-#include "Object.h"
-
+#include <delta/geometry/Object.h>
+#include <stdio.h>
+#include <delta/core/algo.h>
 #include <delta/geometry/primitive/granulate.h>
 #include <delta/geometry/primitive/cube.h>
 #include <delta/geometry/defined/graphite.h>
 #include <delta/geometry/defined/hopper.h>
-#include "delta/geometry/mesh/mesh.h"
 
 delta::geometry::Object::Object()
 {
@@ -44,13 +44,13 @@ delta::geometry::Object::Object()
 delta::geometry::Object::Object(
     std::string                   			component,
     int                           			particleID,
-    std::array<double, 3>         			centre,
+    std::array<iREAL, 3>         			centre,
     delta::geometry::material::MaterialType 	material,
     bool                          			isObstacle,
     bool                          			isFriction,
 	iREAL 									epsilon,
-	std::array<double, 3> linear,
-	std::array<double, 3> angular)
+	std::array<iREAL, 3> linear,
+	std::array<iREAL, 3> angular)
 {
   this->_component = component;
   this->_particleID = particleID;
@@ -86,7 +86,7 @@ delta::geometry::Object::Object(
 }
 
 void delta::geometry::Object::generateSphere(
-    double                        rad)
+    iREAL                        rad)
 {
   this->_rad = rad;
   this->_centreOfMass[0] = _centre[0];
@@ -95,14 +95,14 @@ void delta::geometry::Object::generateSphere(
 }
 
 void delta::geometry::Object::generateMesh(
-    double wx,
-    double wy,
-    double wz,
-    double rx,
-    double ry,
-    double rz,
+    iREAL wx,
+    iREAL wy,
+    iREAL wz,
+    iREAL rx,
+    iREAL ry,
+    iREAL rz,
     int mesh,
-    double rad)
+    iREAL rad)
 {
   iREAL position[3] = {_centre[0], _centre[1], _centre[2]};
 
@@ -119,7 +119,7 @@ void delta::geometry::Object::generateMesh(
   }
   else if(_component == "hopper")
   {
-    double _hopperHatch = 0.05; double _hopperThickness = 0.005; int refinement = 0;
+    iREAL _hopperHatch = 0.05; iREAL _hopperThickness = 0.005; int refinement = 0;
     geometry = delta::geometry::defined::generateHopper(position, wx, _hopperThickness, wy, _hopperHatch, refinement, 0.01);
   } else if(_component == "FB")
   {
@@ -129,14 +129,14 @@ void delta::geometry::Object::generateMesh(
 
   }
 
-  double mass, centerOfMass[3], inertia[9], inverse[9];
+  iREAL mass, centerOfMass[3], inertia[9], inverse[9];
 
   geometry->computeInertia(_material, mass, centerOfMass, inertia);
   geometry->computeInverseInertia(inertia, inverse, _isObstacle);
 
-  std::vector<double> xCoordinates;
-  std::vector<double> yCoordinates;
-  std::vector<double> zCoordinates;
+  std::vector<iREAL> xCoordinates;
+  std::vector<iREAL> yCoordinates;
+  std::vector<iREAL> zCoordinates;
 
   geometry->flatten(xCoordinates, yCoordinates, zCoordinates);
 
@@ -189,25 +189,25 @@ void delta::geometry::Object::setParticleID(int id)
   _particleID = id;
 }
 
-std::vector<double> delta::geometry::Object::getxCoordinates()
+std::vector<iREAL> delta::geometry::Object::getxCoordinates()
 {
   return _xCoordinates;
 }
 
-std::vector<double> delta::geometry::Object::getyCoordinates()
+std::vector<iREAL> delta::geometry::Object::getyCoordinates()
 {
   return _yCoordinates;
 }
 
-std::vector<double> delta::geometry::Object::getzCoordinates()
+std::vector<iREAL> delta::geometry::Object::getzCoordinates()
 {
   return _zCoordinates;
 }
 
 void delta::geometry::Object::setMesh(
-    std::vector<double> xCoordinates,
-    std::vector<double> yCoordinates,
-    std::vector<double> zCoordinates)
+    std::vector<iREAL> xCoordinates,
+    std::vector<iREAL> yCoordinates,
+    std::vector<iREAL> zCoordinates)
 {
   _xCoordinates.clear();
   _yCoordinates.clear();
@@ -247,12 +247,12 @@ int delta::geometry::Object::getParticleID()
   return _particleID;
 }
 
-std::array<double, 3> delta::geometry::Object::getCentre()
+std::array<iREAL, 3> delta::geometry::Object::getCentre()
 {
   return _centre;
 }
 
-void delta::geometry::Object::setCentre(double centre[3])
+void delta::geometry::Object::setCentre(iREAL centre[3])
 {
   this->_centre[0] = centre[0];
   this->_centre[1] = centre[1];
@@ -263,32 +263,32 @@ void delta::geometry::Object::setCentre(double centre[3])
   this->_centreOfMass[2] = _centre[2];
 }
 
-double delta::geometry::Object::getEpsilon()
+iREAL delta::geometry::Object::getEpsilon()
 {
   return _epsilon;
 }
 
-void delta::geometry::Object::setEpsilon(double epsilon)
+void delta::geometry::Object::setEpsilon(iREAL epsilon)
 {
   _epsilon = epsilon;
 }
 
-double delta::geometry::Object::getRad()
+iREAL delta::geometry::Object::getRad()
 {
   return _rad;
 }
 
-void delta::geometry::Object::setRad(double rad)
+void delta::geometry::Object::setRad(iREAL rad)
 {
   _rad = rad;
 }
 
-double delta::geometry::Object::getMass()
+iREAL delta::geometry::Object::getMass()
 {
   return _mass;
 }
 
-void delta::geometry::Object::setMass(double mass)
+void delta::geometry::Object::setMass(iREAL mass)
 {
   _mass = mass;
 }
@@ -308,12 +308,12 @@ bool delta::geometry::Object::getIsFriction()
   return _isFriction;
 }
 
-std::array<double, 9> delta::geometry::Object::getInertia()
+std::array<iREAL, 9> delta::geometry::Object::getInertia()
 {
   return _inertia;
 }
 
-void delta::geometry::Object::setInertia(double inertia[9])
+void delta::geometry::Object::setInertia(iREAL inertia[9])
 {
   _inertia[0] = inertia[0];
   _inertia[1] = inertia[1];
@@ -326,12 +326,12 @@ void delta::geometry::Object::setInertia(double inertia[9])
   _inertia[8] = inertia[8];
 }
 
-std::array<double, 9> delta::geometry::Object::getInverse()
+std::array<iREAL, 9> delta::geometry::Object::getInverse()
 {
   return _inverse;
 }
 
-void delta::geometry::Object::setInverse(double inverse[9])
+void delta::geometry::Object::setInverse(iREAL inverse[9])
 {
   _inverse[0] = inverse[0];
   _inverse[1] = inverse[1];
@@ -344,50 +344,50 @@ void delta::geometry::Object::setInverse(double inverse[9])
   _inverse[8] = inverse[8];
 }
 
-std::array<double, 3> delta::geometry::Object::getxyzDimensions()
+std::array<iREAL, 3> delta::geometry::Object::getxyzDimensions()
 {
   return _xyzDimensions;
 }
 
-std::array<double, 3> delta::geometry::Object::getCentreOfMass()
+std::array<iREAL, 3> delta::geometry::Object::getCentreOfMass()
 {
   return _centreOfMass;
 }
 
-void delta::geometry::Object::setCentreOfMass(double centreOfMass[3])
+void delta::geometry::Object::setCentreOfMass(iREAL centreOfMass[3])
 {
   _centreOfMass[0] = centreOfMass[0];
   _centreOfMass[1] = centreOfMass[1];
   _centreOfMass[2] = centreOfMass[2];
 }
 
-void delta::geometry::Object::setLinearVelocity(std::array<double, 3>  linearVelocity)
+void delta::geometry::Object::setLinearVelocity(std::array<iREAL, 3>  linearVelocity)
 {
   this->_linearVelocity[0] = linearVelocity[0];
   this->_linearVelocity[1] = linearVelocity[1];
   this->_linearVelocity[2] = linearVelocity[2];
 }
 
-void delta::geometry::Object::setAngularVelocity(std::array<double, 3>  angularVelocity)
+void delta::geometry::Object::setAngularVelocity(std::array<iREAL, 3>  angularVelocity)
 {
   this->_angularVelocity[0] = angularVelocity[0];
   this->_angularVelocity[1] = angularVelocity[1];
   this->_angularVelocity[2] = angularVelocity[2];
 }
 
-std::array<double, 3> delta::geometry::Object::getLinearVelocity()
+std::array<iREAL, 3> delta::geometry::Object::getLinearVelocity()
 {
   return _linearVelocity;
 }
 
-std::array<double, 3> delta::geometry::Object::getAngularVelocity()
+std::array<iREAL, 3> delta::geometry::Object::getAngularVelocity()
 {
   return _angularVelocity;
 }
 
-double delta::geometry::Object::getMinX()
+iREAL delta::geometry::Object::getMinX()
 {
-  iREAL minx = std::numeric_limits<double>::max();
+  iREAL minx = std::numeric_limits<iREAL>::max();
   if(_xCoordinates.size() > 0)
   {
     for(unsigned i=0; i<_xCoordinates.size(); i++)
@@ -400,9 +400,9 @@ double delta::geometry::Object::getMinX()
   return minx;
 }
 
-double delta::geometry::Object::getMaxX()
+iREAL delta::geometry::Object::getMaxX()
 {
-  iREAL maxx = std::numeric_limits<double>::min();
+  iREAL maxx = std::numeric_limits<iREAL>::min();
   if(_xCoordinates.size() > 0)
   {
     for(unsigned i=0; i<_xCoordinates.size(); i++)
@@ -415,9 +415,9 @@ double delta::geometry::Object::getMaxX()
   return maxx;
 }
 
-double delta::geometry::Object::getMinY()
+iREAL delta::geometry::Object::getMinY()
 {
-  iREAL miny = std::numeric_limits<double>::max();
+  iREAL miny = std::numeric_limits<iREAL>::max();
   if(_yCoordinates.size() > 0)
   {
     for(unsigned i=0; i<_yCoordinates.size(); i++)
@@ -430,9 +430,9 @@ double delta::geometry::Object::getMinY()
   return miny;
 }
 
-double delta::geometry::Object::getMaxY()
+iREAL delta::geometry::Object::getMaxY()
 {
-  iREAL maxy = std::numeric_limits<double>::min();
+  iREAL maxy = std::numeric_limits<iREAL>::min();
   if(_yCoordinates.size() > 0)
   {
     for(unsigned i=0; i<_yCoordinates.size(); i++)
@@ -445,9 +445,9 @@ double delta::geometry::Object::getMaxY()
   return maxy;
 }
 
-double delta::geometry::Object::getMinZ()
+iREAL delta::geometry::Object::getMinZ()
 {
-  iREAL minz = std::numeric_limits<double>::max();
+  iREAL minz = std::numeric_limits<iREAL>::max();
   if(_xCoordinates.size() > 0)
   {
     for(unsigned i=0; i<_xCoordinates.size(); i++)
@@ -460,9 +460,9 @@ double delta::geometry::Object::getMinZ()
   return minz;
 }
 
-double delta::geometry::Object::getMaxZ()
+iREAL delta::geometry::Object::getMaxZ()
 {
-  iREAL maxz = std::numeric_limits<double>::min();
+  iREAL maxz = std::numeric_limits<iREAL>::min();
   if(_zCoordinates.size() > 0)
   {
     for(unsigned i=0; i<_yCoordinates.size(); i++)

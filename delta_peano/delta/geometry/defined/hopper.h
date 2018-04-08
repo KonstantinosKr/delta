@@ -29,7 +29,10 @@
 #include <cmath>
 #include <stdlib.h>
 #include <assert.h>
-#include "delta/geometry/mesh/mesh.h"
+#include <delta/geometry/mesh/Mesh.h>
+#include <delta/geometry/operators/hull/hull.h>
+#include <delta/geometry/operators/hull/alg.h>
+#include <delta/geometry/operators/triangle.h>
 
 namespace delta {
   namespace geometry {
@@ -59,7 +62,7 @@ namespace delta {
 			iREAL  height,
 			iREAL  hatch,
 			int    meshRefinement,
-			double gridH);
+			iREAL gridH);
 	}
   }
 }

@@ -25,9 +25,18 @@
 #ifndef DELTA_geometry_GRAPHITE_H_
 #define DELTA_geometry_GRAPHITE_H_
 
-
+#include <cmath>
+#include <stdlib.h>
+#include <assert.h>
+#include <float.h>
+#include <algorithm>
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+#include <string.h>
 #include <vector>
-#include "delta/geometry/mesh/mesh.h"
+#include <delta/core/read.h>
+#include <delta/geometry/mesh/Mesh.h>
 
 namespace delta {
   namespace geometry {

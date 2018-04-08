@@ -36,9 +36,9 @@
 #include "err.h"
 
 /* push 'p' deeper inside of convices bounded by two plane sets */
-static int refine_point (double *pa, int npa, double *pb, int npb, double *p, double *epsout)
+static int refine_point (iREAL *pa, int npa, iREAL *pb, int npb, iREAL *p, iREAL *epsout)
 {
-  double *pla, *end, eps, d, q [3];
+  iREAL *pla, *end, eps, d, q [3];
   short pushed, iter, imax;
 
   imax = 4;
@@ -70,7 +70,7 @@ static int refine_point (double *pa, int npa, double *pb, int npb, double *p, do
 }
 
 /* copute vertices extents */
-static void vertices_extents (double *va, int nva, double *vb, int nvb, double eps, double *e)
+static void vertices_extents (iREAL *va, int nva, iREAL *vb, int nvb, iREAL eps, iREAL *e)
 {
   e [0] = e [1] = e [2] =  DBL_MAX;
   e [3] = e [4] = e [5] = -DBL_MAX;
@@ -105,7 +105,7 @@ static void vertices_extents (double *va, int nva, double *vb, int nvb, double e
 
 #if GEOMDEBUG
 /* dump errornous input */
-static void dump_input (double *va, int nva, double *pa, int npa, double *vb, int nvb, double *pb, int npb)
+static void dump_input (iREAL *va, int nva, iREAL *pa, int npa, iREAL *vb, int nvb, iREAL *pb, int npb)
 {
   int i;
 
@@ -120,9 +120,9 @@ static void dump_input (double *va, int nva, double *pa, int npa, double *vb, in
 #endif
 
 /* compute intersection of two convex polyhedrons */
-TRI* cvi (double *va, int nva, double *pa, int npa, double *vb, int nvb, double *pb, int npb, CVIKIND kind, int *m, double **pv, int *nv)
+TRI* cvi (iREAL *va, int nva, iREAL *pa, int npa, iREAL *vb, int nvb, iREAL *pb, int npb, CVIKIND kind, int *m, iREAL **pv, int *nv)
 {
-  double e [6], p [3], q [3], eps, d, *nl, *pt, *nn, *yy;
+  iREAL e [6], p [3], q [3], eps, d, *nl, *pt, *nn, *yy;
   PFV *pfv, *v, *w, *z;
   int i, j, k, n;
   TRI *tri, *t;
@@ -145,7 +145,7 @@ TRI* cvi (double *va, int nva, double *pa, int npa, double *vb, int nvb, double 
 
   /* translate base points of planes so that
    * p = q = 0; compute new normals 'yy' */
-  ERRMEM (yy = malloc (sizeof (double [3]) * (npa+npb)));
+  ERRMEM (yy = malloc (sizeof (iREAL [3]) * (npa+npb)));
   for (i = 0, nl = pa, pt = pa + 3, nn = yy;
        i < npa; i ++, nl += 6, pt += 6, nn += 3)
   {
@@ -185,10 +185,10 @@ TRI* cvi (double *va, int nva, double *pa, int npa, double *vb, int nvb, double 
 #else
   if (n - j*2 <= 3) goto error;
 #endif
-  ERRMEM (tri = realloc (tri, sizeof (TRI) * (n-j*2) + sizeof (double [3]) * i)); /* allocate space for triangles and vertices */
-  pt = (double*) (tri + (n - j*2)); /* this is where output vertices begin */
-  nn = (double*) (pfv + n); /* this is where coords begin in 'pfv' block */
-  memcpy (pt, nn, sizeof (double [3]) * i); /* copy vertex data */
+  ERRMEM (tri = realloc (tri, sizeof (TRI) * (n-j*2) + sizeof (iREAL [3]) * i)); /* allocate space for triangles and vertices */
+  pt = (iREAL*) (tri + (n - j*2)); /* this is where output vertices begin */
+  nn = (iREAL*) (pfv + n); /* this is where coords begin in 'pfv' block */
+  memcpy (pt, nn, sizeof (iREAL [3]) * i); /* copy vertex data */
   if (pv) *pv = pt;
   if (nv) *nv = i;
 

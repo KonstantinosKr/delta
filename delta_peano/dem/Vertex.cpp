@@ -59,11 +59,9 @@ int dem::Vertex::createParticle(
 
   records::Particle& newParticle = ParticleHeap::getInstance().getData( _vertexData.getParticles() ).back();
 
-  double centerOfMass[3], inertia[9], inverse[9], mass;
-
   newParticle._persistentRecords._diameter = Object.getMesh().computeDiagonal();
 
-  double hMin = Object.getMesh().getHMin();
+  iREAL centerOfMass[3], inertia[9], inverse[9], mass;
 
   Object.computeInertia(Object.getMaterial(), mass, centerOfMass, inertia);
 
@@ -115,11 +113,11 @@ int dem::Vertex::createParticle(
   newParticle._persistentRecords._friction		= Object.getIsFriction();
   newParticle._persistentRecords._haloDiameter 	= (newParticle.getDiameter()+Object.getEpsilon()*2) * 1.1;
   newParticle._persistentRecords._epsilon		= Object.getEpsilon();
-  newParticle._persistentRecords._hMin 			= hMin;
+  newParticle._persistentRecords._hMin 			= Object.getMesh().getHMin();
 
-  std::vector<double> xCoordinates = Object.getxCoordinates();
-  std::vector<double> yCoordinates = Object.getyCoordinates();
-  std::vector<double> zCoordinates = Object.getzCoordinates();
+  std::vector<iREAL> xCoordinates = Object.getxCoordinates();
+  std::vector<iREAL> yCoordinates = Object.getyCoordinates();
+  std::vector<iREAL> zCoordinates = Object.getzCoordinates();
 
   newParticle._persistentRecords._numberOfTriangles 	= xCoordinates.size()/DIMENSIONS;
   newParticle._persistentRecords._isObstacle 		= Object.getIsObstacle();
@@ -127,16 +125,16 @@ int dem::Vertex::createParticle(
   newParticle._persistentRecords._globalParticleId 	= particleId;
   newParticle._persistentRecords._localParticleId   	= localparticleId;
 
-  newParticle._persistentRecords._velocity    		= tarch::la::Vector<DIMENSIONS,double>(0.0);
-  newParticle._persistentRecords._angular		 	= tarch::la::Vector<DIMENSIONS,double>(0.0);
-  newParticle._persistentRecords._referentialAngular	= tarch::la::Vector<DIMENSIONS,double>(0.0);
+  newParticle._persistentRecords._velocity    		= tarch::la::Vector<DIMENSIONS,iREAL>(0.0);
+  newParticle._persistentRecords._angular		 	= tarch::la::Vector<DIMENSIONS,iREAL>(0.0);
+  newParticle._persistentRecords._referentialAngular	= tarch::la::Vector<DIMENSIONS,iREAL>(0.0);
 
-  newParticle._persistentRecords._vertices(0) = DEMDoubleHeap::getInstance().createData();
-  newParticle._persistentRecords._vertices(1) = DEMDoubleHeap::getInstance().createData();
-  newParticle._persistentRecords._vertices(2) = DEMDoubleHeap::getInstance().createData();
-  newParticle._persistentRecords._vertices(3) = DEMDoubleHeap::getInstance().createData();
-  newParticle._persistentRecords._vertices(4) = DEMDoubleHeap::getInstance().createData();
-  newParticle._persistentRecords._vertices(5) = DEMDoubleHeap::getInstance().createData();
+  newParticle._persistentRecords._vertices(0) = DEMdoubleHeap::getInstance().createData();
+  newParticle._persistentRecords._vertices(1) = DEMdoubleHeap::getInstance().createData();
+  newParticle._persistentRecords._vertices(2) = DEMdoubleHeap::getInstance().createData();
+  newParticle._persistentRecords._vertices(3) = DEMdoubleHeap::getInstance().createData();
+  newParticle._persistentRecords._vertices(4) = DEMdoubleHeap::getInstance().createData();
+  newParticle._persistentRecords._vertices(5) = DEMdoubleHeap::getInstance().createData();
 
   for (int i=0; i<static_cast<int>(xCoordinates.size()); i++)
   {
@@ -178,11 +176,11 @@ int dem::Vertex::createSubParticle(
     int particleId,
     int localparticleId)
 {
-  std::vector<double> xCoordinates = Object.getxCoordinates();
-  std::vector<double> yCoordinates = Object.getyCoordinates();
-  std::vector<double> zCoordinates = Object.getzCoordinates();
+  std::vector<iREAL> xCoordinates = Object.getxCoordinates();
+  std::vector<iREAL> yCoordinates = Object.getyCoordinates();
+  std::vector<iREAL> zCoordinates = Object.getzCoordinates();
 
-  const tarch::la::Vector<DIMENSIONS,double>& center = {Object.getCentre()[0], Object.getCentre()[1], Object.getCentre()[2]};
+  const tarch::la::Vector<DIMENSIONS,iREAL>& center = {Object.getCentre()[0], Object.getCentre()[1], Object.getCentre()[2]};
   iREAL centerOfMass[3] = {Object.getCentreOfMass()[0], Object.getCentreOfMass()[1], Object.getCentreOfMass()[2]};
 
   iREAL inertia[9] = {
@@ -267,16 +265,16 @@ int dem::Vertex::createSubParticle(
   newParticle._persistentRecords._globalParticleId  	= particleId;
   newParticle._persistentRecords._localParticleId  	= localparticleId;
 
-  newParticle._persistentRecords._velocity    		= tarch::la::Vector<DIMENSIONS,double>(0.0);
-  newParticle._persistentRecords._angular     		= tarch::la::Vector<DIMENSIONS,double>(0.0);
-  newParticle._persistentRecords._referentialAngular	= tarch::la::Vector<DIMENSIONS,double>(0.0);
+  newParticle._persistentRecords._velocity    		= tarch::la::Vector<DIMENSIONS,iREAL>(0.0);
+  newParticle._persistentRecords._angular     		= tarch::la::Vector<DIMENSIONS,iREAL>(0.0);
+  newParticle._persistentRecords._referentialAngular	= tarch::la::Vector<DIMENSIONS,iREAL>(0.0);
 
-  newParticle._persistentRecords._vertices(0) = DEMDoubleHeap::getInstance().createData();
-  newParticle._persistentRecords._vertices(1) = DEMDoubleHeap::getInstance().createData();
-  newParticle._persistentRecords._vertices(2) = DEMDoubleHeap::getInstance().createData();
-  newParticle._persistentRecords._vertices(3) = DEMDoubleHeap::getInstance().createData();
-  newParticle._persistentRecords._vertices(4) = DEMDoubleHeap::getInstance().createData();
-  newParticle._persistentRecords._vertices(5) = DEMDoubleHeap::getInstance().createData();
+  newParticle._persistentRecords._vertices(0) = DEMdoubleHeap::getInstance().createData();
+  newParticle._persistentRecords._vertices(1) = DEMdoubleHeap::getInstance().createData();
+  newParticle._persistentRecords._vertices(2) = DEMdoubleHeap::getInstance().createData();
+  newParticle._persistentRecords._vertices(3) = DEMdoubleHeap::getInstance().createData();
+  newParticle._persistentRecords._vertices(4) = DEMdoubleHeap::getInstance().createData();
+  newParticle._persistentRecords._vertices(5) = DEMdoubleHeap::getInstance().createData();
 
   for (int i=0; i<static_cast<int>(xCoordinates.size()); i++)
   {
@@ -323,16 +321,16 @@ int dem::Vertex::createSphereParticle(
 	delta::geometry::Object Object,
 	int particleId)
 {
-  const tarch::la::Vector<DIMENSIONS,double>& center = {Object.getCentre()[0], Object.getCentre()[1], Object.getCentre()[2]};
+  const tarch::la::Vector<DIMENSIONS,iREAL>& center = {Object.getCentre()[0], Object.getCentre()[1], Object.getCentre()[2]};
 
   ParticleHeap::getInstance().getData( _vertexData.getParticles() ).push_back( records::Particle() );
   records::Particle& newParticle = ParticleHeap::getInstance().getData( _vertexData.getParticles() ).back();
 
-  double inertia[9], inverse[9];
+  iREAL inertia[9], inverse[9];
 
   iREAL density = int(delta::geometry::material::materialToDensitymap.find(Object.getMaterial())->second);
   iREAL volume = (4.0/3.0) * 3.14 * Object.getRad() * Object.getRad() * Object.getRad();
-  double mass = volume * density;
+  iREAL mass = volume * density;
 
   newParticle._persistentRecords._inertia(0) = 0.4 * mass * Object.getRad() * Object.getRad();
   newParticle._persistentRecords._inertia(1) = 0.0;
@@ -403,16 +401,16 @@ int dem::Vertex::createSphereParticle(
   newParticle._persistentRecords._globalParticleId  	= particleId;
   newParticle._persistentRecords._localParticleId   	= 0;
 
-  newParticle._persistentRecords._velocity           = tarch::la::Vector<DIMENSIONS,double>(0.0);
-  newParticle._persistentRecords._angular		 	= tarch::la::Vector<DIMENSIONS,double>(0.0);
-  newParticle._persistentRecords._referentialAngular	= tarch::la::Vector<DIMENSIONS,double>(0.0);
+  newParticle._persistentRecords._velocity           = tarch::la::Vector<DIMENSIONS,iREAL>(0.0);
+  newParticle._persistentRecords._angular		 	= tarch::la::Vector<DIMENSIONS,iREAL>(0.0);
+  newParticle._persistentRecords._referentialAngular	= tarch::la::Vector<DIMENSIONS,iREAL>(0.0);
 
-  newParticle._persistentRecords._vertices(0) = DEMDoubleHeap::getInstance().createData();
-  newParticle._persistentRecords._vertices(1) = DEMDoubleHeap::getInstance().createData();
-  newParticle._persistentRecords._vertices(2) = DEMDoubleHeap::getInstance().createData();
-  newParticle._persistentRecords._vertices(3) = DEMDoubleHeap::getInstance().createData();
-  newParticle._persistentRecords._vertices(4) = DEMDoubleHeap::getInstance().createData();
-  newParticle._persistentRecords._vertices(5) = DEMDoubleHeap::getInstance().createData();
+  newParticle._persistentRecords._vertices(0) = DEMdoubleHeap::getInstance().createData();
+  newParticle._persistentRecords._vertices(1) = DEMdoubleHeap::getInstance().createData();
+  newParticle._persistentRecords._vertices(2) = DEMdoubleHeap::getInstance().createData();
+  newParticle._persistentRecords._vertices(3) = DEMdoubleHeap::getInstance().createData();
+  newParticle._persistentRecords._vertices(4) = DEMdoubleHeap::getInstance().createData();
+  newParticle._persistentRecords._vertices(5) = DEMdoubleHeap::getInstance().createData();
 
   if(particleId > -1)
   {
@@ -500,113 +498,113 @@ void dem::Vertex::releaseCoarseParticle(int particleNumber) {
   ParticleHeap::getInstance().getData( _vertexData.getParticlesOnCoarserLevels() ).erase( ParticleHeap::getInstance().getData( _vertexData.getParticlesOnCoarserLevels() ).begin()+particleNumber );
 }
 
-double* dem::Vertex::getXCoordinates( int particleNumber ) {
+iREAL* dem::Vertex::getXCoordinates( int particleNumber ) {
   const records::Particle& particle = getParticle(particleNumber);
-  return DEMDoubleHeap::getInstance().getData( particle._persistentRecords._vertices(0) ).data();
+  return DEMdoubleHeap::getInstance().getData( particle._persistentRecords._vertices(0) ).data();
 }
 
-double* dem::Vertex::getYCoordinates( int particleNumber ) {
+iREAL* dem::Vertex::getYCoordinates( int particleNumber ) {
   const records::Particle& particle = getParticle(particleNumber);
-  return DEMDoubleHeap::getInstance().getData( particle._persistentRecords._vertices(1) ).data();
+  return DEMdoubleHeap::getInstance().getData( particle._persistentRecords._vertices(1) ).data();
 }
 
-double* dem::Vertex::getZCoordinates( int particleNumber ) {
+iREAL* dem::Vertex::getZCoordinates( int particleNumber ) {
   const records::Particle& particle = getParticle(particleNumber);
-  return DEMDoubleHeap::getInstance().getData( particle._persistentRecords._vertices(2) ).data();
+  return DEMdoubleHeap::getInstance().getData( particle._persistentRecords._vertices(2) ).data();
 }
 
-const double * dem::Vertex::getXCoordinates( int particleNumber ) const {
+const iREAL * dem::Vertex::getXCoordinates( int particleNumber ) const {
   const records::Particle& particle = getParticle(particleNumber);
-  return DEMDoubleHeap::getInstance().getData( particle._persistentRecords._vertices(0) ).data();
+  return DEMdoubleHeap::getInstance().getData( particle._persistentRecords._vertices(0) ).data();
 }
 
-const double * dem::Vertex::getYCoordinates( int particleNumber ) const {
+const iREAL * dem::Vertex::getYCoordinates( int particleNumber ) const {
   const records::Particle& particle = getParticle(particleNumber);
-  return DEMDoubleHeap::getInstance().getData( particle._persistentRecords._vertices(1) ).data();
+  return DEMdoubleHeap::getInstance().getData( particle._persistentRecords._vertices(1) ).data();
 }
 
-const double * dem::Vertex::getZCoordinates( int particleNumber ) const {
+const iREAL * dem::Vertex::getZCoordinates( int particleNumber ) const {
   const records::Particle& particle = getParticle(particleNumber);
-  return DEMDoubleHeap::getInstance().getData( particle._persistentRecords._vertices(2) ).data();
+  return DEMdoubleHeap::getInstance().getData( particle._persistentRecords._vertices(2) ).data();
 }
 
-double* dem::Vertex::getXRefCoordinates( int particleNumber ) {
+iREAL* dem::Vertex::getXRefCoordinates( int particleNumber ) {
   const records::Particle& particle = getParticle(particleNumber);
-  return DEMDoubleHeap::getInstance().getData( particle._persistentRecords._vertices(3) ).data();
+  return DEMdoubleHeap::getInstance().getData( particle._persistentRecords._vertices(3) ).data();
 }
 
-double* dem::Vertex::getYRefCoordinates( int particleNumber ) {
+iREAL* dem::Vertex::getYRefCoordinates( int particleNumber ) {
   const records::Particle& particle = getParticle(particleNumber);
-  return DEMDoubleHeap::getInstance().getData( particle._persistentRecords._vertices(4) ).data();
+  return DEMdoubleHeap::getInstance().getData( particle._persistentRecords._vertices(4) ).data();
 }
 
-double* dem::Vertex::getZRefCoordinates( int particleNumber ) {
+iREAL* dem::Vertex::getZRefCoordinates( int particleNumber ) {
   const records::Particle& particle = getParticle(particleNumber);
-  return DEMDoubleHeap::getInstance().getData( particle._persistentRecords._vertices(5) ).data();
+  return DEMdoubleHeap::getInstance().getData( particle._persistentRecords._vertices(5) ).data();
 }
 
 int dem::Vertex::getNumberOfTriangles( int particleNumber ) const {
   return getXCoordinatesAsVector( particleNumber ).size() / DIMENSIONS;
 }
 
-dem::DEMDoubleHeap::HeapEntries& dem::Vertex::getXCoordinatesAsVector( int particleNumber ) {
+dem::DEMdoubleHeap::HeapEntries& dem::Vertex::getXCoordinatesAsVector( int particleNumber ) {
   const records::Particle& particle = getParticle(particleNumber);
-  return DEMDoubleHeap::getInstance().getData( particle._persistentRecords._vertices(0) );
+  return DEMdoubleHeap::getInstance().getData( particle._persistentRecords._vertices(0) );
 }
 
-dem::DEMDoubleHeap::HeapEntries& dem::Vertex::getYCoordinatesAsVector( int particleNumber ) {
+dem::DEMdoubleHeap::HeapEntries& dem::Vertex::getYCoordinatesAsVector( int particleNumber ) {
   const records::Particle& particle = getParticle(particleNumber);
-  return DEMDoubleHeap::getInstance().getData( particle._persistentRecords._vertices(1) );
+  return DEMdoubleHeap::getInstance().getData( particle._persistentRecords._vertices(1) );
 }
 
-dem::DEMDoubleHeap::HeapEntries& dem::Vertex::getZCoordinatesAsVector( int particleNumber ) {
+dem::DEMdoubleHeap::HeapEntries& dem::Vertex::getZCoordinatesAsVector( int particleNumber ) {
   const records::Particle& particle = getParticle(particleNumber);
-  return DEMDoubleHeap::getInstance().getData( particle._persistentRecords._vertices(2) );
+  return DEMdoubleHeap::getInstance().getData( particle._persistentRecords._vertices(2) );
 }
 
-dem::DEMDoubleHeap::HeapEntries& dem::Vertex::getXRefCoordinatesAsVector( int particleNumber ) {
+dem::DEMdoubleHeap::HeapEntries& dem::Vertex::getXRefCoordinatesAsVector( int particleNumber ) {
   const records::Particle& particle = getParticle(particleNumber);
-  return DEMDoubleHeap::getInstance().getData( particle._persistentRecords._vertices(3) );
+  return DEMdoubleHeap::getInstance().getData( particle._persistentRecords._vertices(3) );
 }
 
-dem::DEMDoubleHeap::HeapEntries& dem::Vertex::getYRefCoordinatesAsVector( int particleNumber ) {
+dem::DEMdoubleHeap::HeapEntries& dem::Vertex::getYRefCoordinatesAsVector( int particleNumber ) {
   const records::Particle& particle = getParticle(particleNumber);
-  return DEMDoubleHeap::getInstance().getData( particle._persistentRecords._vertices(4) );
+  return DEMdoubleHeap::getInstance().getData( particle._persistentRecords._vertices(4) );
 }
 
-dem::DEMDoubleHeap::HeapEntries& dem::Vertex::getZRefCoordinatesAsVector( int particleNumber ) {
+dem::DEMdoubleHeap::HeapEntries& dem::Vertex::getZRefCoordinatesAsVector( int particleNumber ) {
   const records::Particle& particle = getParticle(particleNumber);
-  return DEMDoubleHeap::getInstance().getData( particle._persistentRecords._vertices(5) );
+  return DEMdoubleHeap::getInstance().getData( particle._persistentRecords._vertices(5) );
 }
 
-const dem::DEMDoubleHeap::HeapEntries& dem::Vertex::getXCoordinatesAsVector( int particleNumber ) const {
+const dem::DEMdoubleHeap::HeapEntries& dem::Vertex::getXCoordinatesAsVector( int particleNumber ) const {
   const records::Particle& particle = getParticle(particleNumber);
-  return DEMDoubleHeap::getInstance().getData( particle._persistentRecords._vertices(0) );
+  return DEMdoubleHeap::getInstance().getData( particle._persistentRecords._vertices(0) );
 }
 
-const dem::DEMDoubleHeap::HeapEntries& dem::Vertex::getYCoordinatesAsVector( int particleNumber ) const {
+const dem::DEMdoubleHeap::HeapEntries& dem::Vertex::getYCoordinatesAsVector( int particleNumber ) const {
   const records::Particle& particle = getParticle(particleNumber);
-  return DEMDoubleHeap::getInstance().getData( particle._persistentRecords._vertices(1) );
+  return DEMdoubleHeap::getInstance().getData( particle._persistentRecords._vertices(1) );
 }
 
-const dem::DEMDoubleHeap::HeapEntries& dem::Vertex::getZCoordinatesAsVector( int particleNumber ) const {
+const dem::DEMdoubleHeap::HeapEntries& dem::Vertex::getZCoordinatesAsVector( int particleNumber ) const {
   const records::Particle& particle = getParticle(particleNumber);
-  return DEMDoubleHeap::getInstance().getData( particle._persistentRecords._vertices(2) );
+  return DEMdoubleHeap::getInstance().getData( particle._persistentRecords._vertices(2) );
 }
 
-const dem::DEMDoubleHeap::HeapEntries& dem::Vertex::getXRefCoordinatesAsVector( int particleNumber ) const {
+const dem::DEMdoubleHeap::HeapEntries& dem::Vertex::getXRefCoordinatesAsVector( int particleNumber ) const {
   const records::Particle& particle = getParticle(particleNumber);
-  return DEMDoubleHeap::getInstance().getData( particle._persistentRecords._vertices(3) );
+  return DEMdoubleHeap::getInstance().getData( particle._persistentRecords._vertices(3) );
 }
 
-const dem::DEMDoubleHeap::HeapEntries& dem::Vertex::getYRefCoordinatesAsVector( int particleNumber ) const {
+const dem::DEMdoubleHeap::HeapEntries& dem::Vertex::getYRefCoordinatesAsVector( int particleNumber ) const {
   const records::Particle& particle = getParticle(particleNumber);
-  return DEMDoubleHeap::getInstance().getData( particle._persistentRecords._vertices(4) );
+  return DEMdoubleHeap::getInstance().getData( particle._persistentRecords._vertices(4) );
 }
 
-const dem::DEMDoubleHeap::HeapEntries& dem::Vertex::getZRefCoordinatesAsVector( int particleNumber ) const {
+const dem::DEMdoubleHeap::HeapEntries& dem::Vertex::getZRefCoordinatesAsVector( int particleNumber ) const {
   const records::Particle& particle = getParticle(particleNumber);
-  return DEMDoubleHeap::getInstance().getData( particle._persistentRecords._vertices(5) );
+  return DEMdoubleHeap::getInstance().getData( particle._persistentRecords._vertices(5) );
 }
 
 void dem::Vertex::clearGridRefinementAnalysisData() {
@@ -617,12 +615,12 @@ void dem::Vertex::propagageCoarseningFlagToCoarseGrid(const Vertex& fineGridVert
   _vertexData.setNumberOfParticlesInUnrefinedVertex(_vertexData.getNumberOfParticlesInUnrefinedVertex() + fineGridVertex._vertexData.getNumberOfParticlesInUnrefinedVertex());
 }
 
-void dem::Vertex::setNumberOfParticlesInUnrefinedVertex(double number)
+void dem::Vertex::setNumberOfParticlesInUnrefinedVertex(iREAL number)
 {
   _vertexData.setNumberOfParticlesInUnrefinedVertex(number);
 }
 
-double dem::Vertex::getNumberOfParticlesInUnrefinedVertex()
+iREAL dem::Vertex::getNumberOfParticlesInUnrefinedVertex()
 {
   return _vertexData.getNumberOfParticlesInUnrefinedVertex();
 }
@@ -648,8 +646,8 @@ void dem::Vertex::clearInheritedCoarseGridParticles() {
 
 void dem::Vertex::inheritCoarseGridParticles(
     const Vertex&  coarseVertex,
-    const tarch::la::Vector<DIMENSIONS,double>& fineGridX,
-    double fineGridH)
+    const tarch::la::Vector<DIMENSIONS,iREAL>& fineGridX,
+    iREAL fineGridH)
 {
 
   if(!coarseVertex.isOutside())

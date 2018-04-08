@@ -24,7 +24,7 @@ void printManual()
 	  << "##################################################################################################" << std::endl
 	  << "#  A Grid-based Non-Spherical Particle Dynamics Library" << std::endl
 	  << "##################################################################################################" << std::endl
-	  << " Usage: ./dem-xxx grid_h_max(double) scenario(string) iterations(int) grid-type(string) step-size(int) plot(string) snapshot-frequency(double in seconds) gravity(boolean yes/no) collision-model(string) mesh-density-per-particle(int) [tbb-core-count](int)" << std::endl  << std::endl
+	  << " Usage: ./dem-xxx grid_h_max(iREAL) scenario(string) iterations(int) grid-type(string) step-size(int) plot(string) snapshot-frequency(iREAL in seconds) gravity(boolean yes/no) collision-model(string) mesh-density-per-particle(int) [tbb-core-count](int)" << std::endl  << std::endl
 	  << " Option Type---------Short Description" << std::endl
 	  << " grid_h_max          maximum mesh width of grid" << std::endl
 	  << " scenario            which scenario to use. See list below for valid configurations " << std::endl
@@ -43,7 +43,7 @@ void printManual()
 	  << std::endl << std::endl << std::endl << std::endl
 
 	  << " OPTIONS: "  << std::endl << std::endl
-	  << " Grid H max (double)" << std::endl
+	  << " Grid H max (iREAL)" << std::endl
 	  << " =========" << std::endl
 	  << " 0.0 - 0.5" << std::endl
 
@@ -94,7 +94,7 @@ void printManual()
 	  << "  adaptive-grid" << std::endl
 	  << "  reluctant-grid" << std::endl << std::endl
 
-    << " Step-size (double)" << std::endl
+    << " Step-size (iREAL)" << std::endl
     << " =========" << std::endl
     << " -infinity - infinity" << std::endl << std::endl
 
@@ -107,7 +107,7 @@ void printManual()
 	  << "  every-checkpoint" << std::endl
 	  << "  range" << std::endl << std::endl
 
-    << " snapshot-frequency (double)" << std::endl
+    << " snapshot-frequency (iREAL)" << std::endl
     << " =========" << std::endl
     << " 0.0 - infinity" << std::endl << std::endl
 
@@ -135,7 +135,7 @@ void printManual()
     << " =========" << std::endl
     << " 0 - infinity" << std::endl << std::endl
 
-	  << " Usage: ./dem-xxx grid_h_max(double) scenario(string) iterations(int) grid-type(string) step-size(int) plot(string) snapshot-frequency(double in seconds) gravity(boolean yes/no) collision-model(string) mesh-density-per-particle(int) [tbb-core-count](int)" << std::endl
+	  << " Usage: ./dem-xxx grid_h_max(iREAL) scenario(string) iterations(int) grid-type(string) step-size(int) plot(string) snapshot-frequency(iREAL in seconds) gravity(boolean yes/no) collision-model(string) mesh-density-per-particle(int) [tbb-core-count](int)" << std::endl
 	  << " eg: ./delta-icc-release-tbb 0.1 hopperUniform 10 regular-grid 0.0001 never 1 true sphere 10 3 true true auto false" << std::endl;
 }
 
@@ -174,13 +174,13 @@ int main(int argc, char** argv)
     return -1;
   }
 
-  const double       	gridHMax            	= atof(argv[1]);
+  const iREAL       	gridHMax            	= atof(argv[1]);
   const std::string  	scenario            	= argv[2];
   const int          	iterations         	= atoi(argv[3]);
   const std::string  	gridTypeIdentifier  	= argv[4];
-  const double       	stepSize         	= atof(argv[5]);
+  const iREAL       	stepSize         	= atof(argv[5]);
   const std::string  	plotIdentifier      	= argv[6];
-  const double			realSnapshot		    = atof(argv[7]);
+  const iREAL			realSnapshot		    = atof(argv[7]);
   const std::string  	gravity             	= argv[8];
   const std::string  	collisionModel     	= argv[9];
   const int			    meshMultiplier      	= atof(argv[10]);

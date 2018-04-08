@@ -24,10 +24,6 @@
 
 #include <delta/geometry/operators/triangle.h>
 
-#include <stdlib.h>
-#include <assert.h>
-#include <cmath>
-
 void delta::geometry::operators::triangle::bisectTriangle(
 		iREAL A[3],
 		iREAL B[3],
@@ -308,7 +304,7 @@ void delta::geometry::operators::triangle::biSideSectTriangle(
 
 void delta::geometry::operators::triangle::meshDenser(
 	int meshRefinement,
-	double gridH,
+	iREAL gridH,
 	std::vector<iREAL>&  xCoordinates,
 	std::vector<iREAL>&  yCoordinates,
 	std::vector<iREAL>&  zCoordinates)
@@ -732,12 +728,12 @@ void delta::geometry::operators::triangle::decomposeMeshByOctsection(
 	int &numberOfParticles,
 	int &numberOfObstacles)
 {
-  std::vector<std::array<double, 3>> centroid;
+  std::vector<std::array<iREAL, 3>> centroid;
 
-  double centerOfMass[3];
-  double inertia[9];
-  double inverse[9];
-  double mass;
+  iREAL centerOfMass[3];
+  iREAL inertia[9];
+  iREAL inverse[9];
+  iREAL mass;
 
   std::vector<iREAL> xCoordinates;
   std::vector<iREAL> yCoordinates;
@@ -747,7 +743,7 @@ void delta::geometry::operators::triangle::decomposeMeshByOctsection(
 
   if(octSectTimes && xCoordinates.size() > 0)
   {
-    std::vector<std::vector<double>> xCoordinatesMultiLevel, yCoordinatesMultiLevel, zCoordinatesMultiLevel;
+    std::vector<std::vector<iREAL>> xCoordinatesMultiLevel, yCoordinatesMultiLevel, zCoordinatesMultiLevel;
 
     xCoordinatesMultiLevel.resize(1); yCoordinatesMultiLevel.resize(1); zCoordinatesMultiLevel.resize(1);
 
@@ -832,10 +828,10 @@ int delta::geometry::operators::triangle::decomposeMeshIntoParticles(
     std::vector<delta::geometry::Object> &fineObjects
 )
 {
-  double mass;
-  double centerOfMass[3];
-  double inertia[9];
-  double inverse[9];
+  iREAL mass;
+  iREAL centerOfMass[3];
+  iREAL inertia[9];
+  iREAL inverse[9];
 
   std::vector<iREAL> xCoordinates;
   std::vector<iREAL> yCoordinates;
@@ -854,9 +850,9 @@ int delta::geometry::operators::triangle::decomposeMeshIntoParticles(
 
     iREAL O[3] = {A[0] + (B[0]-A[0]) * 1.0/3.0 + (C[0] - A[0]) * 1.0/3.0,  A[1] + (B[1]-A[1]) * 1.0/3.0 + (C[1] - A[1]) * 1.0/3.0, A[2] + (B[2]-A[2]) * 1.0/3.0 + (C[2] - A[2]) * 1.0/3.0};
 
-    std::vector<double> subxCoordinates;
-    std::vector<double> subyCoordinates;
-    std::vector<double> subzCoordinates;
+    std::vector<iREAL> subxCoordinates;
+    std::vector<iREAL> subyCoordinates;
+    std::vector<iREAL> subzCoordinates;
 
     subxCoordinates.push_back(A[0]);
     subxCoordinates.push_back(B[0]);

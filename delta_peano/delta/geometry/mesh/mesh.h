@@ -8,15 +8,16 @@
 #ifndef GEOMETRY_MESH_MESH_H_
 #define GEOMETRY_MESH_MESH_H_
 
-#include "delta/geometry/mesh/triangle.h"
-#include "delta/geometry/mesh/vertex.h"
-#include "delta/geometry/material.h"
-#include "delta/geometry/operators/hull/alg.h"
-#include "delta/core/algo.h"
+
 #include <vector>
 #include <map>
 #include <cmath>
 #include <array>
+#include <delta/geometry/mesh/Triangle.h>
+#include <delta/geometry/mesh/Vertex.h>
+#include <delta/geometry/material.h>
+#include <delta/geometry/operators/hull/alg.h>
+#include <delta/core/algo.h>
 
 namespace delta {
   namespace geometry {
@@ -46,20 +47,17 @@ class delta::geometry::mesh::Mesh {
 		std::vector<iREAL>& yCoordinates,
 		std::vector<iREAL>& zCoordinates);
 
-	std::vector<double> getxCoordinates();
-	std::vector<double> getyCoordinates();
-	std::vector<double> getzCoordinates();
+	std::vector<iREAL> getxCoordinates();
+	std::vector<iREAL> getyCoordinates();
+	std::vector<iREAL> getzCoordinates();
 
 	void moveMeshFromPositionToOrigin(iREAL center[3]);
-
 	void moveMeshFromOriginToPosition(iREAL center[3]);
 
 	void scaleXYZ(iREAL scale, iREAL position[3]);
 
 	void rotateX(iREAL alphaX);
-
 	void rotateY(iREAL alphaY);
-
 	void rotateZ(iREAL alphaZ);
 
 	iREAL computeDistanceAB(
@@ -67,31 +65,23 @@ class delta::geometry::mesh::Mesh {
 	    std::array<iREAL, 3> B);
 
 	iREAL getXYZWidth();
-
 	iREAL getXZWidth();
 
 	iREAL getXw();
-
 	iREAL getYw();
-
 	iREAL getZw();
 
 	std::array<iREAL, 3> getMinBoundaryVertex();
-
 	std::array<iREAL, 3> getMaxBoundaryVertex();
 
 	iREAL computeDiagonal();
 
 	iREAL getMaxXAxis();
-
 	iREAL getMaxYAxis();
-
 	iREAL getMaxZAxis();
 
 	iREAL getMinXAxis();
-
 	iREAL getMinYAxis();
-
 	iREAL getMinZAxis();
 
 	void getCenterOfGeometry(
@@ -130,9 +120,9 @@ class delta::geometry::mesh::Mesh {
   private:
 	std::vector<delta::geometry::mesh::Triangle> _triangles;
 
-    std::vector<double>   _xCoordinates;
-    std::vector<double>   _yCoordinates;
-    std::vector<double>   _zCoordinates;
+    std::vector<iREAL>   _xCoordinates;
+    std::vector<iREAL>   _yCoordinates;
+    std::vector<iREAL>   _zCoordinates;
 
     iREAL simplex_J (iREAL *a, iREAL *b, iREAL *c, iREAL *d);
 	#define simplex_1(J, a, b, c, d) ((J)/6.)

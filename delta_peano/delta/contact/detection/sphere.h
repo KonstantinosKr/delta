@@ -22,21 +22,16 @@
  SOFTWARE.
  */
 
-#include <delta/contact/contactpoint.h>
 #include <vector>
 #include <complex>
 #include <limits>
 #include <iostream>
 
-#include "dem/mappings/Collision.h"
-#include "delta/core/algo.h"
-#include "dem/mappings/Collision.h"
-
+#include <delta/contact/contactpoint.h>
 
 namespace delta {
   namespace contact {
 	namespace detection {
-
 	  std::vector<contactpoint> sphere(
 		iREAL   xCoordinatesOfPointsOfGeometryA,
 		iREAL   yCoordinatesOfPointsOfGeometryA,
@@ -64,9 +59,9 @@ namespace delta {
 		bool    frictionA,
 		int	  	particleA,
 
-		const iREAL   *xCoordinatesOfPointsOfGeometryB,
-		const iREAL   *yCoordinatesOfPointsOfGeometryB,
-		const iREAL   *zCoordinatesOfPointsOfGeometryB,
+		const iREAL   	*xCoordinatesOfPointsOfGeometryB,
+		const iREAL   	*yCoordinatesOfPointsOfGeometryB,
+		const iREAL   	*zCoordinatesOfPointsOfGeometryB,
 		int				numberOfTrianglesOfGeometryB,
 		iREAL    		epsilonB,
 		bool 	  		frictionB,
@@ -82,9 +77,9 @@ namespace delta {
 		bool    frictionA,
 		int 	  	particleA,
 
-		const iREAL   *xCoordinatesOfPointsOfGeometryB,
-		const iREAL   *yCoordinatesOfPointsOfGeometryB,
-		const iREAL   *zCoordinatesOfPointsOfGeometryB,
+		const iREAL   	*xCoordinatesOfPointsOfGeometryB,
+		const iREAL   	*yCoordinatesOfPointsOfGeometryB,
+		const iREAL   	*zCoordinatesOfPointsOfGeometryB,
 		int      		numberOfTrianglesOfGeometryB,
 		iREAL    		epsilonB,
 		bool     		frictionB,

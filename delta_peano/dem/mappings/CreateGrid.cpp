@@ -37,14 +37,14 @@ peano::MappingSpecification   dem::mappings::CreateGrid::descendSpecification(in
 tarch::logging::Log                   dem::mappings::CreateGrid::_log( "dem::mappings::CreateGrid" );
 dem::mappings::CreateGrid::Scenario   dem::mappings::CreateGrid::_scenario[4];
 dem::mappings::CreateGrid::GridType   dem::mappings::CreateGrid::_gridType;
-double                                dem::mappings::CreateGrid::_maxH;
+iREAL                                dem::mappings::CreateGrid::_maxH;
 
-double                                dem::mappings::CreateGrid::_minComputeDomain[3];
-double                                dem::mappings::CreateGrid::_maxComputeDomain[3];
-double                                dem::mappings::CreateGrid::_minParticleDiam;
-double                                dem::mappings::CreateGrid::_maxParticleDiam;
+iREAL                                dem::mappings::CreateGrid::_minComputeDomain[3];
+iREAL                                dem::mappings::CreateGrid::_maxComputeDomain[3];
+iREAL                                dem::mappings::CreateGrid::_minParticleDiam;
+iREAL                                dem::mappings::CreateGrid::_maxParticleDiam;
 
-double								 dem::mappings::CreateGrid::_epsilon;
+iREAL								 dem::mappings::CreateGrid::_epsilon;
 int 								     dem::mappings::CreateGrid::_noPointsPerParticle;
 bool                                  dem::mappings::CreateGrid::_isSphere;
 
@@ -58,7 +58,7 @@ int                                   dem::mappings::CreateGrid::_numberOfObstac
 
 void dem::mappings::CreateGrid::setScenario(
     Scenario scenario[4],
-    double maxH,
+    iREAL maxH,
     GridType gridType,
     int noPointsPerGranulate)
 {
@@ -76,7 +76,7 @@ void dem::mappings::CreateGrid::setScenario(
 
 void dem::mappings::CreateGrid::deployEnviroment(
     dem::Vertex& vertex,
-    double cellSize,
+    iREAL cellSize,
     iREAL centreAsArray[3],
 	bool isFine)
 {
@@ -205,7 +205,7 @@ void dem::mappings::CreateGrid::beginIteration(
   logTraceInWith1Argument( "beginIteration(State)", solverState );
 
   dem::ParticleHeap::getInstance().setName( "particle-heap" );
-  dem::DEMDoubleHeap::getInstance().setName( "geometry-heap" );
+  dem::DEMdoubleHeap::getInstance().setName( "geometry-heap" );
 
   logInfo( "beginIteration()", "maxH=" << _maxH );
 
@@ -226,8 +226,8 @@ void dem::mappings::CreateGrid::beginIteration(
   if(_scenario[1] == nuclear)
   {
     //////FLOOR//////////////////////////////////////////////////////////////////////////////////////////////////
-    double height = 0.05; double width = 0.30;
-    std::array<double, 3> position = {centre[0], centre[1], centre[2]};
+    iREAL height = 0.05; iREAL width = 0.30;
+    std::array<iREAL, 3> position = {centre[0], centre[1], centre[2]};
 
     delta::geometry::Object objectFloor("cube", 0, position, delta::geometry::material::MaterialType::GOLD, true, true, _epsilon, {-1.0, 0, 0}, {0,0,0});
     objectFloor.generateMesh(width, height, width, 0, 0, 0, width, _noPointsPerParticle);
@@ -279,10 +279,10 @@ void dem::mappings::CreateGrid::beginIteration(
     ///////////////////////////////////////////////////////////////////////////////
     ////////HOPPER/////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////
-    double hopperHatch = 0.05; double hopperThickness = 0.005;
-    double hopperWidth = 0.20; double hopperHeight = hopperWidth/1.5;
+    iREAL hopperHatch = 0.05; iREAL hopperThickness = 0.005;
+    iREAL hopperWidth = 0.20; iREAL hopperHeight = hopperWidth/1.5;
 
-    std::array<double, 3> position = {centre[0], centre[1], centre[2]};
+    std::array<iREAL, 3> position = {centre[0], centre[1], centre[2]};
     ///////////////////////////////////////////////////////////////////////////////
     ////////HOPPER/////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////
@@ -296,7 +296,7 @@ void dem::mappings::CreateGrid::beginIteration(
     hopperParticles = 0;
 #else
     int refinement = 3;
-    std::vector<double> xCoordinates, yCoordinates, zCoordinates;
+    std::vector<iREAL> xCoordinates, yCoordinates, zCoordinates;
     delta::geometry::hopper::generateHopper(centre, hopperWidth, hopperThickness, hopperHeight, hopperHatch, refinement, _minParticleDiam, xCoordinates, yCoordinates, zCoordinates);
     hopperParticles = decomposeMeshIntoParticles(xCoordinates, yCoordinates, zCoordinates, material, isObstacle, isFriction, _insitufineObjects);
 #endif
@@ -304,7 +304,7 @@ void dem::mappings::CreateGrid::beginIteration(
     ///////////////////////////////////////////////////////////////////////////////////////////
     ////////FLOOR//////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////
-    double height = 0.05; double width = 0.32;
+    iREAL height = 0.05; iREAL width = 0.32;
     position = {centre[0], 0.35, centre[2]};
 
     delta::geometry::Object objectFloor("cube", 0, position, delta::geometry::material::MaterialType::WOOD, true, true, _epsilon, {0,0,0}, {0,0,0});
@@ -340,7 +340,7 @@ void dem::mappings::CreateGrid::beginIteration(
       xzcuts = 100.0; ycuts = 50;
     }
 
-    double totalMass = 0.05;
+    iREAL totalMass = 0.05;
 
     iREAL margin = (hopperThickness + _epsilon) * 4;
     iREAL gridxyLength = hopperWidth-margin/2;
@@ -354,7 +354,7 @@ void dem::mappings::CreateGrid::beginIteration(
     }
     else if(_scenario[2] == nonuniform)
     {
-      iREAL gridCellLength = ((double)gridxyLength/(double)xzcuts) - _epsilon*4;
+      iREAL gridCellLength = ((iREAL)gridxyLength/(iREAL)xzcuts) - _epsilon*4;
       delta::world::nonUniformlyDistributedTotalMass(pos, xzcuts, ycuts, gridxyLength, totalMass, hopperWidth, hopperParticles, _epsilon, _isSphere, gridCellLength, _noPointsPerParticle, _insitufineObjects);
     }
 
@@ -368,8 +368,8 @@ void dem::mappings::CreateGrid::beginIteration(
     //////////////////////////////////////////////////////
 
     //////FLOOR///////////////////////////////////////////////////////////////////
-    double height = 0.05; double width = 0.35; double rad = 0.0;
-    std::array<double, 3> position = {centre[0], centre[1], centre[2]};
+    iREAL height = 0.05; iREAL width = 0.35; iREAL rad = 0.0;
+    std::array<iREAL, 3> position = {centre[0], centre[1], centre[2]};
 
     ////////////////////////////////////////////////////////////////////////////////
     delta::geometry::Object objectFloor("cube", 0, position, delta::geometry::material::MaterialType::WOOD, true, true, _epsilon, {0,0,0}, {0,0,0});
@@ -379,8 +379,8 @@ void dem::mappings::CreateGrid::beginIteration(
     if(_scenario[2] == sstatic)
     {
 	  ///////////////////////
-	  double rad = 0.02;
-	  std::array<double, 3> position = {centre[0]+0.05, centre[1] + height, centre[2]};
+	  iREAL rad = 0.02;
+	  std::array<iREAL, 3> position = {centre[0]+0.05, centre[1] + height, centre[2]};
 
 	  if(_isSphere){
 		delta::geometry::Object objectA("sphere", 1, position, delta::geometry::material::MaterialType::WOOD, false, true, _epsilon, {0,0,0}, {0,0,0});
@@ -393,9 +393,9 @@ void dem::mappings::CreateGrid::beginIteration(
 	  }
     } else if(_scenario[2] == slide)
     {
-      double rad = 0.02;
-      std::array<double, 3> linear = {0.5, 0.0, 0.0};
-      std::array<double, 3> position = {centre[0], centre[1] + height/2 + _epsilon, centre[2]};
+      iREAL rad = 0.02;
+      std::array<iREAL, 3> linear = {0.5, 0.0, 0.0};
+      std::array<iREAL, 3> position = {centre[0], centre[1] + height/2 + _epsilon, centre[2]};
 
       if(_isSphere){
     		delta::geometry::Object objectA("sphere", 1, position, delta::geometry::material::MaterialType::WOOD, false, true, _epsilon, linear, {0,0,0});
@@ -408,9 +408,9 @@ void dem::mappings::CreateGrid::beginIteration(
       }
     } else if(_scenario[2] == roll)
     {
-      std::array<double, 3> angular = {5.0, 0, 0};
-      std::array<double, 3> position = {centre[0], centre[1] + height/2 + centre[0] + _epsilon, centre[2]};
-      double rad = 0.02;
+      std::array<iREAL, 3> angular = {5.0, 0, 0};
+      std::array<iREAL, 3> position = {centre[0], centre[1] + height/2 + centre[0] + _epsilon, centre[2]};
+      iREAL rad = 0.02;
 
       if(_isSphere){
     		delta::geometry::Object objectA("sphere", 1, position, delta::geometry::material::MaterialType::WOOD, false, true, _epsilon, {0,0,0}, angular);
@@ -432,8 +432,8 @@ void dem::mappings::CreateGrid::beginIteration(
     /// TWO PARTICLES CRASH SCENARIO
     //////////////////////////////////////////////////////
 
-    std::array<double, 3> centreArray = {0.2, 0.2, 0.2};
-    std::array<double, 3> linear = {0.1, 0.1, 0.1};
+    std::array<iREAL, 3> centreArray = {0.2, 0.2, 0.2};
+    std::array<iREAL, 3> linear = {0.1, 0.1, 0.1};
 
     if(_isSphere){
 
@@ -453,7 +453,7 @@ void dem::mappings::CreateGrid::beginIteration(
       objectB.generateSphere(0.1);
       _coarseObjects.push_back(objectB);
     } else {
-      double rad = 0.01;
+      iREAL rad = 0.01;
 
       centreArray[0] = 0.5-rad+epsilon;
       centreArray[1] = 0.5;
@@ -493,20 +493,20 @@ void dem::mappings::CreateGrid::beginIteration(
     /// FREEFALL AND BLACKHOLE SCENARIO
     //////////////////////////////////////////////////////
 
-    //double particleDiameter = (_minParticleDiam + (_maxParticleDiam-_minParticleDiam) * (static_cast<double>(rand()) / static_cast<double>(RAND_MAX))) / std::sqrt(DIMENSIONS);
+    //iREAL particleDiameter = (_minParticleDiam + (_maxParticleDiam-_minParticleDiam) * (static_cast<iREAL>(rand()) / static_cast<iREAL>(RAND_MAX))) / std::sqrt(DIMENSIONS);
     //int particleid = deployBox(vertex, 0, 0, _centreAsArray, particleDiameter/2, particleDiameter/2, 0, 1.0/8.0, 1.0/8.0, _epsilon, material, isFriction, isObstacle);
 
-    double rad = 0.01;
-    std::array<double, 3> linear = {0, 0, 0};
-    std::array<double, 3> position = {centre[0], 0.8, centre[2]};
+    iREAL rad = 0.01;
+    std::array<iREAL, 3> linear = {0, 0, 0};
+    std::array<iREAL, 3> position = {centre[0], 0.8, centre[2]};
 
     if(_scenario[0] == blackHoleWithCubes ||
        _scenario[0] == blackHoleWithGranulates  ||
        _scenario[0] == blackHoleWithRandomOrientedCubes)
     {
-      linear[0] = static_cast<double>( rand() ) / static_cast<double>(RAND_MAX);
-      linear[1] = static_cast<double>( rand() ) / static_cast<double>(RAND_MAX);
-      linear[2] = static_cast<double>( rand() ) / static_cast<double>(RAND_MAX);
+      linear[0] = static_cast<iREAL>( rand() ) / static_cast<iREAL>(RAND_MAX);
+      linear[1] = static_cast<iREAL>( rand() ) / static_cast<iREAL>(RAND_MAX);
+      linear[2] = static_cast<iREAL>( rand() ) / static_cast<iREAL>(RAND_MAX);
     }
 
     //Object ISSUE: here Object particles number has to be incremental with deployment in non-insitu enviroment
@@ -570,8 +570,8 @@ void dem::mappings::CreateGrid::endIteration(
 
 void dem::mappings::CreateGrid::touchVertexFirstTime(
 		dem::Vertex&               fineGridVertex,
-		const tarch::la::Vector<DIMENSIONS,double>&                          fineGridX,
-		const tarch::la::Vector<DIMENSIONS,double>&                          fineGridH,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&                          fineGridX,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&                          fineGridH,
 		dem::Vertex * const        coarseGridVertices,
 		const peano::grid::VertexEnumerator&                coarseGridVerticesEnumerator,
 		dem::Cell&                 coarseGridCell,
@@ -628,8 +628,8 @@ void dem::mappings::CreateGrid::leaveCell(
 
 void dem::mappings::CreateGrid::touchVertexLastTime(
 		dem::Vertex&         fineGridVertex,
-		const tarch::la::Vector<DIMENSIONS,double>&                    fineGridX,
-		const tarch::la::Vector<DIMENSIONS,double>&                    fineGridH,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&                    fineGridX,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&                    fineGridH,
 		dem::Vertex * const  coarseGridVertices,
 		const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator,
 		dem::Cell&           coarseGridCell,
@@ -644,8 +644,8 @@ void dem::mappings::CreateGrid::touchVertexLastTime(
 
 void dem::mappings::CreateGrid::createInnerVertex(
 		dem::Vertex&                                  fineGridVertex,
-		const tarch::la::Vector<DIMENSIONS,double>&   fineGridX,
-		const tarch::la::Vector<DIMENSIONS,double>&   fineGridH,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&   fineGridX,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&   fineGridH,
 		dem::Vertex * const                           coarseGridVertices,
 		const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator,
 		dem::Cell&                                    coarseGridCell,
@@ -684,8 +684,8 @@ void dem::mappings::CreateGrid::createInnerVertex(
 
 void dem::mappings::CreateGrid::createBoundaryVertex(
 		dem::Vertex&                                 fineGridVertex,
-		const tarch::la::Vector<DIMENSIONS,double>&  fineGridX,
-		const tarch::la::Vector<DIMENSIONS,double>&  fineGridH,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&  fineGridX,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&  fineGridH,
 		dem::Vertex * const                          coarseGridVertices,
 		const peano::grid::VertexEnumerator&         coarseGridVerticesEnumerator,
 		dem::Cell&                                   coarseGridCell,
@@ -758,8 +758,8 @@ void dem::mappings::CreateGrid::createCell(
 
 void dem::mappings::CreateGrid::createHangingVertex(
 		dem::Vertex&     fineGridVertex,
-		const tarch::la::Vector<DIMENSIONS,double>&                fineGridX,
-		const tarch::la::Vector<DIMENSIONS,double>&                fineGridH,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&                fineGridX,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&                fineGridH,
 		dem::Vertex * const   coarseGridVertices,
 		const peano::grid::VertexEnumerator&      coarseGridVerticesEnumerator,
 		dem::Cell&       coarseGridCell,
@@ -774,8 +774,8 @@ void dem::mappings::CreateGrid::createHangingVertex(
 
 void dem::mappings::CreateGrid::destroyHangingVertex(
 		const dem::Vertex&   fineGridVertex,
-		const tarch::la::Vector<DIMENSIONS,double>&                    fineGridX,
-		const tarch::la::Vector<DIMENSIONS,double>&                    fineGridH,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&                    fineGridX,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&                    fineGridH,
 		dem::Vertex * const  coarseGridVertices,
 		const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator,
 		dem::Cell&           coarseGridCell,
@@ -787,8 +787,8 @@ void dem::mappings::CreateGrid::destroyHangingVertex(
 
 void dem::mappings::CreateGrid::destroyVertex(
 		const dem::Vertex&   fineGridVertex,
-		const tarch::la::Vector<DIMENSIONS,double>&                    fineGridX,
-		const tarch::la::Vector<DIMENSIONS,double>&                    fineGridH,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&                    fineGridX,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&                    fineGridH,
 		dem::Vertex * const  coarseGridVertices,
 		const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator,
 		dem::Cell&           coarseGridCell,
@@ -817,8 +817,8 @@ void dem::mappings::CreateGrid::mergeWithNeighbour(
 		dem::Vertex&  vertex,
 		const dem::Vertex&  neighbour,
 		int                                           fromRank,
-		const tarch::la::Vector<DIMENSIONS,double>&   fineGridX,
-		const tarch::la::Vector<DIMENSIONS,double>&   fineGridH,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&   fineGridX,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&   fineGridH,
 		int                                           level
 ) {
 	logTraceInWith6Arguments( "mergeWithNeighbour(...)", vertex, neighbour, fromRank, fineGridX, fineGridH, level );
@@ -829,8 +829,8 @@ void dem::mappings::CreateGrid::mergeWithNeighbour(
 void dem::mappings::CreateGrid::prepareSendToNeighbour(
 		dem::Vertex&  vertex,
 		int                                           toRank,
-		const tarch::la::Vector<DIMENSIONS,double>&   x,
-		const tarch::la::Vector<DIMENSIONS,double>&   h,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&   x,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&   h,
 		int                                           level
 ) {
 	logTraceInWith3Arguments( "prepareSendToNeighbour(...)", vertex, toRank, level );
@@ -841,8 +841,8 @@ void dem::mappings::CreateGrid::prepareSendToNeighbour(
 void dem::mappings::CreateGrid::prepareCopyToRemoteNode(
 		dem::Vertex&  localVertex,
 		int                                           toRank,
-		const tarch::la::Vector<DIMENSIONS,double>&   x,
-		const tarch::la::Vector<DIMENSIONS,double>&   h,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&   x,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&   h,
 		int                                           level
 ) {
 	logTraceInWith5Arguments( "prepareCopyToRemoteNode(...)", localVertex, toRank, x, h, level );
@@ -853,8 +853,8 @@ void dem::mappings::CreateGrid::prepareCopyToRemoteNode(
 void dem::mappings::CreateGrid::prepareCopyToRemoteNode(
 		dem::Cell&  localCell,
 		int                                           toRank,
-		const tarch::la::Vector<DIMENSIONS,double>&   cellCentre,
-		const tarch::la::Vector<DIMENSIONS,double>&   cellSize,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&   cellCentre,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&   cellSize,
 		int                                           level
 ) {
 	logTraceInWith5Arguments( "prepareCopyToRemoteNode(...)", localCell, toRank, cellCentre, cellSize, level );
@@ -866,8 +866,8 @@ void dem::mappings::CreateGrid::mergeWithRemoteDataDueToForkOrJoin(
 		dem::Vertex&  localVertex,
 		const dem::Vertex&  masterOrWorkerVertex,
 		int                                       fromRank,
-		const tarch::la::Vector<DIMENSIONS,double>&  x,
-		const tarch::la::Vector<DIMENSIONS,double>&  h,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&  x,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&  h,
 		int                                       level
 ) {
 	logTraceInWith6Arguments( "mergeWithRemoteDataDueToForkOrJoin(...)", localVertex, masterOrWorkerVertex, fromRank, x, h, level );
@@ -879,8 +879,8 @@ void dem::mappings::CreateGrid::mergeWithRemoteDataDueToForkOrJoin(
 		dem::Cell&  localCell,
 		const dem::Cell&  masterOrWorkerCell,
 		int                                       fromRank,
-		const tarch::la::Vector<DIMENSIONS,double>&  cellCentre,
-		const tarch::la::Vector<DIMENSIONS,double>&  cellSize,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&  cellCentre,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&  cellSize,
 		int                                       level
 ) {
 	logTraceInWith3Arguments( "mergeWithRemoteDataDueToForkOrJoin(...)", localCell, masterOrWorkerCell, fromRank );
@@ -958,8 +958,8 @@ void dem::mappings::CreateGrid::receiveDataFromMaster(
 void dem::mappings::CreateGrid::mergeWithWorker(
 		dem::Cell&           localCell,
 		const dem::Cell&     receivedMasterCell,
-		const tarch::la::Vector<DIMENSIONS,double>&  cellCentre,
-		const tarch::la::Vector<DIMENSIONS,double>&  cellSize,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&  cellCentre,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&  cellSize,
 		int                                          level
 ) {
 	logTraceInWith2Arguments( "mergeWithWorker(...)", localCell.toString(), receivedMasterCell.toString() );
@@ -970,8 +970,8 @@ void dem::mappings::CreateGrid::mergeWithWorker(
 void dem::mappings::CreateGrid::mergeWithWorker(
 		dem::Vertex&        localVertex,
 		const dem::Vertex&  receivedMasterVertex,
-		const tarch::la::Vector<DIMENSIONS,double>&   x,
-		const tarch::la::Vector<DIMENSIONS,double>&   h,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&   x,
+		const tarch::la::Vector<DIMENSIONS,iREAL>&   h,
 		int                                           level
 ) {
 	logTraceInWith2Arguments( "mergeWithWorker(...)", localVertex.toString(), receivedMasterVertex.toString() );

@@ -27,7 +27,13 @@
 
 #include <map>
 #include <vector>
-#include "delta/geometry/Object.h"
+#include <vector>
+#include <iostream>
+#include <delta/core/read.h>
+#include <delta/geometry/Object.h>
+#include <delta/geometry/mesh/Triangle.h>
+#include <delta/geometry/mesh/Vertex.h>
+#include <delta/geometry/material.h>
 
 namespace delta {
 	namespace core {

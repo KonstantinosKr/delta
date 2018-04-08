@@ -301,27 +301,27 @@ dem::records::ParticlePacked dem::records::Particle::convert() const{
          const int Attributes = 28;
          #endif
          MPI_Datatype subtypes[Attributes] = {
-              MPI_DOUBLE		 //vertices
-            , MPI_DOUBLE		 //verticesA
-            , MPI_DOUBLE		 //verticesB
-            , MPI_DOUBLE		 //verticesC
-            , MPI_DOUBLE		 //verticesrefA
-            , MPI_DOUBLE		 //verticesrefB
-            , MPI_DOUBLE		 //verticesrefC
-            , MPI_DOUBLE		 //orientation
-            , MPI_DOUBLE		 //inertia
-            , MPI_DOUBLE		 //inverse
-            , MPI_DOUBLE		 //centre
-            , MPI_DOUBLE		 //centreOfMass
-            , MPI_DOUBLE		 //referentialCentreOfMass
-            , MPI_DOUBLE		 //velocity
-            , MPI_DOUBLE		 //angular
-            , MPI_DOUBLE		 //referentialAngular
-            , MPI_DOUBLE		 //diameter
-            , MPI_DOUBLE		 //haloDiameter
-            , MPI_DOUBLE		 //epsilon
-            , MPI_DOUBLE		 //mass
-            , MPI_DOUBLE		 //hMin
+              MPI_double		 //vertices
+            , MPI_double		 //verticesA
+            , MPI_double		 //verticesB
+            , MPI_double		 //verticesC
+            , MPI_double		 //verticesrefA
+            , MPI_double		 //verticesrefB
+            , MPI_double		 //verticesrefC
+            , MPI_double		 //orientation
+            , MPI_double		 //inertia
+            , MPI_double		 //inverse
+            , MPI_double		 //centre
+            , MPI_double		 //centreOfMass
+            , MPI_double		 //referentialCentreOfMass
+            , MPI_double		 //velocity
+            , MPI_double		 //angular
+            , MPI_double		 //referentialAngular
+            , MPI_double		 //diameter
+            , MPI_double		 //haloDiameter
+            , MPI_double		 //epsilon
+            , MPI_double		 //mass
+            , MPI_double		 //hMin
             , MPI_INT		 //globalParticleId
             , MPI_INT		 //localParticleId
             , MPI_INT		 //numberOfTriangles
@@ -1071,27 +1071,27 @@ dem::records::Particle dem::records::ParticlePacked::convert() const{
          const int Attributes = 28;
          #endif
          MPI_Datatype subtypes[Attributes] = {
-              MPI_DOUBLE		 //vertices
-            , MPI_DOUBLE		 //verticesA
-            , MPI_DOUBLE		 //verticesB
-            , MPI_DOUBLE		 //verticesC
-            , MPI_DOUBLE		 //verticesrefA
-            , MPI_DOUBLE		 //verticesrefB
-            , MPI_DOUBLE		 //verticesrefC
-            , MPI_DOUBLE		 //orientation
-            , MPI_DOUBLE		 //inertia
-            , MPI_DOUBLE		 //inverse
-            , MPI_DOUBLE		 //centre
-            , MPI_DOUBLE		 //centreOfMass
-            , MPI_DOUBLE		 //referentialCentreOfMass
-            , MPI_DOUBLE		 //velocity
-            , MPI_DOUBLE		 //angular
-            , MPI_DOUBLE		 //referentialAngular
-            , MPI_DOUBLE		 //diameter
-            , MPI_DOUBLE		 //haloDiameter
-            , MPI_DOUBLE		 //epsilon
-            , MPI_DOUBLE		 //mass
-            , MPI_DOUBLE		 //hMin
+              MPI_double		 //vertices
+            , MPI_double		 //verticesA
+            , MPI_double		 //verticesB
+            , MPI_double		 //verticesC
+            , MPI_double		 //verticesrefA
+            , MPI_double		 //verticesrefB
+            , MPI_double		 //verticesrefC
+            , MPI_double		 //orientation
+            , MPI_double		 //inertia
+            , MPI_double		 //inverse
+            , MPI_double		 //centre
+            , MPI_double		 //centreOfMass
+            , MPI_double		 //referentialCentreOfMass
+            , MPI_double		 //velocity
+            , MPI_double		 //angular
+            , MPI_double		 //referentialAngular
+            , MPI_double		 //diameter
+            , MPI_double		 //haloDiameter
+            , MPI_double		 //epsilon
+            , MPI_double		 //mass
+            , MPI_double		 //hMin
             , MPI_INT		 //globalParticleId
             , MPI_INT		 //localParticleId
             , MPI_INT		 //numberOfTriangles

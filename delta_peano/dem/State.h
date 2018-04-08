@@ -53,7 +53,7 @@ class dem::State: public peano::grid::State< dem::records::State > {
     void writeToCheckpoint( peano::grid::Checkpoint<Vertex,Cell>&  checkpoint ) const;    
     void readFromCheckpoint( const peano::grid::Checkpoint<Vertex,Cell>&  checkpoint );    
 
-    static double _maxdt;
+    static iREAL _maxdt;
 
   public:
     /**
@@ -87,31 +87,31 @@ class dem::State: public peano::grid::State< dem::records::State > {
     void incNumberOfTriangleComparisons(int delta);
     void incNumberOfParticleComparisons(int delta);
 
-    double getNumberOfContactPoints() const;
-    double getNumberOfParticleReassignments() const;
-    double getNumberOfTriangleComparisons() const;
-    double getNumberOfParticleComparisons() const;
+    iREAL getNumberOfContactPoints() const;
+    iREAL getNumberOfParticleReassignments() const;
+    iREAL getNumberOfTriangleComparisons() const;
+    iREAL getNumberOfParticleComparisons() const;
 
-    double getTimeStepSize() const;
-    double getTime() const;
-    void setInitialTimeStepSize(double value);
+    iREAL getTimeStepSize() const;
+    iREAL getTime() const;
+    void setInitialTimeStepSize(iREAL value);
 
-    void setStepIncrement(double number);
-    double getStepIncrement();
+    void setStepIncrement(iREAL number);
+    iREAL getStepIncrement();
 
-    void informStateThatTwoParticlesAreClose(double decrementFactor);
+    void informStateThatTwoParticlesAreClose(iREAL decrementFactor);
     void informStateThatTwoParticlesAreSeparate();
 
-    void finishedTimeStep(double initialTimestep);
+    void finishedTimeStep(iREAL initialTimestep);
     void adaptiveTimeStep();
 
-    double getTwoParticlesAreClose();
+    iREAL getTwoParticlesAreClose();
 
-    void setMaximumVelocityApproach(double v);
-    double getMaximumVelocityApproach();
+    void setMaximumVelocityApproach(iREAL v);
+    iREAL getMaximumVelocityApproach();
 
-    void setMaximumVelocityTravel(double v);
-    double getMaximumVelocityTravel();
+    void setMaximumVelocityTravel(iREAL v);
+    iREAL getMaximumVelocityTravel();
 
     void incNumberOfParticles(int delta);
     int getNumberOfParticles() const;
@@ -119,13 +119,13 @@ class dem::State: public peano::grid::State< dem::records::State > {
     void incNumberOfObstacles(int delta);
     int getNumberOfObstacles() const;
 
-    void setPrescribedMinimumMeshWidth(double minwidth);
-    void setPrescribedMaximumMeshWidth(double maxwidth);
+    void setPrescribedMinimumMeshWidth(iREAL minwidth);
+    void setPrescribedMaximumMeshWidth(iREAL maxwidth);
 
-    double getPrescribedMinimumMeshWidth() const;
-    double getPrescribedMaximumMeshWidth() const;
+    iREAL getPrescribedMinimumMeshWidth() const;
+    iREAL getPrescribedMaximumMeshWidth() const;
 
-    double getMaxDt();
+    iREAL getMaxDt();
 
     void setTimeStep(int delta);
     int getTimeStep();

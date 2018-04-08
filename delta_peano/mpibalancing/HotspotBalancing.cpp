@@ -265,7 +265,7 @@ void mpibalancing::HotspotBalancing::mergeWithMaster(
   double workerWeight;
 
   if (UseBlockingSendAndReceive) {
-    MPI_Recv( &workerWeight, 1, MPI_DOUBLE, workerRank, _loadBalancingTag, tarch::parallel::Node::getInstance().getCommunicator(), MPI_STATUS_IGNORE );
+    MPI_Recv( &workerWeight, 1, MPI_double, workerRank, _loadBalancingTag, tarch::parallel::Node::getInstance().getCommunicator(), MPI_STATUS_IGNORE );
   }
   else {
     MPI_Request* sendRequestHandle = new MPI_Request();
@@ -275,7 +275,7 @@ void mpibalancing::HotspotBalancing::mergeWithMaster(
     clock_t      timeOutShutdown  = -1;
     bool         triggeredTimeoutWarning = false;
     MPI_Irecv(
-      &workerWeight, 1, MPI_DOUBLE, workerRank, _loadBalancingTag,
+      &workerWeight, 1, MPI_double, workerRank, _loadBalancingTag,
       tarch::parallel::Node::getInstance().getCommunicator(), sendRequestHandle
     );
     MPI_Test( sendRequestHandle, &flag, &status );
@@ -325,7 +325,7 @@ void mpibalancing::HotspotBalancing::setLocalWeightAndNotifyMaster(
 
   logDebug( "HotspotBalancing(bool,int)", "send load balancing information on tag " << _loadBalancingTag << " to master " << tarch::parallel::NodePool::getInstance().getMasterRank() );
   if (UseBlockingSendAndReceive) {
-    MPI_Send( &ranksWeight, 1, MPI_DOUBLE, tarch::parallel::NodePool::getInstance().getMasterRank(), _loadBalancingTag, tarch::parallel::Node::getInstance().getCommunicator() );
+    MPI_Send( &ranksWeight, 1, MPI_double, tarch::parallel::NodePool::getInstance().getMasterRank(), _loadBalancingTag, tarch::parallel::Node::getInstance().getCommunicator() );
   }
   else {
     MPI_Request* sendRequestHandle = new MPI_Request();
@@ -335,7 +335,7 @@ void mpibalancing::HotspotBalancing::setLocalWeightAndNotifyMaster(
     clock_t      timeOutShutdown  = -1;
     bool         triggeredTimeoutWarning = false;
     MPI_Isend(
-      &ranksWeight, 1, MPI_DOUBLE, tarch::parallel::NodePool::getInstance().getMasterRank(), _loadBalancingTag,
+      &ranksWeight, 1, MPI_double, tarch::parallel::NodePool::getInstance().getMasterRank(), _loadBalancingTag,
       tarch::parallel::Node::getInstance().getCommunicator(), sendRequestHandle
     );
     MPI_Test( sendRequestHandle, &flag, &status );

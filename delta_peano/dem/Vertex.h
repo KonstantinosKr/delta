@@ -14,14 +14,13 @@
 #include "peano/grid/Vertex.h"
 #include "peano/grid/VertexEnumerator.h"
 #include "peano/utils/Globals.h"
-#include "peano/heap/DoubleHeap.h"
+#include "peano/heap/doubleHeap.h"
 
 #include <iomanip>
 
 #include "dem/mappings/Collision.h"
 #include "delta/geometry/material.h"
 #include "delta/geometry/Object.h"
-
 
 namespace dem { 
   class Vertex;
@@ -33,8 +32,8 @@ namespace dem {
 
   typedef peano::heap::PlainHeap< dem::records::Particle >      ParticleHeap;
 
-  typedef peano::heap::PlainDoubleHeapAlignment32               DEMDoubleHeap;
-  //typedef peano::heap::PlainDoubleHeap                          DEMDoubleHeap;
+  typedef peano::heap::PlaindoubleHeapAlignment32               DEMdoubleHeap;
+  //typedef peano::heap::PlainiREALHeap                          DEMdoubleHeap;
 }
 
 
@@ -130,36 +129,36 @@ class dem::Vertex: public peano::grid::Vertex< dem::records::Vertex > {
 
     void releaseCoarseParticle(int particleNumber);
 
-    double* getXCoordinates( int particleNumber );
-    double* getYCoordinates( int particleNumber );
-    double* getZCoordinates( int particleNumber );
+    iREAL* getXCoordinates( int particleNumber );
+    iREAL* getYCoordinates( int particleNumber );
+    iREAL* getZCoordinates( int particleNumber );
 
-    const double * getXCoordinates( int particleNumber ) const;
-    const double * getYCoordinates( int particleNumber ) const;
-    const double * getZCoordinates( int particleNumber ) const;
+    const iREAL * getXCoordinates( int particleNumber ) const;
+    const iREAL * getYCoordinates( int particleNumber ) const;
+    const iREAL * getZCoordinates( int particleNumber ) const;
 
-    double* getXRefCoordinates( int particleNumber );
-    double* getYRefCoordinates( int particleNumber );
-    double* getZRefCoordinates( int particleNumber );
+    iREAL* getXRefCoordinates( int particleNumber );
+    iREAL* getYRefCoordinates( int particleNumber );
+    iREAL* getZRefCoordinates( int particleNumber );
 
-    DEMDoubleHeap::HeapEntries&  getXCoordinatesAsVector( int particleNumber );
-    DEMDoubleHeap::HeapEntries&  getYCoordinatesAsVector( int particleNumber );
-    DEMDoubleHeap::HeapEntries&  getZCoordinatesAsVector( int particleNumber );
+    DEMdoubleHeap::HeapEntries&  getXCoordinatesAsVector( int particleNumber );
+    DEMdoubleHeap::HeapEntries&  getYCoordinatesAsVector( int particleNumber );
+    DEMdoubleHeap::HeapEntries&  getZCoordinatesAsVector( int particleNumber );
 
-    DEMDoubleHeap::HeapEntries&  getXRefCoordinatesAsVector( int particleNumber );
-    DEMDoubleHeap::HeapEntries&  getYRefCoordinatesAsVector( int particleNumber );
-    DEMDoubleHeap::HeapEntries&  getZRefCoordinatesAsVector( int particleNumber );
+    DEMdoubleHeap::HeapEntries&  getXRefCoordinatesAsVector( int particleNumber );
+    DEMdoubleHeap::HeapEntries&  getYRefCoordinatesAsVector( int particleNumber );
+    DEMdoubleHeap::HeapEntries&  getZRefCoordinatesAsVector( int particleNumber );
 
-    const DEMDoubleHeap::HeapEntries&  getXCoordinatesAsVector( int particleNumber ) const;
-    const DEMDoubleHeap::HeapEntries&  getYCoordinatesAsVector( int particleNumber ) const;
-    const DEMDoubleHeap::HeapEntries&  getZCoordinatesAsVector( int particleNumber ) const;
+    const DEMdoubleHeap::HeapEntries&  getXCoordinatesAsVector( int particleNumber ) const;
+    const DEMdoubleHeap::HeapEntries&  getYCoordinatesAsVector( int particleNumber ) const;
+    const DEMdoubleHeap::HeapEntries&  getZCoordinatesAsVector( int particleNumber ) const;
 
-    const DEMDoubleHeap::HeapEntries&  getXRefCoordinatesAsVector( int particleNumber ) const;
-    const DEMDoubleHeap::HeapEntries&  getYRefCoordinatesAsVector( int particleNumber ) const;
-    const DEMDoubleHeap::HeapEntries&  getZRefCoordinatesAsVector( int particleNumber ) const;
+    const DEMdoubleHeap::HeapEntries&  getXRefCoordinatesAsVector( int particleNumber ) const;
+    const DEMdoubleHeap::HeapEntries&  getYRefCoordinatesAsVector( int particleNumber ) const;
+    const DEMdoubleHeap::HeapEntries&  getZRefCoordinatesAsVector( int particleNumber ) const;
 
-    void setNumberOfParticlesInUnrefinedVertex(double number);
-    double getNumberOfParticlesInUnrefinedVertex();
+    void setNumberOfParticlesInUnrefinedVertex(iREAL number);
+    iREAL getNumberOfParticlesInUnrefinedVertex();
 
     /**
      * Part of the dynamic AMR.
@@ -229,8 +228,8 @@ class dem::Vertex: public peano::grid::Vertex< dem::records::Vertex > {
      */
     void inheritCoarseGridParticles(
         const Vertex&  coarseVertex,
-        const tarch::la::Vector<DIMENSIONS, double>& fineGridX,
-        double fineGridH);
+        const tarch::la::Vector<DIMENSIONS, iREAL>& fineGridX,
+        iREAL fineGridH);
 };
 
 

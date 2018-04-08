@@ -39,29 +39,29 @@ void delta::core::parseModelGridSchematics(
 	std::vector<std::vector<std::string>> &componentGrid,
 	std::vector<std::string> &componentSeq)
 {
-	std::string line;
-	//46 * 46
-	std::ifstream myfile;
-	myfile.open(fileName);
+  std::string line;
+  //46 * 46
+  std::ifstream myfile;
+  myfile.open(fileName);
 
-	if (myfile.is_open())
-	{
-		while (std::getline (myfile, line))
-		{
-			std::vector<std::string> vstring = splitString(line, ",");
-			//std::cout << vstring[2] << "\n";
+  if (myfile.is_open())
+  {
+	  while (std::getline (myfile, line))
+	  {
+		  std::vector<std::string> vstring = splitString(line, ",");
+		  //std::cout << vstring[2] << "\n";
 
-			componentSeq.push_back(vstring[2]);
+		  componentSeq.push_back(vstring[2]);
 
-			if(std::stoi(vstring[0]) == 46) {
-				//std::cout << std::stoi(vstring[0]) << "\n";
-				componentGrid.push_back(componentSeq);
-			}
-		}
+		  if(std::stoi(vstring[0]) == 46) {
+			  //std::cout << std::stoi(vstring[0]) << "\n";
+			  componentGrid.push_back(componentSeq);
+		  }
+	  }
 
-		myfile.close();
-	}
-	else std::cout << "Unable to open file";
+	  myfile.close();
+  }
+  else std::cout << "Unable to open file";
 }
 
 void delta::core::readSingleVTKGeometry(
@@ -70,82 +70,83 @@ void delta::core::readSingleVTKGeometry(
 	std::vector<iREAL>&  yCoordinates,
 	std::vector<iREAL>&  zCoordinates)
 {
-	//////////VTK format////////////
+  //////////VTK format////////////
 
-	char filename[100];
-	strncpy(filename, fileName, 100);
-	FILE *fp1 = fopen(filename, "r+");
+  char filename[100];
+  strncpy(filename, fileName, 100);
+  FILE *fp1 = fopen(filename, "r+");
 
-	if( fp1 == NULL )
-	{
-		perror("Error while opening the file.\n");
-		exit(EXIT_FAILURE);
-	}
+  if( fp1 == NULL )
+  {
+	  perror("Error while opening the file.\n");
+	  exit(EXIT_FAILURE);
+  }
 
-	char ch, word[100];
-	iREAL *point[3];
+  char ch, word[100];
+  iREAL *point[3];
 
-	do
-	{
+  do
+  {
+	  ch = fscanf(fp1,"%s",word);
+	  if(strcmp(word, "POINTS")==0)
+	  {
 		ch = fscanf(fp1,"%s",word);
-		if(strcmp(word, "POINTS")==0)
+		int n = atol(word);
+
+		point[0] = new iREAL[n];
+		point[1] = new iREAL[n];
+		point[2] = new iREAL[n];
+
+		ch = fscanf(fp1,"%s",word);
+
+		for(int i=0;i<n;i++)
+		{
+		  fscanf(fp1, "%lf", &point[0][i]);
+		  fscanf(fp1, "%lf", &point[1][i]);
+		  fscanf(fp1, "%lf", &point[2][i]);
+		}
+	  }
+
+	  if(strcmp(word, "CELLS")==0 || strcmp(word, "POLYGONS") == 0)
+	  {
+		ch = fscanf(fp1,"%s",word);
+		int numberOfTriangles = atol(word);
+		ch = fscanf(fp1,"%s",word);
+
+		xCoordinates.resize( numberOfTriangles*3 );
+		yCoordinates.resize( numberOfTriangles*3 );
+		zCoordinates.resize( numberOfTriangles*3 );
+
+		for(int i=0;i<numberOfTriangles*3;i+=3)
 		{
 		  ch = fscanf(fp1,"%s",word);
-		  int n = atol(word);
-
-		  point[0] = new iREAL[n];
-		  point[1] = new iREAL[n];
-		  point[2] = new iREAL[n];
-
 		  ch = fscanf(fp1,"%s",word);
 
-		  for(int i=0;i<n;i++)
-		  {
-			fscanf(fp1, "%lf", &point[0][i]);
-			fscanf(fp1, "%lf", &point[1][i]);
-			fscanf(fp1, "%lf", &point[2][i]);
-		  }
+		  int index = atol(word);
+		  xCoordinates[i] = ((point[0][index]));
+		  yCoordinates[i] = ((point[1][index]));
+		  zCoordinates[i] = ((point[2][index]));
+
+		  ch = fscanf(fp1,"%s",word);
+		  index = atol(word);
+		  xCoordinates[i+1] = ((point[0][index]));
+		  yCoordinates[i+1] = ((point[1][index]));
+		  zCoordinates[i+1] = ((point[2][index]));
+
+		  ch = fscanf(fp1,"%s",word);
+		  index = atol(word);
+		  xCoordinates[i+2] = ((point[0][index]));
+		  yCoordinates[i+2] = ((point[1][index]));
+		  zCoordinates[i+2] = ((point[2][index]));
 		}
+	  }
+  } while (ch != EOF);
 
-		if(strcmp(word, "CELLS")==0 || strcmp(word, "POLYGONS") == 0)
-		{
-		  ch = fscanf(fp1,"%s",word);
-		  int numberOfTriangles = atol(word);
-		  ch = fscanf(fp1,"%s",word);
-
-		  xCoordinates.resize( numberOfTriangles*3 );
-		  yCoordinates.resize( numberOfTriangles*3 );
-		  zCoordinates.resize( numberOfTriangles*3 );
-
-		  for(int i=0;i<numberOfTriangles*3;i+=3)
-		  {
-			ch = fscanf(fp1,"%s",word);
-			ch = fscanf(fp1,"%s",word);
-
-			int index = atol(word);
-			xCoordinates[i] = ((point[0][index]));
-			yCoordinates[i] = ((point[1][index]));
-			zCoordinates[i] = ((point[2][index]));
-
-			ch = fscanf(fp1,"%s",word);
-			index = atol(word);
-			xCoordinates[i+1] = ((point[0][index]));
-			yCoordinates[i+1] = ((point[1][index]));
-			zCoordinates[i+1] = ((point[2][index]));
-
-			ch = fscanf(fp1,"%s",word);
-			index = atol(word);
-			xCoordinates[i+2] = ((point[0][index]));
-			yCoordinates[i+2] = ((point[1][index]));
-			zCoordinates[i+2] = ((point[2][index]));
-		  }
-		}
-	} while (ch != EOF);
-
-	fclose(fp1);
+  fclose(fp1);
 }
 
-void delta::core::readSceneGeometry(std::string fileName) {
+void delta::core::readSceneGeometry(std::string fileName)
+{
 
   Assimp::Importer importer;
 
@@ -164,39 +165,39 @@ void delta::core::readSceneGeometry(std::string fileName) {
 
   for(uint m_i = 0; m_i < scene->mNumMeshes; m_i++)
   {
-      const aiMesh* mesh = scene->mMeshes[m_i];
+	const aiMesh* mesh = scene->mMeshes[m_i];
 
-      //delta::world::Object *Object = new delta::world::Object();
+	//delta::world::Object *Object = new delta::world::Object();
 
-      g_vp.reserve(3 * mesh->mNumVertices);
+	g_vp.reserve(3 * mesh->mNumVertices);
 
-      //vertices
-      for(uint v_i = 0; v_i < mesh->mNumVertices; v_i++)
-      {
-          if(mesh->HasPositions())
-          {
-              const aiVector3D* vp = &(mesh->mVertices[v_i]);
-              g_vp.push_back(vp->x);
-              g_vp.push_back(vp->y);
-              g_vp.push_back(vp->z);
+	//vertices
+	for(uint v_i = 0; v_i < mesh->mNumVertices; v_i++)
+	{
+		if(mesh->HasPositions())
+		{
+			const aiVector3D* vp = &(mesh->mVertices[v_i]);
+			g_vp.push_back(vp->x);
+			g_vp.push_back(vp->y);
+			g_vp.push_back(vp->z);
 
-              std::cout << vp->x << vp->y << vp->z << std::endl;
-          }
-      }
+			std::cout << vp->x << vp->y << vp->z << std::endl;
+		}
+	}
 
-      ///Faces
-      for(uint f_i = 0; f_i < mesh->mNumFaces; f_i++)
-      {
-    		//printf("number of indices: %i\n", mesh->mFaces[f_i].mNumIndices);
-    		for(uint index = 0; index < mesh->mFaces[f_i].mNumIndices; index++)
-    		{
-    		  const aiVector3D* vp = &(mesh->mVertices[index]);
+	///Faces
+	for(uint f_i = 0; f_i < mesh->mNumFaces; f_i++)
+	{
+		  //printf("number of indices: %i\n", mesh->mFaces[f_i].mNumIndices);
+		  for(uint index = 0; index < mesh->mFaces[f_i].mNumIndices; index++)
+		  {
+			const aiVector3D* vp = &(mesh->mVertices[index]);
 
-    		  //flat triangles
-    		  //delta::core::Delta::_trianglesXCoordinates.push_back(vp->x);
-    		  //delta::core::Delta::_trianglesYCoordinates.push_back(vp->y);
-    		  //delta::core::Delta::_trianglesZCoordinates.push_back(vp->z);
-    		}
-      }
+			//flat triangles
+			//delta::core::Delta::_trianglesXCoordinates.push_back(vp->x);
+			//delta::core::Delta::_trianglesYCoordinates.push_back(vp->y);
+			//delta::core::Delta::_trianglesZCoordinates.push_back(vp->z);
+		  }
+	}
   }
 }

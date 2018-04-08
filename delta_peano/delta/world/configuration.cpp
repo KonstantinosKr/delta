@@ -135,9 +135,9 @@
   elementWidth += epsilon*2;
   elementHeight += epsilon*2;
 
-  double dx = (grid[1][0] - grid[0][0]) - elementWidth;
-  //double dy = (grid[xzcuts*xzcuts][1] - grid[xzcuts*xzcuts-1][1]) - elementHeight;
-  double dz = dx;
+  iREAL dx = (grid[1][0] - grid[0][0]) - elementWidth;
+  //iREAL dy = (grid[xzcuts*xzcuts][1] - grid[xzcuts*xzcuts-1][1]) - elementHeight;
+  iREAL dz = dx;
 
   ////////////////////////////////////////
   //collapse from left to right on X AXIS
@@ -207,7 +207,7 @@
    iREAL xmin = 1; iREAL xmax = 0;
    for(unsigned i=0; i<grid.size(); i++)
    {
-     std::array<double, 3> p = {grid[i][0], grid[i][1], grid[i][2]};
+     std::array<iREAL, 3> p = {grid[i][0], grid[i][1], grid[i][2]};
 
      delta::geometry::Object particles(isSphereOrNone ? "sphere": "granulate", 0, p, delta::geometry::material::MaterialType::WOOD, false, false, epsilon, {0, -1, 0}, {0,0,0});
 
@@ -226,7 +226,7 @@
 
    for(unsigned i=0; i<insitufineObjects.size(); i++)
    {
-     std::array<double, 3> position = insitufineObjects[i].getCentre();
+     std::array<iREAL, 3> position = insitufineObjects[i].getCentre();
      position[0] += dx;  position[2] += dx;
      iREAL tmp[3] = {position[0], position[1], position[2]};
      insitufineObjects[i].setCentre(tmp);
@@ -254,8 +254,8 @@
   //////////////////////////////////////////////////////
   /////MIN AND MAX RADIUS//////////////////////////////
   //////////////////////////////////////////////////////
-  double maxRad = 0.0;
-  double minRad = 1.00;
+  iREAL maxRad = 0.0;
+  iREAL minRad = 1.00;
 
   for(unsigned i=index; i<insitufineObjects.size(); i++)
   {
@@ -267,7 +267,7 @@
   //lift above max radii
   for(unsigned i=index; i<insitufineObjects.size(); i++)
   {
-    std::array<double, 3> pos = insitufineObjects[i].getCentre();
+    std::array<iREAL, 3> pos = insitufineObjects[i].getCentre();
     iREAL p[3] = {pos[0], pos[1] + maxRad+epsilon, pos[2]};
     insitufineObjects[i].setCentre(p);
 
@@ -308,7 +308,7 @@
    iREAL xmin = 1; iREAL xmax = 0;
    for(unsigned i=0; i<grid.size(); i++)
    {
-     std::array<double, 3> p = {grid[i][0], grid[i][1], grid[i][2]};
+     std::array<iREAL, 3> p = {grid[i][0], grid[i][1], grid[i][2]};
 
      delta::geometry::Object particles(isSphereOrNone ? "sphere": "granulate", 0, p, delta::geometry::material::MaterialType::WOOD, isObstacle, isFriction, epsilon, {0, -1, 0}, {0,0,0});
 
@@ -327,7 +327,7 @@
 
    for(unsigned i=0; i<insitufineObjects.size(); i++)
    {
-     std::array<double, 3> position = insitufineObjects[i].getCentre();
+     std::array<iREAL, 3> position = insitufineObjects[i].getCentre();
      position[0] += dx;  position[2] += dx;
      iREAL tmp[3] = {position[0], position[1], position[2]};
      insitufineObjects[i].setCentre(tmp);
@@ -349,8 +349,8 @@
   //////////////////////////////////////////////////////
   /////MIN AND MAX RADIUS//////////////////////////////
   //////////////////////////////////////////////////////
-  double maxRad = 0.0;
-  double minRad = 1.00;
+  iREAL maxRad = 0.0;
+  iREAL minRad = 1.00;
 
   for(unsigned i=index; i<insitufineObjects.size(); i++)
   {
@@ -362,7 +362,7 @@
   //lift above max radii
   for(unsigned i=index; i<insitufineObjects.size(); i++)
   {
-    std::array<double, 3> pos = insitufineObjects[i].getCentre();
+    std::array<iREAL, 3> pos = insitufineObjects[i].getCentre();
     iREAL p[3] = {pos[0], pos[1] + maxRad+epsilon, pos[2]};
     insitufineObjects[i].setCentre(p);
 
@@ -436,9 +436,9 @@
   {
     std::array<iREAL, 3> ar = insitufineObjects[j].getCentre(); position[0] = ar[0]; position[1] = ar[1]; position[2] = ar[2];
 
-    std::vector<double> xCoordinates = insitufineObjects[j].getxCoordinates();
-    std::vector<double> yCoordinates = insitufineObjects[j].getyCoordinates();
-    std::vector<double> zCoordinates = insitufineObjects[j].getzCoordinates();
+    std::vector<iREAL> xCoordinates = insitufineObjects[j].getxCoordinates();
+    std::vector<iREAL> yCoordinates = insitufineObjects[j].getyCoordinates();
+    std::vector<iREAL> zCoordinates = insitufineObjects[j].getzCoordinates();
 
     insitufineObjects[j].getMesh().scaleXYZ(rescale, position);
 
@@ -476,10 +476,10 @@
   {
     position[0] = i[0]; position[1] = i[1]; position[2] = i[2];
 
-    delta::geometry::mesh::Mesh mesh = delta::geometry::primitive::cube::generateHullCube(position, radius*2, radius*2, radius*2, 0, 0, 0, 0);
-    meshArray.push_back(mesh);
+    delta::geometry::mesh::Mesh *mesh = delta::geometry::primitive::cube::generateHullCube(position, radius*2, radius*2, radius*2, 0, 0, 0, 0);
+    meshArray.push_back(*mesh);
 
-    iREAL mt = mesh.computeMass(material);
+    iREAL mt = mesh->computeMass(material);
 
     reMassTotal += mt;
 
@@ -520,7 +520,7 @@
   if(radius*2 > subcellx)
     printf("ERROR:radius bigger than subcellx\n");
 
-  std::vector<double> rad;
+  std::vector<iREAL> rad;
   for(unsigned i=index; i<insitufineObjects.size(); i++)
   {
     iREAL particleDiameter = mindiam + (iREAL)(rand()) / ((iREAL) (RAND_MAX/(maxdiam-mindiam)));
@@ -580,11 +580,11 @@
     rad.push_back(particleDiameter/2);
     radius = particleDiameter/2;
 
-    delta::geometry::mesh::Mesh mesh =
+    delta::geometry::mesh::Mesh *mesh =
     	  delta::geometry::primitive::granulate::generateParticle(position, (radius*2), noPointsPerParticle);
-    meshArray.push_back(mesh);
+    meshArray.push_back(*mesh);
 
-    iREAL mt = mesh.computeMass(material);
+    iREAL mt = mesh->computeMass(material);
     //iREAL vt = delta::geometry::properties::getVolume(xCoordinates, yCoordinates, zCoordinates);
     //iREAL vs = (4.0/3.0) * 3.14 * std::pow(radius,3);
     //iREAL ms = (4.0/3.0) * 3.14 * std::pow(radius,3)*int(delta::geometry::material::MaterialDensity::WOOD);
@@ -633,9 +633,9 @@
   //_particleGrid, _componentGrid, _radArray, _minParticleDiam, _maxParticleDiam
 
   //measurements
-  delta::geometry::mesh::Mesh mesh = delta::geometry::defined::generateBrickFB();
-  iREAL w = mesh.getXZWidth();
-  iREAL h = mesh.getYw();
+  delta::geometry::mesh::Mesh *mesh = delta::geometry::defined::generateBrickFB();
+  iREAL w = mesh->getXZWidth();
+  iREAL h = mesh->getYw();
 
   //read nuclear graphite schematics
   //std::vector<std::vector<std::string>> compoGrid;
@@ -691,9 +691,9 @@
 
   //////////////////////////MESH///////////////////////////////////////////////////////////////////////////////////
   //measurements
-  delta::geometry::mesh::Mesh mesh = delta::geometry::defined::generateBrickFB();
-  iREAL width = mesh.getXZWidth();
-  iREAL height = mesh.getYw();
+  delta::geometry::mesh::Mesh *mesh = delta::geometry::defined::generateBrickFB();
+  iREAL width = mesh->getXZWidth();
+  iREAL height = mesh->getYw();
   xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -753,11 +753,11 @@
 	 iREAL *maxComputeDomain)
  {
    //COMPUTE MIN/MAX XYZ DOMAIN
-   iREAL minx = std::numeric_limits<double>::max(), miny = std::numeric_limits<double>::max(), minz = std::numeric_limits<double>::max();
-   iREAL maxx = std::numeric_limits<double>::min(), maxy = std::numeric_limits<double>::min(), maxz = std::numeric_limits<double>::min();
+   iREAL minx = std::numeric_limits<iREAL>::max(), miny = std::numeric_limits<iREAL>::max(), minz = std::numeric_limits<iREAL>::max();
+   iREAL maxx = std::numeric_limits<iREAL>::min(), maxy = std::numeric_limits<iREAL>::min(), maxz = std::numeric_limits<iREAL>::min();
 
-   iREAL minDiameter = std::numeric_limits<double>::max();
-   iREAL maxDiameter = std::numeric_limits<double>::min();
+   iREAL minDiameter = std::numeric_limits<iREAL>::max();
+   iREAL maxDiameter = std::numeric_limits<iREAL>::min();
 
    for(unsigned i=0; i<coarseObjects.size(); i++)
    {

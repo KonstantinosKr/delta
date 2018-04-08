@@ -62,7 +62,7 @@ tarch::multicore::BooleanSemaphore  dem::mappings::MoveParticles::_MoveParticles
 
 void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(dem::Vertex&	fineGridVertex, State& state)
 {
-  double timeStepSize = state.getTimeStepSize();
+  iREAL timeStepSize = state.getTimeStepSize();
 
   for(int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
   {
@@ -92,13 +92,13 @@ void dem::mappings::MoveParticles::moveAllParticlesAssociatedToVertex(dem::Verte
                                           &particle._persistentRecords._referentialAngular(0),
                                           &particle._persistentRecords._orientation(0), timeStepSize);
      */
-    double* x = fineGridVertex.getXCoordinates(i);
-    double* y = fineGridVertex.getYCoordinates(i);
-    double* z = fineGridVertex.getZCoordinates(i);
+    iREAL* x = fineGridVertex.getXCoordinates(i);
+    iREAL* y = fineGridVertex.getYCoordinates(i);
+    iREAL* z = fineGridVertex.getZCoordinates(i);
 
-    double* refx = fineGridVertex.getXRefCoordinates(i);
-    double* refy = fineGridVertex.getYRefCoordinates(i);
-    double* refz = fineGridVertex.getZRefCoordinates(i);
+    iREAL* refx = fineGridVertex.getXRefCoordinates(i);
+    iREAL* refy = fineGridVertex.getYRefCoordinates(i);
+    iREAL* refz = fineGridVertex.getZRefCoordinates(i);
 
     //#pragma omp simd - vectorizes
     for(int j=0; j<particle.getNumberOfTriangles()*DIMENSIONS; j++)
@@ -231,8 +231,8 @@ void dem::mappings::MoveParticles::mergeWithWorkerThread(const MoveParticles& wo
 
 void dem::mappings::MoveParticles::touchVertexFirstTime(
   dem::Vertex&               fineGridVertex,
-  const tarch::la::Vector<DIMENSIONS,double>&                          fineGridX,
-  const tarch::la::Vector<DIMENSIONS,double>&                          fineGridH,
+  const tarch::la::Vector<DIMENSIONS,iREAL>&                          fineGridX,
+  const tarch::la::Vector<DIMENSIONS,iREAL>&                          fineGridH,
   dem::Vertex * const        coarseGridVertices,
   const peano::grid::VertexEnumerator&                coarseGridVerticesEnumerator,
   dem::Cell&                 coarseGridCell,
@@ -282,8 +282,8 @@ void dem::mappings::MoveParticles::leaveCell(
 
 void dem::mappings::MoveParticles::touchVertexLastTime(
   dem::Vertex&         fineGridVertex,
-  const tarch::la::Vector<DIMENSIONS,double>&                    fineGridX,
-  const tarch::la::Vector<DIMENSIONS,double>&                    fineGridH,
+  const tarch::la::Vector<DIMENSIONS,iREAL>&                    fineGridX,
+  const tarch::la::Vector<DIMENSIONS,iREAL>&                    fineGridH,
   dem::Vertex * const  coarseGridVertices,
   const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator,
   dem::Cell&           coarseGridCell,
@@ -296,8 +296,8 @@ void dem::mappings::MoveParticles::touchVertexLastTime(
 
 void dem::mappings::MoveParticles::createHangingVertex(
       dem::Vertex&     fineGridVertex,
-      const tarch::la::Vector<DIMENSIONS,double>&                fineGridX,
-      const tarch::la::Vector<DIMENSIONS,double>&                fineGridH,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&                fineGridX,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&                fineGridH,
       dem::Vertex * const   coarseGridVertices,
       const peano::grid::VertexEnumerator&      coarseGridVerticesEnumerator,
       dem::Cell&       coarseGridCell,
@@ -310,8 +310,8 @@ void dem::mappings::MoveParticles::createHangingVertex(
 
 void dem::mappings::MoveParticles::destroyHangingVertex(
       const dem::Vertex&   fineGridVertex,
-      const tarch::la::Vector<DIMENSIONS,double>&                    fineGridX,
-      const tarch::la::Vector<DIMENSIONS,double>&                    fineGridH,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&                    fineGridX,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&                    fineGridH,
       dem::Vertex * const  coarseGridVertices,
       const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator,
       dem::Cell&           coarseGridCell,
@@ -327,8 +327,8 @@ void dem::mappings::MoveParticles::destroyHangingVertex(
 
 void dem::mappings::MoveParticles::createInnerVertex(
       dem::Vertex&               fineGridVertex,
-      const tarch::la::Vector<DIMENSIONS,double>&                          fineGridX,
-      const tarch::la::Vector<DIMENSIONS,double>&                          fineGridH,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&                          fineGridX,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&                          fineGridH,
       dem::Vertex * const        coarseGridVertices,
       const peano::grid::VertexEnumerator&                coarseGridVerticesEnumerator,
       dem::Cell&                 coarseGridCell,
@@ -341,8 +341,8 @@ void dem::mappings::MoveParticles::createInnerVertex(
 
 void dem::mappings::MoveParticles::createBoundaryVertex(
       dem::Vertex&               fineGridVertex,
-      const tarch::la::Vector<DIMENSIONS,double>&                          fineGridX,
-      const tarch::la::Vector<DIMENSIONS,double>&                          fineGridH,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&                          fineGridX,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&                          fineGridH,
       dem::Vertex * const        coarseGridVertices,
       const peano::grid::VertexEnumerator&                coarseGridVerticesEnumerator,
       dem::Cell&                 coarseGridCell,
@@ -357,8 +357,8 @@ void dem::mappings::MoveParticles::createBoundaryVertex(
 
 void dem::mappings::MoveParticles::destroyVertex(
       const dem::Vertex&   fineGridVertex,
-      const tarch::la::Vector<DIMENSIONS,double>&                    fineGridX,
-      const tarch::la::Vector<DIMENSIONS,double>&                    fineGridH,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&                    fineGridX,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&                    fineGridH,
       dem::Vertex * const  coarseGridVertices,
       const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator,
       dem::Cell&           coarseGridCell,
@@ -407,8 +407,8 @@ void dem::mappings::MoveParticles::mergeWithNeighbour(
   dem::Vertex&  vertex,
   const dem::Vertex&  neighbour,
   int                                           fromRank,
-  const tarch::la::Vector<DIMENSIONS,double>&   fineGridX,
-  const tarch::la::Vector<DIMENSIONS,double>&   fineGridH,
+  const tarch::la::Vector<DIMENSIONS,iREAL>&   fineGridX,
+  const tarch::la::Vector<DIMENSIONS,iREAL>&   fineGridH,
   int                                           level
 ) {
   logTraceInWith6Arguments( "mergeWithNeighbour(...)", vertex, neighbour, fromRank, fineGridX, fineGridH, level );
@@ -419,8 +419,8 @@ void dem::mappings::MoveParticles::mergeWithNeighbour(
 void dem::mappings::MoveParticles::prepareSendToNeighbour(
   dem::Vertex&  vertex,
       int                                           toRank,
-      const tarch::la::Vector<DIMENSIONS,double>&   x,
-      const tarch::la::Vector<DIMENSIONS,double>&   h,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&   x,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&   h,
       int                                           level
 ) {
   logTraceInWith3Arguments( "prepareSendToNeighbour(...)", vertex, toRank, level );
@@ -431,8 +431,8 @@ void dem::mappings::MoveParticles::prepareSendToNeighbour(
 void dem::mappings::MoveParticles::prepareCopyToRemoteNode(
   dem::Vertex&  localVertex,
       int                                           toRank,
-      const tarch::la::Vector<DIMENSIONS,double>&   x,
-      const tarch::la::Vector<DIMENSIONS,double>&   h,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&   x,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&   h,
       int                                           level
 ) {
   logTraceInWith5Arguments( "prepareCopyToRemoteNode(...)", localVertex, toRank, x, h, level );
@@ -443,8 +443,8 @@ void dem::mappings::MoveParticles::prepareCopyToRemoteNode(
 void dem::mappings::MoveParticles::prepareCopyToRemoteNode(
   dem::Cell&  localCell,
       int                                           toRank,
-      const tarch::la::Vector<DIMENSIONS,double>&   cellCentre,
-      const tarch::la::Vector<DIMENSIONS,double>&   cellSize,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&   cellCentre,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&   cellSize,
       int                                           level
 ) {
   logTraceInWith5Arguments( "prepareCopyToRemoteNode(...)", localCell, toRank, cellCentre, cellSize, level );
@@ -456,8 +456,8 @@ void dem::mappings::MoveParticles::mergeWithRemoteDataDueToForkOrJoin(
   dem::Vertex&  localVertex,
   const dem::Vertex&  masterOrWorkerVertex,
   int                                       fromRank,
-  const tarch::la::Vector<DIMENSIONS,double>&  x,
-  const tarch::la::Vector<DIMENSIONS,double>&  h,
+  const tarch::la::Vector<DIMENSIONS,iREAL>&  x,
+  const tarch::la::Vector<DIMENSIONS,iREAL>&  h,
   int                                       level
 ) {
   logTraceInWith6Arguments( "mergeWithRemoteDataDueToForkOrJoin(...)", localVertex, masterOrWorkerVertex, fromRank, x, h, level );
@@ -469,8 +469,8 @@ void dem::mappings::MoveParticles::mergeWithRemoteDataDueToForkOrJoin(
   dem::Cell&  localCell,
   const dem::Cell&  masterOrWorkerCell,
   int                                       fromRank,
-  const tarch::la::Vector<DIMENSIONS,double>&  cellCentre,
-  const tarch::la::Vector<DIMENSIONS,double>&  cellSize,
+  const tarch::la::Vector<DIMENSIONS,iREAL>&  cellCentre,
+  const tarch::la::Vector<DIMENSIONS,iREAL>&  cellSize,
   int                                       level
 ) {
   logTraceInWith3Arguments( "mergeWithRemoteDataDueToForkOrJoin(...)", localCell, masterOrWorkerCell, fromRank );
@@ -548,8 +548,8 @@ void dem::mappings::MoveParticles::receiveDataFromMaster(
 void dem::mappings::MoveParticles::mergeWithWorker(
   dem::Cell&           localCell, 
   const dem::Cell&     receivedMasterCell,
-  const tarch::la::Vector<DIMENSIONS,double>&  cellCentre,
-  const tarch::la::Vector<DIMENSIONS,double>&  cellSize,
+  const tarch::la::Vector<DIMENSIONS,iREAL>&  cellCentre,
+  const tarch::la::Vector<DIMENSIONS,iREAL>&  cellSize,
   int                                          level
 ) {
   logTraceInWith2Arguments( "mergeWithWorker(...)", localCell.toString(), receivedMasterCell.toString() );
@@ -560,8 +560,8 @@ void dem::mappings::MoveParticles::mergeWithWorker(
 void dem::mappings::MoveParticles::mergeWithWorker(
   dem::Vertex&        localVertex,
   const dem::Vertex&  receivedMasterVertex,
-  const tarch::la::Vector<DIMENSIONS,double>&   x,
-  const tarch::la::Vector<DIMENSIONS,double>&   h,
+  const tarch::la::Vector<DIMENSIONS,iREAL>&   x,
+  const tarch::la::Vector<DIMENSIONS,iREAL>&   h,
   int                                           level
 ) {
   logTraceInWith2Arguments( "mergeWithWorker(...)", localVertex.toString(), receivedMasterVertex.toString() );

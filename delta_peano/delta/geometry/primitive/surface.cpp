@@ -21,9 +21,6 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
-
-#include <stdlib.h>
-#include <assert.h>
 #include <delta/geometry/primitive/surface.h>
 
 void delta::geometry::primitive::surface::generateBoundBox(

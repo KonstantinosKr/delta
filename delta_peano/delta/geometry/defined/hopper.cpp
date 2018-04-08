@@ -23,9 +23,6 @@
  */
 
 #include <delta/geometry/defined/hopper.h>
-#include "delta/geometry/operators/hull/hull.h"
-#include "delta/geometry/operators/hull/alg.h"
-#include "delta/geometry/operators/triangle.h"
 
 void delta::geometry::defined::generateInnerHopper(
 		iREAL  center[3],
@@ -1063,7 +1060,7 @@ delta::geometry::mesh::Mesh *delta::geometry::defined::generateHopper(
     iREAL  height,
     iREAL  hatch,
     int    meshRefinement,
-    double gridH
+    iREAL gridH
 )
 {
   std::vector<iREAL>	xCoordinates;

@@ -24,7 +24,6 @@
 
 
 #include <delta/contact/detection/tune.h>
-#include <map>
 
 void delta::contact::detection::penaltyTune(
   int             numberOfTrianglesOfGeometryA,
@@ -48,8 +47,8 @@ void delta::contact::detection::penaltyTune(
   int eps_lo_pow = -20;
   int eps_hi_pow = 20;
 
-  std::map<double,int> epsToDSuccessCount;
-  std::map<double,int> epsToPSuccessCount;
+  std::map<iREAL,int> epsToDSuccessCount;
+  std::map<iREAL,int> epsToPSuccessCount;
 
   for (int ie = eps_lo_pow; ie<=eps_hi_pow; ie++)
   {
@@ -69,13 +68,13 @@ void delta::contact::detection::penaltyTune(
       int pointCounter= 0;
       int dinstanceCounter= 0;
 
-      std::vector<double> epsilonHistory;
+      std::vector<iREAL> epsilonHistory;
 
-      std::vector<double> rpointDifference;
-      std::vector<double> rdistanceDifference;
+      std::vector<iREAL> rpointDifference;
+      std::vector<iREAL> rdistanceDifference;
 
-      std::vector<double> pointFail;
-      std::vector<double> distanceFail;
+      std::vector<iREAL> pointFail;
+      std::vector<iREAL> distanceFail;
 
       for (int ie = eps_lo_pow; ie<=eps_hi_pow; ie++)
       {
@@ -211,7 +210,7 @@ void delta::contact::detection::computeHistogram(std::vector<triangleSetStat> pa
   {
     std::vector<iREAL> eps = triangleSet.epsilonHistory;
     //std::array<do = new int[eps.size()];
-    for(std::vector<double>::size_type i; i != eps; i++)
+    for(std::vector<iREAL>::size_type i; i != eps; i++)
     {
       //eps =
     }

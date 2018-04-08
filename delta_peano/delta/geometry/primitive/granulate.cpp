@@ -1,10 +1,5 @@
 #include <delta/geometry/primitive/granulate.h>
 
-
-#include "delta/geometry/operators/hull/hull.h"
-#include "delta/geometry/operators/hull/alg.h"
-#include "delta/core/read.h"
-
 void delta::geometry::primitive::granulate::generateParticle(
   iREAL  center[2],
   iREAL  h,

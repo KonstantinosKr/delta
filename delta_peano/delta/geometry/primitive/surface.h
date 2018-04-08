@@ -28,10 +28,11 @@
 
 #include <vector>
 #include <array>
-
-#include "delta/geometry/operators/hull/hull.h"
-#include "delta/geometry/operators/hull/alg.h"
-#include "delta/geometry/primitive/surface.h"
+#include <stdlib.h>
+#include <assert.h>
+#include <delta/geometry/operators/hull/hull.h>
+#include <delta/geometry/operators/hull/alg.h>
+#include <delta/geometry/primitive/surface.h>
 
 namespace delta {
   namespace geometry {

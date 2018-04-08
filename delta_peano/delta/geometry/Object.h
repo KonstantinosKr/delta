@@ -28,10 +28,8 @@
 #include <vector>
 #include <array>
 #include <string>
-#include <stdio.h>
+#include <delta/geometry/mesh/Mesh.h>
 #include <delta/geometry/material.h>
-#include <delta/geometry/mesh/mesh.h>
-#include "delta/core/algo.h"
 
 namespace delta {
   namespace geometry {
@@ -43,84 +41,85 @@ class delta::geometry::Object
 {
   public:
 	Object();
+
 	Object(
 	    std::string                   			component,
 	    int                           			particleID,
-	    std::array<double, 3>         			centre,
+	    std::array<iREAL, 3>         			centre,
 	    delta::geometry::material::MaterialType 	material,
 	    bool                          			isObstacle,
 	    bool                          			isFriction,
 		iREAL 									epsilon,
-		std::array<double, 3> linear,
-		std::array<double, 3> angular);
+		std::array<iREAL, 3> linear,
+		std::array<iREAL, 3> angular);
 
-    void generateSphere(double  rad);
+    void generateSphere(iREAL  rad);
 
     void generateMesh(
-        double wx,
-        double wy,
-        double wz,
-        double rx,
-        double ry,
-        double rz,
+        iREAL wx,
+        iREAL wy,
+        iREAL wz,
+        iREAL rx,
+        iREAL ry,
+        iREAL rz,
         int mesh,
-        double rad);
+        iREAL rad);
 
     std::string getComponent();
     void setParticleID(int id);
 
-    std::vector<double> getxCoordinates();
-    std::vector<double> getyCoordinates();
-    std::vector<double> getzCoordinates();
+    std::vector<iREAL> getxCoordinates();
+    std::vector<iREAL> getyCoordinates();
+    std::vector<iREAL> getzCoordinates();
 
     int getParticleID();
 
-    std::array<double, 3> getCentre();
-    void setCentre(double centre[3]);
-    double getRad();
-    void setRad(double rad);
+    std::array<iREAL, 3> getCentre();
+    void setCentre(iREAL centre[3]);
+    iREAL getRad();
+    void setRad(iREAL rad);
 
-    double getMass();
-    void setMass(double mass);
+    iREAL getMass();
+    void setMass(iREAL mass);
 
-    double getEpsilon();
-    void setEpsilon(double epsilon);
+    iREAL getEpsilon();
+    void setEpsilon(iREAL epsilon);
 
     delta::geometry::material::MaterialType getMaterial();
     bool getIsObstacle();
     bool getIsFriction();
 
-    std::array<double, 9> getInertia();
-    void setInertia(double inertia[9]);
+    std::array<iREAL, 9> getInertia();
+    void setInertia(iREAL inertia[9]);
 
-    std::array<double, 9> getInverse();
-    void setInverse(double inverse[9]);
+    std::array<iREAL, 9> getInverse();
+    void setInverse(iREAL inverse[9]);
 
-    std::array<double, 3> getxyzDimensions();
-    std::array<double, 3> getCentreOfMass();
-    void setCentreOfMass(double centreOfMass[3]);
+    std::array<iREAL, 3> getxyzDimensions();
+    std::array<iREAL, 3> getCentreOfMass();
+    void setCentreOfMass(iREAL centreOfMass[3]);
 
-    void setLinearVelocity(std::array<double, 3>  linearVelocity);
-    void setAngularVelocity(std::array<double, 3>  angularVelocity);
+    void setLinearVelocity(std::array<iREAL, 3>  linearVelocity);
+    void setAngularVelocity(std::array<iREAL, 3>  angularVelocity);
 
-    std::array<double, 3> getLinearVelocity();
-    std::array<double, 3> getAngularVelocity();
+    std::array<iREAL, 3> getLinearVelocity();
+    std::array<iREAL, 3> getAngularVelocity();
 
     delta::geometry::mesh::Mesh getMesh();
     void setMesh(
-        std::vector<double> xCoordinates,
-        std::vector<double> yCoordinates,
-        std::vector<double> zCoordinates);
+        std::vector<iREAL> xCoordinates,
+        std::vector<iREAL> yCoordinates,
+        std::vector<iREAL> zCoordinates);
     void setMesh(delta::geometry::mesh::Mesh& mesh);
 
-    double getMinX();
-    double getMaxX();
+    iREAL getMinX();
+    iREAL getMaxX();
 
-    double getMinY();
-    double getMaxY();
+    iREAL getMinY();
+    iREAL getMaxY();
 
-    double getMinZ();
-    double getMaxZ();
+    iREAL getMinZ();
+    iREAL getMaxZ();
 
     iREAL computeVolume();
 
@@ -143,39 +142,42 @@ class delta::geometry::Object
   private:
     std::string           _component;
     int                   _particleID;
-    std::array<double, 3> _centre;
-    double                _rad;
-    double                _mass;
-    double 				 _epsilon;
+    std::array<iREAL, 3> _centre;
+    iREAL                _rad;
+
+    iREAL				 _haloDiameter;
+    iREAL				 _diameter;
+    iREAL                _mass;
+    iREAL 				 _epsilon;
 
 	delta::geometry::mesh::Mesh	*_mesh;
 
-    std::vector<double>   _xCoordinates;
-    std::vector<double>   _yCoordinates;
-    std::vector<double>   _zCoordinates;
+    std::vector<iREAL>   _xCoordinates;
+    std::vector<iREAL>   _yCoordinates;
+    std::vector<iREAL>   _zCoordinates;
 
-    std::array<double, 3> _linearVelocity;
-    std::array<double, 3> _angularVelocity;
+    std::array<iREAL, 3> _linearVelocity;
+    std::array<iREAL, 3> _angularVelocity;
 
     delta::geometry::material::MaterialType _material;
 
     bool                  _isObstacle;
     bool                  _isFriction;
 
-    std::array<double, 3> _xyzDimensions;
-    std::array<double, 3> _centreOfMass;
-    std::array<double, 9> _inertia;
-    std::array<double, 9> _inverse;
+    std::array<iREAL, 3> _xyzDimensions;
+    std::array<iREAL, 3> _centreOfMass;
+    std::array<iREAL, 9> _inertia;
+    std::array<iREAL, 9> _inverse;
 
     //dimensions
-    double                _wx;
-    double                _wy;
-    double                _wz;
+    iREAL                _wx;
+    iREAL                _wy;
+    iREAL                _wz;
 
     //rotational configuration 0-1
-    double                _rx;
-    double                _ry;
-    double                _rz;
+    iREAL                _rx;
+    iREAL                _ry;
+    iREAL                _rz;
 
     iREAL simplex_J (iREAL *a, iREAL *b, iREAL *c, iREAL *d);
 };

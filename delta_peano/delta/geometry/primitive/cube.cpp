@@ -1,12 +1,4 @@
-#include <cmath>
-#include <stdlib.h>
-#include <assert.h>
 #include <delta/geometry/primitive/cube.h>
-
-
-#include "delta/geometry/operators/hull/hull.h"
-#include "delta/geometry/operators/hull/alg.h"
-#include "delta/geometry/operators/triangle.h"
 
 void delta::geometry::primitive::cube::generateSquare(
   iREAL center[2],
@@ -604,14 +596,14 @@ delta::geometry::mesh::Mesh *delta::geometry::primitive::cube::generateHullCube(
 }
 
 delta::geometry::mesh::Mesh *delta::geometry::primitive::cube::generateHullCube(
-        iREAL  center[3],
+        iREAL center[3],
         iREAL x,
         iREAL y,
         iREAL z,
         iREAL alphaX,
         iREAL alphaY,
         iREAL alphaZ,
-        int    meshmultiplier)
+        int   meshmultiplier)
 {
   std::vector<iREAL>	xCoordinates;
   std::vector<iREAL>	yCoordinates;

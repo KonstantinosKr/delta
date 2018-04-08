@@ -164,23 +164,23 @@
             const int Attributes = 25;
             #endif
             MPI_Datatype subtypes[Attributes] = {
-                 MPI_DOUBLE		 //numberOfContactPoints
-               , MPI_DOUBLE		 //numberOfParticleReassignments
-               , MPI_DOUBLE		 //numberOfTriangleComparisons
-               , MPI_DOUBLE		 //numberOfParticleComparisons
+                 MPI_double		 //numberOfContactPoints
+               , MPI_double		 //numberOfParticleReassignments
+               , MPI_double		 //numberOfTriangleComparisons
+               , MPI_double		 //numberOfParticleComparisons
                , MPI_CXX_BOOL		 //adaptiveStepSize
-               , MPI_DOUBLE		 //timeStepSize
+               , MPI_double		 //timeStepSize
                , MPI_INT		 //timeStep
-               , MPI_DOUBLE		 //currentTime
-               , MPI_DOUBLE		 //stepIncrement
-               , MPI_DOUBLE		 //twoParticlesAreClose
+               , MPI_double		 //currentTime
+               , MPI_double		 //stepIncrement
+               , MPI_double		 //twoParticlesAreClose
                , MPI_CXX_BOOL		 //twoParticlesSeparate
                , MPI_INT		 //numberOfParticles
                , MPI_INT		 //numberOfObstacles
-               , MPI_DOUBLE		 //prescribedMinimumMeshWidth
-               , MPI_DOUBLE		 //prescribedMaximumMeshWidth
-               , MPI_DOUBLE		 //maxVelocityApproach
-               , MPI_DOUBLE		 //maxVelocityTravel
+               , MPI_double		 //prescribedMinimumMeshWidth
+               , MPI_double		 //prescribedMaximumMeshWidth
+               , MPI_double		 //maxVelocityApproach
+               , MPI_double		 //maxVelocityTravel
                , MPI_CXX_BOOL		 //hasRefined
                , MPI_CXX_BOOL		 //hasTriggeredRefinementForNextIteration
                , MPI_CXX_BOOL		 //hasErased
@@ -394,23 +394,23 @@
             const int Attributes = 25;
             #endif
             MPI_Datatype subtypes[Attributes] = {
-                 MPI_DOUBLE		 //numberOfContactPoints
-               , MPI_DOUBLE		 //numberOfParticleReassignments
-               , MPI_DOUBLE		 //numberOfTriangleComparisons
-               , MPI_DOUBLE		 //numberOfParticleComparisons
+                 MPI_double		 //numberOfContactPoints
+               , MPI_double		 //numberOfParticleReassignments
+               , MPI_double		 //numberOfTriangleComparisons
+               , MPI_double		 //numberOfParticleComparisons
                , MPI_CXX_BOOL		 //adaptiveStepSize
-               , MPI_DOUBLE		 //timeStepSize
+               , MPI_double		 //timeStepSize
                , MPI_INT		 //timeStep
-               , MPI_DOUBLE		 //currentTime
-               , MPI_DOUBLE		 //stepIncrement
-               , MPI_DOUBLE		 //twoParticlesAreClose
+               , MPI_double		 //currentTime
+               , MPI_double		 //stepIncrement
+               , MPI_double		 //twoParticlesAreClose
                , MPI_CXX_BOOL		 //twoParticlesSeparate
                , MPI_INT		 //numberOfParticles
                , MPI_INT		 //numberOfObstacles
-               , MPI_DOUBLE		 //prescribedMinimumMeshWidth
-               , MPI_DOUBLE		 //prescribedMaximumMeshWidth
-               , MPI_DOUBLE		 //maxVelocityApproach
-               , MPI_DOUBLE		 //maxVelocityTravel
+               , MPI_double		 //prescribedMinimumMeshWidth
+               , MPI_double		 //prescribedMaximumMeshWidth
+               , MPI_double		 //maxVelocityApproach
+               , MPI_double		 //maxVelocityTravel
                , MPI_CXX_BOOL		 //hasRefined
                , MPI_CXX_BOOL		 //hasTriggeredRefinementForNextIteration
                , MPI_CXX_BOOL		 //hasErased
@@ -1045,23 +1045,23 @@
             const int Attributes = 20;
             #endif
             MPI_Datatype subtypes[Attributes] = {
-                 MPI_DOUBLE		 //numberOfContactPoints
-               , MPI_DOUBLE		 //numberOfParticleReassignments
-               , MPI_DOUBLE		 //numberOfTriangleComparisons
-               , MPI_DOUBLE		 //numberOfParticleComparisons
+                 MPI_double		 //numberOfContactPoints
+               , MPI_double		 //numberOfParticleReassignments
+               , MPI_double		 //numberOfTriangleComparisons
+               , MPI_double		 //numberOfParticleComparisons
                , MPI_CXX_BOOL		 //adaptiveStepSize
-               , MPI_DOUBLE		 //timeStepSize
+               , MPI_double		 //timeStepSize
                , MPI_INT		 //timeStep
-               , MPI_DOUBLE		 //currentTime
-               , MPI_DOUBLE		 //stepIncrement
-               , MPI_DOUBLE		 //twoParticlesAreClose
+               , MPI_double		 //currentTime
+               , MPI_double		 //stepIncrement
+               , MPI_double		 //twoParticlesAreClose
                , MPI_CXX_BOOL		 //twoParticlesSeparate
                , MPI_INT		 //numberOfParticles
                , MPI_INT		 //numberOfObstacles
-               , MPI_DOUBLE		 //prescribedMinimumMeshWidth
-               , MPI_DOUBLE		 //prescribedMaximumMeshWidth
-               , MPI_DOUBLE		 //maxVelocityApproach
-               , MPI_DOUBLE		 //maxVelocityTravel
+               , MPI_double		 //prescribedMinimumMeshWidth
+               , MPI_double		 //prescribedMaximumMeshWidth
+               , MPI_double		 //maxVelocityApproach
+               , MPI_double		 //maxVelocityTravel
                , MPI_CXX_BOOL		 //isTraversalInverted
                , MPI_SHORT		 //_packedRecords0
                #ifndef MPI2
@@ -1240,23 +1240,23 @@
             const int Attributes = 20;
             #endif
             MPI_Datatype subtypes[Attributes] = {
-                 MPI_DOUBLE		 //numberOfContactPoints
-               , MPI_DOUBLE		 //numberOfParticleReassignments
-               , MPI_DOUBLE		 //numberOfTriangleComparisons
-               , MPI_DOUBLE		 //numberOfParticleComparisons
+                 MPI_double		 //numberOfContactPoints
+               , MPI_double		 //numberOfParticleReassignments
+               , MPI_double		 //numberOfTriangleComparisons
+               , MPI_double		 //numberOfParticleComparisons
                , MPI_CXX_BOOL		 //adaptiveStepSize
-               , MPI_DOUBLE		 //timeStepSize
+               , MPI_double		 //timeStepSize
                , MPI_INT		 //timeStep
-               , MPI_DOUBLE		 //currentTime
-               , MPI_DOUBLE		 //stepIncrement
-               , MPI_DOUBLE		 //twoParticlesAreClose
+               , MPI_double		 //currentTime
+               , MPI_double		 //stepIncrement
+               , MPI_double		 //twoParticlesAreClose
                , MPI_CXX_BOOL		 //twoParticlesSeparate
                , MPI_INT		 //numberOfParticles
                , MPI_INT		 //numberOfObstacles
-               , MPI_DOUBLE		 //prescribedMinimumMeshWidth
-               , MPI_DOUBLE		 //prescribedMaximumMeshWidth
-               , MPI_DOUBLE		 //maxVelocityApproach
-               , MPI_DOUBLE		 //maxVelocityTravel
+               , MPI_double		 //prescribedMinimumMeshWidth
+               , MPI_double		 //prescribedMaximumMeshWidth
+               , MPI_double		 //maxVelocityApproach
+               , MPI_double		 //maxVelocityTravel
                , MPI_CXX_BOOL		 //isTraversalInverted
                , MPI_SHORT		 //_packedRecords0
                #ifndef MPI2
@@ -1899,35 +1899,35 @@
                const int Attributes = 41;
                #endif
                MPI_Datatype subtypes[Attributes] = {
-                    MPI_DOUBLE		 //numberOfContactPoints
-                  , MPI_DOUBLE		 //numberOfParticleReassignments
-                  , MPI_DOUBLE		 //numberOfTriangleComparisons
-                  , MPI_DOUBLE		 //numberOfParticleComparisons
+                    MPI_double		 //numberOfContactPoints
+                  , MPI_double		 //numberOfParticleReassignments
+                  , MPI_double		 //numberOfTriangleComparisons
+                  , MPI_double		 //numberOfParticleComparisons
                   , MPI_CXX_BOOL		 //adaptiveStepSize
-                  , MPI_DOUBLE		 //timeStepSize
+                  , MPI_double		 //timeStepSize
                   , MPI_INT		 //timeStep
-                  , MPI_DOUBLE		 //currentTime
-                  , MPI_DOUBLE		 //stepIncrement
-                  , MPI_DOUBLE		 //twoParticlesAreClose
+                  , MPI_double		 //currentTime
+                  , MPI_double		 //stepIncrement
+                  , MPI_double		 //twoParticlesAreClose
                   , MPI_CXX_BOOL		 //twoParticlesSeparate
                   , MPI_INT		 //numberOfParticles
                   , MPI_INT		 //numberOfObstacles
-                  , MPI_DOUBLE		 //prescribedMinimumMeshWidth
-                  , MPI_DOUBLE		 //prescribedMaximumMeshWidth
-                  , MPI_DOUBLE		 //maxVelocityApproach
-                  , MPI_DOUBLE		 //maxVelocityTravel
-                  , MPI_DOUBLE		 //minMeshWidth
-                  , MPI_DOUBLE		 //maxMeshWidth
-                  , MPI_DOUBLE		 //numberOfInnerVertices
-                  , MPI_DOUBLE		 //numberOfBoundaryVertices
-                  , MPI_DOUBLE		 //numberOfOuterVertices
-                  , MPI_DOUBLE		 //numberOfInnerCells
-                  , MPI_DOUBLE		 //numberOfOuterCells
-                  , MPI_DOUBLE		 //numberOfInnerLeafVertices
-                  , MPI_DOUBLE		 //numberOfBoundaryLeafVertices
-                  , MPI_DOUBLE		 //numberOfOuterLeafVertices
-                  , MPI_DOUBLE		 //numberOfInnerLeafCells
-                  , MPI_DOUBLE		 //numberOfOuterLeafCells
+                  , MPI_double		 //prescribedMinimumMeshWidth
+                  , MPI_double		 //prescribedMaximumMeshWidth
+                  , MPI_double		 //maxVelocityApproach
+                  , MPI_double		 //maxVelocityTravel
+                  , MPI_double		 //minMeshWidth
+                  , MPI_double		 //maxMeshWidth
+                  , MPI_double		 //numberOfInnerVertices
+                  , MPI_double		 //numberOfBoundaryVertices
+                  , MPI_double		 //numberOfOuterVertices
+                  , MPI_double		 //numberOfInnerCells
+                  , MPI_double		 //numberOfOuterCells
+                  , MPI_double		 //numberOfInnerLeafVertices
+                  , MPI_double		 //numberOfBoundaryLeafVertices
+                  , MPI_double		 //numberOfOuterLeafVertices
+                  , MPI_double		 //numberOfInnerLeafCells
+                  , MPI_double		 //numberOfOuterLeafCells
                   , MPI_INT		 //maxLevel
                   , MPI_CXX_BOOL		 //hasRefined
                   , MPI_CXX_BOOL		 //hasTriggeredRefinementForNextIteration
@@ -2241,35 +2241,35 @@
                const int Attributes = 41;
                #endif
                MPI_Datatype subtypes[Attributes] = {
-                    MPI_DOUBLE		 //numberOfContactPoints
-                  , MPI_DOUBLE		 //numberOfParticleReassignments
-                  , MPI_DOUBLE		 //numberOfTriangleComparisons
-                  , MPI_DOUBLE		 //numberOfParticleComparisons
+                    MPI_double		 //numberOfContactPoints
+                  , MPI_double		 //numberOfParticleReassignments
+                  , MPI_double		 //numberOfTriangleComparisons
+                  , MPI_double		 //numberOfParticleComparisons
                   , MPI_CXX_BOOL		 //adaptiveStepSize
-                  , MPI_DOUBLE		 //timeStepSize
+                  , MPI_double		 //timeStepSize
                   , MPI_INT		 //timeStep
-                  , MPI_DOUBLE		 //currentTime
-                  , MPI_DOUBLE		 //stepIncrement
-                  , MPI_DOUBLE		 //twoParticlesAreClose
+                  , MPI_double		 //currentTime
+                  , MPI_double		 //stepIncrement
+                  , MPI_double		 //twoParticlesAreClose
                   , MPI_CXX_BOOL		 //twoParticlesSeparate
                   , MPI_INT		 //numberOfParticles
                   , MPI_INT		 //numberOfObstacles
-                  , MPI_DOUBLE		 //prescribedMinimumMeshWidth
-                  , MPI_DOUBLE		 //prescribedMaximumMeshWidth
-                  , MPI_DOUBLE		 //maxVelocityApproach
-                  , MPI_DOUBLE		 //maxVelocityTravel
-                  , MPI_DOUBLE		 //minMeshWidth
-                  , MPI_DOUBLE		 //maxMeshWidth
-                  , MPI_DOUBLE		 //numberOfInnerVertices
-                  , MPI_DOUBLE		 //numberOfBoundaryVertices
-                  , MPI_DOUBLE		 //numberOfOuterVertices
-                  , MPI_DOUBLE		 //numberOfInnerCells
-                  , MPI_DOUBLE		 //numberOfOuterCells
-                  , MPI_DOUBLE		 //numberOfInnerLeafVertices
-                  , MPI_DOUBLE		 //numberOfBoundaryLeafVertices
-                  , MPI_DOUBLE		 //numberOfOuterLeafVertices
-                  , MPI_DOUBLE		 //numberOfInnerLeafCells
-                  , MPI_DOUBLE		 //numberOfOuterLeafCells
+                  , MPI_double		 //prescribedMinimumMeshWidth
+                  , MPI_double		 //prescribedMaximumMeshWidth
+                  , MPI_double		 //maxVelocityApproach
+                  , MPI_double		 //maxVelocityTravel
+                  , MPI_double		 //minMeshWidth
+                  , MPI_double		 //maxMeshWidth
+                  , MPI_double		 //numberOfInnerVertices
+                  , MPI_double		 //numberOfBoundaryVertices
+                  , MPI_double		 //numberOfOuterVertices
+                  , MPI_double		 //numberOfInnerCells
+                  , MPI_double		 //numberOfOuterCells
+                  , MPI_double		 //numberOfInnerLeafVertices
+                  , MPI_double		 //numberOfBoundaryLeafVertices
+                  , MPI_double		 //numberOfOuterLeafVertices
+                  , MPI_double		 //numberOfInnerLeafCells
+                  , MPI_double		 //numberOfOuterLeafCells
                   , MPI_INT		 //maxLevel
                   , MPI_CXX_BOOL		 //hasRefined
                   , MPI_CXX_BOOL		 //hasTriggeredRefinementForNextIteration
@@ -3076,35 +3076,35 @@
                const int Attributes = 33;
                #endif
                MPI_Datatype subtypes[Attributes] = {
-                    MPI_DOUBLE		 //numberOfContactPoints
-                  , MPI_DOUBLE		 //numberOfParticleReassignments
-                  , MPI_DOUBLE		 //numberOfTriangleComparisons
-                  , MPI_DOUBLE		 //numberOfParticleComparisons
+                    MPI_double		 //numberOfContactPoints
+                  , MPI_double		 //numberOfParticleReassignments
+                  , MPI_double		 //numberOfTriangleComparisons
+                  , MPI_double		 //numberOfParticleComparisons
                   , MPI_CXX_BOOL		 //adaptiveStepSize
-                  , MPI_DOUBLE		 //timeStepSize
+                  , MPI_double		 //timeStepSize
                   , MPI_INT		 //timeStep
-                  , MPI_DOUBLE		 //currentTime
-                  , MPI_DOUBLE		 //stepIncrement
-                  , MPI_DOUBLE		 //twoParticlesAreClose
+                  , MPI_double		 //currentTime
+                  , MPI_double		 //stepIncrement
+                  , MPI_double		 //twoParticlesAreClose
                   , MPI_CXX_BOOL		 //twoParticlesSeparate
                   , MPI_INT		 //numberOfParticles
                   , MPI_INT		 //numberOfObstacles
-                  , MPI_DOUBLE		 //prescribedMinimumMeshWidth
-                  , MPI_DOUBLE		 //prescribedMaximumMeshWidth
-                  , MPI_DOUBLE		 //maxVelocityApproach
-                  , MPI_DOUBLE		 //maxVelocityTravel
-                  , MPI_DOUBLE		 //minMeshWidth
-                  , MPI_DOUBLE		 //maxMeshWidth
-                  , MPI_DOUBLE		 //numberOfInnerVertices
-                  , MPI_DOUBLE		 //numberOfBoundaryVertices
-                  , MPI_DOUBLE		 //numberOfOuterVertices
-                  , MPI_DOUBLE		 //numberOfInnerCells
-                  , MPI_DOUBLE		 //numberOfOuterCells
-                  , MPI_DOUBLE		 //numberOfInnerLeafVertices
-                  , MPI_DOUBLE		 //numberOfBoundaryLeafVertices
-                  , MPI_DOUBLE		 //numberOfOuterLeafVertices
-                  , MPI_DOUBLE		 //numberOfInnerLeafCells
-                  , MPI_DOUBLE		 //numberOfOuterLeafCells
+                  , MPI_double		 //prescribedMinimumMeshWidth
+                  , MPI_double		 //prescribedMaximumMeshWidth
+                  , MPI_double		 //maxVelocityApproach
+                  , MPI_double		 //maxVelocityTravel
+                  , MPI_double		 //minMeshWidth
+                  , MPI_double		 //maxMeshWidth
+                  , MPI_double		 //numberOfInnerVertices
+                  , MPI_double		 //numberOfBoundaryVertices
+                  , MPI_double		 //numberOfOuterVertices
+                  , MPI_double		 //numberOfInnerCells
+                  , MPI_double		 //numberOfOuterCells
+                  , MPI_double		 //numberOfInnerLeafVertices
+                  , MPI_double		 //numberOfBoundaryLeafVertices
+                  , MPI_double		 //numberOfOuterLeafVertices
+                  , MPI_double		 //numberOfInnerLeafCells
+                  , MPI_double		 //numberOfOuterLeafCells
                   , MPI_INT		 //maxLevel
                   , MPI_CXX_BOOL		 //isTraversalInverted
                   , MPI_SHORT		 //_packedRecords0
@@ -3362,35 +3362,35 @@
                const int Attributes = 33;
                #endif
                MPI_Datatype subtypes[Attributes] = {
-                    MPI_DOUBLE		 //numberOfContactPoints
-                  , MPI_DOUBLE		 //numberOfParticleReassignments
-                  , MPI_DOUBLE		 //numberOfTriangleComparisons
-                  , MPI_DOUBLE		 //numberOfParticleComparisons
+                    MPI_double		 //numberOfContactPoints
+                  , MPI_double		 //numberOfParticleReassignments
+                  , MPI_double		 //numberOfTriangleComparisons
+                  , MPI_double		 //numberOfParticleComparisons
                   , MPI_CXX_BOOL		 //adaptiveStepSize
-                  , MPI_DOUBLE		 //timeStepSize
+                  , MPI_double		 //timeStepSize
                   , MPI_INT		 //timeStep
-                  , MPI_DOUBLE		 //currentTime
-                  , MPI_DOUBLE		 //stepIncrement
-                  , MPI_DOUBLE		 //twoParticlesAreClose
+                  , MPI_double		 //currentTime
+                  , MPI_double		 //stepIncrement
+                  , MPI_double		 //twoParticlesAreClose
                   , MPI_CXX_BOOL		 //twoParticlesSeparate
                   , MPI_INT		 //numberOfParticles
                   , MPI_INT		 //numberOfObstacles
-                  , MPI_DOUBLE		 //prescribedMinimumMeshWidth
-                  , MPI_DOUBLE		 //prescribedMaximumMeshWidth
-                  , MPI_DOUBLE		 //maxVelocityApproach
-                  , MPI_DOUBLE		 //maxVelocityTravel
-                  , MPI_DOUBLE		 //minMeshWidth
-                  , MPI_DOUBLE		 //maxMeshWidth
-                  , MPI_DOUBLE		 //numberOfInnerVertices
-                  , MPI_DOUBLE		 //numberOfBoundaryVertices
-                  , MPI_DOUBLE		 //numberOfOuterVertices
-                  , MPI_DOUBLE		 //numberOfInnerCells
-                  , MPI_DOUBLE		 //numberOfOuterCells
-                  , MPI_DOUBLE		 //numberOfInnerLeafVertices
-                  , MPI_DOUBLE		 //numberOfBoundaryLeafVertices
-                  , MPI_DOUBLE		 //numberOfOuterLeafVertices
-                  , MPI_DOUBLE		 //numberOfInnerLeafCells
-                  , MPI_DOUBLE		 //numberOfOuterLeafCells
+                  , MPI_double		 //prescribedMinimumMeshWidth
+                  , MPI_double		 //prescribedMaximumMeshWidth
+                  , MPI_double		 //maxVelocityApproach
+                  , MPI_double		 //maxVelocityTravel
+                  , MPI_double		 //minMeshWidth
+                  , MPI_double		 //maxMeshWidth
+                  , MPI_double		 //numberOfInnerVertices
+                  , MPI_double		 //numberOfBoundaryVertices
+                  , MPI_double		 //numberOfOuterVertices
+                  , MPI_double		 //numberOfInnerCells
+                  , MPI_double		 //numberOfOuterCells
+                  , MPI_double		 //numberOfInnerLeafVertices
+                  , MPI_double		 //numberOfBoundaryLeafVertices
+                  , MPI_double		 //numberOfOuterLeafVertices
+                  , MPI_double		 //numberOfInnerLeafCells
+                  , MPI_double		 //numberOfOuterLeafCells
                   , MPI_INT		 //maxLevel
                   , MPI_CXX_BOOL		 //isTraversalInverted
                   , MPI_SHORT		 //_packedRecords0
@@ -4101,35 +4101,35 @@
                const int Attributes = 38;
                #endif
                MPI_Datatype subtypes[Attributes] = {
-                    MPI_DOUBLE		 //numberOfContactPoints
-                  , MPI_DOUBLE		 //numberOfParticleReassignments
-                  , MPI_DOUBLE		 //numberOfTriangleComparisons
-                  , MPI_DOUBLE		 //numberOfParticleComparisons
+                    MPI_double		 //numberOfContactPoints
+                  , MPI_double		 //numberOfParticleReassignments
+                  , MPI_double		 //numberOfTriangleComparisons
+                  , MPI_double		 //numberOfParticleComparisons
                   , MPI_CXX_BOOL		 //adaptiveStepSize
-                  , MPI_DOUBLE		 //timeStepSize
+                  , MPI_double		 //timeStepSize
                   , MPI_INT		 //timeStep
-                  , MPI_DOUBLE		 //currentTime
-                  , MPI_DOUBLE		 //stepIncrement
-                  , MPI_DOUBLE		 //twoParticlesAreClose
+                  , MPI_double		 //currentTime
+                  , MPI_double		 //stepIncrement
+                  , MPI_double		 //twoParticlesAreClose
                   , MPI_CXX_BOOL		 //twoParticlesSeparate
                   , MPI_INT		 //numberOfParticles
                   , MPI_INT		 //numberOfObstacles
-                  , MPI_DOUBLE		 //prescribedMinimumMeshWidth
-                  , MPI_DOUBLE		 //prescribedMaximumMeshWidth
-                  , MPI_DOUBLE		 //maxVelocityApproach
-                  , MPI_DOUBLE		 //maxVelocityTravel
-                  , MPI_DOUBLE		 //minMeshWidth
-                  , MPI_DOUBLE		 //maxMeshWidth
-                  , MPI_DOUBLE		 //numberOfInnerVertices
-                  , MPI_DOUBLE		 //numberOfBoundaryVertices
-                  , MPI_DOUBLE		 //numberOfOuterVertices
-                  , MPI_DOUBLE		 //numberOfInnerCells
-                  , MPI_DOUBLE		 //numberOfOuterCells
-                  , MPI_DOUBLE		 //numberOfInnerLeafVertices
-                  , MPI_DOUBLE		 //numberOfBoundaryLeafVertices
-                  , MPI_DOUBLE		 //numberOfOuterLeafVertices
-                  , MPI_DOUBLE		 //numberOfInnerLeafCells
-                  , MPI_DOUBLE		 //numberOfOuterLeafCells
+                  , MPI_double		 //prescribedMinimumMeshWidth
+                  , MPI_double		 //prescribedMaximumMeshWidth
+                  , MPI_double		 //maxVelocityApproach
+                  , MPI_double		 //maxVelocityTravel
+                  , MPI_double		 //minMeshWidth
+                  , MPI_double		 //maxMeshWidth
+                  , MPI_double		 //numberOfInnerVertices
+                  , MPI_double		 //numberOfBoundaryVertices
+                  , MPI_double		 //numberOfOuterVertices
+                  , MPI_double		 //numberOfInnerCells
+                  , MPI_double		 //numberOfOuterCells
+                  , MPI_double		 //numberOfInnerLeafVertices
+                  , MPI_double		 //numberOfBoundaryLeafVertices
+                  , MPI_double		 //numberOfOuterLeafVertices
+                  , MPI_double		 //numberOfInnerLeafCells
+                  , MPI_double		 //numberOfOuterLeafCells
                   , MPI_INT		 //maxLevel
                   , MPI_CXX_BOOL		 //hasRefined
                   , MPI_CXX_BOOL		 //hasTriggeredRefinementForNextIteration
@@ -4422,35 +4422,35 @@
                const int Attributes = 38;
                #endif
                MPI_Datatype subtypes[Attributes] = {
-                    MPI_DOUBLE		 //numberOfContactPoints
-                  , MPI_DOUBLE		 //numberOfParticleReassignments
-                  , MPI_DOUBLE		 //numberOfTriangleComparisons
-                  , MPI_DOUBLE		 //numberOfParticleComparisons
+                    MPI_double		 //numberOfContactPoints
+                  , MPI_double		 //numberOfParticleReassignments
+                  , MPI_double		 //numberOfTriangleComparisons
+                  , MPI_double		 //numberOfParticleComparisons
                   , MPI_CXX_BOOL		 //adaptiveStepSize
-                  , MPI_DOUBLE		 //timeStepSize
+                  , MPI_double		 //timeStepSize
                   , MPI_INT		 //timeStep
-                  , MPI_DOUBLE		 //currentTime
-                  , MPI_DOUBLE		 //stepIncrement
-                  , MPI_DOUBLE		 //twoParticlesAreClose
+                  , MPI_double		 //currentTime
+                  , MPI_double		 //stepIncrement
+                  , MPI_double		 //twoParticlesAreClose
                   , MPI_CXX_BOOL		 //twoParticlesSeparate
                   , MPI_INT		 //numberOfParticles
                   , MPI_INT		 //numberOfObstacles
-                  , MPI_DOUBLE		 //prescribedMinimumMeshWidth
-                  , MPI_DOUBLE		 //prescribedMaximumMeshWidth
-                  , MPI_DOUBLE		 //maxVelocityApproach
-                  , MPI_DOUBLE		 //maxVelocityTravel
-                  , MPI_DOUBLE		 //minMeshWidth
-                  , MPI_DOUBLE		 //maxMeshWidth
-                  , MPI_DOUBLE		 //numberOfInnerVertices
-                  , MPI_DOUBLE		 //numberOfBoundaryVertices
-                  , MPI_DOUBLE		 //numberOfOuterVertices
-                  , MPI_DOUBLE		 //numberOfInnerCells
-                  , MPI_DOUBLE		 //numberOfOuterCells
-                  , MPI_DOUBLE		 //numberOfInnerLeafVertices
-                  , MPI_DOUBLE		 //numberOfBoundaryLeafVertices
-                  , MPI_DOUBLE		 //numberOfOuterLeafVertices
-                  , MPI_DOUBLE		 //numberOfInnerLeafCells
-                  , MPI_DOUBLE		 //numberOfOuterLeafCells
+                  , MPI_double		 //prescribedMinimumMeshWidth
+                  , MPI_double		 //prescribedMaximumMeshWidth
+                  , MPI_double		 //maxVelocityApproach
+                  , MPI_double		 //maxVelocityTravel
+                  , MPI_double		 //minMeshWidth
+                  , MPI_double		 //maxMeshWidth
+                  , MPI_double		 //numberOfInnerVertices
+                  , MPI_double		 //numberOfBoundaryVertices
+                  , MPI_double		 //numberOfOuterVertices
+                  , MPI_double		 //numberOfInnerCells
+                  , MPI_double		 //numberOfOuterCells
+                  , MPI_double		 //numberOfInnerLeafVertices
+                  , MPI_double		 //numberOfBoundaryLeafVertices
+                  , MPI_double		 //numberOfOuterLeafVertices
+                  , MPI_double		 //numberOfInnerLeafCells
+                  , MPI_double		 //numberOfOuterLeafCells
                   , MPI_INT		 //maxLevel
                   , MPI_CXX_BOOL		 //hasRefined
                   , MPI_CXX_BOOL		 //hasTriggeredRefinementForNextIteration
@@ -5224,35 +5224,35 @@
                const int Attributes = 33;
                #endif
                MPI_Datatype subtypes[Attributes] = {
-                    MPI_DOUBLE		 //numberOfContactPoints
-                  , MPI_DOUBLE		 //numberOfParticleReassignments
-                  , MPI_DOUBLE		 //numberOfTriangleComparisons
-                  , MPI_DOUBLE		 //numberOfParticleComparisons
+                    MPI_double		 //numberOfContactPoints
+                  , MPI_double		 //numberOfParticleReassignments
+                  , MPI_double		 //numberOfTriangleComparisons
+                  , MPI_double		 //numberOfParticleComparisons
                   , MPI_CXX_BOOL		 //adaptiveStepSize
-                  , MPI_DOUBLE		 //timeStepSize
+                  , MPI_double		 //timeStepSize
                   , MPI_INT		 //timeStep
-                  , MPI_DOUBLE		 //currentTime
-                  , MPI_DOUBLE		 //stepIncrement
-                  , MPI_DOUBLE		 //twoParticlesAreClose
+                  , MPI_double		 //currentTime
+                  , MPI_double		 //stepIncrement
+                  , MPI_double		 //twoParticlesAreClose
                   , MPI_CXX_BOOL		 //twoParticlesSeparate
                   , MPI_INT		 //numberOfParticles
                   , MPI_INT		 //numberOfObstacles
-                  , MPI_DOUBLE		 //prescribedMinimumMeshWidth
-                  , MPI_DOUBLE		 //prescribedMaximumMeshWidth
-                  , MPI_DOUBLE		 //maxVelocityApproach
-                  , MPI_DOUBLE		 //maxVelocityTravel
-                  , MPI_DOUBLE		 //minMeshWidth
-                  , MPI_DOUBLE		 //maxMeshWidth
-                  , MPI_DOUBLE		 //numberOfInnerVertices
-                  , MPI_DOUBLE		 //numberOfBoundaryVertices
-                  , MPI_DOUBLE		 //numberOfOuterVertices
-                  , MPI_DOUBLE		 //numberOfInnerCells
-                  , MPI_DOUBLE		 //numberOfOuterCells
-                  , MPI_DOUBLE		 //numberOfInnerLeafVertices
-                  , MPI_DOUBLE		 //numberOfBoundaryLeafVertices
-                  , MPI_DOUBLE		 //numberOfOuterLeafVertices
-                  , MPI_DOUBLE		 //numberOfInnerLeafCells
-                  , MPI_DOUBLE		 //numberOfOuterLeafCells
+                  , MPI_double		 //prescribedMinimumMeshWidth
+                  , MPI_double		 //prescribedMaximumMeshWidth
+                  , MPI_double		 //maxVelocityApproach
+                  , MPI_double		 //maxVelocityTravel
+                  , MPI_double		 //minMeshWidth
+                  , MPI_double		 //maxMeshWidth
+                  , MPI_double		 //numberOfInnerVertices
+                  , MPI_double		 //numberOfBoundaryVertices
+                  , MPI_double		 //numberOfOuterVertices
+                  , MPI_double		 //numberOfInnerCells
+                  , MPI_double		 //numberOfOuterCells
+                  , MPI_double		 //numberOfInnerLeafVertices
+                  , MPI_double		 //numberOfBoundaryLeafVertices
+                  , MPI_double		 //numberOfOuterLeafVertices
+                  , MPI_double		 //numberOfInnerLeafCells
+                  , MPI_double		 //numberOfOuterLeafCells
                   , MPI_INT		 //maxLevel
                   , MPI_CXX_BOOL		 //isTraversalInverted
                   , MPI_SHORT		 //_packedRecords0
@@ -5510,35 +5510,35 @@
                const int Attributes = 33;
                #endif
                MPI_Datatype subtypes[Attributes] = {
-                    MPI_DOUBLE		 //numberOfContactPoints
-                  , MPI_DOUBLE		 //numberOfParticleReassignments
-                  , MPI_DOUBLE		 //numberOfTriangleComparisons
-                  , MPI_DOUBLE		 //numberOfParticleComparisons
+                    MPI_double		 //numberOfContactPoints
+                  , MPI_double		 //numberOfParticleReassignments
+                  , MPI_double		 //numberOfTriangleComparisons
+                  , MPI_double		 //numberOfParticleComparisons
                   , MPI_CXX_BOOL		 //adaptiveStepSize
-                  , MPI_DOUBLE		 //timeStepSize
+                  , MPI_double		 //timeStepSize
                   , MPI_INT		 //timeStep
-                  , MPI_DOUBLE		 //currentTime
-                  , MPI_DOUBLE		 //stepIncrement
-                  , MPI_DOUBLE		 //twoParticlesAreClose
+                  , MPI_double		 //currentTime
+                  , MPI_double		 //stepIncrement
+                  , MPI_double		 //twoParticlesAreClose
                   , MPI_CXX_BOOL		 //twoParticlesSeparate
                   , MPI_INT		 //numberOfParticles
                   , MPI_INT		 //numberOfObstacles
-                  , MPI_DOUBLE		 //prescribedMinimumMeshWidth
-                  , MPI_DOUBLE		 //prescribedMaximumMeshWidth
-                  , MPI_DOUBLE		 //maxVelocityApproach
-                  , MPI_DOUBLE		 //maxVelocityTravel
-                  , MPI_DOUBLE		 //minMeshWidth
-                  , MPI_DOUBLE		 //maxMeshWidth
-                  , MPI_DOUBLE		 //numberOfInnerVertices
-                  , MPI_DOUBLE		 //numberOfBoundaryVertices
-                  , MPI_DOUBLE		 //numberOfOuterVertices
-                  , MPI_DOUBLE		 //numberOfInnerCells
-                  , MPI_DOUBLE		 //numberOfOuterCells
-                  , MPI_DOUBLE		 //numberOfInnerLeafVertices
-                  , MPI_DOUBLE		 //numberOfBoundaryLeafVertices
-                  , MPI_DOUBLE		 //numberOfOuterLeafVertices
-                  , MPI_DOUBLE		 //numberOfInnerLeafCells
-                  , MPI_DOUBLE		 //numberOfOuterLeafCells
+                  , MPI_double		 //prescribedMinimumMeshWidth
+                  , MPI_double		 //prescribedMaximumMeshWidth
+                  , MPI_double		 //maxVelocityApproach
+                  , MPI_double		 //maxVelocityTravel
+                  , MPI_double		 //minMeshWidth
+                  , MPI_double		 //maxMeshWidth
+                  , MPI_double		 //numberOfInnerVertices
+                  , MPI_double		 //numberOfBoundaryVertices
+                  , MPI_double		 //numberOfOuterVertices
+                  , MPI_double		 //numberOfInnerCells
+                  , MPI_double		 //numberOfOuterCells
+                  , MPI_double		 //numberOfInnerLeafVertices
+                  , MPI_double		 //numberOfBoundaryLeafVertices
+                  , MPI_double		 //numberOfOuterLeafVertices
+                  , MPI_double		 //numberOfInnerLeafCells
+                  , MPI_double		 //numberOfOuterLeafCells
                   , MPI_INT		 //maxLevel
                   , MPI_CXX_BOOL		 //isTraversalInverted
                   , MPI_SHORT		 //_packedRecords0
@@ -6201,23 +6201,23 @@
                const int Attributes = 28;
                #endif
                MPI_Datatype subtypes[Attributes] = {
-                    MPI_DOUBLE		 //numberOfContactPoints
-                  , MPI_DOUBLE		 //numberOfParticleReassignments
-                  , MPI_DOUBLE		 //numberOfTriangleComparisons
-                  , MPI_DOUBLE		 //numberOfParticleComparisons
+                    MPI_double		 //numberOfContactPoints
+                  , MPI_double		 //numberOfParticleReassignments
+                  , MPI_double		 //numberOfTriangleComparisons
+                  , MPI_double		 //numberOfParticleComparisons
                   , MPI_CXX_BOOL		 //adaptiveStepSize
-                  , MPI_DOUBLE		 //timeStepSize
+                  , MPI_double		 //timeStepSize
                   , MPI_INT		 //timeStep
-                  , MPI_DOUBLE		 //currentTime
-                  , MPI_DOUBLE		 //stepIncrement
-                  , MPI_DOUBLE		 //twoParticlesAreClose
+                  , MPI_double		 //currentTime
+                  , MPI_double		 //stepIncrement
+                  , MPI_double		 //twoParticlesAreClose
                   , MPI_CXX_BOOL		 //twoParticlesSeparate
                   , MPI_INT		 //numberOfParticles
                   , MPI_INT		 //numberOfObstacles
-                  , MPI_DOUBLE		 //prescribedMinimumMeshWidth
-                  , MPI_DOUBLE		 //prescribedMaximumMeshWidth
-                  , MPI_DOUBLE		 //maxVelocityApproach
-                  , MPI_DOUBLE		 //maxVelocityTravel
+                  , MPI_double		 //prescribedMinimumMeshWidth
+                  , MPI_double		 //prescribedMaximumMeshWidth
+                  , MPI_double		 //maxVelocityApproach
+                  , MPI_double		 //maxVelocityTravel
                   , MPI_CXX_BOOL		 //hasRefined
                   , MPI_CXX_BOOL		 //hasTriggeredRefinementForNextIteration
                   , MPI_CXX_BOOL		 //hasErased
@@ -6452,23 +6452,23 @@
                const int Attributes = 28;
                #endif
                MPI_Datatype subtypes[Attributes] = {
-                    MPI_DOUBLE		 //numberOfContactPoints
-                  , MPI_DOUBLE		 //numberOfParticleReassignments
-                  , MPI_DOUBLE		 //numberOfTriangleComparisons
-                  , MPI_DOUBLE		 //numberOfParticleComparisons
+                    MPI_double		 //numberOfContactPoints
+                  , MPI_double		 //numberOfParticleReassignments
+                  , MPI_double		 //numberOfTriangleComparisons
+                  , MPI_double		 //numberOfParticleComparisons
                   , MPI_CXX_BOOL		 //adaptiveStepSize
-                  , MPI_DOUBLE		 //timeStepSize
+                  , MPI_double		 //timeStepSize
                   , MPI_INT		 //timeStep
-                  , MPI_DOUBLE		 //currentTime
-                  , MPI_DOUBLE		 //stepIncrement
-                  , MPI_DOUBLE		 //twoParticlesAreClose
+                  , MPI_double		 //currentTime
+                  , MPI_double		 //stepIncrement
+                  , MPI_double		 //twoParticlesAreClose
                   , MPI_CXX_BOOL		 //twoParticlesSeparate
                   , MPI_INT		 //numberOfParticles
                   , MPI_INT		 //numberOfObstacles
-                  , MPI_DOUBLE		 //prescribedMinimumMeshWidth
-                  , MPI_DOUBLE		 //prescribedMaximumMeshWidth
-                  , MPI_DOUBLE		 //maxVelocityApproach
-                  , MPI_DOUBLE		 //maxVelocityTravel
+                  , MPI_double		 //prescribedMinimumMeshWidth
+                  , MPI_double		 //prescribedMaximumMeshWidth
+                  , MPI_double		 //maxVelocityApproach
+                  , MPI_double		 //maxVelocityTravel
                   , MPI_CXX_BOOL		 //hasRefined
                   , MPI_CXX_BOOL		 //hasTriggeredRefinementForNextIteration
                   , MPI_CXX_BOOL		 //hasErased
@@ -7136,23 +7136,23 @@
                const int Attributes = 20;
                #endif
                MPI_Datatype subtypes[Attributes] = {
-                    MPI_DOUBLE		 //numberOfContactPoints
-                  , MPI_DOUBLE		 //numberOfParticleReassignments
-                  , MPI_DOUBLE		 //numberOfTriangleComparisons
-                  , MPI_DOUBLE		 //numberOfParticleComparisons
+                    MPI_double		 //numberOfContactPoints
+                  , MPI_double		 //numberOfParticleReassignments
+                  , MPI_double		 //numberOfTriangleComparisons
+                  , MPI_double		 //numberOfParticleComparisons
                   , MPI_CXX_BOOL		 //adaptiveStepSize
-                  , MPI_DOUBLE		 //timeStepSize
+                  , MPI_double		 //timeStepSize
                   , MPI_INT		 //timeStep
-                  , MPI_DOUBLE		 //currentTime
-                  , MPI_DOUBLE		 //stepIncrement
-                  , MPI_DOUBLE		 //twoParticlesAreClose
+                  , MPI_double		 //currentTime
+                  , MPI_double		 //stepIncrement
+                  , MPI_double		 //twoParticlesAreClose
                   , MPI_CXX_BOOL		 //twoParticlesSeparate
                   , MPI_INT		 //numberOfParticles
                   , MPI_INT		 //numberOfObstacles
-                  , MPI_DOUBLE		 //prescribedMinimumMeshWidth
-                  , MPI_DOUBLE		 //prescribedMaximumMeshWidth
-                  , MPI_DOUBLE		 //maxVelocityApproach
-                  , MPI_DOUBLE		 //maxVelocityTravel
+                  , MPI_double		 //prescribedMinimumMeshWidth
+                  , MPI_double		 //prescribedMaximumMeshWidth
+                  , MPI_double		 //maxVelocityApproach
+                  , MPI_double		 //maxVelocityTravel
                   , MPI_CXX_BOOL		 //isTraversalInverted
                   , MPI_SHORT		 //_packedRecords0
                   #ifndef MPI2
@@ -7331,23 +7331,23 @@
                const int Attributes = 20;
                #endif
                MPI_Datatype subtypes[Attributes] = {
-                    MPI_DOUBLE		 //numberOfContactPoints
-                  , MPI_DOUBLE		 //numberOfParticleReassignments
-                  , MPI_DOUBLE		 //numberOfTriangleComparisons
-                  , MPI_DOUBLE		 //numberOfParticleComparisons
+                    MPI_double		 //numberOfContactPoints
+                  , MPI_double		 //numberOfParticleReassignments
+                  , MPI_double		 //numberOfTriangleComparisons
+                  , MPI_double		 //numberOfParticleComparisons
                   , MPI_CXX_BOOL		 //adaptiveStepSize
-                  , MPI_DOUBLE		 //timeStepSize
+                  , MPI_double		 //timeStepSize
                   , MPI_INT		 //timeStep
-                  , MPI_DOUBLE		 //currentTime
-                  , MPI_DOUBLE		 //stepIncrement
-                  , MPI_DOUBLE		 //twoParticlesAreClose
+                  , MPI_double		 //currentTime
+                  , MPI_double		 //stepIncrement
+                  , MPI_double		 //twoParticlesAreClose
                   , MPI_CXX_BOOL		 //twoParticlesSeparate
                   , MPI_INT		 //numberOfParticles
                   , MPI_INT		 //numberOfObstacles
-                  , MPI_DOUBLE		 //prescribedMinimumMeshWidth
-                  , MPI_DOUBLE		 //prescribedMaximumMeshWidth
-                  , MPI_DOUBLE		 //maxVelocityApproach
-                  , MPI_DOUBLE		 //maxVelocityTravel
+                  , MPI_double		 //prescribedMinimumMeshWidth
+                  , MPI_double		 //prescribedMaximumMeshWidth
+                  , MPI_double		 //maxVelocityApproach
+                  , MPI_double		 //maxVelocityTravel
                   , MPI_CXX_BOOL		 //isTraversalInverted
                   , MPI_SHORT		 //_packedRecords0
                   #ifndef MPI2
