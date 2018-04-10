@@ -34,27 +34,27 @@ peano::MappingSpecification   dem::mappings::CreateGrid::descendSpecification(in
 	return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidCoarseGridRaces,true);
 }
 
-tarch::logging::Log                   dem::mappings::CreateGrid::_log( "dem::mappings::CreateGrid" );
-dem::mappings::CreateGrid::Scenario   dem::mappings::CreateGrid::_scenario[4];
-dem::mappings::CreateGrid::GridType   dem::mappings::CreateGrid::_gridType;
-iREAL                                dem::mappings::CreateGrid::_maxH;
+tarch::logging::Log                   	dem::mappings::CreateGrid::_log( "dem::mappings::CreateGrid" );
+dem::mappings::CreateGrid::Scenario   	dem::mappings::CreateGrid::_scenario[4];
+dem::mappings::CreateGrid::GridType   	dem::mappings::CreateGrid::_gridType;
+iREAL                                	dem::mappings::CreateGrid::_maxH;
 
-iREAL                                dem::mappings::CreateGrid::_minComputeDomain[3];
-iREAL                                dem::mappings::CreateGrid::_maxComputeDomain[3];
-iREAL                                dem::mappings::CreateGrid::_minParticleDiam;
-iREAL                                dem::mappings::CreateGrid::_maxParticleDiam;
+iREAL                                	dem::mappings::CreateGrid::_minComputeDomain[3];
+iREAL                                	dem::mappings::CreateGrid::_maxComputeDomain[3];
+iREAL                                	dem::mappings::CreateGrid::_minParticleDiam;
+iREAL                                	dem::mappings::CreateGrid::_maxParticleDiam;
 
-iREAL								 dem::mappings::CreateGrid::_epsilon;
-int 								     dem::mappings::CreateGrid::_noPointsPerParticle;
-bool                                  dem::mappings::CreateGrid::_isSphere;
+iREAL								 	dem::mappings::CreateGrid::_epsilon;
+int 								     	dem::mappings::CreateGrid::_noPointsPerParticle;
+bool                                  	dem::mappings::CreateGrid::_isSphere;
 
-std::vector<delta::geometry::Object>     				dem::mappings::CreateGrid::_coarseObjects;
-std::vector<delta::geometry::Object>     				dem::mappings::CreateGrid::_insitufineObjects;
-std::vector<delta::geometry::Object>     				dem::mappings::CreateGrid::_fineObjects;
+std::vector<delta::geometry::Object>     dem::mappings::CreateGrid::_coarseObjects;
+std::vector<delta::geometry::Object>     dem::mappings::CreateGrid::_insitufineObjects;
+std::vector<delta::geometry::Object>     dem::mappings::CreateGrid::_fineObjects;
 
-int                                   dem::mappings::CreateGrid::_numberOfParticles;
-int                                   dem::mappings::CreateGrid::_numberOfTriangles;
-int                                   dem::mappings::CreateGrid::_numberOfObstacles;
+int                                   	dem::mappings::CreateGrid::_numberOfParticles;
+int                                   	dem::mappings::CreateGrid::_numberOfTriangles;
+int                                   	dem::mappings::CreateGrid::_numberOfObstacles;
 
 void dem::mappings::CreateGrid::setScenario(
     Scenario scenario[4],
