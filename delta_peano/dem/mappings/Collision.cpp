@@ -342,225 +342,223 @@ void dem::mappings::Collision::collisionDetection(
         !particleB.getIsObstacle()
       ) {
         newContactPoints = delta::contact::detection::sphereWithBarrierBA(
-              particleB.getCentre(0),
-              particleB.getCentre(1),
-              particleB.getCentre(2),
-              particleB.getDiameter(),
-              particleB.getEpsilon(),
-              particleB.getFriction(),
-              particleB.getGlobalParticleId(),
+							  particleB.getCentre(0),
+							  particleB.getCentre(1),
+							  particleB.getCentre(2),
+							  particleB.getDiameter(),
+							  particleB.getEpsilon(),
+							  particleB.getFriction(),
+							  particleB.getGlobalParticleId(),
 
-              xCoordinatesA,
-              yCoordinatesA,
-              zCoordinatesA,
-              numberOfTrianglesA,
-              particleA.getEpsilon(),
-              particleA.getFriction(),
-              particleA.getGlobalParticleId());
+							  xCoordinatesA,
+							  yCoordinatesA,
+							  zCoordinatesA,
+							  numberOfTrianglesA,
+							  particleA.getEpsilon(),
+							  particleA.getFriction(),
+							  particleA.getGlobalParticleId());
       } else if (
         !particleA.getIsObstacle() &&
          particleB.getIsObstacle()
       ) {
         newContactPoints = delta::contact::detection::sphereWithBarrierAB(
-              particleA.getCentre(0),
-              particleA.getCentre(1),
-              particleA.getCentre(2),
-              particleA.getDiameter(),
-              particleA.getEpsilon(),
-              particleA.getFriction(),
-              particleA.getGlobalParticleId(),
+							  particleA.getCentre(0),
+							  particleA.getCentre(1),
+							  particleA.getCentre(2),
+							  particleA.getDiameter(),
+							  particleA.getEpsilon(),
+							  particleA.getFriction(),
+							  particleA.getGlobalParticleId(),
 
-              xCoordinatesB,
-              yCoordinatesB,
-              zCoordinatesB,
-              numberOfTrianglesB,
-              particleB.getEpsilon(),
-              particleB.getFriction(),
-              particleB.getGlobalParticleId());
+							  xCoordinatesB,
+							  yCoordinatesB,
+							  zCoordinatesB,
+							  numberOfTrianglesB,
+							  particleB.getEpsilon(),
+							  particleB.getFriction(),
+							  particleB.getGlobalParticleId());
       }
       else {
         newContactPoints = delta::contact::detection::sphere(
-            particleA.getCentre(0),
-            particleA.getCentre(1),
-            particleA.getCentre(2),
-            particleA.getDiameter(),
-            particleA.getEpsilon(),
-            particleA.getFriction(),
-            particleA.getGlobalParticleId(),
+							  particleA.getCentre(0),
+							  particleA.getCentre(1),
+							  particleA.getCentre(2),
+							  particleA.getDiameter(),
+							  particleA.getEpsilon(),
+							  particleA.getFriction(),
+							  particleA.getGlobalParticleId(),
 
-            particleB.getCentre(0),
-            particleB.getCentre(1),
-            particleB.getCentre(2),
-            particleB.getDiameter(),
-            particleB.getEpsilon(),
-            particleB.getFriction(),
-            particleB.getGlobalParticleId());
+							  particleB.getCentre(0),
+							  particleB.getCentre(1),
+							  particleB.getCentre(2),
+							  particleB.getDiameter(),
+							  particleB.getEpsilon(),
+							  particleB.getFriction(),
+							  particleB.getGlobalParticleId());
       }
       break;
     case CollisionModel::BruteForce:
 
       newContactPoints = delta::contact::detection::bf(
-        numberOfTrianglesA,
-        xCoordinatesA,
-        yCoordinatesA,
-        zCoordinatesA,
-        particleA.getEpsilon(),
-        particleA.getFriction(),
-        particleA.getGlobalParticleId(),
+							xCoordinatesA,
+							yCoordinatesA,
+							zCoordinatesA,
+							numberOfTrianglesA,
+							particleA.getEpsilon(),
+							particleA.getFriction(),
+							particleA.getGlobalParticleId(),
 
-        numberOfTrianglesB,
-        xCoordinatesB,
-        yCoordinatesB,
-        zCoordinatesB,
-        particleB.getEpsilon(),
-        particleB.getFriction(),
-        particleB.getGlobalParticleId(),
-		_collisionSemaphore);
+							xCoordinatesB,
+							yCoordinatesB,
+							zCoordinatesB,
+							numberOfTrianglesB,
+							particleB.getEpsilon(),
+							particleB.getFriction(),
+							particleB.getGlobalParticleId(),
+							_collisionSemaphore);
 
       break;
     case CollisionModel::Penalty:
 
       newContactPoints = delta::contact::detection::penalty(
-        numberOfTrianglesA,
-        xCoordinatesA,
-        yCoordinatesA,
-        zCoordinatesA,
-        particleA.getEpsilon(),
-        particleA.getFriction(),
-        particleA.getGlobalParticleId(),
+							xCoordinatesA,
+							yCoordinatesA,
+							zCoordinatesA,
+							numberOfTrianglesA,
+							particleA.getEpsilon(),
+							particleA.getFriction(),
+							particleA.getGlobalParticleId(),
 
-        numberOfTrianglesB,
-        xCoordinatesB,
-        yCoordinatesB,
-        zCoordinatesB,
-        particleB.getEpsilon(),
-        particleB.getFriction(),
-        particleB.getGlobalParticleId(),
-		_collisionSemaphore);
+							xCoordinatesB,
+							yCoordinatesB,
+							zCoordinatesB,
+							numberOfTrianglesB,
+							particleB.getEpsilon(),
+							particleB.getFriction(),
+							particleB.getGlobalParticleId(),
+							_collisionSemaphore);
 
       break;
     case CollisionModel::PenaltyStat:
 
       newContactPoints = delta::contact::detection::penaltyStat(
-        numberOfTrianglesA,
-        xCoordinatesA,
-        yCoordinatesA,
-        zCoordinatesA,
-        particleA.getEpsilon(),
-        particleA.getFriction(),
-        particleA.getGlobalParticleId(),
+							xCoordinatesA,
+							yCoordinatesA,
+							zCoordinatesA,
+							numberOfTrianglesA,
+							particleA.getEpsilon(),
+							particleA.getFriction(),
+							particleA.getGlobalParticleId(),
 
-        numberOfTrianglesB,
-        xCoordinatesB,
-        yCoordinatesB,
-        zCoordinatesB,
-        particleB.getEpsilon(),
-        particleB.getFriction(),
-        particleB.getGlobalParticleId());
+							xCoordinatesB,
+							yCoordinatesB,
+							zCoordinatesB,
+							numberOfTrianglesB,
+							particleB.getEpsilon(),
+							particleB.getFriction(),
+							particleB.getGlobalParticleId());
 
       break;
     case CollisionModel::PenaltyTune:
 
       delta::contact::detection::penaltyStat(
-        numberOfTrianglesA,
-        xCoordinatesA,
-        yCoordinatesA,
-        zCoordinatesA,
-        particleA.getEpsilon(),
-        particleA.getFriction(),
-        particleA.getGlobalParticleId(),
+		  xCoordinatesA,
+		  yCoordinatesA,
+		  zCoordinatesA,
+		  numberOfTrianglesB,
+		  particleA.getEpsilon(),
+		  particleA.getFriction(),
+		  particleA.getGlobalParticleId(),
 
-        numberOfTrianglesB,
-        xCoordinatesB,
-        yCoordinatesB,
-        zCoordinatesB,
-        particleB.getEpsilon(),
-        particleB.getFriction(),
-        particleB.getGlobalParticleId());
+		  xCoordinatesB,
+		  yCoordinatesB,
+		  zCoordinatesB,
+		  numberOfTrianglesB,
+		  particleB.getEpsilon(),
+		  particleB.getFriction(),
+		  particleB.getGlobalParticleId());
 
       break;
     case CollisionModel::HybridOnBatches:
 
       newContactPoints = delta::contact::detection::hybridWithPerBatchFallBack(
-        numberOfTrianglesA,
-        xCoordinatesA,
-        yCoordinatesA,
-        zCoordinatesA,
-        particleA.getEpsilon(),
-        particleA.getFriction(),
-        particleA.getGlobalParticleId(),
+							xCoordinatesA,
+							yCoordinatesA,
+							zCoordinatesA,
+							numberOfTrianglesA,
+							particleA.getEpsilon(),
+							particleA.getFriction(),
+							particleA.getGlobalParticleId(),
 
-        numberOfTrianglesB,
-        xCoordinatesB,
-        yCoordinatesB,
-        zCoordinatesB,
-        particleB.getEpsilon(),
-        particleB.getFriction(),
-        particleB.getGlobalParticleId(),
-		_collisionSemaphore);
+							xCoordinatesB,
+							yCoordinatesB,
+							zCoordinatesB,
+							numberOfTrianglesB,
+							particleB.getEpsilon(),
+							particleB.getFriction(),
+							particleB.getGlobalParticleId(),
+							_collisionSemaphore);
 
       break;
     case CollisionModel::HybridOnTrianglePairs:
 
       newContactPoints = delta::contact::detection::hybridWithPerTriangleFallBack(
-        numberOfTrianglesA,
-        xCoordinatesA,
-        yCoordinatesA,
-        zCoordinatesA,
-        particleA.getEpsilon(),
-        particleA.getFriction(),
-        particleA.getGlobalParticleId(),
+							xCoordinatesA,
+							yCoordinatesA,
+							zCoordinatesA,
+							numberOfTrianglesA,
+							particleA.getEpsilon(),
+							particleA.getFriction(),
+							particleA.getGlobalParticleId(),
 
-        numberOfTrianglesB,
-        xCoordinatesB,
-        yCoordinatesB,
-        zCoordinatesB,
-        particleB.getEpsilon(),
-        particleB.getFriction(),
-        particleB.getGlobalParticleId(),
-		_collisionSemaphore);
+							xCoordinatesB,
+							yCoordinatesB,
+							zCoordinatesB,
+							numberOfTrianglesB,
+							particleB.getEpsilon(),
+							particleB.getFriction(),
+							particleB.getGlobalParticleId(),
+							_collisionSemaphore);
 
       break;
     case CollisionModel::HybridStat:
 
       newContactPoints = delta::contact::detection::hybridTriangleStat(
-        numberOfTrianglesA,
-        xCoordinatesA,
-        yCoordinatesA,
-        zCoordinatesA,
-        particleA.getEpsilon(),
-        particleA.getFriction(),
-        particleA.getGlobalParticleId(),
+							xCoordinatesA,
+							yCoordinatesA,
+							zCoordinatesA,
+							numberOfTrianglesA,
+							particleA.getEpsilon(),
+							particleA.getFriction(),
+							particleA.getGlobalParticleId(),
 
-        numberOfTrianglesB,
-        xCoordinatesB,
-        yCoordinatesB,
-        zCoordinatesB,
-        particleB.getEpsilon(),
-        particleB.getFriction(),
-        particleB.getGlobalParticleId());
+							xCoordinatesB,
+							yCoordinatesB,
+							zCoordinatesB,
+							numberOfTrianglesB,
+							particleB.getEpsilon(),
+							particleB.getFriction(),
+							particleB.getGlobalParticleId());
 
       break;
     case CollisionModel::GJK:
       assertionMsg(false,"Konstantinos, bf has to use const iREAL* and not iREAL* as input" );
-/*
-      newContactPoints = delta::collision::gjk(
-        numberOfTrianglesA,
-        xCoordinatesA,
-        yCoordinatesA,
-        zCoordinatesA,
-        particleA.getEpsilon(),
-        particleA.getFriction(),
-        particleA.getGlobalParticleId(),
+  /*		newContactPoints = delta::collision::gjk(
+							numberOfTrianglesA,
+							xCoordinatesA,
+							yCoordinatesA,
+							zCoordinatesA,
+							particleA.getEpsilon(),
+							particleA.getFriction(),
+							particleA.getGlobalParticleId(),
 
-        numberOfTrianglesB,
-        xCoordinatesB,
-        yCoordinatesB,
-        zCoordinatesB,
-        particleB.getEpsilon(),
-        particleB.getFriction(),
-        particleB.getGlobalParticleId());
-*/
+							numberOfTrianglesB,
+							xCoordinatesB,
+							yCoordinatesB,
+							zCoordinatesB,
+							particleB.getEpsilon(),
+							particleB.getFriction(),
+							particleB.getGlobalParticleId());*/
       break;
     case CollisionModel::none:
       break;

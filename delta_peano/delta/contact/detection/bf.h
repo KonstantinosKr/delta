@@ -39,21 +39,21 @@ namespace delta {
 	   * @see hybrid() function with the same arguments for default
 	   */
 	  std::vector<contactpoint> bf(
-		int             numberOfTrianglesOfGeometryA,
 		const iREAL*    xCoordinatesOfPointsOfGeometryA,
 		const iREAL*    yCoordinatesOfPointsOfGeometryA,
 		const iREAL*    zCoordinatesOfPointsOfGeometryA,
+		int             numberOfPointsOfGeometryA,
 		iREAL           epsilonA,
 		bool            frictionA,
-		int 	          particleA,
+		int 	          	particleA,
 
-		int             numberOfTrianglesOfGeometryB,
 		const iREAL*    xCoordinatesOfPointsOfGeometryB,
 		const iREAL*    yCoordinatesOfPointsOfGeometryB,
 		const iREAL*    zCoordinatesOfPointsOfGeometryB,
+		int             numberOfPointsOfGeometryB,
 		iREAL           epsilonB,
 		bool            frictionB,
-		int 	          particleB,
+		int 	          	particleB,
 		tarch::multicore::BooleanSemaphore &semaphore
 	  );
 

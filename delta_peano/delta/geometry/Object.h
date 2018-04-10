@@ -51,133 +51,132 @@ class delta::geometry::Object
 	    bool                          			isFriction,
 		iREAL 									epsilon,
 		std::array<iREAL, 3> linear,
-		std::array<iREAL, 3> angular);
+		std::array<iREAL, 3> angular
+		);
 
     void generateSphere(iREAL  rad);
 
     void generateMesh(
-        iREAL wx,
-        iREAL wy,
-        iREAL wz,
-        iREAL rx,
-        iREAL ry,
-        iREAL rz,
-        int mesh,
-        iREAL rad);
+			iREAL wx,
+			iREAL wy,
+			iREAL wz,
+			iREAL rx,
+			iREAL ry,
+			iREAL rz,
+			int mesh,
+			iREAL rad
+			);
+
+    void 	setParticleID(int id);
+    void 	setCentre(iREAL centre[3]);
+    void 	setRad(iREAL rad);
+    void 	setMass(iREAL mass);
+    void 	setEpsilon(iREAL epsilon);
+    void 	setInertia(iREAL inertia[9]);
+    void 	setInverse(iREAL inverse[9]);
+    void 	setCentreOfMass(iREAL centreOfMass[3]);
+    void 	setLinearVelocity(std::array<iREAL, 3>  linearVelocity);
+    void 	setAngularVelocity(std::array<iREAL, 3>  angularVelocity);
+    void 	setMesh(delta::geometry::mesh::Mesh& mesh);
+    void 	setMesh(
+    			  std::vector<iREAL> xCoordinates,
+			  std::vector<iREAL> yCoordinates,
+			  std::vector<iREAL> zCoordinates);
 
     std::string getComponent();
-    void setParticleID(int id);
+    int 		getParticleID();
+    iREAL 	getRad();
+	iREAL 	getDiameter();
+    iREAL 	getMass();
+    iREAL 	getEpsilon();
+	iREAL 	getHaloDiameter();
+	int 		getNumberOfTriangles();
+	int 		getGlobalParticleId();
+	int 		getLocalParticleId();
+    bool 	getIsObstacle();
+    bool 	getIsFriction();
 
-    std::vector<iREAL> getxCoordinates();
-    std::vector<iREAL> getyCoordinates();
-    std::vector<iREAL> getzCoordinates();
+    iREAL 	getMinX();
+    iREAL 	getMaxX();
+    iREAL 	getMinY();
+    iREAL 	getMaxY();
+    iREAL 	getMinZ();
+    iREAL 	getMaxZ();
+    iREAL 	computeVolume();
 
-    int getParticleID();
 
-    std::array<iREAL, 3> getCentre();
-    void setCentre(iREAL centre[3]);
-    iREAL getRad();
-    void setRad(iREAL rad);
+    std::vector<iREAL> 		getxCoordinates();
+    std::vector<iREAL> 		getyCoordinates();
+    std::vector<iREAL> 		getzCoordinates();
+    std::array<iREAL, 3> 	getCentre();
+    std::array<iREAL, 9> 	getInertia();
+    std::array<iREAL, 9> 	getInverse();
+    std::array<iREAL, 3> 	getxyzDimensions();
+    std::array<iREAL, 3> 	getCentreOfMass();
+    std::array<iREAL, 3> 	getLinearVelocity();
+    std::array<iREAL, 3> 	getAngularVelocity();
 
-    iREAL getMass();
-    void setMass(iREAL mass);
-
-    iREAL getEpsilon();
-    void setEpsilon(iREAL epsilon);
-
-    delta::geometry::material::MaterialType getMaterial();
-    bool getIsObstacle();
-    bool getIsFriction();
-
-    std::array<iREAL, 9> getInertia();
-    void setInertia(iREAL inertia[9]);
-
-    std::array<iREAL, 9> getInverse();
-    void setInverse(iREAL inverse[9]);
-
-    std::array<iREAL, 3> getxyzDimensions();
-    std::array<iREAL, 3> getCentreOfMass();
-    void setCentreOfMass(iREAL centreOfMass[3]);
-
-    void setLinearVelocity(std::array<iREAL, 3>  linearVelocity);
-    void setAngularVelocity(std::array<iREAL, 3>  angularVelocity);
-
-    std::array<iREAL, 3> getLinearVelocity();
-    std::array<iREAL, 3> getAngularVelocity();
-
-    delta::geometry::mesh::Mesh getMesh();
-    void setMesh(
-        std::vector<iREAL> xCoordinates,
-        std::vector<iREAL> yCoordinates,
-        std::vector<iREAL> zCoordinates);
-    void setMesh(delta::geometry::mesh::Mesh& mesh);
-
-    iREAL getMinX();
-    iREAL getMaxX();
-
-    iREAL getMinY();
-    iREAL getMaxY();
-
-    iREAL getMinZ();
-    iREAL getMaxZ();
-
-    iREAL computeVolume();
+    delta::geometry::material::MaterialType 	getMaterial();
+    delta::geometry::mesh::Mesh 				getMesh();
 
 	void computeInertia(
-		delta::geometry::material::MaterialType material,
-		iREAL& mass,
-		iREAL center[3],
-		iREAL inertia[9]);
+			delta::geometry::material::MaterialType material,
+			iREAL& mass,
+			iREAL center[3],
+			iREAL inertia[9]
+			);
 
 	iREAL computeMass(
-	    delta::geometry::material::MaterialType material);
+			delta::geometry::material::MaterialType material);
 
 	void computeInverseInertia(
-	    iREAL inertia[9],
-	    iREAL inverse[9],
-	    bool isObject);
+			iREAL inertia[9],
+			iREAL inverse[9],
+			bool isObject
+			);
 
     virtual ~Object();
 
   private:
-    std::string           _component;
-    int                   _particleID;
-    std::array<iREAL, 3> _centre;
-    iREAL                _rad;
+    std::string           	_component;
+    int                   	_globalParticleID;
+    int                  	_localParticleID;
+    std::array<iREAL, 3> 	_centre;
+    iREAL                	_rad;
 
-    iREAL				 _haloDiameter;
-    iREAL				 _diameter;
-    iREAL                _mass;
-    iREAL 				 _epsilon;
+    iREAL				 	_haloDiameter;
+    iREAL				 	_diameter;
+    iREAL               		_mass;
+    iREAL 				 	_epsilon;
 
 	delta::geometry::mesh::Mesh	*_mesh;
 
-    std::vector<iREAL>   _xCoordinates;
-    std::vector<iREAL>   _yCoordinates;
-    std::vector<iREAL>   _zCoordinates;
+    std::vector<iREAL>   	_xCoordinates;
+    std::vector<iREAL>   	_yCoordinates;
+    std::vector<iREAL>   	_zCoordinates;
 
-    std::array<iREAL, 3> _linearVelocity;
-    std::array<iREAL, 3> _angularVelocity;
+    std::array<iREAL, 3> 	_linearVelocity;
+    std::array<iREAL, 3> 	_angularVelocity;
 
     delta::geometry::material::MaterialType _material;
 
-    bool                  _isObstacle;
-    bool                  _isFriction;
+    bool                  	_isObstacle;
+    bool                  	_isFriction;
 
-    std::array<iREAL, 3> _xyzDimensions;
-    std::array<iREAL, 3> _centreOfMass;
-    std::array<iREAL, 9> _inertia;
-    std::array<iREAL, 9> _inverse;
+    std::array<iREAL, 3> 	_xyzDimensions;
+    std::array<iREAL, 3> 	_centreOfMass;
+    std::array<iREAL, 9> 	_inertia;
+    std::array<iREAL, 9> 	_inverse;
 
     //dimensions
-    iREAL                _wx;
-    iREAL                _wy;
-    iREAL                _wz;
+    iREAL                	_wx;
+    iREAL                	_wy;
+    iREAL                	_wz;
 
     //rotational configuration 0-1
-    iREAL                _rx;
-    iREAL                _ry;
-    iREAL                _rz;
+    iREAL                	_rx;
+    iREAL                	_ry;
+    iREAL                	_rz;
 
     iREAL simplex_J (iREAL *a, iREAL *b, iREAL *c, iREAL *d);
 };

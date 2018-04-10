@@ -53,86 +53,86 @@ namespace delta {
 	   * @return Set of contact points.
 	   */
 	  std::vector<contactpoint> hybridWithPerTriangleFallBack(
-		int             numberOfTrianglesOfGeometryA,
 		const iREAL*    xCoordinatesOfPointsOfGeometryA,
 		const iREAL*    yCoordinatesOfPointsOfGeometryA,
 		const iREAL*    zCoordinatesOfPointsOfGeometryA,
-		iREAL           epsilonA,
-		bool            frictionA,
-		int 	          particleA,
+		const int       numberOfPointsOfGeometryA,
+		const iREAL     epsilonA,
+		const bool      frictionA,
+		const int 	    particleA,
 
-		int             numberOfTrianglesOfGeometryB,
 		const iREAL*    xCoordinatesOfPointsOfGeometryB,
 		const iREAL*    yCoordinatesOfPointsOfGeometryB,
 		const iREAL*    zCoordinatesOfPointsOfGeometryB,
-		iREAL           epsilonB,
-		bool            frictionB,
-		int 	          particleB,
+		const int       numberOfPointsOfGeometryB,
+		const iREAL     epsilonB,
+		const bool      frictionB,
+		const int 	    particleB,
 		tarch::multicore::BooleanSemaphore &semaphore);
 
 	  std::vector<contactpoint> hybridWithPerBatchFallBack(
-		int             numberOfTrianglesOfGeometryA,
 		const iREAL*    xCoordinatesOfPointsOfGeometryA,
 		const iREAL*    yCoordinatesOfPointsOfGeometryA,
 		const iREAL*    zCoordinatesOfPointsOfGeometryA,
-		iREAL           epsilonA,
-		bool            frictionA,
-		int 	          particleA,
+		const int       numberOfPointsOfGeometryA,
+		const iREAL     epsilonA,
+		const bool      frictionA,
+		const int 	    particleA,
 
-		int             numberOfTrianglesOfGeometryB,
 		const iREAL*    xCoordinatesOfPointsOfGeometryB,
 		const iREAL*    yCoordinatesOfPointsOfGeometryB,
 		const iREAL*    zCoordinatesOfPointsOfGeometryB,
-		iREAL           epsilonB,
-		bool            frictionB,
-		int 	          particleB,
+		const int       numberOfPointsOfGeometryB,
+		const iREAL     epsilonB,
+		const bool      frictionB,
+		const int 	    particleB,
 		tarch::multicore::BooleanSemaphore &semaphore);
 
 
 	  std::vector<contactpoint> hybridBatchStat(
-		int             numberOfTrianglesOfGeometryA,
 		const iREAL*    xCoordinatesOfPointsOfGeometryA,
 		const iREAL*    yCoordinatesOfPointsOfGeometryA,
 		const iREAL*    zCoordinatesOfPointsOfGeometryA,
-		iREAL           epsilonA,
-		bool            frictionA,
-		int             particleA,
+		const int       numberOfPointsOfGeometryA,
+		const iREAL     epsilonA,
+		const bool      frictionA,
+		const int       particleA,
 
-		int             numberOfTrianglesOfGeometryB,
 		const iREAL*    xCoordinatesOfPointsOfGeometryB,
 		const iREAL*    yCoordinatesOfPointsOfGeometryB,
 		const iREAL*    zCoordinatesOfPointsOfGeometryB,
-		iREAL           epsilonB,
-		bool            frictionB,
-		int             particleB);
+		const int       numberOfPointsOfGeometryB,
+		const iREAL     epsilonB,
+		const bool      frictionB,
+		const int       particleB);
 
 	  std::vector<contactpoint> hybridTriangleStat(
-		int             numberOfTrianglesOfGeometryA,
 		const iREAL*    xCoordinatesOfPointsOfGeometryA,
 		const iREAL*    yCoordinatesOfPointsOfGeometryA,
 		const iREAL*    zCoordinatesOfPointsOfGeometryA,
-		iREAL           epsilonA,
-		bool            frictionA,
-		int             particleA,
+		const int       numberOfPointsOfGeometryA,
+		const iREAL     epsilonA,
+		const bool      frictionA,
+		const int       particleA,
 
-		int             numberOfTrianglesOfGeometryB,
 		const iREAL*    xCoordinatesOfPointsOfGeometryB,
 		const iREAL*    yCoordinatesOfPointsOfGeometryB,
 		const iREAL*    zCoordinatesOfPointsOfGeometryB,
-		iREAL           epsilonB,
-		bool            frictionB,
-		int             particleB);
+		const int       numberOfPointsOfGeometryB,
+		const iREAL     epsilonB,
+		const bool      frictionB,
+		const int       particleB);
 
-		static int numberOfPenaltyFails;
-		static int numberOfBatchFails;
-		static int batchSize;
-		static iREAL batchError;
+		static int 		_numberOfPenaltyFails;
+		static int 		_numberOfBatchFails;
+		static int 		_batchSize;
+		static iREAL		_batchError;
 
-		void cleanHybridStatistics();
-		int getPenaltyFails();
-		int getBatchFails();
-		int getBatchSize();
-		iREAL getBatchError();
+		void 	cleanHybridStatistics();
+		int 		getPenaltyFails();
+		int 		getBatchFails();
+		int 		getBatchSize();
+		iREAL 	getBatchError();
 	}
   }
 }

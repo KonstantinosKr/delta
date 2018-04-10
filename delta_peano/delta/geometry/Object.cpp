@@ -9,7 +9,7 @@
 delta::geometry::Object::Object()
 {
   this->_component = "particle";
-  this->_particleID = 0;
+  this->_globalParticleID = 0;
 
   this->_centre[0] = 0.0;
   this->_centre[1] = 0.0;
@@ -53,7 +53,7 @@ delta::geometry::Object::Object(
 	std::array<iREAL, 3> angular)
 {
   this->_component = component;
-  this->_particleID = particleID;
+  this->_globalParticleID = particleID;
 
   this->_centre[0] = centre[0];
   this->_centre[1] = centre[1];
@@ -86,7 +86,7 @@ delta::geometry::Object::Object(
 }
 
 void delta::geometry::Object::generateSphere(
-    iREAL                        rad)
+    iREAL rad)
 {
   this->_rad = rad;
   this->_centreOfMass[0] = _centre[0];
@@ -95,14 +95,14 @@ void delta::geometry::Object::generateSphere(
 }
 
 void delta::geometry::Object::generateMesh(
-    iREAL wx,
-    iREAL wy,
-    iREAL wz,
-    iREAL rx,
-    iREAL ry,
-    iREAL rz,
-    int mesh,
-    iREAL rad)
+		iREAL wx,
+		iREAL wy,
+		iREAL wz,
+		iREAL rx,
+		iREAL ry,
+		iREAL rz,
+		int mesh,
+		iREAL rad)
 {
   iREAL position[3] = {_centre[0], _centre[1], _centre[2]};
 
@@ -186,7 +186,7 @@ std::string delta::geometry::Object::getComponent()
 
 void delta::geometry::Object::setParticleID(int id)
 {
-  _particleID = id;
+  _globalParticleID = id;
 }
 
 std::vector<iREAL> delta::geometry::Object::getxCoordinates()
@@ -242,9 +242,29 @@ void delta::geometry::Object::setMesh(
   _mesh = &mesh;
 }
 
-int delta::geometry::Object::getParticleID()
+iREAL delta::geometry::Object::getHaloDiameter()
 {
-  return _particleID;
+  return _haloDiameter;
+}
+
+int delta::geometry::Object::getNumberOfTriangles()
+{
+  return (int)_xCoordinates.size()/3.0;
+}
+
+int delta::geometry::Object::getGlobalParticleId()
+{
+  return _globalParticleID;
+}
+
+int delta::geometry::Object::getLocalParticleId()
+{
+  return _localParticleID;
+}
+
+iREAL delta::geometry::Object::getDiameter()
+{
+  return _rad*2;
 }
 
 std::array<iREAL, 3> delta::geometry::Object::getCentre()
@@ -704,7 +724,6 @@ iREAL delta::geometry::Object::simplex_J (
 }
 //https://en.wikipedia.org/wiki/Trace_%28linear_algebra%29
 #define TRACE(A) ((A)[0] + (A)[4] + (A)[8])
-
 
 delta::geometry::Object::~Object() {
 

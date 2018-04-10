@@ -24,20 +24,19 @@
 
 #include <delta/contact/detection/bf.h>
 
-
 std::vector<delta::contact::contactpoint> delta::contact::detection::bf(
-    int             numberOfTrianglesOfGeometryA,
     const iREAL*    xCoordinatesOfPointsOfGeometryA,
     const iREAL*    yCoordinatesOfPointsOfGeometryA,
     const iREAL*    zCoordinatesOfPointsOfGeometryA,
+	int             numberOfPointsOfGeometryA,
     iREAL           epsilonA,
     bool            frictionA,
     int 	            particleA,
 
-    int             numberOfTrianglesOfGeometryB,
     const iREAL*    xCoordinatesOfPointsOfGeometryB,
     const iREAL*    yCoordinatesOfPointsOfGeometryB,
     const iREAL*    zCoordinatesOfPointsOfGeometryB,
+    int             numberOfPointsOfGeometryB,
     iREAL           epsilonB,
     bool            frictionB,
     int 	            particleB,
@@ -54,31 +53,31 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::bf(
 #endif
 
   std::vector<contactpoint> result;
-  //convert to number of points
-  numberOfTrianglesOfGeometryA *= 3;
-  numberOfTrianglesOfGeometryB *= 3;
+
+  int numberOfTrianglesA = numberOfPointsOfGeometryA * 3;
+  int numberOfTrianglesB = numberOfPointsOfGeometryB * 3;
 
   tarch::multicore::Lock lock(semaphore,false);
 
   #ifdef SharedTBB
 	// Take care: grain size has to be positive even if loop degenerates
-	const int grainSize = numberOfTrianglesOfGeometryA;
+	const int grainSize = numberOfTrianglesA;
 	tbb::parallel_for(
-	 tbb::blocked_range<int>(0, numberOfTrianglesOfGeometryA, grainSize), [&](const tbb::blocked_range<int>& r)
+	 tbb::blocked_range<int>(0, numberOfTrianglesA, grainSize), [&](const tbb::blocked_range<int>& r)
 	 {
 	   for(std::vector<int>::size_type iA=0; iA<r.size(); iA+=3)
   #else
-	#ifdef ompTriangle
-	  #pragma omp parallel for shared(result) firstprivate(numberOfTrianglesOfGeometryA, numberOfTrianglesOfGeometryB, epsilonA, epsilonB, frictionA, frictionB, particleA, particleB, xCoordinatesOfPointsOfGeometryA, yCoordinatesOfPointsOfGeometryA, zCoordinatesOfPointsOfGeometryA, xCoordinatesOfPointsOfGeometryB, yCoordinatesOfPointsOfGeometryB, zCoordinatesOfPointsOfGeometryB)
-	#endif
-	  for(int iA=0; iA<numberOfTrianglesOfGeometryA; iA+=3)
+  #ifdef ompTriangle
+	#pragma omp parallel for shared(result) firstprivate(numberOfTrianglesA, numberOfTrianglesB, epsilonA, epsilonB, frictionA, frictionB, particleA, particleB, xCoordinatesOfPointsOfGeometryA, yCoordinatesOfPointsOfGeometryA, zCoordinatesOfPointsOfGeometryA, xCoordinatesOfPointsOfGeometryB, yCoordinatesOfPointsOfGeometryB, zCoordinatesOfPointsOfGeometryB)
+  #endif
+  for(int iA=0; iA<numberOfTrianglesA; iA+=3)
   #endif
   {
     __attribute__ ((aligned(byteAlignment))) contactpoint *nearestContactPoint = nullptr;
     __attribute__ ((aligned(byteAlignment))) iREAL dd = 1E99;
 
     #pragma omp simd
-    for(int iB=0; iB<numberOfTrianglesOfGeometryB; iB+=3)
+    for(int iB=0; iB<numberOfTrianglesB; iB+=3)
     {
       __attribute__ ((aligned(byteAlignment))) iREAL epsilonMargin = (epsilonA+epsilonB);
       __attribute__ ((aligned(byteAlignment))) iREAL xPA=0.0;
@@ -111,16 +110,16 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::bf(
 
     if(nearestContactPoint != nullptr)
     {
-	  #ifdef SharedTBB
-		lock.lock();
-		  result.push_back(*nearestContactPoint);
-		lock.free();
-	  #else
-		#ifdef ompTriangle
-		  #pragma omp critical
-		#endif
-		result.push_back(*nearestContactPoint);
+	#ifdef SharedTBB
+	  lock.lock();
+	  result.push_back(*nearestContactPoint);
+	  lock.free();
+	#else
+	  #ifdef ompTriangle
+		#pragma omp critical
 	  #endif
+	  result.push_back(*nearestContactPoint);
+	#endif
     }
   #ifdef SharedTBB
   }});
@@ -203,12 +202,12 @@ void delta::contact::detection::bf(
   const iREAL   *xxCoordinatesOfPointsOfGeometryB,
   const iREAL   *yyCoordinatesOfPointsOfGeometryB,
   const iREAL   *zzCoordinatesOfPointsOfGeometryB,
-    iREAL&  xPA,
-    iREAL&  yPA,
-    iREAL&  zPA,
-    iREAL&  xPB,
-    iREAL&  yPB,
-    iREAL&  zPB)
+  iREAL&  xPA,
+  iREAL&  yPA,
+  iREAL&  zPA,
+  iREAL&  xPB,
+  iREAL&  yPB,
+  iREAL&  zPB)
 {
 
 

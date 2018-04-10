@@ -33,69 +33,69 @@ namespace delta {
   namespace contact {
 	namespace detection {
 	  std::vector<contactpoint> sphere(
-		iREAL   xCoordinatesOfPointsOfGeometryA,
-		iREAL   yCoordinatesOfPointsOfGeometryA,
-		iREAL   zCoordinatesOfPointsOfGeometryA,
-		iREAL   diameterA,
-		iREAL   epsilonA,
-		bool    frictionA,
-		int 	  	particleA,
+		const iREAL   xCoordinatesOfPointsOfGeometryA,
+		const iREAL   yCoordinatesOfPointsOfGeometryA,
+		const iREAL   zCoordinatesOfPointsOfGeometryA,
+		const iREAL   diameterA,
+		const iREAL   epsilonA,
+		const bool    frictionA,
+		const int 	  particleA,
 
-		iREAL   xCoordinatesOfPointsOfGeometryB,
-		iREAL   yCoordinatesOfPointsOfGeometryB,
-		iREAL   zCoordinatesOfPointsOfGeometryB,
-		iREAL   diameterB,
-		iREAL   epsilonB,
-		bool    frictionB,
-		int 	  	particleB
+		const iREAL   xCoordinatesOfPointsOfGeometryB,
+		const iREAL   yCoordinatesOfPointsOfGeometryB,
+		const iREAL   zCoordinatesOfPointsOfGeometryB,
+		const iREAL   diameterB,
+		const iREAL   epsilonB,
+		const bool    frictionB,
+		const int 	  particleB
 		);
 
 	  std::vector<contactpoint> sphereWithBarrierAB(
-		iREAL   xCoordinatesOfPointsOfGeometryA,
-		iREAL   yCoordinatesOfPointsOfGeometryA,
-		iREAL   zCoordinatesOfPointsOfGeometryA,
-		iREAL   diameterA,
-		iREAL   epsilonA,
-		bool    frictionA,
-		int	  	particleA,
+		const iREAL   xCoordinatesOfPointsOfGeometryA,
+		const iREAL   yCoordinatesOfPointsOfGeometryA,
+		const iREAL   zCoordinatesOfPointsOfGeometryA,
+		const iREAL   diameterA,
+		const iREAL   epsilonA,
+		const bool    frictionA,
+		const int	  particleA,
 
-		const iREAL   	*xCoordinatesOfPointsOfGeometryB,
-		const iREAL   	*yCoordinatesOfPointsOfGeometryB,
-		const iREAL   	*zCoordinatesOfPointsOfGeometryB,
-		int				numberOfTrianglesOfGeometryB,
-		iREAL    		epsilonB,
-		bool 	  		frictionB,
-		int 	    			particleB
+		const iREAL   *xCoordinatesOfPointsOfGeometryB,
+		const iREAL   *yCoordinatesOfPointsOfGeometryB,
+		const iREAL   *zCoordinatesOfPointsOfGeometryB,
+		const int	  numberOfTrianglesOfGeometryB,
+		const iREAL   epsilonB,
+		const bool 	  frictionB,
+		const int 	  particleB
 		);
 
 	  std::vector<contactpoint> sphereWithBarrierBA(
-		iREAL   xCoordinatesOfPointsOfGeometryA,
-		iREAL   yCoordinatesOfPointsOfGeometryA,
-		iREAL   zCoordinatesOfPointsOfGeometryA,
-		iREAL   diameterA,
-		iREAL   epsilonA,
-		bool    frictionA,
-		int 	  	particleA,
+		const iREAL   xCoordinatesOfPointsOfGeometryA,
+		const iREAL   yCoordinatesOfPointsOfGeometryA,
+		const iREAL   zCoordinatesOfPointsOfGeometryA,
+		const iREAL   diameterA,
+		const iREAL   epsilonA,
+		const bool    frictionA,
+		const int 	  particleA,
 
-		const iREAL   	*xCoordinatesOfPointsOfGeometryB,
-		const iREAL   	*yCoordinatesOfPointsOfGeometryB,
-		const iREAL   	*zCoordinatesOfPointsOfGeometryB,
-		int      		numberOfTrianglesOfGeometryB,
-		iREAL    		epsilonB,
-		bool     		frictionB,
-		int 	    			particleB
+		const iREAL   *xCoordinatesOfPointsOfGeometryB,
+		const iREAL   *yCoordinatesOfPointsOfGeometryB,
+		const iREAL   *zCoordinatesOfPointsOfGeometryB,
+		const int     numberOfTrianglesOfGeometryB,
+		const iREAL   epsilonB,
+		const bool    frictionB,
+		const int 	  particleB
 		);
 
 	  bool isSphereOverlayInContact(
-		iREAL   xCoordinatesOfPointsOfGeometryA,
-		iREAL   yCoordinatesOfPointsOfGeometryA,
-		iREAL   zCoordinatesOfPointsOfGeometryA,
-		iREAL   radiusA,
+		const iREAL   xCoordinatesOfPointsOfGeometryA,
+		const iREAL   yCoordinatesOfPointsOfGeometryA,
+		const iREAL   zCoordinatesOfPointsOfGeometryA,
+		const iREAL   radiusA,
 
-		iREAL   xCoordinatesOfPointsOfGeometryB,
-		iREAL   yCoordinatesOfPointsOfGeometryB,
-		iREAL   zCoordinatesOfPointsOfGeometryB,
-		iREAL   radiusB
+		const iREAL   xCoordinatesOfPointsOfGeometryB,
+		const iREAL   yCoordinatesOfPointsOfGeometryB,
+		const iREAL   zCoordinatesOfPointsOfGeometryB,
+		const iREAL   radiusB
 	  );
 	}
   }
