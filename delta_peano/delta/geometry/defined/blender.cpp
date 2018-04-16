@@ -25,7 +25,7 @@
 #include <delta/geometry/defined/blender.h>
 
 void delta::world::body::generateBlender(
-		iREAL    center[3],
+		iREAL   center[3],
 		iREAL 	width,
 		std::vector<iREAL>&  xCoordinates,
 		std::vector<iREAL>&  yCoordinates,

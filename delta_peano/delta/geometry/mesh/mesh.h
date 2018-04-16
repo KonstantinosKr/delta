@@ -13,6 +13,8 @@
 #include <map>
 #include <cmath>
 #include <array>
+#include <string>
+#include <sstream>
 #include <delta/geometry/mesh/Triangle.h>
 #include <delta/geometry/mesh/Vertex.h>
 #include <delta/geometry/material.h>
@@ -84,6 +86,9 @@ class delta::geometry::mesh::Mesh {
 	iREAL getMinYAxis();
 	iREAL getMinZAxis();
 
+	std::vector<std::array<int, 3>> 				getTriangleFaces();
+	std::vector<delta::geometry::mesh::Vertex> 	getUniqueVertices();
+
 	void getCenterOfGeometry(
 	  iREAL centreOfGeometry[3]);
 
@@ -118,7 +123,18 @@ class delta::geometry::mesh::Mesh {
 
 	virtual ~Mesh();
   private:
+	void compressFromVectors(
+		std::vector<iREAL>& xCoordinates,
+		std::vector<iREAL>& yCoordinates,
+		std::vector<iREAL>& zCoordinates);
+
+	void compressFromTriangles(
+		std::vector<delta::geometry::mesh::Triangle> &triangles);
+
 	std::vector<delta::geometry::mesh::Triangle> _triangles;
+
+	std::vector<std::array<int, 3>> 				_triangleFaces;
+	std::vector<delta::geometry::mesh::Vertex> 	_uniqueVertices;
 
     std::vector<iREAL>   _xCoordinates;
     std::vector<iREAL>   _yCoordinates;

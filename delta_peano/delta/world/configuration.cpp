@@ -271,7 +271,7 @@
     iREAL p[3] = {pos[0], pos[1] + maxRad+epsilon, pos[2]};
     insitufineObjects[i].setCentre(p);
 
-    auto yCoordinates = insitufineObjects[i].getyCoordinates();
+    auto yCoordinates = insitufineObjects[i].getMesh().getyCoordinates();
 
     if(yCoordinates.size() >= 0)
     {
@@ -366,7 +366,7 @@
     iREAL p[3] = {pos[0], pos[1] + maxRad+epsilon, pos[2]};
     insitufineObjects[i].setCentre(p);
 
-    auto yCoordinates = insitufineObjects[i].getyCoordinates();
+    auto yCoordinates = insitufineObjects[i].getMesh().getyCoordinates();
 
     if(yCoordinates.size() >= 0)
     {
@@ -436,9 +436,9 @@
   {
     std::array<iREAL, 3> ar = insitufineObjects[j].getCentre(); position[0] = ar[0]; position[1] = ar[1]; position[2] = ar[2];
 
-    std::vector<iREAL> xCoordinates = insitufineObjects[j].getxCoordinates();
-    std::vector<iREAL> yCoordinates = insitufineObjects[j].getyCoordinates();
-    std::vector<iREAL> zCoordinates = insitufineObjects[j].getzCoordinates();
+    std::vector<iREAL> xCoordinates = insitufineObjects[j].getMesh().getxCoordinates();
+    std::vector<iREAL> yCoordinates = insitufineObjects[j].getMesh().getyCoordinates();
+    std::vector<iREAL> zCoordinates = insitufineObjects[j].getMesh().getzCoordinates();
 
     insitufineObjects[j].getMesh().scaleXYZ(rescale, position);
 
@@ -761,16 +761,16 @@
 
    for(unsigned i=0; i<coarseObjects.size(); i++)
    {
-     iREAL ominx = coarseObjects[i].getMinX();
-     iREAL ominy = coarseObjects[i].getMinY();
-     iREAL ominz = coarseObjects[i].getMinZ();
+     iREAL ominx = coarseObjects[i].getMesh().getMinXAxis();
+     iREAL ominy = coarseObjects[i].getMesh().getMinYAxis();
+     iREAL ominz = coarseObjects[i].getMesh().getMinZAxis();
      if(ominx < minx) minx = ominx;
      if(ominy < miny) miny = ominy;
      if(ominz < minz) minz = ominz;
 
-     iREAL omaxx = coarseObjects[i].getMaxX();
-     iREAL omaxy = coarseObjects[i].getMaxY();
-     iREAL omaxz = coarseObjects[i].getMaxZ();
+     iREAL omaxx = coarseObjects[i].getMesh().getMaxXAxis();
+     iREAL omaxy = coarseObjects[i].getMesh().getMaxYAxis();
+     iREAL omaxz = coarseObjects[i].getMesh().getMaxZAxis();
      if(omaxx > maxx) maxx = omaxx;
      if(omaxy > maxy) maxy = omaxy;
      if(omaxz > maxz) maxz = omaxz;
@@ -783,16 +783,16 @@
 
    for(unsigned i=0; i<insitufineObjects.size(); i++)
    {
-     iREAL ominx = insitufineObjects[i].getMinX();
-     iREAL ominy = insitufineObjects[i].getMinY();
-     iREAL ominz = insitufineObjects[i].getMinZ();
+     iREAL ominx = insitufineObjects[i].getMesh().getMinXAxis();
+     iREAL ominy = insitufineObjects[i].getMesh().getMinYAxis();
+     iREAL ominz = insitufineObjects[i].getMesh().getMinZAxis();
      if(ominx < minx) minx = ominx;
      if(ominy < miny) miny = ominy;
      if(ominz < minz) minz = ominz;
 
-     iREAL omaxx = insitufineObjects[i].getMaxX();
-     iREAL omaxy = insitufineObjects[i].getMaxY();
-     iREAL omaxz = insitufineObjects[i].getMaxZ();
+     iREAL omaxx = insitufineObjects[i].getMesh().getMaxXAxis();
+     iREAL omaxy = insitufineObjects[i].getMesh().getMaxYAxis();
+     iREAL omaxz = insitufineObjects[i].getMesh().getMaxZAxis();
      if(omaxx > maxx) maxx = omaxx;
      if(omaxy > maxy) maxy = omaxy;
      if(omaxz > maxz) maxz = omaxz;
@@ -805,16 +805,16 @@
 
    for(unsigned i=0; i<fineObjects.size(); i++)
    {
-    iREAL ominx = fineObjects[i].getMinX();
-    iREAL ominy = fineObjects[i].getMinY();
-    iREAL ominz = fineObjects[i].getMinZ();
+    iREAL ominx = fineObjects[i].getMesh().getMinXAxis();
+    iREAL ominy = fineObjects[i].getMesh().getMinYAxis();
+    iREAL ominz = fineObjects[i].getMesh().getMinZAxis();
     if(ominx < minx) minx = ominx;
     if(ominy < miny) miny = ominy;
     if(ominz < minz) minz = ominz;
 
-    iREAL omaxx = fineObjects[i].getMaxX();
-    iREAL omaxy = fineObjects[i].getMaxY();
-    iREAL omaxz = fineObjects[i].getMaxZ();
+    iREAL omaxx = fineObjects[i].getMesh().getMaxXAxis();
+    iREAL omaxy = fineObjects[i].getMesh().getMaxYAxis();
+    iREAL omaxz = fineObjects[i].getMesh().getMaxZAxis();
     if(omaxx > maxx) maxx = omaxx;
     if(omaxy > maxy) maxy = omaxy;
     if(omaxz > maxz) maxz = omaxz;

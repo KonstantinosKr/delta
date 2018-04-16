@@ -160,7 +160,7 @@ void dem::mappings::CreateGrid::deployObject(
     particleNumber = vertex.createParticle(object, _numberOfParticles, 0);
   }
 
-  _numberOfTriangles += object.getxCoordinates().size()/DIMENSIONS;
+  _numberOfTriangles += object.getMesh().getxCoordinates().size()/DIMENSIONS;
   _numberOfParticles++;
   if(object.getIsObstacle()) _numberOfObstacles++;
 }

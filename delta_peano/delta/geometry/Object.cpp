@@ -189,37 +189,11 @@ void delta::geometry::Object::setParticleID(int id)
   _globalParticleID = id;
 }
 
-std::vector<iREAL> delta::geometry::Object::getxCoordinates()
-{
-  return _xCoordinates;
-}
-
-std::vector<iREAL> delta::geometry::Object::getyCoordinates()
-{
-  return _yCoordinates;
-}
-
-std::vector<iREAL> delta::geometry::Object::getzCoordinates()
-{
-  return _zCoordinates;
-}
-
 void delta::geometry::Object::setMesh(
     std::vector<iREAL> xCoordinates,
     std::vector<iREAL> yCoordinates,
     std::vector<iREAL> zCoordinates)
 {
-  _xCoordinates.clear();
-  _yCoordinates.clear();
-  _zCoordinates.clear();
-
-  for(unsigned i=0; i< xCoordinates.size(); i++)
-  {
-    _xCoordinates.push_back(xCoordinates[i]);
-    _yCoordinates.push_back(yCoordinates[i]);
-    _zCoordinates.push_back(zCoordinates[i]);
-  }
-
   _mesh = new delta::geometry::mesh::Mesh(xCoordinates, yCoordinates, zCoordinates);
 }
 
@@ -231,14 +205,6 @@ delta::geometry::mesh::Mesh delta::geometry::Object::getMesh()
 void delta::geometry::Object::setMesh(
     delta::geometry::mesh::Mesh& mesh)
 {
-  _xCoordinates.clear();
-  _yCoordinates.clear();
-  _zCoordinates.clear();
-
-  _xCoordinates = mesh.getxCoordinates();
-  _yCoordinates = mesh.getyCoordinates();
-  _zCoordinates = mesh.getzCoordinates();
-
   _mesh = &mesh;
 }
 
@@ -249,7 +215,7 @@ iREAL delta::geometry::Object::getHaloDiameter()
 
 int delta::geometry::Object::getNumberOfTriangles()
 {
-  return (int)_xCoordinates.size()/3.0;
+  return (int)_mesh->getxCoordinates().size()/3.0;
 }
 
 int delta::geometry::Object::getGlobalParticleId()
@@ -346,6 +312,24 @@ void delta::geometry::Object::setInertia(iREAL inertia[9])
   _inertia[8] = inertia[8];
 }
 
+void delta::geometry::Object::setOrientation(iREAL orientation[9])
+{
+  _orientation[0] = orientation[0];
+  _orientation[1] = orientation[1];
+  _orientation[2] = orientation[2];
+  _orientation[3] = orientation[3];
+  _orientation[4] = orientation[4];
+  _orientation[5] = orientation[5];
+  _orientation[6] = orientation[6];
+  _orientation[7] = orientation[7];
+  _orientation[8] = orientation[8];
+}
+
+std::array<iREAL, 9>	delta::geometry::Object::getOrientation()
+{
+  return _orientation;
+}
+
 std::array<iREAL, 9> delta::geometry::Object::getInverse()
 {
   return _inverse;
@@ -374,12 +358,25 @@ std::array<iREAL, 3> delta::geometry::Object::getCentreOfMass()
   return _centreOfMass;
 }
 
+void delta::geometry::Object::setRefCentreOfMass(iREAL refCentreOfMass[3])
+{
+  _refCentreOfMass[0] = refCentreOfMass[0];
+  _refCentreOfMass[1] = refCentreOfMass[1];
+  _refCentreOfMass[2] = refCentreOfMass[2];
+}
+
+std::array<iREAL, 3> delta::geometry::Object::getRefCentreOfMass()
+{
+  return _refCentreOfMass;
+}
+
 void delta::geometry::Object::setCentreOfMass(iREAL centreOfMass[3])
 {
   _centreOfMass[0] = centreOfMass[0];
   _centreOfMass[1] = centreOfMass[1];
   _centreOfMass[2] = centreOfMass[2];
 }
+
 
 void delta::geometry::Object::setLinearVelocity(std::array<iREAL, 3>  linearVelocity)
 {
@@ -395,6 +392,13 @@ void delta::geometry::Object::setAngularVelocity(std::array<iREAL, 3>  angularVe
   this->_angularVelocity[2] = angularVelocity[2];
 }
 
+void delta::geometry::Object::setRefAngularVelocity(std::array<iREAL, 3>  refAngularVelocity)
+{
+  this->_refAngularVelocity[0] = refAngularVelocity[0];
+  this->_refAngularVelocity[1] = refAngularVelocity[1];
+  this->_refAngularVelocity[2] = refAngularVelocity[2];
+}
+
 std::array<iREAL, 3> delta::geometry::Object::getLinearVelocity()
 {
   return _linearVelocity;
@@ -405,94 +409,9 @@ std::array<iREAL, 3> delta::geometry::Object::getAngularVelocity()
   return _angularVelocity;
 }
 
-iREAL delta::geometry::Object::getMinX()
+std::array<iREAL, 3> delta::geometry::Object::getRefAngularVelocity()
 {
-  iREAL minx = std::numeric_limits<iREAL>::max();
-  if(_xCoordinates.size() > 0)
-  {
-    for(unsigned i=0; i<_xCoordinates.size(); i++)
-    {
-      if(_xCoordinates[i] < minx) minx = _xCoordinates[i];
-    }
-  } else {
-    minx = _centreOfMass[0] - _rad;
-  }
-  return minx;
-}
-
-iREAL delta::geometry::Object::getMaxX()
-{
-  iREAL maxx = std::numeric_limits<iREAL>::min();
-  if(_xCoordinates.size() > 0)
-  {
-    for(unsigned i=0; i<_xCoordinates.size(); i++)
-    {
-      if(_xCoordinates[i] > maxx) maxx = _xCoordinates[i];
-    }
-  } else {
-    maxx = _centreOfMass[0] + _rad;
-  }
-  return maxx;
-}
-
-iREAL delta::geometry::Object::getMinY()
-{
-  iREAL miny = std::numeric_limits<iREAL>::max();
-  if(_yCoordinates.size() > 0)
-  {
-    for(unsigned i=0; i<_yCoordinates.size(); i++)
-    {
-      if(_yCoordinates[i] < miny) miny = _yCoordinates[i];
-    }
-  } else {
-    miny = _centreOfMass[0] - _rad;
-  }
-  return miny;
-}
-
-iREAL delta::geometry::Object::getMaxY()
-{
-  iREAL maxy = std::numeric_limits<iREAL>::min();
-  if(_yCoordinates.size() > 0)
-  {
-    for(unsigned i=0; i<_yCoordinates.size(); i++)
-    {
-      if(_xCoordinates[i] > maxy) maxy = _xCoordinates[i];
-    }
-  } else {
-    maxy = _centreOfMass[0] + _rad;
-  }
-  return maxy;
-}
-
-iREAL delta::geometry::Object::getMinZ()
-{
-  iREAL minz = std::numeric_limits<iREAL>::max();
-  if(_xCoordinates.size() > 0)
-  {
-    for(unsigned i=0; i<_xCoordinates.size(); i++)
-    {
-      if(_xCoordinates[i] < minz) minz = _zCoordinates[i];
-    }
-  } else {
-    minz = _centreOfMass[0] - _rad;
-  }
-  return minz;
-}
-
-iREAL delta::geometry::Object::getMaxZ()
-{
-  iREAL maxz = std::numeric_limits<iREAL>::min();
-  if(_zCoordinates.size() > 0)
-  {
-    for(unsigned i=0; i<_yCoordinates.size(); i++)
-    {
-      if(_xCoordinates[i] > maxz) maxz = _xCoordinates[i];
-    }
-  } else {
-    maxz = _centreOfMass[0] + _rad;
-  }
-  return maxz;
+  return _refAngularVelocity;
 }
 
 iREAL delta::geometry::Object::computeVolume()
@@ -592,15 +511,15 @@ void delta::geometry::Object::computeInertia(
 
   mass = me;
   //printf("mass:%f\n", mass);
-//#ifdef STATS
-  //printf("sx:%f sy:%f sz:%f\n", sx, sy, sz);
-//#endif
+  //#ifdef STATS
+	//printf("sx:%f sy:%f sz:%f\n", sx, sy, sz);
+  //#endif
   center[0] = (sx / me);
   center[1] = (sy / me);
   center[2] = (sz / me);
-//#ifdef STATS
-  //printf("c %f c %f c %f\n", center[0], center[1], center[2]);
-//#endif
+  //#ifdef STATS
+	//printf("c %f c %f c %f\n", center[0], center[1], center[2]);
+  //#endif
 
 #ifdef STATS
   //printf("euler %f %f %f %f %f %f %f %f %f\n", euler[0], euler[1], euler[2], euler[3], euler[4], euler[5], euler[6], euler[7], euler[8]);

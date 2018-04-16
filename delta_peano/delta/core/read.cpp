@@ -8,6 +8,7 @@
 #include <delta/core/read.h>
 
 #include <assimp/Importer.hpp>      // C++ importer interface
+#include <assimp/Exporter.hpp>      // C++ importer interface
 #include <assimp/scene.h>           // Output data structure
 #include <assimp/postprocess.h>     // Post processing flags
 
@@ -174,30 +175,30 @@ void delta::core::readSceneGeometry(std::string fileName)
 	//vertices
 	for(uint v_i = 0; v_i < mesh->mNumVertices; v_i++)
 	{
-		if(mesh->HasPositions())
-		{
-			const aiVector3D* vp = &(mesh->mVertices[v_i]);
-			g_vp.push_back(vp->x);
-			g_vp.push_back(vp->y);
-			g_vp.push_back(vp->z);
+	  if(mesh->HasPositions())
+	  {
+		const aiVector3D* vp = &(mesh->mVertices[v_i]);
+		g_vp.push_back(vp->x);
+		g_vp.push_back(vp->y);
+		g_vp.push_back(vp->z);
 
-			std::cout << vp->x << vp->y << vp->z << std::endl;
-		}
+		std::cout << vp->x << vp->y << vp->z << std::endl;
+	  }
 	}
 
 	///Faces
 	for(uint f_i = 0; f_i < mesh->mNumFaces; f_i++)
 	{
-		  //printf("number of indices: %i\n", mesh->mFaces[f_i].mNumIndices);
-		  for(uint index = 0; index < mesh->mFaces[f_i].mNumIndices; index++)
-		  {
-			const aiVector3D* vp = &(mesh->mVertices[index]);
+	  //printf("number of indices: %i\n", mesh->mFaces[f_i].mNumIndices);
+	  for(uint index = 0; index < mesh->mFaces[f_i].mNumIndices; index++)
+	  {
+		const aiVector3D* vp = &(mesh->mVertices[index]);
 
-			//flat triangles
-			//delta::core::Delta::_trianglesXCoordinates.push_back(vp->x);
-			//delta::core::Delta::_trianglesYCoordinates.push_back(vp->y);
-			//delta::core::Delta::_trianglesZCoordinates.push_back(vp->z);
-		  }
+		//flat triangles
+		//delta::core::Delta::_trianglesXCoordinates.push_back(vp->x);
+		//delta::core::Delta::_trianglesYCoordinates.push_back(vp->y);
+		//delta::core::Delta::_trianglesZCoordinates.push_back(vp->z);
+	  }
 	}
   }
 }

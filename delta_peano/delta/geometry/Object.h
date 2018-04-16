@@ -78,6 +78,9 @@ class delta::geometry::Object
     void 	setLinearVelocity(std::array<iREAL, 3>  linearVelocity);
     void 	setAngularVelocity(std::array<iREAL, 3>  angularVelocity);
     void 	setMesh(delta::geometry::mesh::Mesh& mesh);
+    void 	setOrientation(iREAL orientation[9]);
+    void 	setRefCentreOfMass(iREAL refCentreOfMass[3]);
+    void 	setRefAngularVelocity(std::array<iREAL, 3>  refAngularVelocity);
     void 	setMesh(
     			  std::vector<iREAL> xCoordinates,
 			  std::vector<iREAL> yCoordinates,
@@ -115,6 +118,10 @@ class delta::geometry::Object
     std::array<iREAL, 3> 	getCentreOfMass();
     std::array<iREAL, 3> 	getLinearVelocity();
     std::array<iREAL, 3> 	getAngularVelocity();
+    std::array<iREAL, 9> 	getOrientation();
+    std::array<iREAL, 3> 	getRefCentreOfMass();
+    std::array<iREAL, 3> 	getRefAngularVelocity();
+
 
     delta::geometry::material::MaterialType 	getMaterial();
     delta::geometry::mesh::Mesh 				getMesh();
@@ -141,9 +148,8 @@ class delta::geometry::Object
     std::string           	_component;
     int                   	_globalParticleID;
     int                  	_localParticleID;
-    std::array<iREAL, 3> 	_centre;
-    iREAL                	_rad;
 
+    iREAL                	_rad;
     iREAL				 	_haloDiameter;
     iREAL				 	_diameter;
     iREAL               		_mass;
@@ -157,16 +163,21 @@ class delta::geometry::Object
 
     std::array<iREAL, 3> 	_linearVelocity;
     std::array<iREAL, 3> 	_angularVelocity;
+    std::array<iREAL, 3> 	_refAngularVelocity;
 
     delta::geometry::material::MaterialType _material;
 
     bool                  	_isObstacle;
     bool                  	_isFriction;
 
-    std::array<iREAL, 3> 	_xyzDimensions;
+    std::array<iREAL, 3> 	_centre;
     std::array<iREAL, 3> 	_centreOfMass;
+    std::array<iREAL, 3> 	_refCentreOfMass;
+
+    std::array<iREAL, 3> 	_xyzDimensions;
     std::array<iREAL, 9> 	_inertia;
     std::array<iREAL, 9> 	_inverse;
+    std::array<iREAL, 9> 	_orientation;
 
     //dimensions
     iREAL                	_wx;

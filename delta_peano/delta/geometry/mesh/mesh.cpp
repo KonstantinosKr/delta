@@ -6,6 +6,8 @@
  */
 
 #include <delta/geometry/mesh/Mesh.h>
+#include <delta/geometry/mesh/Vertex.h>
+#include <functional>
 
 delta::geometry::mesh::Mesh::Mesh()
 {
@@ -17,6 +19,10 @@ delta::geometry::mesh::Mesh::Mesh(
 	std::vector<iREAL>& yCoordinates,
 	std::vector<iREAL>& zCoordinates)
 {
+  _xCoordinates.clear();
+  _yCoordinates.clear();
+  _zCoordinates.clear();
+
   for(int i=0; i<xCoordinates.size(); i+=3)
   {
 	delta::geometry::mesh::Triangle *triangle =
@@ -24,12 +30,235 @@ delta::geometry::mesh::Mesh::Mesh(
 											xCoordinates[i+1], 	yCoordinates[i+1], 	zCoordinates[i+1],
 											xCoordinates[i+2], 	yCoordinates[i+2], 	zCoordinates[i+2]);
 	_triangles.push_back(*triangle);
+
+	_xCoordinates.push_back(xCoordinates[i]);
+	_yCoordinates.push_back(yCoordinates[i]);
+	_zCoordinates.push_back(zCoordinates[i]);
+
+	_xCoordinates.push_back(xCoordinates[i+1]);
+	_yCoordinates.push_back(yCoordinates[i+1]);
+	_zCoordinates.push_back(zCoordinates[i+1]);
+
+	_xCoordinates.push_back(xCoordinates[i+2]);
+	_yCoordinates.push_back(yCoordinates[i+2]);
+	_zCoordinates.push_back(zCoordinates[i+2]);
   }
 }
 
 delta::geometry::mesh::Mesh::Mesh(std::vector<delta::geometry::mesh::Triangle> triangles)
 {
   _triangles.insert(_triangles.begin(), triangles.begin(), triangles.end());
+
+  _xCoordinates.clear();
+  _yCoordinates.clear();
+  _zCoordinates.clear();
+
+  for(int i=0; i<triangles.size(); i++)
+  {
+	iREAL xA = triangles[i].getVertexA().getX();
+	iREAL yA = triangles[i].getVertexA().getY();
+	iREAL zA = triangles[i].getVertexA().getZ();
+
+	iREAL xB = triangles[i].getVertexB().getX();
+	iREAL yB = triangles[i].getVertexB().getY();
+	iREAL zB = triangles[i].getVertexB().getZ();
+
+	iREAL xC = triangles[i].getVertexC().getX();
+	iREAL yC = triangles[i].getVertexC().getY();
+	iREAL zC = triangles[i].getVertexC().getZ();
+
+	_xCoordinates.push_back(xA);
+	_yCoordinates.push_back(yA);
+	_zCoordinates.push_back(zA);
+
+	_xCoordinates.push_back(xB);
+	_yCoordinates.push_back(yB);
+	_zCoordinates.push_back(zB);
+
+	_xCoordinates.push_back(xC);
+	_yCoordinates.push_back(yC);
+	_zCoordinates.push_back(zC);
+  }
+  compressFromTriangles(triangles);
+}
+
+void delta::geometry::mesh::Mesh::compressFromVectors(
+	std::vector<iREAL>& xCoordinates,
+	std::vector<iREAL>& yCoordinates,
+	std::vector<iREAL>& zCoordinates)
+{
+  _triangleFaces.clear();
+  _uniqueVertices.clear();
+
+  std::hash<std::string> v_hash;
+
+  std::map<unsigned int, delta::geometry::mesh::Vertex *> vertices;
+
+  for(int i=0; i<_xCoordinates.size(); i+=3)
+  {
+	iREAL xA = xCoordinates[i];
+	iREAL yA = yCoordinates[i];
+	iREAL zA = zCoordinates[i];
+
+	iREAL xB = xCoordinates[i+1];
+	iREAL yB = yCoordinates[i+1];
+	iREAL zB = zCoordinates[i+1];
+
+	iREAL xC = xCoordinates[i+2];
+	iREAL yC = yCoordinates[i+2];
+	iREAL zC = zCoordinates[i+2];
+
+	std::ostringstream ssA;
+	ssA << xA << yA << zA;
+	std::string A(ssA.str());
+	unsigned int uniqueID = v_hash(A);
+
+	if(vertices.count(uniqueID) == 0)
+	{
+	  delta::geometry::mesh::Vertex * v = new delta::geometry::mesh::Vertex(xA, yA, zA);
+	  vertices[uniqueID] = v;
+	  _uniqueVertices.push_back(*v);
+	}
+
+	std::ostringstream ssB;
+	ssB << xB << yB << zB;
+	std::string B(ssB.str());
+	uniqueID = v_hash(B);
+
+	if(vertices.count(uniqueID) == 0)
+	{
+	  delta::geometry::mesh::Vertex * v = new delta::geometry::mesh::Vertex(xB, yB, zB);
+	  vertices[uniqueID] = v;
+	  _uniqueVertices.push_back(*v);
+	}
+
+	std::ostringstream ssC;
+	ssC << xC << yC << zC;
+	std::string C(ssC.str());
+	uniqueID = v_hash(C);
+
+	if(vertices.count(uniqueID) == 0)
+	{
+	  delta::geometry::mesh::Vertex * v = new delta::geometry::mesh::Vertex(xC, yC, zC);
+	  vertices[uniqueID] = v;
+	  _uniqueVertices.push_back(*v);
+	}
+
+	std::array<int, 3> loc = {0,0,0};
+
+	//search for vertices to construct triangleface
+	for(int i=0; i<_uniqueVertices.size(); i++)
+	{
+	  delta::geometry::mesh::Vertex *rt = &_uniqueVertices[i];
+	  std::ostringstream ssr;
+	  ssr << rt->getX() << rt->getY() << rt->getZ();
+	  std::string tt(ssr.str());
+	  unsigned int id = v_hash(tt);
+
+	  if(id == v_hash(A))
+	  {
+		loc[0] = i;
+	  }
+	  if(id == v_hash(B))
+	  {
+		loc[1] = i;
+	  }
+	  if(id == v_hash(C))
+	  {
+		loc[3] = i;
+	  }
+	}
+	_triangleFaces.push_back(loc);
+  }
+}
+
+void delta::geometry::mesh::Mesh::compressFromTriangles(std::vector<delta::geometry::mesh::Triangle> &triangles)
+{
+  _triangleFaces.clear();
+  _uniqueVertices.clear();
+
+  std::hash<std::string> v_hash;
+
+  std::map<unsigned int, delta::geometry::mesh::Vertex *> vertices;
+
+  for(int i=0; i<_triangles.size(); i+=3)
+  {
+	delta::geometry::mesh::Triangle triangle = _triangles[i];
+
+	iREAL xA = _triangles[i].getVertexA().getX();
+	iREAL yA = _triangles[i].getVertexA().getY();
+	iREAL zA = _triangles[i].getVertexA().getZ();
+
+	iREAL xB = _triangles[i].getVertexB().getX();
+	iREAL yB = _triangles[i].getVertexB().getY();
+	iREAL zB = _triangles[i].getVertexB().getZ();
+
+	iREAL xC = _triangles[i].getVertexC().getX();
+	iREAL yC = _triangles[i].getVertexC().getY();
+	iREAL zC = _triangles[i].getVertexC().getZ();
+
+	std::ostringstream ssA;
+	ssA << xA << yA << zA;
+	std::string A(ssA.str());
+	unsigned int uniqueID = v_hash(A);
+
+	if(vertices.count(uniqueID) == 0)
+	{
+	  delta::geometry::mesh::Vertex * v = new delta::geometry::mesh::Vertex(xA, yA, zA);
+	  vertices[uniqueID] = v;
+	  _uniqueVertices.push_back(*v);
+	}
+
+	std::ostringstream ssB;
+	ssB << xB << yB << zB;
+	std::string B(ssB.str());
+	uniqueID = v_hash(B);
+
+	if(vertices.count(uniqueID) == 0)
+	{
+	  delta::geometry::mesh::Vertex * v = new delta::geometry::mesh::Vertex(xB, yB, zB);
+	  vertices[uniqueID] = v;
+	  _uniqueVertices.push_back(*v);
+	}
+
+	std::ostringstream ssC;
+	ssC << xC << yC << zC;
+	std::string C(ssC.str());
+	uniqueID = v_hash(C);
+
+	if(vertices.count(uniqueID) == 0)
+	{
+	  delta::geometry::mesh::Vertex * v = new delta::geometry::mesh::Vertex(xC, yC, zC);
+	  vertices[uniqueID] = v;
+	  _uniqueVertices.push_back(*v);
+	}
+
+	std::array<int, 3> loc = {0,0,0};
+
+	//search for vertices to construct triangleface
+	for(int i=0; i<_uniqueVertices.size(); i++)
+	{
+	  delta::geometry::mesh::Vertex *rt = &_uniqueVertices[i];
+	  std::ostringstream ssr;
+	  ssr << rt->getX() << rt->getY() << rt->getZ();
+	  std::string tt(ssr.str());
+	  unsigned int id = v_hash(tt);
+
+	  if(id == v_hash(A))
+	  {
+		loc[0] = i;
+	  }
+	  if(id == v_hash(B))
+	  {
+		loc[1] = i;
+	  }
+	  if(id == v_hash(C))
+	  {
+		loc[3] = i;
+	  }
+	}
+	_triangleFaces.push_back(loc);
+  }
 }
 
 void delta::geometry::mesh::Mesh::flatten (
@@ -83,7 +312,6 @@ std::vector<iREAL> delta::geometry::mesh::Mesh::getzCoordinates()
 {
   return _zCoordinates;
 }
-
 
 void delta::geometry::mesh::Mesh::moveMeshFromPositionToOrigin(iREAL center[3])
 {
@@ -867,6 +1095,18 @@ iREAL delta::geometry::mesh::Mesh::simplex_J (
 }
 //https://en.wikipedia.org/wiki/Trace_%28linear_algebra%29
 #define TRACE(A) ((A)[0] + (A)[4] + (A)[8])
+
+std::vector<std::array<int, 3>> delta::geometry::mesh::Mesh::getTriangleFaces()
+{
+  compressFromVectors(_xCoordinates, _yCoordinates, _zCoordinates);
+  return _triangleFaces;
+}
+
+std::vector<delta::geometry::mesh::Vertex> delta::geometry::mesh::Mesh::getUniqueVertices()
+{
+  compressFromVectors(_xCoordinates, _yCoordinates, _zCoordinates);
+  return _uniqueVertices;
+}
 
 delta::geometry::mesh::Mesh::Mesh::~Mesh() {
 

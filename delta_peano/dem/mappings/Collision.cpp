@@ -20,7 +20,6 @@
 
 #include <unordered_map>
 
-
 peano::CommunicationSpecification   dem::mappings::Collision::communicationSpecification() const {
 	return peano::CommunicationSpecification(peano::CommunicationSpecification::ExchangeMasterWorkerData::SendDataAndStateBeforeFirstTouchVertexFirstTime,peano::CommunicationSpecification::ExchangeWorkerMasterData::SendDataAndStateAfterLastTouchVertexLastTime,false);
 }
