@@ -12,7 +12,6 @@
 #include <vector>
 #include <array>
 #include <cmath>
-#include <delta/geometry/mesh/Vertex.h>
 
 namespace delta {
   namespace geometry {
@@ -25,9 +24,9 @@ namespace delta {
 class delta::geometry::mesh::Triangle {
   public:
 	Triangle(
-		delta::geometry::mesh::Vertex &A,
-		delta::geometry::mesh::Vertex &B,
-		delta::geometry::mesh::Vertex &C);
+		std::array<iREAL, 3> A,
+		std::array<iREAL, 3> B,
+		std::array<iREAL, 3> C);
 
 	Triangle(
 		iREAL A[3],
@@ -47,9 +46,9 @@ class delta::geometry::mesh::Triangle {
 		iREAL Cy,
 		iREAL Cz);
 
-	delta::geometry::mesh::Vertex getVertexA();
-	delta::geometry::mesh::Vertex getVertexB();
-	delta::geometry::mesh::Vertex getVertexC();
+	std::array<iREAL, 3> getVertexA();
+	std::array<iREAL, 3> getVertexB();
+	std::array<iREAL, 3> getVertexC();
 
 	void flatten (
 		std::vector<iREAL>& xCoordinates,
@@ -79,7 +78,7 @@ class delta::geometry::mesh::Triangle {
 	virtual ~Triangle();
 
   private:
-	delta::geometry::mesh::Vertex *_A, *_B, *_C;
+	std::array<iREAL, 3> _A, _B, _C;
 
 };
 

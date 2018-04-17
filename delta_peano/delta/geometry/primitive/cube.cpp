@@ -752,7 +752,5 @@ delta::geometry::mesh::Mesh *delta::geometry::primitive::cube::generateHullCube(
   }
   delta::geometry::operators::triangle::meshDenser(meshmultiplier, xCoordinates, yCoordinates, zCoordinates);
 
-  delta::geometry::mesh::Mesh *mesh = new delta::geometry::mesh::Mesh(xCoordinates, yCoordinates, zCoordinates);
-
-  return mesh;
+  return new delta::geometry::mesh::Mesh(xCoordinates, yCoordinates, zCoordinates);
 }

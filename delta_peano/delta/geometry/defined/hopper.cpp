@@ -1070,8 +1070,6 @@ delta::geometry::mesh::Mesh *delta::geometry::defined::generateHopper(
   delta::geometry::defined::generateOuterHopper(center, width+thickness, height, hatch+0.005, xCoordinates, yCoordinates, zCoordinates);
   delta::geometry::operators::triangle::meshDenser(meshRefinement, gridH, xCoordinates, yCoordinates, zCoordinates);
 
-  delta::geometry::mesh::Mesh *mesh = new delta::geometry::mesh::Mesh(xCoordinates, yCoordinates, zCoordinates);
-
-  return mesh;
+  return new delta::geometry::mesh::Mesh(xCoordinates, yCoordinates, zCoordinates);
 }
 

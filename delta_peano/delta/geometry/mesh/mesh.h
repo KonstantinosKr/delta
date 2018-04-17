@@ -16,7 +16,6 @@
 #include <string>
 #include <sstream>
 #include <delta/geometry/mesh/Triangle.h>
-#include <delta/geometry/mesh/Vertex.h>
 #include <delta/geometry/material.h>
 #include <delta/geometry/operators/hull/alg.h>
 #include <delta/core/algo.h>
@@ -33,9 +32,13 @@ class delta::geometry::mesh::Mesh {
   public:
 	Mesh();
 
-	Mesh(std::vector<iREAL>& xCoordinates,
-		std::vector<iREAL>& yCoordinates,
-		std::vector<iREAL>& zCoordinates);
+	Mesh(
+		std::vector<std::array<int, 3>> 		triangleFaces,
+		std::vector<std::array<iREAL, 3>> 	uniqueVertices);
+
+	Mesh(std::vector<iREAL> xCoordinates,
+		std::vector<iREAL> yCoordinates,
+		std::vector<iREAL> zCoordinates);
 
 	Mesh(std::vector<delta::geometry::mesh::Triangle> _triangles);
 
@@ -49,15 +52,9 @@ class delta::geometry::mesh::Mesh {
 		std::vector<iREAL>& yCoordinates,
 		std::vector<iREAL>& zCoordinates);
 
-	std::vector<iREAL> getxCoordinates();
-	std::vector<iREAL> getyCoordinates();
-	std::vector<iREAL> getzCoordinates();
-
 	void moveMeshFromPositionToOrigin(iREAL center[3]);
 	void moveMeshFromOriginToPosition(iREAL center[3]);
-
 	void scaleXYZ(iREAL scale, iREAL position[3]);
-
 	void rotateX(iREAL alphaX);
 	void rotateY(iREAL alphaY);
 	void rotateZ(iREAL alphaZ);
@@ -66,28 +63,28 @@ class delta::geometry::mesh::Mesh {
 	    std::array<iREAL, 3> A,
 	    std::array<iREAL, 3> B);
 
-	iREAL getXYZWidth();
-	iREAL getXZWidth();
-
-	iREAL getXw();
-	iREAL getYw();
-	iREAL getZw();
-
-	std::array<iREAL, 3> getMinBoundaryVertex();
-	std::array<iREAL, 3> getMaxBoundaryVertex();
+	std::vector<iREAL> 		getxCoordinates();
+	std::vector<iREAL> 		getyCoordinates();
+	std::vector<iREAL> 		getzCoordinates();
+	iREAL 					getXYZWidth();
+	iREAL 					getXZWidth();
+	iREAL 					getXw();
+	iREAL 					getYw();
+	iREAL 					getZw();
+	iREAL 					getMaxXAxis();
+	iREAL 					getMaxYAxis();
+	iREAL 					getMaxZAxis();
+	iREAL 					getMinXAxis();
+	iREAL 					getMinYAxis();
+	iREAL 					getMinZAxis();
+	iREAL 					getHMin();
+	std::array<iREAL, 3> 	getMinBoundaryVertex();
+	std::array<iREAL, 3> 	getMaxBoundaryVertex();
 
 	iREAL computeDiagonal();
 
-	iREAL getMaxXAxis();
-	iREAL getMaxYAxis();
-	iREAL getMaxZAxis();
-
-	iREAL getMinXAxis();
-	iREAL getMinYAxis();
-	iREAL getMinZAxis();
-
-	std::vector<std::array<int, 3>> 				getTriangleFaces();
-	std::vector<delta::geometry::mesh::Vertex> 	getUniqueVertices();
+	std::vector<std::array<int, 3>> 		getTriangleFaces();
+	std::vector<std::array<iREAL, 3>> 	getUniqueVertices();
 
 	void getCenterOfGeometry(
 	  iREAL centreOfGeometry[3]);
@@ -104,7 +101,6 @@ class delta::geometry::mesh::Mesh {
 	void explode(iREAL length);
 	void exploded(iREAL length);
 
-	iREAL getHMin();
     iREAL computeVolume();
 
 	void computeInertia(
@@ -128,17 +124,14 @@ class delta::geometry::mesh::Mesh {
 		std::vector<iREAL>& yCoordinates,
 		std::vector<iREAL>& zCoordinates);
 
-	void compressFromTriangles(
-		std::vector<delta::geometry::mesh::Triangle> &triangles);
-
 	std::vector<delta::geometry::mesh::Triangle> _triangles;
 
 	std::vector<std::array<int, 3>> 				_triangleFaces;
-	std::vector<delta::geometry::mesh::Vertex> 	_uniqueVertices;
+	std::vector<std::array<iREAL, 3>>		 	_uniqueVertices;
 
-    std::vector<iREAL>   _xCoordinates;
-    std::vector<iREAL>   _yCoordinates;
-    std::vector<iREAL>   _zCoordinates;
+    std::vector<iREAL>   						_xCoordinates;
+    std::vector<iREAL>   						_yCoordinates;
+    std::vector<iREAL>   						_zCoordinates;
 
     iREAL simplex_J (iREAL *a, iREAL *b, iREAL *c, iREAL *d);
 	#define simplex_1(J, a, b, c, d) ((J)/6.)

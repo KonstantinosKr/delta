@@ -8,13 +8,13 @@
 #include <delta/geometry/mesh/Triangle.h>
 
 delta::geometry::mesh::Triangle::Triangle(
-	delta::geometry::mesh::Vertex &A,
-	delta::geometry::mesh::Vertex &B,
-	delta::geometry::mesh::Vertex &C)
+	std::array<iREAL, 3> A,
+	std::array<iREAL, 3> B,
+	std::array<iREAL, 3> C)
 {
-  this->_A = &A;
-  this->_B = &B;
-  this->_C = &C;
+  this->_A = A;
+  this->_B = B;
+  this->_C = C;
 }
 
 delta::geometry::mesh::Triangle::Triangle(
@@ -22,9 +22,9 @@ delta::geometry::mesh::Triangle::Triangle(
 	iREAL B[3],
 	iREAL C[3])
 {
-  this->_A = new delta::geometry::mesh::Vertex(A);
-  this->_B = new delta::geometry::mesh::Vertex(B);
-  this->_C = new delta::geometry::mesh::Vertex(C);
+  this->_A = std::array<iREAL, 3>{A[0], A[1], A[2]};
+  this->_B = std::array<iREAL, 3>{B[0], B[1], B[2]};
+  this->_C = std::array<iREAL, 3>{C[0], C[1], C[2]};
 }
 
 delta::geometry::mesh::Triangle::Triangle(
@@ -40,24 +40,24 @@ delta::geometry::mesh::Triangle::Triangle(
 	iREAL Cy,
 	iREAL Cz)
 {
-  this->_A = new delta::geometry::mesh::Vertex(Ax, Ay, Az);
-  this->_B = new delta::geometry::mesh::Vertex(Bx, By, Bz);
-  this->_C = new delta::geometry::mesh::Vertex(Cx, Cy, Cz);
+  this->_A = std::array<iREAL, 3>{Ax, Ay, Az};
+  this->_B = std::array<iREAL, 3>{Bx, By, Bz};
+  this->_C = std::array<iREAL, 3>{Cx, Cy, Cz};
 }
 
-delta::geometry::mesh::Vertex delta::geometry::mesh::Triangle::getVertexA()
+std::array<iREAL, 3> delta::geometry::mesh::Triangle::getVertexA()
 {
-  return *_A;
+  return _A;
 }
 
-delta::geometry::mesh::Vertex delta::geometry::mesh::Triangle::getVertexB()
+std::array<iREAL, 3> delta::geometry::mesh::Triangle::getVertexB()
 {
-  return *_B;
+  return _B;
 }
 
-delta::geometry::mesh::Vertex delta::geometry::mesh::Triangle::getVertexC()
+std::array<iREAL, 3> delta::geometry::mesh::Triangle::getVertexC()
 {
-  return *_C;
+  return _C;
 }
 
 void delta::geometry::mesh::Triangle::flatten (
@@ -65,17 +65,17 @@ void delta::geometry::mesh::Triangle::flatten (
 	std::vector<iREAL>& yCoordinates,
 	std::vector<iREAL>& zCoordinates)
 {
-	xCoordinates.push_back(this->_A->getX());
-	xCoordinates.push_back(this->_B->getX());
-	xCoordinates.push_back(this->_C->getX());
+	xCoordinates.push_back(this->_A[0]);
+	xCoordinates.push_back(this->_B[0]);
+	xCoordinates.push_back(this->_C[0]);
 
-	yCoordinates.push_back(this->_A->getY());
-	yCoordinates.push_back(this->_B->getY());
-	yCoordinates.push_back(this->_C->getY());
+	yCoordinates.push_back(this->_A[1]);
+	yCoordinates.push_back(this->_B[1]);
+	yCoordinates.push_back(this->_C[1]);
 
-	zCoordinates.push_back(this->_A->getZ());
-	zCoordinates.push_back(this->_A->getZ());
-	zCoordinates.push_back(this->_A->getZ());
+	zCoordinates.push_back(this->_A[2]);
+	zCoordinates.push_back(this->_B[2]);
+	zCoordinates.push_back(this->_C[2]);
 }
 
 iREAL delta::geometry::mesh::Triangle::getTriangleLength()
@@ -95,7 +95,6 @@ iREAL delta::geometry::mesh::Triangle::getTriangleLength()
 
   return getXYZWidth();
 }
-
 
 iREAL delta::geometry::mesh::Triangle::getXYZWidth()
 {

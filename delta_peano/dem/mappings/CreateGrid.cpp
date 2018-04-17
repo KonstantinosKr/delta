@@ -528,7 +528,6 @@ void dem::mappings::CreateGrid::beginIteration(
     return;
   }
 
-  printf("entered\n");
   logTraceOutWith1Argument( "beginIteration(State)", solverState);
 }
 
@@ -538,7 +537,6 @@ void dem::mappings::CreateGrid::endIteration(
 {
   logTraceInWith1Argument( "endIteration(State)", solverState );
 
-  printf("entered end\n");
   delta::world::computeBoundary(
 		 _coarseObjects,
 		 _fineObjects,

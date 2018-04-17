@@ -7,25 +7,21 @@
 
 #include <delta/core/write.h>
 
-write::write() {
-  // TODO Auto-generated constructor stub
-}
-
-void write::writeGeometryToVTK(int step, int numVertices, std::vector<delta::geometry::Object> vectorGeometries, iREAL *t[6][3])
+void delta::core::writeGeometryToVTK(int step, std::array<iREAL, 6> boundary, std::vector<delta::geometry::Object> vectorGeometries)
 {
   //domain boundary
   iREAL lo[3], hi[3];
-  lo[0] = 0.0; // lower corner
-  lo[1] = 0.0; // lower corner
-  lo[2] = 0.0; // lower corner
+  lo[0] = boundary[0]; // lower corner
+  lo[1] = boundary[1]; // lower corner
+  lo[2] = boundary[2]; // lower corner
 
-  hi[0] = 1.0; // upper corner
-  hi[1] = 1.0; // upper corner
-  hi[2] = 1.0; // upper corner
+  hi[0] = boundary[3]; // upper corner
+  hi[1] = boundary[4]; // upper corner
+  hi[2] = boundary[5]; // upper corner
 
   char iter[100];
   sprintf(iter, "%u.vtk", step);
-  char filename[100] = "output/geometry_"; //care or buffer overflow
+  char filename[100] = "geometry_"; //care or buffer overflow
   strcat(filename, iter);
 
   FILE *fp = fopen(filename, "w+");
@@ -35,118 +31,137 @@ void write::writeGeometryToVTK(int step, int numVertices, std::vector<delta::geo
 	return;
   }
 
-  int numVerticesTriangles = 0;
-  int numberOftriangles = 0;
+  int numVertices = 0;
+  int numberOfFaces = 0;
   for(int i=0; i<vectorGeometries.size(); i++)
   {
-	numVerticesTriangles += vectorGeometries[i].getNumberOfTriangles()/3.0;
-	numberOftriangles += vectorGeometries[i].getNumberOfTriangles();
+	numVertices += vectorGeometries[i].getMesh().getUniqueVertices().size();
+	numberOfFaces += vectorGeometries[i].getMesh().getTriangleFaces().size();
   }
 
-  int totalPoints = numVerticesTriangles + 8;
-  int numberOfLines = 12;
+  int numberOfBoundaries = 1;
+  numVertices += 8*numberOfBoundaries;
 
   fprintf(fp,"# vtk DataFile Version 2.0\n"
 			 "Output vtk file\n"
 			 "ASCII\n\n"
 			 "DATASET UNSTRUCTURED_GRID\n"
-			 "POINTS %i double\n", totalPoints);
+			 "POINTS %i double\n", numVertices);
 
-  int i;
-  for(i = 0; i < numVertices; i++)
+  std::vector<int> meshEndPivots;
+  for(int i=0; i<vectorGeometries.size(); i++)
   {
-	fprintf(fp,"%.5f %.5f %.5f\n"
-			   "%.5f %.5f %.5f\n"
-			   "%.5f %.5f %.5f\n", t[0][0][i], t[0][1][i], t[0][2][i],
-								   t[1][0][i], t[1][1][i], t[1][2][i],
-								   t[2][0][i], t[2][1][i], t[2][2][i]);
+
+	for(int j = 0; j < vectorGeometries[i].getMesh().getUniqueVertices().size(); j++)
+	{
+	  fprintf(fp,"%.5f %.5f %.5f\n",
+		  vectorGeometries[i].getMesh().getUniqueVertices()[j][0],
+		  vectorGeometries[i].getMesh().getUniqueVertices()[j][1],
+		  vectorGeometries[i].getMesh().getUniqueVertices()[j][2]);
+	}
+	int meshEndPivot = vectorGeometries[i].getMesh().getUniqueVertices().size();
+	meshEndPivots.push_back(meshEndPivot);
   }
 
   //BOUNDARY
   fprintf(fp, "%.5f %.5f %.5f\n"
 			  "%.5f %.5f %.5f\n"
 			  "%.5f %.5f %.5f\n"
-			  "%.5f %.5f %.5f\n", lo[0], lo[1], lo[2], lo[0], hi[1], lo[2], lo[0], hi[1], hi[2], lo[0], lo[1], hi[2]);
+			  "%.5f %.5f %.5f\n", 	lo[0], lo[1], lo[2], //0: A
+									lo[0], hi[1], lo[2], //1: B
+									lo[0], hi[1], hi[2], //2: E
+									lo[0], lo[1], hi[2]);//3: F
 
   fprintf(fp, "%.5f %.5f %.5f\n"
 			  "%.5f %.5f %.5f\n"
 			  "%.5f %.5f %.5f\n"
-			  "%.5f %.5f %.5f\n", hi[0], hi[1], hi[2], hi[0], lo[1], hi[2], hi[0], lo[1], lo[2], hi[0], hi[1], lo[2]);
-  //BOUNDARY
+			  "%.5f %.5f %.5f\n", 	hi[0], hi[1], hi[2], //4: H
+									hi[0], lo[1], hi[2], //5: G
+									hi[0], lo[1], lo[2], //6: D
+									hi[0], hi[1], lo[2]);//7: C
 
-  fprintf(fp,"\nCELLS %i %i\n", numVerticesTriangles+numberOfLines, numVerticesTriangles+numVerticesTriangles*3+(numberOfLines*3));
+  int numberOfLines = numberOfBoundaries*12;
 
-  for(i = 0; i < numVerticesTriangles*3; i=i+3)
+  int cellPointers 	= numberOfFaces*4 + numberOfLines*3;
+  int cellNumber 	= numberOfFaces + numberOfLines;
+
+  fprintf(fp,"\nCELLS %i %i\n", cellNumber, cellPointers);
+
+  int pivot = 0;
+  for(int i=0; i<vectorGeometries.size(); i++)
   {
-	fprintf(fp,"3 %i %i %i\n", i, i+1, i+2);
+	for(int j = 0; j < vectorGeometries[i].getMesh().getTriangleFaces().size(); j++)
+	{
+	  unsigned int A = pivot + vectorGeometries[i].getMesh().getTriangleFaces()[j][0];
+	  unsigned int B = pivot + vectorGeometries[i].getMesh().getTriangleFaces()[j][1];
+	  unsigned int C = pivot + vectorGeometries[i].getMesh().getTriangleFaces()[j][2];
+
+	  fprintf(fp,"3 %i %i %i\n", A, B, C);
+	}
+
+	pivot = meshEndPivots[i]+1;
   }
 
-  //left
-  //1. lo,lo,lo
-  //2. lo,hi,lo
-  //3. lo,hi,hi
-  //4. lo,lo,hi
+  //AB | 0->1
+  //AD | 0->3
+  //AG | 0->6
 
-  //link:
-  //1. -> 2.
-  //2. -> 3.
-  //3. -> 4.
+  //EC | 4->2
+  //EH | 4->7
+  //EF | 4->5
 
-  //right
-  //5. hi,hi,hi
-  //6. hi,lo,hi
-  //7. hi,lo,lo
-  //8. hi,hi,lo
+  //BC | 1->C
+  //BH | 1->H
+  //CD | 2->3
+  //DF | 3->5
+  //GH | 6->7
+  //GF | 6->5
 
-  //link:
-  //5. -> 6.
-  //6. -> 7.
-  //7. -> 8.
+  int meshEndPivot = meshEndPivots[meshEndPivots.size()-1];
 
-  //interlink:
-  //1. -> 6.
-  //2. -> 5.
-  //3. -> 7.
-  //4. -> 8.
-  //
-  int ii = i;
-  for(unsigned int j = 0; j < 3; j++)
+  int lA = meshEndPivot + 0;
+  int lB = meshEndPivot + 1;
+  int lE = meshEndPivot + 2;
+  int lF = meshEndPivot + 3;
+  int lH = meshEndPivot + 4;
+  int lG = meshEndPivot + 5;
+  int lD = meshEndPivot + 6;
+  int lC = meshEndPivot + 7;
+
+  fprintf(fp, "2 %i %i\n", lA, lB);
+  fprintf(fp, "2 %i %i\n", lA, lF);
+  fprintf(fp, "2 %i %i\n", lA, lD);
+
+  fprintf(fp, "2 %i %i\n", lB, lE);
+  fprintf(fp, "2 %i %i\n", lB, lC);
+
+  fprintf(fp, "2 %i %i\n", lE, lF);
+  fprintf(fp, "2 %i %i\n", lF, lG);
+
+  fprintf(fp, "2 %i %i\n", lD, lC);
+  fprintf(fp, "2 %i %i\n", lD, lG);
+
+  fprintf(fp, "2 %i %i\n", lH, lE);
+  fprintf(fp, "2 %i %i\n", lH, lC);
+  fprintf(fp, "2 %i %i\n", lH, lG);
+
+
+  fprintf(fp,"\nCELL_TYPES %i\n", cellNumber);
+
+  for(int i=0; i<vectorGeometries.size(); i++)
   {
-	fprintf(fp, "2 %i %i\n", i, i+1);
-	fprintf(fp, "2 %i %i\n", i+4, i+4+1);
-	i = i+1;
+	for(int j = 0; j < vectorGeometries[i].getMesh().getTriangleFaces().size(); j++)
+	{
+	  fprintf(fp,"5\n"); //triangle
+	}
   }
 
-  fprintf(fp, "2 %i %i\n", i, ii);
-  fprintf(fp, "2 %i %i\n", i+4, ii+4);
-
-  fprintf(fp, "2 %i %i\n", ii, ii+6);
-  fprintf(fp, "2 %i %i\n", ii+1, ii+7);
-  fprintf(fp, "2 %i %i\n", ii+2, ii+4);
-  fprintf(fp, "2 %i %i\n", ii+3, ii+5);
-
-
-  //number of triangles + number of lines
-  fprintf(fp,"\nCELL_TYPES %i\n", numVertices+numberOfLines);
-
-  for(i = 0; i<numVertices; i++)
+  for(int j = 0; j < numberOfLines; j++)
   {
-	fprintf(fp,"5\n");
-  }
-  for(int j = 0; j < 12; j++)
-  {
-	fprintf(fp, "3\n");
+	fprintf(fp, "3\n"); //lines
   }
 
   fclose(fp);
 }
 
-void write::writeGeometry()
-{
-
-}
-
-write::~write() {
-  // TODO Auto-generated destructor stub
-}
 

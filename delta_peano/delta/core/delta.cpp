@@ -23,15 +23,29 @@
  */
 
 #include <delta/core/delta.h>
+#include <delta/core/write.h>
 
 //std::vector< delta::geometry::Object> 	delta::core::Delta::_objects;
 
 delta::core::Delta::Delta()
 {
+  delta::geometry::material::materialInit();
+
   //delta::world::Object n();
   //_objects.push_back(n);
-  readSceneGeometry("keySmall.stl");
-  delta::geometry::material::materialInit();
+  std::vector<delta::geometry::mesh::Mesh> meshes = readSceneGeometry("keySmall.stl");
+
+
+  std::vector<delta::geometry::Object> objects;
+  for(int i=0; i<meshes.size(); i++)
+  {
+	delta::geometry::Object * object = new delta::geometry::Object();
+	object->setMesh(	meshes[i]);
+	objects.push_back(*object);
+  }
+
+  std::array<iREAL, 6> boundary = {0.0, 0.0, 0.0, 1.0, 1.0, 1.0};
+  delta::core::writeGeometryToVTK(0, boundary, objects);
 }
 
 delta::core::Delta::~Delta()

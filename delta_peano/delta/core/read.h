@@ -17,6 +17,7 @@
 #include <stdlib.h>
 #include <fstream>
 #include "math.h"
+#include <delta/geometry/mesh/Mesh.h>
 
 namespace delta {
 	namespace core {
@@ -31,7 +32,7 @@ namespace delta {
 			std::vector<iREAL>&  yCoordinates,
 			std::vector<iREAL>&  zCoordinates);
 
-		void readSceneGeometry(
+		std::vector<delta::geometry::mesh::Mesh> readSceneGeometry(
 			std::string fileName);
 	}
 }

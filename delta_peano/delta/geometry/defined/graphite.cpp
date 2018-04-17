@@ -21,8 +21,6 @@ delta::geometry::mesh::Mesh *delta::geometry::defined::generateBrickFB(
   mesh->scaleXYZ(h, centerOfGeometry);
   mesh->moveMeshFromOriginToPosition(center);
 
-  mesh->flatten(xCoordinates, yCoordinates, zCoordinates);
-
   return mesh;
 }
 
@@ -46,8 +44,6 @@ delta::geometry::mesh::Mesh *delta::geometry::defined::generateBrickFB()
   mesh->rotateX(-0.25);
   mesh->moveMeshFromOriginToPosition(center);
 
-  mesh->flatten(xCoordinates, yCoordinates, zCoordinates);
-
   return mesh;
 }
 
@@ -70,8 +66,6 @@ delta::geometry::mesh::Mesh *delta::geometry::defined::generateBrickFB(
   mesh->moveMeshFromPositionToOrigin(centerOfGeometry);
   mesh->rotateX(-0.25);
   mesh->moveMeshFromOriginToPosition(center);
-
-  mesh->flatten(xCoordinates, yCoordinates, zCoordinates);
 
   return mesh;
 }
@@ -97,8 +91,6 @@ delta::geometry::mesh::Mesh *delta::geometry::defined::generateKeyXK(
   mesh->scaleXYZ(h, centerOfGeometry);
   mesh->moveMeshFromOriginToPosition(center);
 
-  mesh->flatten(xCoordinates, yCoordinates, zCoordinates);
-
   return mesh;
 }
 
@@ -121,8 +113,6 @@ delta::geometry::mesh::Mesh *delta::geometry::defined::generateKeyYK(
   mesh->moveMeshFromPositionToOrigin(centerOfGeometry);
   mesh->scaleXYZ(h, centerOfGeometry);
   mesh->moveMeshFromOriginToPosition(center);
-
-  mesh->flatten(xCoordinates, yCoordinates, zCoordinates);
 
   return mesh;
 }

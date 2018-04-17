@@ -47,20 +47,20 @@ void delta::core::parseModelGridSchematics(
 
   if (myfile.is_open())
   {
-	  while (std::getline (myfile, line))
+	while (std::getline (myfile, line))
+	{
+	  std::vector<std::string> vstring = splitString(line, ",");
+	  //std::cout << vstring[2] << "\n";
+
+	  componentSeq.push_back(vstring[2]);
+
+	  if(std::stoi(vstring[0]) == 46)
 	  {
-		  std::vector<std::string> vstring = splitString(line, ",");
-		  //std::cout << vstring[2] << "\n";
-
-		  componentSeq.push_back(vstring[2]);
-
-		  if(std::stoi(vstring[0]) == 46) {
-			  //std::cout << std::stoi(vstring[0]) << "\n";
-			  componentGrid.push_back(componentSeq);
-		  }
+		  //std::cout << std::stoi(vstring[0]) << "\n";
+		  componentGrid.push_back(componentSeq);
 	  }
-
-	  myfile.close();
+	}
+	myfile.close();
   }
   else std::cout << "Unable to open file";
 }
@@ -146,9 +146,8 @@ void delta::core::readSingleVTKGeometry(
   fclose(fp1);
 }
 
-void delta::core::readSceneGeometry(std::string fileName)
+std::vector<delta::geometry::mesh::Mesh> delta::core::readSceneGeometry(std::string fileName)
 {
-
   Assimp::Importer importer;
 
   const aiScene* scene = importer.ReadFile( fileName,
@@ -160,18 +159,21 @@ void delta::core::readSceneGeometry(std::string fileName)
   bool n = scene->HasMeshes();
   int nn = scene->mNumMeshes;
 
-  printf("has %i meshes:%i\n", nn, n);
+  //printf("has %i meshes:%i\n", nn, n);
 
-  std::vector<iREAL> g_vp;
+  std::vector<delta::geometry::mesh::Mesh> meshVector;
 
   for(uint m_i = 0; m_i < scene->mNumMeshes; m_i++)
   {
+	std::vector<std::array<int, 3>> 		triangleFaces;
+	std::vector<std::array<iREAL, 3>> 	uniqueVertices;
+
 	const aiMesh* mesh = scene->mMeshes[m_i];
 
-	//delta::world::Object *Object = new delta::world::Object();
-
+	std::vector<iREAL> g_vp;
 	g_vp.reserve(3 * mesh->mNumVertices);
 
+	//printf("read %i vertices\n", mesh->mNumVertices);
 	//vertices
 	for(uint v_i = 0; v_i < mesh->mNumVertices; v_i++)
 	{
@@ -182,23 +184,38 @@ void delta::core::readSceneGeometry(std::string fileName)
 		g_vp.push_back(vp->y);
 		g_vp.push_back(vp->z);
 
-		std::cout << vp->x << vp->y << vp->z << std::endl;
+		std::array<iREAL, 3> vertex = {vp->x, vp->y, vp->z};
+		uniqueVertices.push_back(vertex);
+
+		//std::cout << vp->x << " " << vp->y << " " << vp->z << std::endl;
 	  }
 	}
 
-	///Faces
+	//printf("number of triangles: %i\n", mesh->mNumFaces);
+
+	//only triangle faces
 	for(uint f_i = 0; f_i < mesh->mNumFaces; f_i++)
 	{
-	  //printf("number of indices: %i\n", mesh->mFaces[f_i].mNumIndices);
-	  for(uint index = 0; index < mesh->mFaces[f_i].mNumIndices; index++)
+	  //only triangle faces
+	  for(uint index = 0; index < mesh->mFaces[f_i].mNumIndices; index+=3)
 	  {
-		const aiVector3D* vp = &(mesh->mVertices[index]);
+		int idxA = mesh->mFaces[f_i].mIndices[index];
+		int idxB = mesh->mFaces[f_i].mIndices[index+1];
+		int idxC = mesh->mFaces[f_i].mIndices[index+2];
+		std::array<int, 3> triangle = {idxA, idxB, idxC};
 
-		//flat triangles
-		//delta::core::Delta::_trianglesXCoordinates.push_back(vp->x);
-		//delta::core::Delta::_trianglesYCoordinates.push_back(vp->y);
-		//delta::core::Delta::_trianglesZCoordinates.push_back(vp->z);
+		/*
+		std::cout << uniqueVertices[idxA][0] << " " << uniqueVertices[idxA][1] << " " << uniqueVertices[idxA][2] << std::endl;
+		std::cout << uniqueVertices[idxB][0] << " " << uniqueVertices[idxB][1] << " " << uniqueVertices[idxB][2] << std::endl;
+		std::cout << uniqueVertices[idxC][0] << " " << uniqueVertices[idxC][1] << " " << uniqueVertices[idxC][2] << std::endl;*/
+
+		triangleFaces.push_back(triangle);
 	  }
 	}
+
+	delta::geometry::mesh::Mesh *meshgeometry = new delta::geometry::mesh::Mesh(triangleFaces, uniqueVertices);
+	meshVector.push_back(*meshgeometry);
   }
+
+  return meshVector;
 }

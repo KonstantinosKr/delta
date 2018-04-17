@@ -14,12 +14,10 @@
 #include "stdio.h"
 #include "string.h"
 
-class write {
-public:
-  write();
-  void writeGeometryToVTK(int step, int numVertices, std::vector<delta::geometry::Object> vectorGeometries, iREAL *t[6][3]);
-  void writeGeometry();
-  virtual ~write();
-};
+namespace delta {
+  namespace core {
+	void writeGeometryToVTK(int step, std::array<iREAL, 6> boundary, std::vector<delta::geometry::Object> vectorGeometries);
+  }
+}
 
 #endif /* DELTA_CORE_WRITE_H_ */
