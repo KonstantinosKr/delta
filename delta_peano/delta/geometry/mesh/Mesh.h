@@ -37,7 +37,7 @@ class delta::geometry::mesh::Mesh {
 		std::vector<std::array<iREAL, 3>> 	uniqueVertices);
 
 	Mesh(
-		td::vector<iREAL> xCoordinates,
+		std::vector<iREAL> xCoordinates,
 		std::vector<iREAL> yCoordinates,
 		std::vector<iREAL> zCoordinates);
 
@@ -385,6 +385,39 @@ class delta::geometry::mesh::Mesh {
 	  iREAL&               refcentreOfMassY,
 	  iREAL&               refcentreOfMassZ
 	);
+
+	/*
+	 *  Get X Coordinates
+	 *
+	 *  Returns vector of x axis coordinates of mess as SoA structure.
+	 *
+	 *
+	 *  @param none
+	 *  @returns vector
+	 */
+	std::vector<iREAL> getxCoordinates();
+
+	/*
+	 *  Get X Coordinates
+	 *
+	 *  Returns vector of x axis coordinates of mess as SoA structure.
+	 *
+	 *
+	 *  @param none
+	 *  @returns vector
+	 */
+	std::vector<iREAL> getyCoordinates();
+
+	/*
+	 *  Get X Coordinates
+	 *
+	 *  Returns vector of x axis coordinates of mess as SoA structure.
+	 *
+	 *
+	 *  @param none
+	 *  @returns vector
+	 */
+	std::vector<iREAL> getzCoordinates();
 
 	void explode(iREAL length);
 	void exploded(iREAL length);
