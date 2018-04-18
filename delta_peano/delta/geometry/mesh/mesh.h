@@ -59,6 +59,7 @@ class delta::geometry::mesh::Mesh {
 	void rotateY(iREAL alphaY);
 	void rotateZ(iREAL alphaZ);
 
+	iREAL computeDiagonal();
 	iREAL computeDistanceAB(
 	    std::array<iREAL, 3> A,
 	    std::array<iREAL, 3> B);
@@ -80,8 +81,6 @@ class delta::geometry::mesh::Mesh {
 	iREAL 					getHMin();
 	std::array<iREAL, 3> 	getMinBoundaryVertex();
 	std::array<iREAL, 3> 	getMaxBoundaryVertex();
-
-	iREAL computeDiagonal();
 
 	std::vector<std::array<int, 3>> 		getTriangleFaces();
 	std::vector<std::array<iREAL, 3>> 	getUniqueVertices();
@@ -135,7 +134,6 @@ class delta::geometry::mesh::Mesh {
 
     iREAL simplex_J (iREAL *a, iREAL *b, iREAL *c, iREAL *d);
 	#define simplex_1(J, a, b, c, d) ((J)/6.)
-
 };
 
 #endif /* GEOMETRY_MESH_MESH_H_ */

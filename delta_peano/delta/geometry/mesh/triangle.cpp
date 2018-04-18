@@ -60,32 +60,8 @@ std::array<iREAL, 3> delta::geometry::mesh::Triangle::getVertexC()
   return _C;
 }
 
-void delta::geometry::mesh::Triangle::flatten (
-	std::vector<iREAL>& xCoordinates,
-	std::vector<iREAL>& yCoordinates,
-	std::vector<iREAL>& zCoordinates)
-{
-	xCoordinates.push_back(this->_A[0]);
-	xCoordinates.push_back(this->_B[0]);
-	xCoordinates.push_back(this->_C[0]);
-
-	yCoordinates.push_back(this->_A[1]);
-	yCoordinates.push_back(this->_B[1]);
-	yCoordinates.push_back(this->_C[1]);
-
-	zCoordinates.push_back(this->_A[2]);
-	zCoordinates.push_back(this->_B[2]);
-	zCoordinates.push_back(this->_C[2]);
-}
-
 iREAL delta::geometry::mesh::Triangle::getTriangleLength()
 {
-  std::vector<iREAL> xCoordinates;
-  std::vector<iREAL> yCoordinates;
-  std::vector<iREAL> zCoordinates;
-
-  this->flatten(xCoordinates, yCoordinates, zCoordinates);
-
   iREAL xw = delta::geometry::mesh::Triangle::getXw();
   iREAL yw = delta::geometry::mesh::Triangle::getYw();
   iREAL zw = delta::geometry::mesh::Triangle::getZw();
@@ -165,102 +141,78 @@ std::array<iREAL, 3> delta::geometry::mesh::Triangle::getMaxBoundaryVertex()
 
 iREAL delta::geometry::mesh::Triangle::getMaxXAxis()
 {
-  std::vector<iREAL> xCoordinates;
-  std::vector<iREAL> yCoordinates;
-  std::vector<iREAL> zCoordinates;
-
-  this->flatten(xCoordinates, yCoordinates, zCoordinates);
+  iREAL x[3] = {_A[0], _B[0], _C[0]};
 
   iREAL max = std::numeric_limits<iREAL>::min();
 
-  for(unsigned i=0;i<xCoordinates.size();i++)
+  for(unsigned i=0;i<3;i++)
   {
-	  if (max < xCoordinates[i]) max = xCoordinates[i];
+	if (max < x[i]) max = x[i];
   }
   return max;
 }
 
 iREAL delta::geometry::mesh::Triangle::getMaxYAxis()
 {
-  std::vector<iREAL> xCoordinates;
-  std::vector<iREAL> yCoordinates;
-  std::vector<iREAL> zCoordinates;
-
-  this->flatten(xCoordinates, yCoordinates, zCoordinates);
+  iREAL y[3] = {_A[1], _B[1], _C[1]};
 
   iREAL max = std::numeric_limits<iREAL>::min();
 
-  for(unsigned i=0;i<yCoordinates.size();i++)
+  for(unsigned i=0;i<3;i++)
   {
-	  if (max < yCoordinates[i]) max = yCoordinates[i];
+	if (max < y[i]) max = y[i];
   }
   return max;
 }
 
 iREAL delta::geometry::mesh::Triangle::getMaxZAxis()
 {
-  std::vector<iREAL> xCoordinates;
-  std::vector<iREAL> yCoordinates;
-  std::vector<iREAL> zCoordinates;
-
-  this->flatten(xCoordinates, yCoordinates, zCoordinates);
+  iREAL z[3] = {_A[2], _B[2], _C[2]};
 
   iREAL max = std::numeric_limits<iREAL>::min();
 
-  for(unsigned i=0;i<zCoordinates.size();i++)
+  for(unsigned i=0; i<3; i++)
   {
-	  if (max < zCoordinates[i]) max = zCoordinates[i];
+	if (max < z[i]) max = z[i];
   }
   return max;
 }
 
 iREAL delta::geometry::mesh::Triangle::getMinXAxis()
 {
-  std::vector<iREAL> xCoordinates;
-  std::vector<iREAL> yCoordinates;
-  std::vector<iREAL> zCoordinates;
-
-  this->flatten(xCoordinates, yCoordinates, zCoordinates);
+  iREAL x[3] = {_A[0], _B[0], _C[0]};
 
   iREAL min = std::numeric_limits<iREAL>::max();
 
-  for(unsigned i=0;i<xCoordinates.size();i++)
+  for(unsigned i=0; i<3; i++)
   {
-	  if (min > xCoordinates[i]) min = xCoordinates[i];
+	if (min > x[i]) min = x[i];
   }
   return min;
 }
 
 iREAL delta::geometry::mesh::Triangle::getMinYAxis()
 {
-  std::vector<iREAL> xCoordinates;
-  std::vector<iREAL> yCoordinates;
-  std::vector<iREAL> zCoordinates;
-
-  this->flatten(xCoordinates, yCoordinates, zCoordinates);
+  iREAL y[3] = {_A[1], _B[1], _C[1]};
 
   iREAL min = std::numeric_limits<iREAL>::max();
 
-  for(unsigned i=0;i<yCoordinates.size();i++)
+  for(unsigned i=0; i<3; i++)
   {
-	  if (min > yCoordinates[i]) min = yCoordinates[i];
+	if (min > y[i]) min = y[i];
   }
   return min;
 }
 
 iREAL delta::geometry::mesh::Triangle::getMinZAxis()
 {
-  std::vector<iREAL> xCoordinates;
-  std::vector<iREAL> yCoordinates;
-  std::vector<iREAL> zCoordinates;
-
-  this->flatten(xCoordinates, yCoordinates, zCoordinates);
+  iREAL z[3] = {_A[2], _B[2], _C[2]};
 
   iREAL min = std::numeric_limits<iREAL>::max();
 
-  for(unsigned i=0;i<zCoordinates.size();i++)
+  for(unsigned i=0; i<3; i++)
   {
-	  if (min > zCoordinates[i]) min = zCoordinates[i];
+	if (min > z[i]) min = z[i];
   }
   return min;
 }

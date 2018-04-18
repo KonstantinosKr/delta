@@ -46,38 +46,165 @@ class delta::geometry::mesh::Triangle {
 		iREAL Cy,
 		iREAL Cz);
 
+	/*
+	 *  Gets Vertex A
+	 *
+	 *  Returns the A vertex of the triangle
+	 *
+	 *  @param none
+	 *  @returns std::array of three elements of type iREAL
+	 */
 	std::array<iREAL, 3> getVertexA();
+
+	/*
+	 *  Gets Vertex B
+	 *
+	 *  Returns the B vertex of the triangle
+	 *
+	 *  @param none
+	 *  @returns std::array of three elements of type iREAL
+	 */
 	std::array<iREAL, 3> getVertexB();
+
+	/*
+	 *  Gets Vertex C
+	 *
+	 *  Returns the C vertex of the triangle
+	 *
+	 *  @param none
+	 *  @returns std::array of three elements of type iREAL
+	 */
 	std::array<iREAL, 3> getVertexC();
 
-	void flatten (
-		std::vector<iREAL>& xCoordinates,
-		std::vector<iREAL>& yCoordinates,
-		std::vector<iREAL>& zCoordinates);
+	/*
+	 *  Gets Minimum Boundary Vertex
+	 *
+	 *  Returns the minimum vertex that defines the bounding box of the triangle
+	 *
+	 *  @param none
+	 *  @returns std::array of three elements of type iREAL
+	 */
+	std::array<iREAL, 3> getMinBoundaryVertex();
 
+	/*
+	 *  Gets Maximum Boundary Vertex
+	 *
+	 *  Returns the maximum vertex that defines the bounding box of the triangle
+	 *
+	 *  @param none
+	 *  @returns std::array of three elements of type iREAL
+	 */
+	std::array<iREAL, 3> getMaxBoundaryVertex();
+
+	/*
+	 *  Gets Triangle Length
+	 *
+	 *  Returns maximum line segment length of triangle
+	 *
+	 *  @param none
+	 *  @returns std::array of three elements of type iREAL
+	 */
 	iREAL getTriangleLength();
+
+
+	/*
+	 *  Gets Width X
+	 *
+	 *  Returns width of x axis coordinates
+	 *
+	 *  @param none
+	 *  @returns type iREAL
+	 */
+	iREAL getXw();
+
+	/*
+	 *  Gets Width Y
+	 *
+	 *  Returns width of y axis coordinates
+	 *
+	 *  @param none
+	 *  @returns type iREAL
+	 */
+	iREAL getYw();
+
+	/*
+	 *  Gets Width Y
+	 *
+	 *  Returns width of y axis coordinates
+	 *
+	 *  @param none
+	 *  @returns type iREAL
+	 */
+	iREAL getZw();
+
+
+	/*
+	 *  Gets Max X
+	 *
+	 *  Returns max x axis value
+	 *
+	 *  @param none
+	 *  @returns type iREAL
+	 */
+	iREAL getMaxXAxis();
+
+	/*
+	 *  Gets Max X
+	 *
+	 *  Returns max x axis value
+	 *
+	 *  @param none
+	 *  @returns type iREAL
+	 */
+	iREAL getMaxYAxis();
+
+	/*
+	 *  Gets Max X
+	 *
+	 *  Returns max x axis value
+	 *
+	 *  @param none
+	 *  @returns type iREAL
+	 */
+	iREAL getMaxZAxis();
+
+
+	/*
+	 *  Gets Max X
+	 *
+	 *  Returns max x axis value
+	 *
+	 *  @param none
+	 *  @returns type iREAL
+	 */
+	iREAL getMinXAxis();
+
+	/*
+	 *  Gets Max Y
+	 *
+	 *  Returns max y axis value
+	 *
+	 *  @param none
+	 *  @returns type iREAL
+	 */
+	iREAL getMinYAxis();
+
+	/*
+	 *  Gets Max Z
+	 *
+	 *  Returns max z axis value
+	 *
+	 *  @param none
+	 *  @returns type iREAL
+	 */
+	iREAL getMinZAxis();
+
+	virtual ~Triangle();
+  private:
 
 	iREAL getXYZWidth();
 	iREAL getXZWidth();
 
-	iREAL getXw();
-	iREAL getYw();
-	iREAL getZw();
-
-	std::array<iREAL, 3> getMinBoundaryVertex();
-	std::array<iREAL, 3> getMaxBoundaryVertex();
-
-	iREAL getMaxXAxis();
-	iREAL getMaxYAxis();
-	iREAL getMaxZAxis();
-
-	iREAL getMinXAxis();
-	iREAL getMinYAxis();
-	iREAL getMinZAxis();
-
-	virtual ~Triangle();
-
-  private:
 	std::array<iREAL, 3> _A, _B, _C;
 
 };

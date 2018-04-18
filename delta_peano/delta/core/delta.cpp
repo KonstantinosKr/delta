@@ -25,16 +25,11 @@
 #include <delta/core/delta.h>
 #include <delta/core/write.h>
 
-//std::vector< delta::geometry::Object> 	delta::core::Delta::_objects;
-
 delta::core::Delta::Delta()
 {
   delta::geometry::material::materialInit();
 
-  //delta::world::Object n();
-  //_objects.push_back(n);
   std::vector<delta::geometry::mesh::Mesh> meshes = readSceneGeometry("keySmall.stl");
-
 
   std::vector<delta::geometry::Object> objects;
   for(int i=0; i<meshes.size(); i++)

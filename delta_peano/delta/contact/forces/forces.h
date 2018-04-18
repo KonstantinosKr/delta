@@ -58,6 +58,8 @@ namespace delta {
 		  iREAL &forc);
 
 	  /**
+	   *
+	   *
 		@param angularVelocityA is a vector that indicates linear velocity from center of mass
 		@param linearVelocityA is a vector that indicates angular velocity from center of mass
 		@param massA is a floating number that indicates the mass
@@ -69,7 +71,14 @@ namespace delta {
 		@param massB is a floating number that indicates the mass
 		@param-returned forceB is the total force returned as vector to indicate magnitude and opposite direction from A
 		@param torqueB is the total torque returned as vector to indicate torque
-	  */
+	   *
+	   *
+	   *
+	   *
+	   *
+	   *
+	   *
+	   */
 	  void getContactsForces(
 		std::vector<delta::contact::contactpoint> &conpnt,
 		iREAL positionASpatial[3],
