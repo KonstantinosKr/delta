@@ -202,7 +202,24 @@ class delta::geometry::mesh::Triangle {
 	virtual ~Triangle();
   private:
 
+	/*
+	 *  Gets XYZ width
+	 *
+	 *  Returns width on xyz axis.
+	 *
+	 *  @param none
+	 *  @returns type iREAL
+	 */
 	iREAL getXYZWidth();
+
+	/*
+	 *  Gets XY width
+	 *
+	 *  Returns width on xy axis.
+	 *
+	 *  @param none
+	 *  @returns type iREAL
+	 */
 	iREAL getXZWidth();
 
 	std::array<iREAL, 3> _A, _B, _C;

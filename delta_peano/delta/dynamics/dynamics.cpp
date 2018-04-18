@@ -22,7 +22,6 @@
 #include <vector>
 #include "math.h"
 
-
 /* vectorizable exponential map */
 void expmap (iREAL Omega1, iREAL Omega2, iREAL Omega3,
                 iREAL &Lambda1, iREAL &Lambda2, iREAL &Lambda3,

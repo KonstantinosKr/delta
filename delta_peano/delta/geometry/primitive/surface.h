@@ -38,8 +38,9 @@ namespace delta {
   namespace geometry {
 	namespace primitive {
 	  namespace surface {
+
 		void generateBoundBox(
-		  iREAL 					center[3],
+		  iREAL 				center[3],
 		  std::array<iREAL, 3> 	minPoint,
 		  std::array<iREAL, 3> 	maxPoint,
 		  std::vector<iREAL>&  	xCoordinates,
@@ -48,8 +49,8 @@ namespace delta {
 		);
 
 		void generateSurface(
-		  iREAL 					center[3],
-		  iREAL 					width,
+		  iREAL 				center[3],
+		  iREAL 				width,
 		  iREAL					height,
 		  std::vector<iREAL>&  	xCoordinates,
 		  std::vector<iREAL>&  	yCoordinates,
@@ -57,19 +58,19 @@ namespace delta {
 		);
 
 		void generateXYZBox(
-		  iREAL 					center[3],
-		  iREAL 					xw,
-		  iREAL 					yw,
-		  iREAL 					zw,
+		  iREAL 				center[3],
+		  iREAL 				xw,
+		  iREAL 				yw,
+		  iREAL 				zw,
 		  std::vector<iREAL>& 	xCoordinates,
 		  std::vector<iREAL>&  	yCoordinates,
 		  std::vector<iREAL>&  	zCoordinates
 		);
 
 		void generateCuboid(
-		  iREAL 					center[3],
-		  iREAL 					width,
-		  iREAL 					height,
+		  iREAL 				center[3],
+		  iREAL 				width,
+		  iREAL 				height,
 		  std::vector<iREAL>&  	xCoordinates,
 		  std::vector<iREAL>&  	yCoordinates,
 		  std::vector<iREAL>&  	zCoordinates

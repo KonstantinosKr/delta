@@ -36,6 +36,17 @@ namespace delta {
 	namespace primitive {
 	  namespace granulate {
 
+		/*
+		 *  Generate Particle
+		 *
+		 *  Creates cube using hull algorithm.
+		 *
+		 *  @param center : center of geometry
+		 *  @param h : radius
+		 *  @param xCoordinates
+  		 *  @param yCoordinates
+		 *  @returns mesh
+		 */
 		void generateParticle(
 		  iREAL    				center[2],
 		  iREAL    				h,
@@ -43,11 +54,30 @@ namespace delta {
 		  std::vector<iREAL>&  	yCoordinates
 		);
 
+		/*
+		 *  Generate Particle
+		 *
+		 *  Creates granulate using hull algorithm.
+		 *
+		 *  @param center : center of geometry
+		 *  @param h : radius
+		 *  @returns mesh
+		 */
 		delta::geometry::mesh::Mesh *loadParticle(
 		  iREAL  				center[3],
 		  iREAL  				h
 		);
 
+		/*
+		 *  Generate Particle
+		 *
+		 *  Creates granulate using hull algorithm.
+		 *
+		 *  @param center : center of geometry
+		 *  @param h : radius
+		 *  @param noPointsPerParticle : mesh multiplier
+		 *  @returns mesh
+		 */
 		delta::geometry::mesh::Mesh *generateParticle(
 		  iREAL    				center[3],
 		  iREAL    				h,

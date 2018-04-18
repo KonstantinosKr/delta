@@ -38,15 +38,15 @@ namespace delta {
 }
 
 struct delta::contact::contactpoint {
-  iREAL x[3];
-  iREAL normal[3];
-  iREAL depth;
-  iREAL P[3];
-  iREAL Q[3];
-  bool friction;
-  iREAL epsilonTotal;
-  int master;
-  int slave;
+  iREAL 	x[3];
+  iREAL 	normal[3];
+  iREAL 	depth;
+  iREAL 	P[3];
+  iREAL 	Q[3];
+  bool 		friction;
+  iREAL 	epsilonTotal;
+  int 		master;
+  int 		slave;
 
   contactpoint();
   contactpoint(const contactpoint& copy);
@@ -59,7 +59,6 @@ struct delta::contact::contactpoint {
    *
    * Please note that the field particleNumber is not set.
    */
-
   contactpoint(
     const iREAL&  	xPA,
     const iREAL&  	yPA,

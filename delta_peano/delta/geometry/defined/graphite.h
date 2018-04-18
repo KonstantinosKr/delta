@@ -41,19 +41,67 @@
 namespace delta {
   namespace geometry {
 	namespace defined {
+
+		/*
+		 *  Generate Brick FB
+		 *
+		 *  Creates Hopper structure and returns its mesh.
+		 *
+		 *
+		 *  @param center 		: center of geometry
+		 *  @param h 			: h length
+		 *  @returns mesh
+		 */
 		delta::geometry::mesh::Mesh *generateBrickFB(
 		 iREAL    center[3],
 		 iREAL    h);
 
+		/*
+		 *  Generate Brick FB
+		 *
+		 *  Creates Hopper structure and returns its mesh.
+		 *
+		 *
+		 *  @returns mesh
+		 */
 		delta::geometry::mesh::Mesh *generateBrickFB();
 
+		/*
+		 *  Generate Brick FB
+		 *
+		 *  Creates Hopper structure and returns its mesh.
+		 *
+		 *
+		 *  @param center 		: center of geometry
+		 *  @returns mesh
+		 */
 		delta::geometry::mesh::Mesh *generateBrickFB(
 		 iREAL    center[3]);
 
+		/*
+		 *  Generate Brick XK
+		 *
+		 *  Creates Hopper structure and returns its mesh.
+		 *
+		 *
+		 *  @param center 		: center of geometry
+		 *  @param h 			: h length
+		 *  @returns mesh
+		 */
 		delta::geometry::mesh::Mesh *generateKeyXK(
 		 iREAL    center[3],
 		 iREAL    h);
 
+		/*
+		 *  Generate Brick YK
+		 *
+		 *  Creates Hopper structure and returns its mesh.
+		 *
+		 *
+		 *  @param center 		: center of geometry
+		 *  @param h 			: h length
+		 *  @returns mesh
+		 */
 		delta::geometry::mesh::Mesh *generateKeyYK(
 		 iREAL    center[3],
 		 iREAL    h);

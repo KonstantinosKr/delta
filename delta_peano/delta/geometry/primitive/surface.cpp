@@ -37,8 +37,8 @@ void delta::geometry::primitive::surface::generateBoundBox(
 	iREAL zw = maxPoint[2] - minPoint[2];
 
 	//iREAL xw = delta::geometry::properties::computeXw(xCoordinates, yCoordinates, zCoordinates);
-  //iREAL yw = delta::geometry::properties::computeYw(xCoordinates, yCoordinates, zCoordinates);
-  //iREAL zw = delta::geometry::properties::computeZw(xCoordinates, yCoordinates, zCoordinates);
+	//iREAL yw = delta::geometry::properties::computeYw(xCoordinates, yCoordinates, zCoordinates);
+	//iREAL zw = delta::geometry::properties::computeZw(xCoordinates, yCoordinates, zCoordinates);
 
 	generateXYZBox(center, xw, yw, zw, xCoordinates, yCoordinates, zCoordinates);
 }
@@ -229,7 +229,6 @@ void delta::geometry::primitive::surface::generateSurface(
 	xCoordinates[35] = center[0]-width/2;
 	yCoordinates[35] = center[1]+height/2;
 	zCoordinates[35] = center[2]-width/2;
-
 }
 
 void delta::geometry::primitive::surface::generateXYZBox(

@@ -37,6 +37,24 @@
 namespace delta {
   namespace geometry {
 	namespace defined {
+
+	/*
+	 *  Generate Inner Hopper
+	 *
+	 *  Creates inner Side of Hopper.
+	 *  The function returns by reference all xyz
+	 *  coordinates of the mesh.
+	 *
+	 *
+	 *  @param center 			: center of geometry
+	 *  @param width      		: width of hopper
+	 *  @param height  			: height of hopper
+	 *  @param hatch 			: hatch width
+	 *  @param xCoordinates 	: x coordinates
+	 *  @param yCoordinates 	: y coordinates
+	 *  @param zCoordinates 	: z coordinates
+	 *  @returns void
+	 */
 	  void generateInnerHopper(
 			iREAL  center[3],
 			iREAL  width,
@@ -46,6 +64,23 @@ namespace delta {
 			std::vector<iREAL>&  yCoordinates,
 			std::vector<iREAL>&  zCoordinates);
 
+	/*
+	 *  Generate Inner Hopper
+	 *
+	 *  Creates outer Side of Hopper.
+	 *  The function returns by reference all xyz
+	 *  coordinates of the mesh.
+	 *
+	 *
+	 *  @param center 			: center of geometry
+	 *  @param width      		: width of hopper
+	 *  @param height  			: height of hopper
+	 *  @param hatch 			: hatch width
+	 *  @param xCoordinates 	: x coordinates
+	 *  @param yCoordinates 	: y coordinates
+	 *  @param zCoordinates 	: z coordinates
+	 *  @returns void
+	 */
 	  void generateOuterHopper(
 			iREAL  center[3],
 			iREAL  width,
@@ -55,6 +90,21 @@ namespace delta {
 			std::vector<iREAL>&  yCoordinates,
 			std::vector<iREAL>&  zCoordinates);
 
+	/*
+	 *  Generate Hopper
+	 *
+	 *  Creates Hopper structure and returns its mesh.
+	 *
+	 *
+	 *  @param center 			: center of geometry
+	 *  @param width      		: width of hopper
+	 *  @param thickness		: thickness of the wall
+	 *  @param height  			: height of hopper
+	 *  @param hatch 			: hatch width
+	 *  @param meshRefinement 	: depth of mesh refinement
+	 *  @param gridH 			: h length
+	 *  @returns mesh
+	 */
 	  delta::geometry::mesh::Mesh *generateHopper(
 			iREAL  center[3],
 			iREAL  width,
@@ -62,7 +112,8 @@ namespace delta {
 			iREAL  height,
 			iREAL  hatch,
 			int    meshRefinement,
-			iREAL gridH);
+			iREAL  gridH
+			);
 	}
   }
 }

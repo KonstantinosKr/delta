@@ -21,6 +21,30 @@
 namespace delta {
   namespace contact {
 	namespace forces {
+
+		/*
+		* Spring Force
+		*
+		* Returns the single force vector at the contact point between two interacting particles.
+		*
+		* @param normal is the contact normal
+		* @param conpnt is the contact point
+		* @param depth is the penetration depth
+		* @param vij relative linear and angular velocities between the two particles
+		* @param positionASpatial is the spatial position of particle A
+		* @param positionBSpatial is the spatial position of particle B
+		* @param positionAReferential is the referential position of particle A
+		* @param positionBReferential is the referential position of particle B
+		* @param massA is the mass of particle A
+		* @param massB is the mass of particle B
+		* @param rotationA is the rotational matrix of particle A
+		* @param rotationB is the rotational matrix of particle A
+		* @param inverseA is the inverse inertia of particle A
+		* @param inverseB is the inverse inertia of particle B
+		* @param f is the force vector at the normal
+		* @param forc is the force magnitude
+		* @return void
+		*/
 	  void spring(
 		  iREAL normal[3],
 		  iREAL conpnt[3],
@@ -30,6 +54,7 @@ namespace delta {
 		  iREAL positionBSpatial[3],
 		  iREAL positionAReferential[3],
 		  iREAL positionBReferential[3],
+
 		  iREAL massA,
 		  iREAL massB,
 		  iREAL rotationA[9],
@@ -39,6 +64,20 @@ namespace delta {
 		  iREAL f[3],
 		  iREAL &forc);
 
+
+	  /*
+	   * Friction
+	   *
+	   * Returns the friction vector at the contact point.
+	   *
+	   * @param normal is the contact normal
+	   * @param vi is the relative linear velocity between the two spheres
+	   * @param force is the applied force between particle A and B
+	   * @param materialA is the material type of particle A
+	   * @param materialB is the material type of particle B
+	   * @param isSphere indicate whether the particles are spheres
+	   * @return void
+	   */
 	  void friction(
 		  iREAL normal[3],
 		  iREAL vi[3],
@@ -48,6 +87,20 @@ namespace delta {
 		  int materialB,
 		  bool isSphere);
 
+	  /*
+	   * Spring Sphere
+	   *
+	   * Returns the force between two spheres
+	   *
+	   * @param normal is the contact normal
+	   * @param depth is the penetration depth
+	   * @param relativeVelocity is the relative velocity between the two spheres
+	   * @param massA is the mass of particle A
+	   * @param massB is the mass of particle B
+	   * @param f is the vector force at the contact point
+	   * @param force is the force magnitude at the contact point
+	   * @return void
+	   */
 	  void springSphere(
 		  iREAL normal[3],
 		  iREAL depth,
@@ -58,25 +111,30 @@ namespace delta {
 		  iREAL &forc);
 
 	  /**
+	   * Get Contact Forces
 	   *
+	   * Returns the contact forces of all contacts between two interacting bodies
 	   *
-		@param angularVelocityA is a vector that indicates linear velocity from center of mass
-		@param linearVelocityA is a vector that indicates angular velocity from center of mass
-		@param massA is a floating number that indicates the mass
-		@param-returned forceA is the total force returned as vector to indicate magnitude and direction
-		@param torqueA is the total torque returned as vector to indicate torque
-
-		@param angularVelocityB is a vector that indicates linear velocity from center of mass
-		@param linearVelocityB is a vector that indicates angular velocity from center of mass
-		@param massB is a floating number that indicates the mass
-		@param-returned forceB is the total force returned as vector to indicate magnitude and opposite direction from A
-		@param torqueB is the total torque returned as vector to indicate torque
+	   * @param angularA is a vector that indicates linear velocity from center of mass
+ 	   * @param refAngularA is a vector that indicates linear velocity from center of mass
+	   * @param linearA is a vector that indicates angular velocity from center of mass
+	   * @param massA is a floating number that indicates the mass
+	   * @param inverseA is the inverse of the inertia
+	   * @param rotationA is the orientation matrix
+	   * @param materialA is the material type
 	   *
+	   * @param angularB is a vector that indicates linear velocity from center of mass
+ 	   * @param refAngularB is a vector that indicates linear velocity from center of mass
+	   * @param linearB is a vector that indicates angular velocity from center of mass
+	   * @param massB is a floating number that indicates the mass
+	   * @param inverseB is the inverse of the inertia
+	   * @param rotationB is the orientation matrix
+	   * @param materialB is the material type
 	   *
-	   *
-	   *
-	   *
-	   *
+	   * @param-returned force is the total force returned as vector to indicate magnitude and direction
+	   * @param torque is the total torque returned as vector to indicate torque
+	   * @param isSphere indicate whether the objects are spheres
+	   * @return void
 	   *
 	   */
 	  void getContactsForces(
@@ -90,6 +148,7 @@ namespace delta {
 		iREAL inverseA[9],
 		iREAL rotationA[9],
 		int   materialA,
+
 		iREAL positionB[3],
 		iREAL positionBReferential[3],
 		iREAL angularB[3],
@@ -99,10 +158,14 @@ namespace delta {
 		iREAL inverseB[9],
 		iREAL rotationB[9],
 		int   materialB,
+
 		iREAL force[3],
 		iREAL torque[3],
 		bool  isSphere);
 
+	  /*
+	   * dummy function of getContactsForces() used for plotting
+	   */
 	  void getContactForce(
 		delta::contact::contactpoint conpnt,
 		iREAL positionASpatial[3],

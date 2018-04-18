@@ -32,9 +32,23 @@
 namespace delta {
   namespace world {
 	namespace body {
+
+	/*
+	 *  Generate Blender
+	 *
+	 *  Creates blender structure and returns its mesh.
+	 *
+	 *
+	 *  @param center 		: center of geometry
+	 *  @param width 		: width of structure
+	 *  @param xCoordinates
+	 *  @param yCoordinates
+	 *  @param zCoordinates
+	 *  @returns mesh
+	 */
 	  void generateBlender(
-		iREAL  center[3],
-		iREAL 	width,
+		iREAL center[3],
+		iREAL width,
 		std::vector<iREAL>&  xCoordinates,
 		std::vector<iREAL>&  yCoordinates,
 		std::vector<iREAL>&  zCoordinates

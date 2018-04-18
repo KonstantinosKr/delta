@@ -42,7 +42,8 @@ void delta::geometry::primitive::cube::generateSquare(
 }
 
 delta::geometry::mesh::Mesh *delta::geometry::primitive::cube::generateCube(
-  iREAL center[3], iREAL h,
+  iREAL center[3],
+  iREAL h,
   iREAL alphaX,
   iREAL alphaY,
   iREAL alphaZ
