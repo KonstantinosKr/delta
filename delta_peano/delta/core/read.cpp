@@ -6,6 +6,7 @@
  */
 
 #include <delta/core/read.h>
+#include <delta/geometry/mesh/Mesh.h>
 
 #include <assimp/Importer.hpp>      // C++ importer interface
 #include <assimp/Exporter.hpp>      // C++ importer interface
@@ -65,12 +66,13 @@ void delta::core::parseModelGridSchematics(
   else std::cout << "Unable to open file";
 }
 
-void delta::core::readSingleVTKGeometry(
-	char* fileName,
-	std::vector<iREAL>&  xCoordinates,
-	std::vector<iREAL>&  yCoordinates,
-	std::vector<iREAL>&  zCoordinates)
+delta::geometry::mesh::Mesh *delta::core::readSingleVTKGeometry(
+	char* fileName)
 {
+  std::vector<iREAL> xCoordinates;
+  std::vector<iREAL> yCoordinates;
+  std::vector<iREAL> zCoordinates;
+
   //////////VTK format////////////
 
   char filename[100];
@@ -88,62 +90,67 @@ void delta::core::readSingleVTKGeometry(
 
   do
   {
+	ch = fscanf(fp1,"%s",word);
+	if(strcmp(word, "POINTS")==0)
+	{
 	  ch = fscanf(fp1,"%s",word);
-	  if(strcmp(word, "POINTS")==0)
+	  int n = atol(word);
+
+	  point[0] = new iREAL[n];
+	  point[1] = new iREAL[n];
+	  point[2] = new iREAL[n];
+
+	  ch = fscanf(fp1,"%s",word);
+
+	  for(int i=0;i<n;i++)
+	  {
+		fscanf(fp1, "%lf", &point[0][i]);
+		fscanf(fp1, "%lf", &point[1][i]);
+		fscanf(fp1, "%lf", &point[2][i]);
+	  }
+	}
+
+	if(strcmp(word, "CELLS")==0 || strcmp(word, "POLYGONS") == 0)
+	{
+	  ch = fscanf(fp1,"%s",word);
+	  int numberOfTriangles = atol(word);
+	  ch = fscanf(fp1,"%s",word);
+
+	  xCoordinates.resize( numberOfTriangles*3 );
+	  yCoordinates.resize( numberOfTriangles*3 );
+	  zCoordinates.resize( numberOfTriangles*3 );
+
+	  for(int i=0;i<numberOfTriangles*3;i+=3)
 	  {
 		ch = fscanf(fp1,"%s",word);
-		int n = atol(word);
-
-		point[0] = new iREAL[n];
-		point[1] = new iREAL[n];
-		point[2] = new iREAL[n];
-
 		ch = fscanf(fp1,"%s",word);
 
-		for(int i=0;i<n;i++)
-		{
-		  fscanf(fp1, "%lf", &point[0][i]);
-		  fscanf(fp1, "%lf", &point[1][i]);
-		  fscanf(fp1, "%lf", &point[2][i]);
-		}
+		int index = atol(word);
+		xCoordinates[i] = ((point[0][index]));
+		yCoordinates[i] = ((point[1][index]));
+		zCoordinates[i] = ((point[2][index]));
+
+		ch = fscanf(fp1,"%s",word);
+		index = atol(word);
+		xCoordinates[i+1] = ((point[0][index]));
+		yCoordinates[i+1] = ((point[1][index]));
+		zCoordinates[i+1] = ((point[2][index]));
+
+		ch = fscanf(fp1,"%s",word);
+		index = atol(word);
+		xCoordinates[i+2] = ((point[0][index]));
+		yCoordinates[i+2] = ((point[1][index]));
+		zCoordinates[i+2] = ((point[2][index]));
 	  }
-
-	  if(strcmp(word, "CELLS")==0 || strcmp(word, "POLYGONS") == 0)
-	  {
-		ch = fscanf(fp1,"%s",word);
-		int numberOfTriangles = atol(word);
-		ch = fscanf(fp1,"%s",word);
-
-		xCoordinates.resize( numberOfTriangles*3 );
-		yCoordinates.resize( numberOfTriangles*3 );
-		zCoordinates.resize( numberOfTriangles*3 );
-
-		for(int i=0;i<numberOfTriangles*3;i+=3)
-		{
-		  ch = fscanf(fp1,"%s",word);
-		  ch = fscanf(fp1,"%s",word);
-
-		  int index = atol(word);
-		  xCoordinates[i] = ((point[0][index]));
-		  yCoordinates[i] = ((point[1][index]));
-		  zCoordinates[i] = ((point[2][index]));
-
-		  ch = fscanf(fp1,"%s",word);
-		  index = atol(word);
-		  xCoordinates[i+1] = ((point[0][index]));
-		  yCoordinates[i+1] = ((point[1][index]));
-		  zCoordinates[i+1] = ((point[2][index]));
-
-		  ch = fscanf(fp1,"%s",word);
-		  index = atol(word);
-		  xCoordinates[i+2] = ((point[0][index]));
-		  yCoordinates[i+2] = ((point[1][index]));
-		  zCoordinates[i+2] = ((point[2][index]));
-		}
-	  }
+	}
   } while (ch != EOF);
 
   fclose(fp1);
+
+  delta::geometry::mesh::Mesh *mesh =
+  	  new delta::geometry::mesh::Mesh(xCoordinates, yCoordinates, zCoordinates);
+
+  return mesh;
 }
 
 std::vector<delta::geometry::mesh::Mesh> delta::core::readSceneGeometry(std::string fileName)

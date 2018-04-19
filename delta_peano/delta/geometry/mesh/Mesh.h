@@ -33,7 +33,7 @@ class delta::geometry::mesh::Mesh {
 	Mesh();
 
 	Mesh(
-		std::vector<std::array<int, 3>> 	triangleFaces,
+		std::vector<std::array<int, 3>> 		triangleFaces,
 		std::vector<std::array<iREAL, 3>> 	uniqueVertices);
 
 	Mesh(
@@ -325,6 +325,17 @@ class delta::geometry::mesh::Mesh {
 	std::array<iREAL, 3> 	getMaxBoundaryVertex();
 
 	/*
+	 *  Get XY Width
+	 *
+	 *  Returns width on XY coordinates.
+	 *
+	 *
+	 *  @param none
+	 *  @returns iREAL
+	 */
+	iREAL 					getXZWidth();
+
+	/*
 	 *  Get Triangle Faces
 	 *
 	 *  Returns vector of triangle faces as
@@ -494,17 +505,6 @@ class delta::geometry::mesh::Mesh {
 	iREAL 					getXYZWidth();
 
 	/*
-	 *  Get XY Width
-	 *
-	 *  Returns width on XY coordinates.
-	 *
-	 *
-	 *  @param none
-	 *  @returns iREAL
-	 */
-	iREAL 					getXZWidth();
-
-	/*
 	 *  Get Distance Between two Vertices
 	 *
 	 *  Returns distance
@@ -536,14 +536,16 @@ class delta::geometry::mesh::Mesh {
 
 	std::vector<delta::geometry::mesh::Triangle> _triangles;
 
-	std::vector<std::array<int, 3>> 			_triangleFaces;
+	std::vector<std::array<int, 3>> 				_triangleFaces;
 	std::vector<std::array<iREAL, 3>>		 	_uniqueVertices;
 
     std::vector<iREAL>   						_xCoordinates;
     std::vector<iREAL>   						_yCoordinates;
     std::vector<iREAL>   						_zCoordinates;
 
-    iREAL simplex_J (iREAL *a, iREAL *b, iREAL *c, iREAL *d);
+    //https://en.wikipedia.org/wiki/Trace_%28linear_algebra%29
+    #define TRACE(A) ((A)[0] + (A)[4] + (A)[8])
+
 	#define simplex_1(J, a, b, c, d) ((J)/6.)
 };
 

@@ -150,7 +150,7 @@ class dem::mappings::CreateGrid {
     static iREAL   _minParticleDiam;
     static iREAL   _maxParticleDiam;
 
-    static int      _noPointsPerParticle;
+    static int     _noPointsPerParticle;
     static iREAL   _epsilon;
 
     static int   _numberOfParticles;

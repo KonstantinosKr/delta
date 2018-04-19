@@ -46,7 +46,7 @@ class delta::geometry::Object
 	    std::string                   			component,
 	    int                           			particleID,
 	    std::array<iREAL, 3>         			centre,
-	    delta::geometry::material::MaterialType material,
+	    delta::geometry::material::MaterialType 	material,
 	    bool                          			isObstacle,
 	    bool                          			isFriction,
 		iREAL 									epsilon,
@@ -54,16 +54,29 @@ class delta::geometry::Object
 		std::array<iREAL, 3> angular
 		);
 
-	/*
-	 *  Generate Sphere
-	 *
-	 *  Creates Sphere of radius rad.
-	 *	This modifies local data.
-	 *
-	 *  @param rad
-	 *  @returns void
-	 */
-    void generateSphere(iREAL  rad);
+	Object(
+	std::string                   			component,
+	int                           			particleID,
+	delta::geometry::mesh::Mesh				mesh,
+	std::array<iREAL, 3>         			centre,
+	delta::geometry::material::MaterialType 	material,
+	bool                          			isObstacle,
+	bool                          			isFriction,
+	iREAL 									epsilon,
+	std::array<iREAL, 3> 					linear,
+	std::array<iREAL, 3> 					angular);
+
+	Object(
+	std::string                   			component,
+	iREAL									rad,
+	int                           			particleID,
+	std::array<iREAL, 3>         			centre,
+	delta::geometry::material::MaterialType 	material,
+	bool                          			isObstacle,
+	bool                          			isFriction,
+	iREAL 									epsilon,
+	std::array<iREAL, 3> 					linear,
+	std::array<iREAL, 3> 					angular);
 
 	/*
 	 *  Generate Mesh
@@ -555,31 +568,27 @@ class delta::geometry::Object
 
   private:
     std::string           	_component;
-    int                   	_globalParticleID;
+    int                   	_globalParticleID; //
     int                  	_localParticleID;
 
     iREAL                	_rad;
-    iREAL				 	_haloDiameter;
+    iREAL				 	_haloDiameter;//
     iREAL				 	_diameter;
-    iREAL               	_mass;
-    iREAL 				 	_epsilon;
+    iREAL               		_mass;
+    iREAL 				 	_epsilon;//
 
-	delta::geometry::mesh::Mesh	*_mesh;
+	delta::geometry::mesh::Mesh* _mesh;//
 
-    std::vector<iREAL>   	_xCoordinates;
-    std::vector<iREAL>   	_yCoordinates;
-    std::vector<iREAL>   	_zCoordinates;
-
-    std::array<iREAL, 3> 	_linearVelocity;
-    std::array<iREAL, 3> 	_angularVelocity;
+    std::array<iREAL, 3> 	_linearVelocity;//
+    std::array<iREAL, 3> 	_angularVelocity;//
     std::array<iREAL, 3> 	_refAngularVelocity;
 
-    delta::geometry::material::MaterialType _material;
+    delta::geometry::material::MaterialType _material; //
 
-    bool                  	_isObstacle;
-    bool                  	_isFriction;
+    bool                  	_isObstacle;//
+    bool                  	_isFriction;//
 
-    std::array<iREAL, 3> 	_centre;
+    std::array<iREAL, 3> 	_centre; //
     std::array<iREAL, 3> 	_centreOfMass;
     std::array<iREAL, 3> 	_refCentreOfMass;
 
@@ -591,13 +600,6 @@ class delta::geometry::Object
     iREAL                	_wx;
     iREAL                	_wy;
     iREAL                	_wz;
-
-    //rotational configuration 0-1
-    iREAL                	_rx;
-    iREAL                	_ry;
-    iREAL                	_rz;
-
-    iREAL simplex_J (iREAL *a, iREAL *b, iREAL *c, iREAL *d);
 };
 
 #endif

@@ -38,7 +38,7 @@ void dem::runners::Runner::precondition(dem::repositories::Repository& repositor
   }
 
   if(gridType == dem::mappings::CreateGrid::GridType::AdaptiveGrid ||
-	  gridType == dem::mappings::CreateGrid::GridType::ReluctantAdaptiveGrid)
+	 gridType == dem::mappings::CreateGrid::GridType::ReluctantAdaptiveGrid)
   {
 	repository.switchToAdopt();
 	for(int i=0; i<6; i++)

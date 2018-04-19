@@ -34,8 +34,13 @@ delta::core::Delta::Delta()
   std::vector<delta::geometry::Object> objects;
   for(int i=0; i<meshes.size(); i++)
   {
-	delta::geometry::Object * object = new delta::geometry::Object();
-	object->setMesh(	meshes[i]);
+	std::array<iREAL, 3> 					centre 	= {0.0, 0.0, 0.0};
+	std::array<iREAL, 3> 					linear 	= {0.0, 0.0, 0.0};
+	std::array<iREAL, 3> 					angular 	= {0.0, 0.0, 0.0};
+
+	delta::geometry::Object * object = new  delta::geometry::Object("mesh", i, meshes[i], centre,
+												  delta::geometry::material::MaterialType::WOOD,
+												  false, false, 0.0001, linear, angular);
 	objects.push_back(*object);
   }
 

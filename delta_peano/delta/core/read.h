@@ -26,11 +26,8 @@ namespace delta {
 			std::vector<std::vector<std::string>> 	&componentGrid,
 			std::vector<std::string> 				&componentSeq);
 
-		void readSingleVTKGeometry(
-			char* 				fileName,
-			std::vector<iREAL>&  xCoordinates,
-			std::vector<iREAL>&  yCoordinates,
-			std::vector<iREAL>&  zCoordinates);
+		delta::geometry::mesh::Mesh* readSingleVTKGeometry(
+			char* 				fileName);
 
 		std::vector<delta::geometry::mesh::Mesh> readSceneGeometry(
 			std::string fileName);

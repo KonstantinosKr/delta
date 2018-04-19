@@ -6,6 +6,8 @@
 #include <iostream>
 #include <cmath>
 #include <ctime>
+#include <delta/world/operators.h>
+#include <delta/world/scenarios.h>
 
 #define epsilon 0.001
 
@@ -152,15 +154,16 @@ void dem::mappings::CreateGrid::deployObject(
 
   if(object.getComponent() == "sphere")
   {
-    particleNumber = vertex.createSphereParticle(object, _numberOfParticles);
+    //particleNumber = vertex.createSphereParticle(object, _numberOfParticles);
+    //_numberOfTriangles += object.getMesh().getxCoordinates().size()/DIMENSIONS;
   } else if(object.getComponent() == "mesh")
   {
-	particleNumber = vertex.createSubParticle(object, _numberOfParticles, 0);
+	//particleNumber = vertex.createSubParticle(object, _numberOfParticles, 0);
+	//_numberOfTriangles += object.getMesh().getxCoordinates().size()/DIMENSIONS;
   } else {
-    particleNumber = vertex.createParticle(object, _numberOfParticles, 0);
+    //particleNumber = vertex.createParticle(object, _numberOfParticles, 0);
   }
 
-  _numberOfTriangles += object.getMesh().getxCoordinates().size()/DIMENSIONS;
   _numberOfParticles++;
   if(object.getIsObstacle()) _numberOfObstacles++;
 }
@@ -220,308 +223,71 @@ void dem::mappings::CreateGrid::beginIteration(
 
   iREAL centre[3] = {0.5, 0.5, 0.5};
 
-  //////////////////////////////////////////////////////
-  /// NUCLEAR ARRAY
-  //////////////////////////////////////////////////////
   if(_scenario[1] == nuclear)
   {
-    //////FLOOR//////////////////////////////////////////////////////////////////////////////////////////////////
-    iREAL height = 0.05; iREAL width = 0.30;
-    std::array<iREAL, 3> position = {centre[0], centre[1], centre[2]};
-
-    delta::geometry::Object objectFloor("cube", 0, position, delta::geometry::material::MaterialType::GOLD, true, true, _epsilon, {-1.0, 0, 0}, {0,0,0});
-    objectFloor.generateMesh(width, height, width, 0, 0, 0, width, _noPointsPerParticle);
-    _coarseObjects.push_back(objectFloor);
-    //////FLOOR//////////////////////////////////////////////////////////////////////////////////////////////////
-
-    /////////FINE GRID///////////////////////////////
-    iREAL pos[3] = {width, position[1] + height/2, width};
-
-    if(_scenario[0] == sla)
-    {
-      delta::world::loadNuclearGeometry(pos, width, 1, _epsilon, _fineObjects);
-    } else if(_scenario[0] == dla)
-    {
-      delta::world::loadNuclearGeometry(pos, width, 2, _epsilon, _fineObjects);
-    }
-    else if(_scenario[0] == nuclearDeck)
-    {
-      if(_scenario[2] == n1)
-      {
-        //nuclear deck 1s
-        delta::world::makeBrickGrid(pos, 0.10, 1, 0.1, 1, _epsilon, _fineObjects);
-      }else if(_scenario[2] == n4)
-      {
-        //nuclear deck 4s
-        delta::world::makeBrickGrid(pos, 0.10, 2, 0.1, 1, _epsilon, _fineObjects);
-      }else if(_scenario[2] == n32)
-      {
-        //nuclear deck 32s
-        delta::world::makeBrickGrid(pos, 0.15, 4, 0.1, 2, _epsilon, _fineObjects);
-      }
-      else if(_scenario[2] == n64)
-      {
-        //nuclear deck 64
-        delta::world::makeBrickGrid(pos, 0.15, 4, 0.4, 4, _epsilon, _fineObjects);
-      }
-      else if(_scenario[2] == n256)
-      {
-        //nuclear deck 256
-        delta::world::makeBrickGrid(pos, 0.15, 10, 0.08, 4, _epsilon, _fineObjects);
-      }
-    }
+	delta::world::scenarios::nuclear(1, _isSphere, centre, _noPointsPerParticle, _epsilon, _coarseObjects, _fineObjects);
   } else if(_scenario[1] == hopper)
   {
-    //////////////////////////////////////////////////////
-    /// HOPPER FLOW SCENARIO /////////////////////////////
-    //////////////////////////////////////////////////////
+	iREAL xzcuts = 0; iREAL ycuts = 0;
+	if(_scenario[3] == n100)
+	{
+	  xzcuts = 10; ycuts = 1;
+	}
+	else if(_scenario[3] == n1k)
+	{
+	  xzcuts = 10; ycuts = 10;
+	}
+	else if(_scenario[3] == n10k)
+	{
+	  xzcuts = 30; ycuts = 12;
+	}
+	else if(_scenario[3] == n100k)
+	{
+	  xzcuts = 41.0; ycuts = 60;
+	}
+	else if(_scenario[3] == n500k)
+	{
+	  xzcuts = 100.0; ycuts = 50;
+	}
 
-    ///////////////////////////////////////////////////////////////////////////////
-    ////////HOPPER/////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////
-    iREAL hopperHatch = 0.05; iREAL hopperThickness = 0.005;
-    iREAL hopperWidth = 0.20; iREAL hopperHeight = hopperWidth/1.5;
+	bool uni = false;
+	if(_scenario[2] == uniform) uni = true;
 
-    std::array<iREAL, 3> position = {centre[0], centre[1], centre[2]};
-    ///////////////////////////////////////////////////////////////////////////////
-    ////////HOPPER/////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////
+	delta::world::scenarios::hopper(
+		_coarseObjects, _insitufineObjects,
+		centre, xzcuts, ycuts, uni,
+		_isSphere, _noPointsPerParticle, _epsilon);
 
-    int hopperParticles = 0;
-
-#if true
-    delta::geometry::Object objectHopper("hopper", 0, position, delta::geometry::material::MaterialType::WOOD, true, false, _epsilon, {0,0,0}, {0,0,0});
-    objectHopper.generateMesh(hopperWidth, hopperHeight, hopperWidth, 0, 0, 0, hopperWidth, _noPointsPerParticle);
-    _coarseObjects.push_back(objectHopper);
-    hopperParticles = 0;
-#else
-    int refinement = 3;
-    std::vector<iREAL> xCoordinates, yCoordinates, zCoordinates;
-    delta::geometry::hopper::generateHopper(centre, hopperWidth, hopperThickness, hopperHeight, hopperHatch, refinement, _minParticleDiam, xCoordinates, yCoordinates, zCoordinates);
-    hopperParticles = decomposeMeshIntoParticles(xCoordinates, yCoordinates, zCoordinates, material, isObstacle, isFriction, _insitufineObjects);
-#endif
-
-    ///////////////////////////////////////////////////////////////////////////////////////////
-    ////////FLOOR//////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////
-    iREAL height = 0.05; iREAL width = 0.32;
-    position = {centre[0], 0.35, centre[2]};
-
-    delta::geometry::Object objectFloor("cube", 0, position, delta::geometry::material::MaterialType::WOOD, true, true, _epsilon, {0,0,0}, {0,0,0});
-    objectFloor.generateMesh(width, height, width, 0, 0, 0, width, _noPointsPerParticle);
-    _coarseObjects.push_back(objectFloor);
-    ///////////////////////////////////////////////////////////////////////////////////////////
-    /////////FLOOR/////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////
-
-
-	////////////////////////////////////////////////////////////////////
-	//////////PARTICLE GRID/////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////////
-    iREAL xzcuts = 0; iREAL ycuts = 0;
-    if(_scenario[3] == n100)
-    {
-      xzcuts = 10; ycuts = 1;
-    }
-    else if(_scenario[3] == n1k)
-    {
-      xzcuts = 10; ycuts = 10;
-    }
-    else if(_scenario[3] == n10k)
-    {
-      xzcuts = 30; ycuts = 12;
-    }
-    else if(_scenario[3] == n100k)
-    {
-      xzcuts = 41.0; ycuts = 60;
-    }
-    else if(_scenario[3] == n500k)
-    {
-      xzcuts = 100.0; ycuts = 50;
-    }
-
-    iREAL totalMass = 0.05;
-
-    iREAL margin = (hopperThickness + _epsilon) * 4;
-    iREAL gridxyLength = hopperWidth-margin/2;
-
-    //position is top of hopper
-    iREAL pos[3] = {(centre[0] - hopperWidth/2), centre[1] + hopperHeight/2, (centre[2] - hopperWidth/2)};
-
-    if(_scenario[2] == uniform)
-    {
-      delta::world::uniformlyDistributedTotalMass(pos, xzcuts, ycuts, gridxyLength, totalMass, hopperWidth, hopperParticles, _epsilon, _isSphere, _noPointsPerParticle, _insitufineObjects);
-    }
-    else if(_scenario[2] == nonuniform)
-    {
-      iREAL gridCellLength = ((iREAL)gridxyLength/(iREAL)xzcuts) - _epsilon*4;
-      delta::world::nonUniformlyDistributedTotalMass(pos, xzcuts, ycuts, gridxyLength, totalMass, hopperWidth, hopperParticles, _epsilon, _isSphere, gridCellLength, _noPointsPerParticle, _insitufineObjects);
-    }
-
-    //////////////////////////////////////////////////////
-    /// HOPPER FLOW SCENARIO /////////////////////////////
-    //////////////////////////////////////////////////////
   } else if(_scenario[1] == friction)
   {
-    //////////////////////////////////////////////////////
-    /// FRICTION SCENARIO
-    //////////////////////////////////////////////////////
-
-    //////FLOOR///////////////////////////////////////////////////////////////////
-    iREAL height = 0.05; iREAL width = 0.35; iREAL rad = 0.0;
-    std::array<iREAL, 3> position = {centre[0], centre[1], centre[2]};
-
-    ////////////////////////////////////////////////////////////////////////////////
-    delta::geometry::Object objectFloor("cube", 0, position, delta::geometry::material::MaterialType::WOOD, true, true, _epsilon, {0,0,0}, {0,0,0});
-    objectFloor.generateMesh(width, height, width, 0, 0, 0, rad, _noPointsPerParticle);
-    _coarseObjects.push_back(objectFloor);
-    ////////////////////////////////////////////////////////////////////////////////
-    if(_scenario[2] == sstatic)
-    {
-	  ///////////////////////
-	  iREAL rad = 0.02;
-	  std::array<iREAL, 3> position = {centre[0]+0.05, centre[1] + height, centre[2]};
-
-	  if(_isSphere){
-		delta::geometry::Object objectA("sphere", 1, position, delta::geometry::material::MaterialType::WOOD, false, true, _epsilon, {0,0,0}, {0,0,0});
-		objectA.generateSphere(rad);
-		_coarseObjects.push_back(objectA);
-	  } else {
-		delta::geometry::Object objectA("cube", 1, position, delta::geometry::material::MaterialType::WOOD, false, true, _epsilon, {0,0,0}, {0,0,0});
-		objectA.generateMesh(rad, rad, rad, 0, 0, 0, rad, _noPointsPerParticle);
-		_coarseObjects.push_back(objectA);
-	  }
-    } else if(_scenario[2] == slide)
-    {
-      iREAL rad = 0.02;
-      std::array<iREAL, 3> linear = {0.5, 0.0, 0.0};
-      std::array<iREAL, 3> position = {centre[0], centre[1] + height/2 + _epsilon, centre[2]};
-
-      if(_isSphere){
-    		delta::geometry::Object objectA("sphere", 1, position, delta::geometry::material::MaterialType::WOOD, false, true, _epsilon, linear, {0,0,0});
-        objectA.generateSphere(rad);
-        _coarseObjects.push_back(objectA);
-      } else {
-    		delta::geometry::Object objectA("cube", 1, position, delta::geometry::material::MaterialType::WOOD, false, true, _epsilon, linear, {0,0,0});
-        objectA.generateMesh(rad, rad, rad, 0, 0, 0, rad, _noPointsPerParticle);
-        _coarseObjects.push_back(objectA);
-      }
-    } else if(_scenario[2] == roll)
-    {
-      std::array<iREAL, 3> angular = {5.0, 0, 0};
-      std::array<iREAL, 3> position = {centre[0], centre[1] + height/2 + centre[0] + _epsilon, centre[2]};
-      iREAL rad = 0.02;
-
-      if(_isSphere){
-    		delta::geometry::Object objectA("sphere", 1, position, delta::geometry::material::MaterialType::WOOD, false, true, _epsilon, {0,0,0}, angular);
-        objectA.generateSphere(rad);
-        _coarseObjects.push_back(objectA);
-      } else {
-    		delta::geometry::Object objectA("cube", 1, position, delta::geometry::material::MaterialType::WOOD, false, true, _epsilon, {0,0,0}, angular);
-		objectA.generateMesh(rad, rad, rad, 0, 0, 0, rad, _noPointsPerParticle);
-		_coarseObjects.push_back(objectA);
-      }
-    }
-    //////////////////////////////////////////////////////
-    /// END | FRICTION SCENARIO
-    //////////////////////////////////////////////////////
+	int sc = 0;
+	if(_scenario[2] == sstatic)
+	{
+	  sc = 1;
+	} else if(_scenario[2] == slide)
+	{
+	  sc = 2;
+	} else if(_scenario[2] == roll)
+	{
+	  sc = 3;
+	}
+	delta::world::scenarios::friction(sc,  _isSphere, centre, _noPointsPerParticle, _epsilon, _coarseObjects);
   } else if(_scenario[0] == TwoParticlesCrash)
   {
-
-	//////////////////////////////////////////////////////
-    /// TWO PARTICLES CRASH SCENARIO
-    //////////////////////////////////////////////////////
-
-    std::array<iREAL, 3> centreArray = {0.2, 0.2, 0.2};
-    std::array<iREAL, 3> linear = {0.1, 0.1, 0.1};
-
-    if(_isSphere){
-
-      delta::geometry::Object objectA("sphere", 0, centreArray, delta::geometry::material::MaterialType::WOOD, false, false, _epsilon, linear, {0,0,0});
-      objectA.generateSphere(0.01);
-      _coarseObjects.push_back(objectA);
-
-      centreArray[0] = 0.8;
-      centreArray[1] = 0.8;
-      centreArray[2] = 0.8;
-
-      linear[0] = -0.1;
-      linear[1] = -0.1;
-      linear[2] = -0.1;
-
-      delta::geometry::Object objectB("sphere", 1, centreArray, delta::geometry::material::MaterialType::WOOD, false, false, _epsilon, linear, {0,0,0});
-      objectB.generateSphere(0.1);
-      _coarseObjects.push_back(objectB);
-    } else {
-      iREAL rad = 0.01;
-
-      centreArray[0] = 0.5-rad+epsilon;
-      centreArray[1] = 0.5;
-      centreArray[2] = 0.5;
-      delta::geometry::Object objectA("granulate", 0, centreArray, delta::geometry::material::MaterialType::WOOD, false, false, _epsilon, linear, {0,0,0});
-      objectA.generateMesh(0,0,0,0,0,0,_noPointsPerParticle, rad);
-
-      rad = 0.1;
-
-      centreArray[0] = 0.5+rad-_epsilon*2;
-      centreArray[1] = 0.5;
-      centreArray[2] = 0.5;
-
-      linear[0] = -0.1;
-      linear[1] = -0.1;
-      linear[2] = -0.1;
-
-      delta::geometry::Object objectB("granulate", 1, centreArray, delta::geometry::material::MaterialType::WOOD, false, false, _epsilon, linear, {0,0,0});
-      objectB.generateMesh(0,0,0,0,0,0,_noPointsPerParticle, rad);
-
-      _coarseObjects.push_back(objectA);
-      _coarseObjects.push_back(objectB);
-    }
-
-    //////////////////////////////////////////////////////
-    /// END | TWO PARTICLES CRASH SCENARIO
-    //////////////////////////////////////////////////////
+	_coarseObjects = delta::world::scenarios::twoParticlesCrash(_isSphere, _noPointsPerParticle, _epsilon);
   }
   else if(_scenario[0] == blackHoleWithCubes ||
           _scenario[0] == freefallWithCubes ||
-          _scenario[0] == blackHoleWithGranulates ||
-          _scenario[0] == freefallWithGranulates  ||
           _scenario[0] == blackHoleWithRandomOrientedCubes ||
           _scenario[0] == freefallWithRandomOrientedCubes)
   {
-    //////////////////////////////////////////////////////
-    /// FREEFALL AND BLACKHOLE SCENARIO
-    //////////////////////////////////////////////////////
-
-    //iREAL particleDiameter = (_minParticleDiam + (_maxParticleDiam-_minParticleDiam) * (static_cast<iREAL>(rand()) / static_cast<iREAL>(RAND_MAX))) / std::sqrt(DIMENSIONS);
-    //int particleid = deployBox(vertex, 0, 0, _centreAsArray, particleDiameter/2, particleDiameter/2, 0, 1.0/8.0, 1.0/8.0, _epsilon, material, isFriction, isObstacle);
-
-    iREAL rad = 0.01;
-    std::array<iREAL, 3> linear = {0, 0, 0};
-    std::array<iREAL, 3> position = {centre[0], 0.8, centre[2]};
-
-    if(_scenario[0] == blackHoleWithCubes ||
-       _scenario[0] == blackHoleWithGranulates  ||
-       _scenario[0] == blackHoleWithRandomOrientedCubes)
-    {
-      linear[0] = static_cast<iREAL>( rand() ) / static_cast<iREAL>(RAND_MAX);
-      linear[1] = static_cast<iREAL>( rand() ) / static_cast<iREAL>(RAND_MAX);
-      linear[2] = static_cast<iREAL>( rand() ) / static_cast<iREAL>(RAND_MAX);
-    }
-
-    //Object ISSUE: here Object particles number has to be incremental with deployment in non-insitu enviroment
-    if(_isSphere){
-      delta::geometry::Object objectA("sphere", 0, position, delta::geometry::material::MaterialType::WOOD, false, false, _epsilon, linear, {0,0,0});
-      objectA.generateSphere(rad);
-      _fineObjects.push_back(objectA);
-    } else {
-      delta::geometry::Object objectA("cube", 0, position, delta::geometry::material::MaterialType::WOOD, false, false, _epsilon, linear, {0,0,0});
-      objectA.generateMesh(rad,rad,rad,0,0,0,rad,_noPointsPerParticle);
-      _fineObjects.push_back(objectA);
-    }
-    //////////////////////////////////////////////////////
-    /// END | FREEFALL AND BLACKHOLE SCENARIO
-    //////////////////////////////////////////////////////
+	int scn = 0;
+	if( _scenario[0] == blackHoleWithRandomOrientedCubes ||
+        _scenario[0] == freefallWithRandomOrientedCubes)
+	{
+	  scn = 1;
+	}
+	delta::world::scenarios::freeFall(scn, _isSphere, centre, _noPointsPerParticle, _epsilon, _coarseObjects);
   }
   else if(_scenario[0] == nonescenario)
   {
@@ -537,7 +303,8 @@ void dem::mappings::CreateGrid::endIteration(
 {
   logTraceInWith1Argument( "endIteration(State)", solverState );
 
-  delta::world::computeBoundary(
+  if(!_isSphere)
+  delta::world::operators::computeBoundary(
 		 _coarseObjects,
 		 _fineObjects,
 		 _insitufineObjects,

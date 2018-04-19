@@ -18,6 +18,13 @@ namespace delta {
 	namespace operators {
 	  namespace physics {
 
+		/*
+		 *  Get Volume
+		 *
+		 *  return volume of geomety
+		 *  @param none
+		 *  @return iREAL
+		 */
 		iREAL computeVolume(
 			std::vector<iREAL>& xCoordinates,
 			std::vector<iREAL>& yCoordinates,
