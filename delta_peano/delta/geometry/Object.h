@@ -57,7 +57,7 @@ class delta::geometry::Object
 	Object(
 	std::string                   			component,
 	int                           			particleID,
-	delta::geometry::mesh::Mesh				mesh,
+	delta::geometry::mesh::Mesh*				mesh,
 	std::array<iREAL, 3>         			centre,
 	delta::geometry::material::MaterialType 	material,
 	bool                          			isObstacle,

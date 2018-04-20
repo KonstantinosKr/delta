@@ -29,7 +29,7 @@ delta::core::Delta::Delta()
 {
   delta::geometry::material::materialInit();
 
-  std::vector<delta::geometry::mesh::Mesh> meshes = readSceneGeometry("keySmall.stl");
+  std::vector<delta::geometry::mesh::Mesh> meshes = readSceneGeometry("input/r2.stl");
 
   std::vector<delta::geometry::Object> objects;
   for(int i=0; i<meshes.size(); i++)
@@ -38,12 +38,15 @@ delta::core::Delta::Delta()
 	std::array<iREAL, 3> 					linear 	= {0.0, 0.0, 0.0};
 	std::array<iREAL, 3> 					angular 	= {0.0, 0.0, 0.0};
 
-	delta::geometry::Object * object = new  delta::geometry::Object("mesh", i, meshes[i], centre,
+	delta::geometry::Object * object = new  delta::geometry::Object("mesh", i, &meshes[i], centre,
 												  delta::geometry::material::MaterialType::WOOD,
 												  false, false, 0.0001, linear, angular);
 	objects.push_back(*object);
+	printf("mesh:%i\n",object->getMesh().getTriangleFaces().size());
+	printf("mesh:%i\n", meshes[0].getTriangleFaces().size());
   }
 
+  printf("mesh:%i\n", meshes[0].getTriangleFaces().size());
   std::array<iREAL, 6> boundary = {0.0, 0.0, 0.0, 1.0, 1.0, 1.0};
   delta::core::writeGeometryToVTK(0, boundary, objects);
 }

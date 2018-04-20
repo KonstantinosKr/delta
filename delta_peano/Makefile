@@ -8,13 +8,13 @@ PROJECT_HOME = .
 INCLUDE_TBB=$(TBB_INC)
 INCLUDE_OMP=
 INCLUDE_MPI=$(MPI_INC)
-INCLUDE_LIBS=$(ASSIMP_INC) #export ASSIMP_INC=-I/Users/konstantinos/Devel/libraries/assimp/include/
+INCLUDE_LIBS=$(ASSIMP_INC)
 
 LINK_TBB=$(TBB_SHLIB)
 LINK_OMP=$(OMP_SHLIB)
 LINK_OMP=-fopenmp
 LINK_MPI=-L/usr/local/Cluster-Apps/openmpi/gcc-4.9.1/1.8.2/lib/ -lmpi
-LINK_LIBS=$(ASSIMP_LIB) #export ASSIMP_LIB="-L/Users/konstantinos/Devel/libraries/assimp/lib/ -lassimp"
+LINK_LIBS=$(ASSIMP_LIB) 
 
 ##############################################################################################
 

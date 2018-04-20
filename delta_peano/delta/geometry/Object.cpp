@@ -46,7 +46,7 @@ delta::geometry::Object::Object(
 delta::geometry::Object::Object(
 std::string                   			component,
 int                           			particleID,
-delta::geometry::mesh::Mesh				mesh,
+delta::geometry::mesh::Mesh*				mesh,
 std::array<iREAL, 3>         			centre,
 delta::geometry::material::MaterialType 	material,
 bool                          			isObstacle,
@@ -83,7 +83,7 @@ std::array<iREAL, 3> 					angular)
   this->_mass			=	0;
   this->_epsilon			=	0;
 
-  this-> _mesh			= 	&mesh;
+  this-> _mesh			= 	mesh;
 
   std::array<iREAL, 3> 	_refAngularVelocity;
 
@@ -160,7 +160,7 @@ void delta::geometry::Object::generateMesh(
 		iREAL rx,
 		iREAL ry,
 		iREAL rz,
-		int mesh,
+		int 	  mesh,
 		iREAL rad)
 {
   iREAL position[3] = {_centre[0], _centre[1], _centre[2]};
