@@ -8,6 +8,7 @@
 #include <delta/geometry/mesh/Mesh.h>
 #include <delta/geometry/operators/physics.h>
 #include <functional>
+#include <limits>
 #include <iostream>
 
 delta::geometry::mesh::Mesh::Mesh()

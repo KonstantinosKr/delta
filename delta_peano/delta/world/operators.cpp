@@ -6,11 +6,7 @@
  */
 
 #include <delta/world/operators.h>
-
-namespace delta {
-namespace world {
-namespace operators {
-
+#include <limits>
 
 void delta::world::operators::computeBoundary(
 	 std::vector<delta::geometry::Object>& coarseObjects,
@@ -106,7 +102,3 @@ void delta::world::operators::computeBoundary(
   maxComputeDomain[2] = maxz;
 }
 
-
-} /* namespace operators */
-} /* namespace world */
-} /* namespace delta */

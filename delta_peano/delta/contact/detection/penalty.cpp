@@ -279,13 +279,15 @@ extern void delta::contact::detection::penalty(
   iREAL         MaxErrorOfPenaltyMethod,
   bool&         failed)
 {
-  __assume_aligned(xCoordinatesOfTriangleA, byteAlignment);
-  __assume_aligned(yCoordinatesOfTriangleA, byteAlignment);
-  __assume_aligned(zCoordinatesOfTriangleA, byteAlignment);
+#if defined(__INTEL_COMPILER)
+  __assume_aligned(xCoordinatesOfPointsOfGeometryB, byteAlignment);
+  __assume_aligned(yCoordinatesOfPointsOfGeometryA, byteAlignment);
+  __assume_aligned(zCoordinatesOfPointsOfGeometryA, byteAlignment);
 
-  __assume_aligned(xCoordinatesOfTriangleB, byteAlignment);
-  __assume_aligned(yCoordinatesOfTriangleB, byteAlignment);
-  __assume_aligned(zCoordinatesOfTriangleB, byteAlignment);
+  __assume_aligned(xCoordinatesOfPointsOfGeometryB, byteAlignment);
+  __assume_aligned(yCoordinatesOfPointsOfGeometryB, byteAlignment);
+  __assume_aligned(zCoordinatesOfPointsOfGeometryB, byteAlignment);
+#endif
 
    __attribute__ ((aligned(byteAlignment))) iREAL BA[3];
    __attribute__ ((aligned(byteAlignment))) iREAL CA[3];

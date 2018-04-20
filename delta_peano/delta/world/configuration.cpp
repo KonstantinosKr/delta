@@ -12,7 +12,7 @@
 #include "delta/geometry/primitive/granulate.h"
 #include "delta/geometry/primitive/cube.h"
 
- std::vector<delta::geometry::Object> delta::world::configuration::uniformlyDistributedTotalMass(
+std::vector<delta::geometry::Object> delta::world::configuration::uniformlyDistributedTotalMass(
 	  iREAL 		position[3],
 	  int 		xzcuts,
 	  int 		ycuts,
