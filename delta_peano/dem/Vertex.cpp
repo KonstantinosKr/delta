@@ -115,9 +115,9 @@ int dem::Vertex::createParticle(
   newParticle._persistentRecords._epsilon		= Object.getEpsilon();
   newParticle._persistentRecords._hMin 			= Object.getMesh().getHMin();
 
-  std::vector<iREAL> xCoordinates = Object.getMesh().getxCoordinates();
-  std::vector<iREAL> yCoordinates = Object.getMesh().getyCoordinates();
-  std::vector<iREAL> zCoordinates = Object.getMesh().getzCoordinates();
+  std::vector<iREAL> xCoordinates = Object.getMesh().getXCoordinatesAsVector();
+  std::vector<iREAL> yCoordinates = Object.getMesh().getYCoordinatesAsVector();
+  std::vector<iREAL> zCoordinates = Object.getMesh().getZCoordinatesAsVector();
 
   newParticle._persistentRecords._numberOfTriangles 	= xCoordinates.size()/DIMENSIONS;
   newParticle._persistentRecords._isObstacle 		= Object.getIsObstacle();
@@ -176,9 +176,9 @@ int dem::Vertex::createSubParticle(
     int particleId,
     int localparticleId)
 {
-  std::vector<iREAL> xCoordinates = Object.getMesh().getxCoordinates();
-  std::vector<iREAL> yCoordinates = Object.getMesh().getyCoordinates();
-  std::vector<iREAL> zCoordinates = Object.getMesh().getzCoordinates();
+  std::vector<iREAL> xCoordinates = Object.getMesh().getXCoordinatesAsVector();
+  std::vector<iREAL> yCoordinates = Object.getMesh().getYCoordinatesAsVector();
+  std::vector<iREAL> zCoordinates = Object.getMesh().getZCoordinatesAsVector();
 
   const tarch::la::Vector<DIMENSIONS,iREAL>& center = {Object.getCentre()[0], Object.getCentre()[1], Object.getCentre()[2]};
   iREAL centerOfMass[3] = {Object.getCentreOfMass()[0], Object.getCentreOfMass()[1], Object.getCentreOfMass()[2]};

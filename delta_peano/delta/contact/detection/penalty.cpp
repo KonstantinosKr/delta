@@ -133,7 +133,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::penalty(
   tarch::multicore::BooleanSemaphore &semaphore
 ) {
   #if defined(__INTEL_COMPILER)
-  __assume_aligned(xCoordinatesOfPointsOfGeometryB, byteAlignment);
+  __assume_aligned(xCoordinatesOfPointsOfGeometryA, byteAlignment);
   __assume_aligned(yCoordinatesOfPointsOfGeometryA, byteAlignment);
   __assume_aligned(zCoordinatesOfPointsOfGeometryA, byteAlignment);
 
@@ -280,13 +280,13 @@ extern void delta::contact::detection::penalty(
   bool&         failed)
 {
 #if defined(__INTEL_COMPILER)
-  __assume_aligned(xCoordinatesOfPointsOfGeometryB, byteAlignment);
-  __assume_aligned(yCoordinatesOfPointsOfGeometryA, byteAlignment);
-  __assume_aligned(zCoordinatesOfPointsOfGeometryA, byteAlignment);
+  __assume_aligned(xCoordinatesOfTriangleA, byteAlignment);
+  __assume_aligned(yCoordinatesOfTriangleA, byteAlignment);
+  __assume_aligned(zCoordinatesOfTriangleA, byteAlignment);
 
-  __assume_aligned(xCoordinatesOfPointsOfGeometryB, byteAlignment);
-  __assume_aligned(yCoordinatesOfPointsOfGeometryB, byteAlignment);
-  __assume_aligned(zCoordinatesOfPointsOfGeometryB, byteAlignment);
+  __assume_aligned(xCoordinatesOfTriangleB, byteAlignment);
+  __assume_aligned(yCoordinatesOfTriangleB, byteAlignment);
+  __assume_aligned(zCoordinatesOfTriangleB, byteAlignment);
 #endif
 
    __attribute__ ((aligned(byteAlignment))) iREAL BA[3];

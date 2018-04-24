@@ -243,7 +243,7 @@ delta::geometry::mesh::Mesh delta::geometry::Object::getMesh()
 {
   if(_component != "mesh")
   {
-	printf("error getMesh called while particle is sphere");
+	//printf("error getMesh called while particle is sphere\n");
   }
 
   return *_mesh;
@@ -262,7 +262,7 @@ iREAL delta::geometry::Object::getHaloDiameter()
 
 int delta::geometry::Object::getNumberOfTriangles()
 {
-  return (int)_mesh->getxCoordinates().size()/3.0;
+  return (int)_mesh->getTriangleFaces().size();
 }
 
 int delta::geometry::Object::getGlobalParticleId()
@@ -497,7 +497,7 @@ void delta::geometry::Object::computeInverseInertia(
     iREAL inverse[9],
     bool isObject)
 {
-  this->getMesh().computeInverseInertia(inertia, inverse, isObject);
+  delta::geometry::operators::physics::computeInverseInertia(inertia, inverse, isObject);
 
   this->setInverse(inverse);
 }

@@ -29,7 +29,7 @@ delta::core::Delta::Delta()
 {
   delta::geometry::material::materialInit();
 
-  std::vector<delta::geometry::mesh::Mesh> meshes = readSceneGeometry("input/r2.stl");
+  std::vector<delta::geometry::mesh::Mesh> meshes = readSceneGeometry("input/keySmall.stl");
 
   std::vector<delta::geometry::Object> objects;
   for(int i=0; i<meshes.size(); i++)

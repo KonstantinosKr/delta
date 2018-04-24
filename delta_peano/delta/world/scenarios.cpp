@@ -9,7 +9,7 @@
 #include <delta/geometry/defined/graphite.h>
 #include <delta/world/configuration.h>
 
-void hopper(
+void delta::world::scenarios::hopper(
 	std::vector<delta::geometry::Object> &coarse,
 	std::vector<delta::geometry::Object> &insitu,
 	iREAL centre[3], int xzcuts, int ycuts, bool uniform,
@@ -83,7 +83,7 @@ void hopper(
   //////////////////////////////////////////////////////
 }
 
-std::vector<delta::geometry::Object> twoParticlesCrash(bool isSphere, int meshDensity, iREAL epsilon)
+std::vector<delta::geometry::Object> delta::world::scenarios::twoParticlesCrash(bool isSphere, int meshDensity, iREAL epsilon)
 {
   //////////////////////////////////////////////////////
   /// TWO PARTICLES CRASH SCENARIO
@@ -138,7 +138,7 @@ std::vector<delta::geometry::Object> twoParticlesCrash(bool isSphere, int meshDe
 
 }
 
-void friction(
+void delta::world::scenarios::friction(
 	int 									scenario,
 	bool 									isSphere,
 	iREAL 									centre[3],
@@ -207,7 +207,7 @@ void friction(
   //////////////////////////////////////////////////////
 }
 
-void freeFall(
+void delta::world::scenarios::freeFall(
 	int 									scenario,
 	bool 									isSphere,
 	iREAL 									centre[3],
@@ -247,7 +247,7 @@ void freeFall(
   //////////////////////////////////////////////////////
 }
 
-void nuclear(
+void delta::world::scenarios::nuclear(
 	int 									scenario,
 	bool 									isSphere,
 	iREAL 									centre[3],

@@ -133,6 +133,7 @@ void dem::mappings::CreateGrid::deployEnviroment(
 	      //deleteCoarseObjects.push_back(i);
 	    }
 	  }
+	  printf("entered\n");
 	  /*
 	  for(unsigned i=0; i<deleteCoarseObjects.size(); i++)
 	  {
@@ -154,14 +155,14 @@ void dem::mappings::CreateGrid::deployObject(
 
   if(object.getComponent() == "sphere")
   {
-    //particleNumber = vertex.createSphereParticle(object, _numberOfParticles);
-    //_numberOfTriangles += object.getMesh().getxCoordinates().size()/DIMENSIONS;
+    particleNumber = vertex.createSphereParticle(object, _numberOfParticles);
   } else if(object.getComponent() == "mesh")
   {
-	//particleNumber = vertex.createSubParticle(object, _numberOfParticles, 0);
-	//_numberOfTriangles += object.getMesh().getxCoordinates().size()/DIMENSIONS;
+	particleNumber = vertex.createSubParticle(object, _numberOfParticles, 0);
+	_numberOfTriangles += object.getNumberOfTriangles();
   } else {
-    //particleNumber = vertex.createParticle(object, _numberOfParticles, 0);
+    particleNumber = vertex.createParticle(object, _numberOfParticles, 0);
+	_numberOfTriangles += object.getNumberOfTriangles();
   }
 
   _numberOfParticles++;

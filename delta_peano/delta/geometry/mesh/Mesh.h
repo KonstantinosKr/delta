@@ -168,7 +168,7 @@ class delta::geometry::mesh::Mesh {
 	 *  @param none
 	 *  @returns vector of iREAL values
 	 */
-	std::vector<iREAL> 		getXCoordinates();
+	iREAL* 		getXCoordinates();
 
 	/*
 	 *  Get Y Coordinates
@@ -179,7 +179,7 @@ class delta::geometry::mesh::Mesh {
 	 *  @param none
 	 *  @returns vector of iREAL values
 	 */
-	std::vector<iREAL> 		getYCoordinates();
+	iREAL* 		getYCoordinates();
 
 	/*
 	 *  Get Z Coordinates
@@ -190,7 +190,7 @@ class delta::geometry::mesh::Mesh {
 	 *  @param none
 	 *  @returns vector of iREAL values
 	 */
-	std::vector<iREAL> 		getZCoordinates();
+	iREAL* 		getZCoordinates();
 
 	/*
 	 *  Get Width of the X Coordinates
@@ -406,7 +406,7 @@ class delta::geometry::mesh::Mesh {
 	 *  @param none
 	 *  @returns vector
 	 */
-	std::vector<iREAL> getxCoordinates();
+	std::vector<iREAL> getXCoordinatesAsVector();
 
 	/*
 	 *  Get X Coordinates
@@ -417,7 +417,7 @@ class delta::geometry::mesh::Mesh {
 	 *  @param none
 	 *  @returns vector
 	 */
-	std::vector<iREAL> getyCoordinates();
+	std::vector<iREAL> getYCoordinatesAsVector();
 
 	/*
 	 *  Get X Coordinates
@@ -428,7 +428,7 @@ class delta::geometry::mesh::Mesh {
 	 *  @param none
 	 *  @returns vector
 	 */
-	std::vector<iREAL> getzCoordinates();
+	std::vector<iREAL> getZCoordinatesAsVector();
 
 	void explode(iREAL length);
 	void exploded(iREAL length);

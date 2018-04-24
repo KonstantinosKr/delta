@@ -12,7 +12,7 @@
 #include "delta/geometry/primitive/granulate.h"
 #include "delta/geometry/primitive/cube.h"
 
-std::vector<delta::geometry::Object> delta::world::configuration::uniformlyDistributedTotalMass(
+ std::vector<delta::geometry::Object> delta::world::configuration::uniformlyDistributedTotalMass(
 	  iREAL 		position[3],
 	  int 		xzcuts,
 	  int 		ycuts,
@@ -96,7 +96,7 @@ std::vector<delta::geometry::Object> delta::world::configuration::uniformlyDistr
     iREAL p[3] = {pos[0], pos[1] + maxRad+epsilon, pos[2]};
     objects[i].setCentre(p);
 
-    auto yCoordinates = objects[i].getMesh().getyCoordinates();
+    auto yCoordinates = objects[i].getMesh().getYCoordinatesAsVector();
 
     if(yCoordinates.size() >= 0)
     {
@@ -192,7 +192,7 @@ std::vector<delta::geometry::Object> delta::world::configuration::uniformlyDistr
     iREAL p[3] = {pos[0], pos[1] + maxRad+epsilon, pos[2]};
     objects[i].setCentre(p);
 
-    auto yCoordinates = objects[i].getMesh().getyCoordinates();
+    auto yCoordinates = objects[i].getMesh().getYCoordinatesAsVector();
 
     if(yCoordinates.size() >= 0)
     {
@@ -264,9 +264,9 @@ std::vector<delta::geometry::Object> delta::world::configuration::uniformlyDistr
   {
     std::array<iREAL, 3> ar = objects[j].getCentre(); position[0] = ar[0]; position[1] = ar[1]; position[2] = ar[2];
 
-    std::vector<iREAL> xCoordinates = objects[j].getMesh().getxCoordinates();
-    std::vector<iREAL> yCoordinates = objects[j].getMesh().getyCoordinates();
-    std::vector<iREAL> zCoordinates = objects[j].getMesh().getzCoordinates();
+    std::vector<iREAL> xCoordinates = objects[j].getMesh().getXCoordinatesAsVector();
+    std::vector<iREAL> yCoordinates = objects[j].getMesh().getYCoordinatesAsVector();
+    std::vector<iREAL> zCoordinates = objects[j].getMesh().getZCoordinatesAsVector();
 
     objects[j].getMesh().scaleXYZ(rescale, position);
 

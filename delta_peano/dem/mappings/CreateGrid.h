@@ -109,18 +109,6 @@ class dem::mappings::CreateGrid {
       roll
     };
 
-    enum VScheme {
-      none,
-      moveLeft,
-      randomLinear,
-      randomLinearAngular,
-      crashY,
-      crashXY,
-      crashXYRotation,
-      slideX,
-      slideXRotation
-    };
-
     enum GridType {
       NoGrid,
       RegularGrid,

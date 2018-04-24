@@ -253,19 +253,33 @@ void delta::geometry::mesh::Mesh::replace (
   }
 }
 
-std::vector<iREAL> delta::geometry::mesh::Mesh::getxCoordinates()
+std::vector<iREAL> delta::geometry::mesh::Mesh::getXCoordinatesAsVector()
 {
   return _xCoordinates;
 }
 
-std::vector<iREAL> delta::geometry::mesh::Mesh::getyCoordinates()
+std::vector<iREAL> delta::geometry::mesh::Mesh::getYCoordinatesAsVector()
 {
   return _yCoordinates;
 }
 
-std::vector<iREAL> delta::geometry::mesh::Mesh::getzCoordinates()
+std::vector<iREAL> delta::geometry::mesh::Mesh::getZCoordinatesAsVector()
 {
   return _zCoordinates;
+}
+iREAL* delta::geometry::mesh::Mesh::getXCoordinates()
+{
+  return _xCoordinates.data();
+}
+
+iREAL* delta::geometry::mesh::Mesh::getYCoordinates()
+{
+  return _yCoordinates.data();
+}
+
+iREAL* delta::geometry::mesh::Mesh::getZCoordinates()
+{
+  return _zCoordinates.data();
 }
 
 void delta::geometry::mesh::Mesh::moveMeshFromPositionToOrigin(iREAL center[3])
