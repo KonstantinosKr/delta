@@ -3,8 +3,8 @@
 #include <delta/core/algo.h>
 #include <delta/geometry/primitive/granulate.h>
 #include <delta/geometry/primitive/cube.h>
-#include <delta/geometry/defined/graphite.h>
-#include <delta/geometry/defined/hopper.h>
+#include <delta/geometry/hardcoded/graphite.h>
+#include <delta/geometry/hardcoded/hopper.h>
 
 delta::geometry::Object::Object()
 {
@@ -179,10 +179,10 @@ void delta::geometry::Object::generateMesh(
   else if(_component == "hopper")
   {
     iREAL _hopperHatch = 0.05; iREAL _hopperThickness = 0.005; int refinement = 0;
-    geometry = delta::geometry::defined::generateHopper(position, wx, _hopperThickness, wy, _hopperHatch, refinement, 0.01);
+    geometry = delta::geometry::hardcoded::generateHopper(position, wx, _hopperThickness, wy, _hopperHatch, refinement, 0.01);
   } else if(_component == "FB")
   {
-	geometry = delta::geometry::defined::generateBrickFB(position, rad);
+	geometry = delta::geometry::hardcoded::generateBrickFB(position, rad);
   }
 
   iREAL mass, centerOfMass[3], inertia[9], inverse[9];

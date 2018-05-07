@@ -24,6 +24,7 @@
 
 #include <delta/contact/detection/bf.h>
 
+#ifdef peanoCall
 std::vector<delta::contact::contactpoint> delta::contact::detection::bf(
     const iREAL*    xCoordinatesOfPointsOfGeometryA,
     const iREAL*    yCoordinatesOfPointsOfGeometryA,
@@ -41,6 +42,24 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::bf(
     bool            frictionB,
     int 	            particleB,
 	tarch::multicore::BooleanSemaphore &semaphore)
+#else
+std::vector<delta::contact::contactpoint> delta::contact::detection::bf(
+    const iREAL*    xCoordinatesOfPointsOfGeometryA,
+    const iREAL*    yCoordinatesOfPointsOfGeometryA,
+    const iREAL*    zCoordinatesOfPointsOfGeometryA,
+	int             numberOfPointsOfGeometryA,
+    iREAL           epsilonA,
+    bool            frictionA,
+    int 	            particleA,
+
+    const iREAL*    xCoordinatesOfPointsOfGeometryB,
+    const iREAL*    yCoordinatesOfPointsOfGeometryB,
+    const iREAL*    zCoordinatesOfPointsOfGeometryB,
+    int             numberOfPointsOfGeometryB,
+    iREAL           epsilonB,
+    bool            frictionB,
+    int 	            particleB)
+#endif
 {
 #if defined(__INTEL_COMPILER)
   __assume_aligned(xCoordinatesOfPointsOfGeometryA, byteAlignment);
@@ -57,7 +76,9 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::bf(
   int numberOfTrianglesA = numberOfPointsOfGeometryA * 3;
   int numberOfTrianglesB = numberOfPointsOfGeometryB * 3;
 
+#ifdef peanoCall
   tarch::multicore::Lock lock(semaphore,false);
+#endif
 
   #ifdef SharedTBB
 	// Take care: grain size has to be positive even if loop degenerates

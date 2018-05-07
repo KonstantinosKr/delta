@@ -114,6 +114,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::penaltyStat
   return result;
 }
 
+#ifdef peanoCall
 std::vector<delta::contact::contactpoint> delta::contact::detection::penalty(
   const iREAL*    xCoordinatesOfPointsOfGeometryA,
   const iREAL*    yCoordinatesOfPointsOfGeometryA,
@@ -131,7 +132,27 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::penalty(
   const bool      frictionB,
   const int		  particleB,
   tarch::multicore::BooleanSemaphore &semaphore
-) {
+)
+#else
+std::vector<delta::contact::contactpoint> delta::contact::detection::penalty(
+  const iREAL*    xCoordinatesOfPointsOfGeometryA,
+  const iREAL*    yCoordinatesOfPointsOfGeometryA,
+  const iREAL*    zCoordinatesOfPointsOfGeometryA,
+  const int       numberOfTrianglesOfGeometryA,
+  const iREAL     epsilonA,
+  const bool      frictionA,
+  const int	  	  particleA,
+
+  const iREAL*    xCoordinatesOfPointsOfGeometryB,
+  const iREAL*    yCoordinatesOfPointsOfGeometryB,
+  const iREAL*    zCoordinatesOfPointsOfGeometryB,
+  const int       numberOfTrianglesOfGeometryB,
+  const iREAL     epsilonB,
+  const bool      frictionB,
+  const int		  particleB
+)
+#endif
+{
   #if defined(__INTEL_COMPILER)
   __assume_aligned(xCoordinatesOfPointsOfGeometryA, byteAlignment);
   __assume_aligned(yCoordinatesOfPointsOfGeometryA, byteAlignment);
@@ -148,7 +169,9 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::penalty(
   int numberOfTrianglesA = numberOfTrianglesOfGeometryA * 3;
   int numberOfTrianglesB = numberOfTrianglesOfGeometryB * 3;
 
+#ifdef peanoCall
   tarch::multicore::Lock lock(semaphore,false);
+#endif
 
   #ifdef SharedTBB
 	 // Take care: grain size has to be positive even if loop degenerates

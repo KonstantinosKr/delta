@@ -22,41 +22,42 @@
  SOFTWARE.
  */
 
-
-#include <delta/contact/detection/bf.h>
 #include <delta/contact/contactpoint.h>
-#include <delta/contact/detection/penalty.h>
 #include <vector>
+
+#include <limits>
+#include <float.h>
+#include "delta/core/algo.h"
 #include "peano/utils/Loop.h"
 #include "tarch/multicore/Lock.h"
 #include "tarch/multicore/BooleanSemaphore.h"
 
+#define MaxNumberOfNewtonIterations 16
+
 namespace delta {
   namespace contact {
 	namespace detection {
+	  void cleanPenaltyStatistics();
+
 	  /**
-	   * Hybrid contact detection
-	   *
-	   * The hybrid contact detection algorithm first runs the penalty contact
-	   * detection for a fixed number of sweeps. It then checks for convergence.
-	   * If it does not converge, it falls back to the brute force method.
-	   *
-	   * In a second step, the operation runs through all contact points (nearest
-	   * neighbours) and takes those that are closer than epsilon. All other
-	   * nearest neighbour pairs are neglected. The remaining points make the
-	   * algorithm befill the result data structure.
-	   *
-	   * The hybrid configuration parameters all are held as compile time
-	   * parameters. This is not that elegant from a software point of view.
-	   * However, it allows the code to optimise aggressively at compile time.
-	   *
-	   * @return Set of contact points.
+	   * The penalty() operation that accepts whole batches of triangles, i.e.
+	   * triangulated bodies, keeps some statistics about the number of
+	   * comparisons. You can retrieve this information with this routine,
+	   * and clean the statistics with cleanPenaltyStatistics(). The whole
+	   * statistics stuff is not thread-safe.
 	   */
-	  std::vector<contactpoint> hybridWithPerTriangleFallBack(
+	  std::vector<int> getPenaltyStatistics();
+
+
+	  /**
+	   *
+	   * @see hybrid() or bf() for a description of the remaining parameters.
+	   */
+	  std::vector<contactpoint> penaltyStat(
 		const iREAL*    xCoordinatesOfPointsOfGeometryA,
 		const iREAL*    yCoordinatesOfPointsOfGeometryA,
 		const iREAL*    zCoordinatesOfPointsOfGeometryA,
-		const int       numberOfPointsOfGeometryA,
+		const int       numberOfTrianglesOfGeometryA,
 		const iREAL     epsilonA,
 		const bool      frictionA,
 		const int 	    particleA,
@@ -64,17 +65,17 @@ namespace delta {
 		const iREAL*    xCoordinatesOfPointsOfGeometryB,
 		const iREAL*    yCoordinatesOfPointsOfGeometryB,
 		const iREAL*    zCoordinatesOfPointsOfGeometryB,
-		const int       numberOfPointsOfGeometryB,
+		const int       numberOfTrianglesOfGeometryB,
 		const iREAL     epsilonB,
 		const bool      frictionB,
-		const int 	    particleB,
-		tarch::multicore::BooleanSemaphore &semaphore);
+		const int 	    particleB);
 
-	  std::vector<contactpoint> hybridWithPerBatchFallBack(
+#ifdef peanoCall
+	  std::vector<contactpoint> penalty(
 		const iREAL*    xCoordinatesOfPointsOfGeometryA,
 		const iREAL*    yCoordinatesOfPointsOfGeometryA,
 		const iREAL*    zCoordinatesOfPointsOfGeometryA,
-		const int       numberOfPointsOfGeometryA,
+		const int       numberOfTrianglesOfGeometryA,
 		const iREAL     epsilonA,
 		const bool      frictionA,
 		const int 	    particleA,
@@ -82,59 +83,70 @@ namespace delta {
 		const iREAL*    xCoordinatesOfPointsOfGeometryB,
 		const iREAL*    yCoordinatesOfPointsOfGeometryB,
 		const iREAL*    zCoordinatesOfPointsOfGeometryB,
-		const int       numberOfPointsOfGeometryB,
+		const int       numberOfTrianglesOfGeometryB,
 		const iREAL     epsilonB,
 		const bool      frictionB,
-		const int 	    particleB,
-		tarch::multicore::BooleanSemaphore &semaphore);
-
-
-	  std::vector<contactpoint> hybridBatchStat(
+		const int       particleB,
+		tarch::multicore::BooleanSemaphore &semaphore
+		);
+#else
+	  std::vector<contactpoint> penalty(
 		const iREAL*    xCoordinatesOfPointsOfGeometryA,
 		const iREAL*    yCoordinatesOfPointsOfGeometryA,
 		const iREAL*    zCoordinatesOfPointsOfGeometryA,
-		const int       numberOfPointsOfGeometryA,
+		const int       numberOfTrianglesOfGeometryA,
 		const iREAL     epsilonA,
 		const bool      frictionA,
-		const int       particleA,
+		const int 	    particleA,
 
 		const iREAL*    xCoordinatesOfPointsOfGeometryB,
 		const iREAL*    yCoordinatesOfPointsOfGeometryB,
 		const iREAL*    zCoordinatesOfPointsOfGeometryB,
-		const int       numberOfPointsOfGeometryB,
+		const int       numberOfTrianglesOfGeometryB,
 		const iREAL     epsilonB,
 		const bool      frictionB,
-		const int       particleB);
+		const int       particleB
+		);
+#endif
 
-	  std::vector<contactpoint> hybridTriangleStat(
-		const iREAL*    xCoordinatesOfPointsOfGeometryA,
-		const iREAL*    yCoordinatesOfPointsOfGeometryA,
-		const iREAL*    zCoordinatesOfPointsOfGeometryA,
-		const int       numberOfPointsOfGeometryA,
-		const iREAL     epsilonA,
-		const bool      frictionA,
-		const int       particleA,
+	  #pragma omp declare simd
+	  #pragma omp declare simd linear(xCoordinatesOfTriangleA:3) linear(yCoordinatesOfTriangleA:3) linear(zCoordinatesOfTriangleA:3) linear(xCoordinatesOfTriangleB:3) linear(yCoordinatesOfTriangleB:3) linear(zCoordinatesOfTriangleB:3) nomask notinbranch
+	  extern void penalty(
+		const iREAL   *xCoordinatesOfTriangleA,
+		const iREAL   *yCoordinatesOfTriangleA,
+		const iREAL   *zCoordinatesOfTriangleA,
+		const iREAL   *xCoordinatesOfTriangleB,
+		const iREAL   *yCoordinatesOfTriangleB,
+		const iREAL   *zCoordinatesOfTriangleB,
+		iREAL&        xPA,
+		iREAL&        yPA,
+		iREAL&        zPA,
+		iREAL&        xPB,
+		iREAL&        yPB,
+		iREAL&        zPB,
+		iREAL         MaxErrorOfPenaltyMethod,
+		bool&         failed);
 
-		const iREAL*    xCoordinatesOfPointsOfGeometryB,
-		const iREAL*    yCoordinatesOfPointsOfGeometryB,
-		const iREAL*    zCoordinatesOfPointsOfGeometryB,
-		const int       numberOfPointsOfGeometryB,
-		const iREAL     epsilonB,
-		const bool      frictionB,
-		const int       particleB);
-
-		static int 		_numberOfPenaltyFails;
-		static int 		_numberOfBatchFails;
-		static int 		_batchSize;
-		static iREAL		_batchError;
-
-		void 	cleanHybridStatistics();
-		int 		getPenaltyFails();
-		int 		getBatchFails();
-		int 		getBatchSize();
-		iREAL 	getBatchError();
+	  /**
+	   * This is a second variant of the penalty method. Different to the one
+	   * above, this one does terminate as soon as the error underruns maxError
+	   * or the number of itertions exceeds maxNumberOfNewtonIterations.
+	   */
+	  void penalty(
+		const iREAL   xCoordinatesOfTriangleA[],
+		const iREAL   yCoordinatesOfTriangleA[],
+		const iREAL   zCoordinatesOfTriangleA[],
+		const iREAL   xCoordinatesOfTriangleB[],
+		const iREAL   yCoordinatesOfTriangleB[],
+		const iREAL   zCoordinatesOfTriangleB[],
+		iREAL&        xPA,
+		iREAL&        yPA,
+		iREAL&        zPA,
+		iREAL&        xPB,
+		iREAL&        yPB,
+		iREAL&        zPB,
+		iREAL         maxError,
+		int&          numberOfNewtonIterationsRequired);
 	}
   }
 }
-
-

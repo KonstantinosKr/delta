@@ -5,9 +5,9 @@
  *      Author: konstantinos
  */
 
-#include <delta/geometry/defined/graphite.h>
 #include <delta/world/arrayLayout.h>
-#include "delta/world/configuration.h"
+#include <delta/geometry/hardcoded/graphite.h>
+#include "delta/scenario/configuration.h"
 
 #include "delta/geometry/primitive/granulate.h"
 #include "delta/geometry/primitive/cube.h"
@@ -462,7 +462,7 @@
   //_particleGrid, _componentGrid, _radArray, _minParticleDiam, _maxParticleDiam
 
   //measurements
-  delta::geometry::mesh::Mesh *mesh = delta::geometry::defined::generateBrickFB();
+  delta::geometry::mesh::Mesh *mesh = delta::geometry::hardcoded::generateBrickFB();
   iREAL w = mesh->getXZWidth();
   iREAL h = mesh->getYw();
 
@@ -520,7 +520,7 @@
 
   //////////////////////////MESH///////////////////////////////////////////////////////////////////////////////////
   //measurements
-  delta::geometry::mesh::Mesh *mesh = delta::geometry::defined::generateBrickFB();
+  delta::geometry::mesh::Mesh *mesh = delta::geometry::hardcoded::generateBrickFB();
   iREAL width = mesh->getXZWidth();
   iREAL height = mesh->getYw();
   xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();

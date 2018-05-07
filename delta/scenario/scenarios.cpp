@@ -5,9 +5,9 @@
  *      Author: konstantinos
  */
 
-#include <delta/world/scenarios.h>
-#include <delta/geometry/defined/graphite.h>
-#include <delta/world/configuration.h>
+#include <delta/scenario/scenarios.h>
+#include <delta/scenario/configuration.h>
+#include <delta/geometry/hardcoded/graphite.h>
 
 void delta::world::scenarios::hopper(
 	std::vector<delta::geometry::Object> &coarse,

@@ -1,7 +1,7 @@
-#include <delta/geometry/defined/graphite.h>
+#include <delta/geometry/hardcoded/graphite.h>
 
 //Intact Poly Brick
-delta::geometry::mesh::Mesh *delta::geometry::defined::generateBrickFB(
+delta::geometry::mesh::Mesh *delta::geometry::hardcoded::generateBrickFB(
   iREAL center[3], iREAL h)
 {
   std::vector<iREAL>  xCoordinates;
@@ -21,7 +21,7 @@ delta::geometry::mesh::Mesh *delta::geometry::defined::generateBrickFB(
   return mesh;
 }
 
-delta::geometry::mesh::Mesh *delta::geometry::defined::generateBrickFB()
+delta::geometry::mesh::Mesh *delta::geometry::hardcoded::generateBrickFB()
 {
   std::vector<iREAL>  xCoordinates;
   std::vector<iREAL>  yCoordinates;
@@ -41,7 +41,7 @@ delta::geometry::mesh::Mesh *delta::geometry::defined::generateBrickFB()
   return mesh;
 }
 
-delta::geometry::mesh::Mesh *delta::geometry::defined::generateBrickFB(
+delta::geometry::mesh::Mesh *delta::geometry::hardcoded::generateBrickFB(
   iREAL center[3])
 {
   std::vector<iREAL>  xCoordinates;
@@ -63,7 +63,7 @@ delta::geometry::mesh::Mesh *delta::geometry::defined::generateBrickFB(
 }
 
 //Loose keys - orientation X-wise
-delta::geometry::mesh::Mesh *delta::geometry::defined::generateKeyXK(
+delta::geometry::mesh::Mesh *delta::geometry::hardcoded::generateKeyXK(
   iREAL center[3], iREAL h)
 {
   std::vector<iREAL>  xCoordinates;
@@ -85,7 +85,7 @@ delta::geometry::mesh::Mesh *delta::geometry::defined::generateKeyXK(
 }
 
 //Loose keys - orientation Y-wise
-delta::geometry::mesh::Mesh *delta::geometry::defined::generateKeyYK(
+delta::geometry::mesh::Mesh *delta::geometry::hardcoded::generateKeyYK(
   iREAL center[3], iREAL h)
 {
   std::vector<iREAL>  xCoordinates;

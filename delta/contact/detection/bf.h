@@ -28,16 +28,21 @@
 #include <limits>
 #include <iostream>
 #include "delta/core/algo.h"
-#include "peano/utils/Loop.h"
-#include "tarch/multicore/Lock.h"
-#include "tarch/multicore/BooleanSemaphore.h"
+
+#ifdef peanoCall
+  #include "peano/utils/Loop.h"
+  #include "tarch/multicore/Lock.h"
+  #include "tarch/multicore/BooleanSemaphore.h"
+#endif
 
 namespace delta {
   namespace contact {
 	namespace detection {
+
 	  /**
 	   * @see hybrid() function with the same arguments for default
 	   */
+	  #ifdef peanoCall
 	  std::vector<contactpoint> bf(
 		const iREAL*    xCoordinatesOfPointsOfGeometryA,
 		const iREAL*    yCoordinatesOfPointsOfGeometryA,
@@ -56,7 +61,25 @@ namespace delta {
 		int 	          	particleB,
 		tarch::multicore::BooleanSemaphore &semaphore
 	  );
+	  #else
+	  std::vector<contactpoint> bf(
+		const iREAL*    xCoordinatesOfPointsOfGeometryA,
+		const iREAL*    yCoordinatesOfPointsOfGeometryA,
+		const iREAL*    zCoordinatesOfPointsOfGeometryA,
+		int             numberOfPointsOfGeometryA,
+		iREAL           epsilonA,
+		bool            frictionA,
+		int 	          	particleA,
 
+		const iREAL*    xCoordinatesOfPointsOfGeometryB,
+		const iREAL*    yCoordinatesOfPointsOfGeometryB,
+		const iREAL*    zCoordinatesOfPointsOfGeometryB,
+		int             numberOfPointsOfGeometryB,
+		iREAL           epsilonB,
+		bool            frictionB,
+		int 	          	particleB
+	  );
+	  #endif
 	  /**
 	   * Brute force method for finite computation of the minimum distance
 	   * between two triangles A and B using the geometric comparisons segment to

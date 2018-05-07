@@ -7,7 +7,7 @@
 #include <cmath>
 #include <ctime>
 #include <delta/world/operators.h>
-#include <delta/world/scenarios.h>
+#include <delta/scenario/scenarios.h>
 
 #define epsilon 0.001
 

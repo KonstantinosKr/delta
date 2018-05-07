@@ -40,7 +40,7 @@
 
 namespace delta {
   namespace geometry {
-	namespace defined {
+	namespace hardcoded {
 
 		/*
 		 *  Generate Brick FB

@@ -47,6 +47,7 @@ iREAL delta::contact::detection::getBatchError() {
   return _batchError;
 }
 
+#ifdef peanoCall
 std::vector<delta::contact::contactpoint> delta::contact::detection::hybridWithPerTriangleFallBack(
   const iREAL*    xCoordinatesOfPointsOfGeometryA,
   const iREAL*    yCoordinatesOfPointsOfGeometryA,
@@ -64,6 +65,24 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::hybridWithP
   const bool      frictionB,
   const int	      particleB,
   tarch::multicore::BooleanSemaphore &semaphore)
+#else
+std::vector<delta::contact::contactpoint> delta::contact::detection::hybridWithPerTriangleFallBack(
+  const iREAL*    xCoordinatesOfPointsOfGeometryA,
+  const iREAL*    yCoordinatesOfPointsOfGeometryA,
+  const iREAL*    zCoordinatesOfPointsOfGeometryA,
+  const int       numberOfPointsOfGeometryA,
+  const iREAL     epsilonA,
+  const bool      frictionA,
+  const int 		  particleA,
+
+  const iREAL*    xCoordinatesOfPointsOfGeometryB,
+  const iREAL*    yCoordinatesOfPointsOfGeometryB,
+  const iREAL*    zCoordinatesOfPointsOfGeometryB,
+  const int       numberOfPointsOfGeometryB,
+  const iREAL     epsilonB,
+  const bool      frictionB,
+  const int	      particleB)
+#endif
 {
 
   __attribute__ ((aligned(byteAlignment))) iREAL MaxErrorOfPenalty = (epsilonA+epsilonB)/16;
@@ -84,7 +103,10 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::hybridWithP
   int numberOfTrianglesA = numberOfPointsOfGeometryA * 3;
   int numberOfTrianglesB = numberOfPointsOfGeometryB * 3;
 
+#ifdef peanoCall
   tarch::multicore::Lock lock(semaphore,false);
+#endif
+
   #ifdef SharedTBB
 	  // Take care: grain size has to be positive even if loop degenerates
 	  const int grainSize = numberOfTrianglesA;
@@ -169,6 +191,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::hybridWithP
   return result;
 }
 
+#ifdef peanoCall
 std::vector<delta::contact::contactpoint> delta::contact::detection::hybridWithPerBatchFallBack(
   const iREAL*    xCoordinatesOfPointsOfGeometryA,
   const iREAL*    yCoordinatesOfPointsOfGeometryA,
@@ -186,6 +209,24 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::hybridWithP
   const bool      frictionB,
   const int       particleB,
   tarch::multicore::BooleanSemaphore &semaphore)
+#else
+std::vector<delta::contact::contactpoint> delta::contact::detection::hybridWithPerBatchFallBack(
+  const iREAL*    xCoordinatesOfPointsOfGeometryA,
+  const iREAL*    yCoordinatesOfPointsOfGeometryA,
+  const iREAL*    zCoordinatesOfPointsOfGeometryA,
+  const int       numberOfPointsOfGeometryA,
+  const iREAL     epsilonA,
+  const bool      frictionA,
+  const int       particleA,
+
+  const iREAL*    xCoordinatesOfPointsOfGeometryB,
+  const iREAL*    yCoordinatesOfPointsOfGeometryB,
+  const iREAL*    zCoordinatesOfPointsOfGeometryB,
+  const int       numberOfPointsOfGeometryB,
+  const iREAL     epsilonB,
+  const bool      frictionB,
+  const int       particleB)
+#endif
 {
   __attribute__ ((aligned(byteAlignment))) std::vector<contactpoint> result;
   __attribute__ ((aligned(byteAlignment))) iREAL epsilonMargin = (epsilonA+epsilonB);
@@ -204,7 +245,9 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::hybridWithP
   int numberOfTrianglesA = numberOfPointsOfGeometryA * 3;
   int numberOfTrianglesB = numberOfPointsOfGeometryB * 3;
 
+#ifdef peanoCall
   tarch::multicore::Lock lock(semaphore,false);
+#endif
 
   #ifdef SharedTBB
   // Take care: grain size has to be positive even if loop degenerates

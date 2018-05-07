@@ -36,7 +36,7 @@
 
 namespace delta {
   namespace geometry {
-	namespace defined {
+	namespace hardcoded {
 
 	/*
 	 *  Generate Inner Hopper

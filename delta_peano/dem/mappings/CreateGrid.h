@@ -30,7 +30,7 @@
 #include "dem/mappings/AdoptGrid.h"
 
 #include "delta/geometry/material.h"
-#include "delta/world/configuration.h"
+#include "delta/scenario/configuration.h"
 #include "delta/geometry/object.h"
 
 namespace dem {

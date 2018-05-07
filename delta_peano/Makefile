@@ -30,7 +30,7 @@ DELTA_TUNE=-DDELTATUNE
 DELTAPHI_SETTINGS=-DiREAL=double -DbyteAlignment=64
 
 DELTA_SETTINGS=-DiREAL=double -DbyteAlignment=32
-PEANO_SETTINGS=-DTrackGridStatistics
+PEANO_SETTINGS=-DTrackGridStatistics -DpeanoCall
 
 ##############################################################################################
 

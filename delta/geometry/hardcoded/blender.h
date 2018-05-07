@@ -30,8 +30,8 @@
 #include <assert.h>
 
 namespace delta {
-  namespace world {
-	namespace body {
+  namespace geometry {
+	namespace hardcoded {
 
 	/*
 	 *  Generate Blender
