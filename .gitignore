@@ -19,3 +19,6 @@ thesis/Final/paper.aux
 thesis/Final/paper.synctex.gz
 shared-memory*
 *.148t.vect
+delta_peano/latex/
+
+delta_peano/doxygen-html/
