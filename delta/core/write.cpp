@@ -164,4 +164,8 @@ void delta::core::writeGeometryToVTK(int step, std::array<iREAL, 6> boundary, st
   fclose(fp);
 }
 
+void delta::core::writeScenarioSpecification(std::string fileName)
+{
+
+}
 

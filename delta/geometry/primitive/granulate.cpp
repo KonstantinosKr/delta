@@ -54,10 +54,6 @@ delta::geometry::mesh::Mesh *delta::geometry::primitive::granulate::generatePart
   iREAL  h,
   int noPointsPerParticle)
 {
-  std::vector<iREAL> xCoordinates;
-  std::vector<iREAL> yCoordinates;
-  std::vector<iREAL> zCoordinates;
-	
   unsigned int mul=1E8;
 
   iREAL diameter = h; //diameter -> make it slightly smaller
@@ -95,6 +91,10 @@ delta::geometry::mesh::Mesh *delta::geometry::primitive::granulate::generatePart
 
   int numberOfTriangles = pointlength;
 
+  std::vector<iREAL> xCoordinates;
+  std::vector<iREAL> yCoordinates;
+  std::vector<iREAL> zCoordinates;
+
   xCoordinates.resize(numberOfTriangles*3);
   yCoordinates.resize(numberOfTriangles*3);
   zCoordinates.resize(numberOfTriangles*3);
@@ -121,14 +121,12 @@ delta::geometry::mesh::Mesh *delta::geometry::primitive::granulate::generatePart
     counter++;
   }
   free(tr);
+
   /*
   assert(xCoordinates.empty());
   assert(yCoordinates.empty());
   assert(zCoordinates.empty());*/
 
-  delta::geometry::mesh::Mesh *mesh =
-	  new delta::geometry::mesh::Mesh(xCoordinates, yCoordinates, zCoordinates);
-
-  return mesh;
+  return new delta::geometry::mesh::Mesh(xCoordinates, yCoordinates, zCoordinates);
 }
 

@@ -24,7 +24,7 @@ void printManual()
 	  << "##################################################################################################" << std::endl
 	  << "#  A Grid-based Non-Spherical Particle Dynamics Library" << std::endl
 	  << "##################################################################################################" << std::endl
-	  << " Usage: ./dem-xxx grid_h_max(iREAL) scenario(string) iterations(int) grid-type(string) step-size(int) plot(string) snapshot-frequency(iREAL in seconds) gravity(boolean yes/no) collision-model(string) mesh-density-per-particle(int) [tbb-core-count](int)" << std::endl  << std::endl
+	  << " Usage: ./dem-xxx grid_h_max(iREAL) scenario(string) iterations(int) grid-type(string) step-size(int) plot(string) snapshot-frequency(iREAL in seconds) collision-model(string) mesh-density-per-particle(int) [tbb-core-count](int)" << std::endl  << std::endl
 	  << " Option Type---------Short Description" << std::endl
 	  << " grid_h_max          maximum mesh width of grid" << std::endl
 	  << " scenario            which scenario to use. See list below for valid configurations " << std::endl
@@ -32,7 +32,6 @@ void printManual()
 	  << " grid-type           which grid type to use. See list below for valid configurations " << std::endl
 	  << " step-size           negative value trigger adaptive step size with a positive initial step size | positive value triggers static step size" << std::endl
 	  << " plot                see plot variants below" << std::endl
-	  << " gravity             boolean true/false" << std::endl
 	  << " collision-model     choose from none, sphere, bf, penalty, hybrid-on-triangle-pairs, hybrid-on-batches, gjk, add sphere- for sphere check" << std::endl
 	  << " max-step-size       adaptive max step" << std::endl
 	  << " triangles-per-particle    triangles used to represent one particle" << std::endl
@@ -111,10 +110,6 @@ void printManual()
     << " =========" << std::endl
     << " 0.0 - infinity" << std::endl << std::endl
 
-    << " Gravity (boolean)" << std::endl
-    << " =========" << std::endl
-    << " true/false" << std::endl << std::endl
-
     << " Collision-model (string)" << std::endl
     << " =========" << std::endl
     << " sphere" << std::endl
@@ -135,8 +130,9 @@ void printManual()
     << " =========" << std::endl
     << " 0 - infinity" << std::endl << std::endl
 
-	  << " Usage: ./dem-xxx grid_h_max(iREAL) scenario(string) iterations(int) grid-type(string) step-size(int) plot(string) snapshot-frequency(iREAL in seconds) gravity(boolean yes/no) collision-model(string) mesh-density-per-particle(int) [tbb-core-count](int)" << std::endl
-	  << " eg: ./delta-icc-release-tbb 0.1 hopperUniform 10 regular-grid 0.0001 never 1 true sphere 10 3 true true auto false" << std::endl;
+	  << " Usage: ./dem-xxx grid_h_max(iREAL) scenario(string) iterations(int) grid-type(string) step-size(int) plot(string) snapshot-frequency(iREAL in seconds) collision-model(string) mesh-density-per-particle(int) [tbb-core-count](int)" << std::endl
+	  << " eg: ./delta-icc-release-tbb 0.1 [grid] hopperUniform [scenario] 10 [steps] regular-grid [grid] 0.0001 [step-size] never [plot] 1 [snap] sphere [collision] 10 [mesh] 3 [cores] true [grid-para] true [particle-para] auto [tbb number] false [autotune]" << std::endl
+	  << " eg: ./delta-icc-release-tbb 0.1 hopperUniform 10 regular-grid 0.0001 never 1 sphere 10 3 true true auto false" << std::endl;
 }
 
 int main(int argc, char** argv)
@@ -161,9 +157,9 @@ int main(int argc, char** argv)
   }
 
   #ifdef SharedMemoryParallelisation
-  	  const int NumberOfArguments = 16;
+  	  const int NumberOfArguments = 15;
   #else
-  	  const int NumberOfArguments = 11;
+  	  const int NumberOfArguments = 10;
   #endif
 
   	logInfo( "main(...)", "required arguments: " <<  NumberOfArguments << ", actual arguments: " <<  argc);
@@ -174,25 +170,24 @@ int main(int argc, char** argv)
     return -1;
   }
 
-  const iREAL       	gridHMax            	= atof(argv[1]);
+  const iREAL       		gridHMax            	= atof(argv[1]);
   const std::string  	scenario            	= argv[2];
   const int          	iterations         	= atoi(argv[3]);
   const std::string  	gridTypeIdentifier  	= argv[4];
-  const iREAL       	stepSize         	= atof(argv[5]);
+  const iREAL       		stepSize         	= atof(argv[5]);
   const std::string  	plotIdentifier      	= argv[6];
   const iREAL			realSnapshot		    = atof(argv[7]);
-  const std::string  	gravity             	= argv[8];
-  const std::string  	collisionModel     	= argv[9];
-  const int			    meshMultiplier      	= atof(argv[10]);
+  const std::string  	collisionModel     	= argv[8];
+  const int			    meshMultiplier      	= atof(argv[9]);
   bool					autotune 			= false;
 
   #ifdef SharedMemoryParallelisation
-	  const int          numberOfCores       = atoi(argv[11]);
+	  const int          numberOfCores       = atoi(argv[10]);
 
-    if (std::string(argv[12])=="true") {
+    if (std::string(argv[11])=="true") {
       dem::mappings::Collision::RunGridTraversalInParallel = true;
     }
-    else if (std::string(argv[12])=="false") {
+    else if (std::string(argv[11])=="false") {
       dem::mappings::Collision::RunGridTraversalInParallel = false;
     }
     else {
@@ -200,10 +195,10 @@ int main(int argc, char** argv)
       return -1;
     }
 
-    if (std::string(argv[13])=="true") {
+    if (std::string(argv[12])=="true") {
       dem::mappings::Collision::RunParticleLoopInParallel = true;
     }
-    else if (std::string(argv[13])=="false") {
+    else if (std::string(argv[12])=="false") {
       dem::mappings::Collision::RunParticleLoopInParallel = false;
     }
     else {
@@ -211,16 +206,16 @@ int main(int argc, char** argv)
       return -1;
     }
 
-    if (std::string(argv[14])=="off") {
+    if (std::string(argv[13])=="off") {
       dem::mappings::Collision::RunParticleComparisionsInBackground = false;
     }
-    else if(std::string(argv[14])=="auto") {
+    else if(std::string(argv[13])=="auto") {
       logInfo( "main()", "max number of background tasks is set to  " << numberOfCores );
       dem::mappings::Collision::RunParticleComparisionsInBackground = true;
       tarch::multicore::jobs::Job::setMaxNumberOfRunningBackgroundThreads( numberOfCores );
     }
     else {
-      const int  numberOfBackgroundTasks = atoi(argv[14]);
+      const int  numberOfBackgroundTasks = atoi(argv[13]);
 
       if (numberOfBackgroundTasks>=1) {
         logInfo( "main()", "max number of background tasks is set to  " << numberOfBackgroundTasks );
@@ -233,10 +228,10 @@ int main(int argc, char** argv)
       }
     }
 
-   if (std::string(argv[15])=="true")
+   if (std::string(argv[14])=="true")
    {
 	 autotune = true;
-   } else if (std::string(argv[15])=="false")
+   } else if (std::string(argv[14])=="false")
    {
 	 autotune = false;
    }
@@ -373,6 +368,11 @@ int main(int argc, char** argv)
   }
   else if (scenario=="two-particles-crash") {
     scenarioArray[0] = dem::mappings::CreateGrid::TwoParticlesCrash;
+    scenarioArray[1] = dem::mappings::CreateGrid::nonescenario;
+    scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
+  }
+  else if (scenario=="particle-rotation") {
+    scenarioArray[0] = dem::mappings::CreateGrid::ParticleRotation;
     scenarioArray[1] = dem::mappings::CreateGrid::nonescenario;
     scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
   }
@@ -537,11 +537,9 @@ int main(int argc, char** argv)
     programExitCode = 2;
   }
 
-  dem::mappings::Collision::gravity	= (gravity=="true") ? 9.81 : 0.0;
-
-  logInfo( "main(...)", "scenario:" << (scenario)                              << ", "  << "iterations:" << (iterations) << ", grid:"            << (gridType)
-                    << ", stepSize:" << (stepSize)                             << ", plot:"     << (plotIdentifier)      << ", realSnapshot:"    << (realSnapshot)
-                    << ", gravity:"  << (dem::mappings::Collision::gravity)    << ", model:"    << (collisionModel)      << ", triangleNumber:"  << (meshMultiplier));
+  logInfo( "main(...)", "scenario:" << (scenario)            << ", steps:" 			<< (iterations) 			<< ", grid:"           	<< (gridType)
+                    << ", step-size:" << (stepSize)          << ", plot:"     		<< (plotIdentifier)      << ", realSnapshot:"    << (realSnapshot)
+                    << ", model:"    << (collisionModel)     << ", triangleNumber:"  	<< (meshMultiplier));
 
   // Configure the output
   tarch::logging::CommandLineLogger::getInstance().clearFilterList();

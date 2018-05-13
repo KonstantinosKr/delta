@@ -12,8 +12,13 @@
 void delta::world::scenarios::hopper(
 	std::vector<delta::geometry::Object> &coarse,
 	std::vector<delta::geometry::Object> &insitu,
-	iREAL centre[3], int xzcuts, int ycuts, bool uniform,
-	bool isSphere, int meshDensity, iREAL epsilon)
+	iREAL centre[3],
+	int xzcuts,
+	int ycuts,
+	bool uniform,
+	bool isSphere,
+	int meshDensity,
+	iREAL epsilon)
 {
   //////////////////////////////////////////////////////
   /// HOPPER FLOW SCENARIO /////////////////////////////
@@ -83,7 +88,36 @@ void delta::world::scenarios::hopper(
   //////////////////////////////////////////////////////
 }
 
-std::vector<delta::geometry::Object> delta::world::scenarios::twoParticlesCrash(bool isSphere, int meshDensity, iREAL epsilon)
+std::vector<delta::geometry::Object> delta::world::scenarios::rotateParticle(
+	bool 	isSphere,
+	int 		meshDensity,
+	iREAL 	epsilon)
+{
+  //////////////////////////////////////////////////////
+  /// Rotate SCENARIO
+  //////////////////////////////////////////////////////
+
+  std::vector<delta::geometry::Object> _coarseObjects;
+
+  std::array<iREAL, 3> centreArray = {0.5, 0.5, 0.5};
+  std::array<iREAL, 3> linear = {0.0, 0.0, 0.0};
+
+  if(isSphere)
+  {
+	delta::geometry::Object objectA("sphere", 0.01, 0, centreArray, delta::geometry::material::MaterialType::WOOD, false, false, epsilon, linear, {1,0,0});
+	_coarseObjects.push_back(objectA);
+  } else {
+	delta::geometry::Object objectA("granulate", 0, centreArray, delta::geometry::material::MaterialType::WOOD, false, false, epsilon, linear, {1,0,0});
+	objectA.generateMesh(0,0,0,0,0,0,meshDensity, 0.01);
+	_coarseObjects.push_back(objectA);
+  }
+  return _coarseObjects;
+}
+
+std::vector<delta::geometry::Object> delta::world::scenarios::twoParticlesCrash(
+	bool 	isSphere,
+	int 		meshDensity,
+	iREAL 	epsilon)
 {
   //////////////////////////////////////////////////////
   /// TWO PARTICLES CRASH SCENARIO
@@ -139,10 +173,10 @@ std::vector<delta::geometry::Object> delta::world::scenarios::twoParticlesCrash(
 }
 
 void delta::world::scenarios::friction(
-	int 									scenario,
+	int 										scenario,
 	bool 									isSphere,
 	iREAL 									centre[3],
-	int 									meshDensity,
+	int 										meshDensity,
 	iREAL 									epsilon,
 	std::vector<delta::geometry::Object> &	coarse)
 {
@@ -208,10 +242,10 @@ void delta::world::scenarios::friction(
 }
 
 void delta::world::scenarios::freeFall(
-	int 									scenario,
+	int 										scenario,
 	bool 									isSphere,
 	iREAL 									centre[3],
-	int 									meshDensity,
+	int 										meshDensity,
 	iREAL 									epsilon,
 	std::vector<delta::geometry::Object> &	fine)
 {
@@ -248,10 +282,10 @@ void delta::world::scenarios::freeFall(
 }
 
 void delta::world::scenarios::nuclear(
-	int 									scenario,
+	int 										scenario,
 	bool 									isSphere,
 	iREAL 									centre[3],
-	int 									meshDensity,
+	int 										meshDensity,
 	iREAL 									epsilon,
 	std::vector<delta::geometry::Object> &	coarse,
 	std::vector<delta::geometry::Object> &	fine)

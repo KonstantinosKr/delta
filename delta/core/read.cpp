@@ -147,10 +147,12 @@ delta::geometry::mesh::Mesh *delta::core::readSingleVTKGeometry(
 
   fclose(fp1);
 
-  delta::geometry::mesh::Mesh *mesh =
-  	  new delta::geometry::mesh::Mesh(xCoordinates, yCoordinates, zCoordinates);
+  return new delta::geometry::mesh::Mesh(xCoordinates, yCoordinates, zCoordinates);
+}
 
-  return mesh;
+void delta::core::readScenarioSpecification(std::string fileName)
+{
+
 }
 
 std::vector<delta::geometry::mesh::Mesh> delta::core::readSceneGeometry(std::string fileName)

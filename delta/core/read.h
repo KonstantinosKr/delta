@@ -29,6 +29,8 @@ namespace delta {
 		delta::geometry::mesh::Mesh* readSingleVTKGeometry(
 			char* 				fileName);
 
+		void readScenarioSpecification(std::string fileName);
+
 		std::vector<delta::geometry::mesh::Mesh> readSceneGeometry(
 			std::string fileName);
 	}

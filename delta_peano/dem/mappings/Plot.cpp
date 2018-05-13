@@ -1,5 +1,6 @@
 #include "dem/mappings/Plot.h"
 #include "dem/mappings/Collision.h"
+#include "delta/geometry/operators/mesh.h"
 
 
 /**
@@ -444,7 +445,7 @@ void dem::mappings::Plot::touchVertexLastTime(
       particleVertexLink[1] = _vertexWriter->plotVertex( particle.getCentre() );
 
       if(!particle.getIsObstacle())
-      {
+      {//do not plot any epsilon on obstacles
         //it will only accept diameter not radius to plot the sphere thus multiply epsilon by 2
         tarch::la::Vector<3,iREAL> v = {particle._persistentRecords._velocity(0), particle._persistentRecords._velocity(1), particle._persistentRecords._velocity(2)};
         _velocitiesAndNormals->plotVertex(particleVertexLink[1],v);
@@ -497,8 +498,9 @@ void dem::mappings::Plot::touchVertexLastTime(
 
       iREAL center[3] = {particle.getCentre(0), particle.getCentre(1), particle.getCentre(2)};
 
-      //iREAL resizePercentage = (particle.getDiameter()+particle.getEpsilon())/ particle.getDiameter();
-      //delta::geometry::properties::scaleXYZ(resizePercentage, center, xCoordinatesWider, yCoordinatesWider, zCoordinatesWider);
+      iREAL scale = (particle.getDiameter()+particle.getEpsilon())/ particle.getDiameter();
+      delta::geometry::operators::mesh::scaleXYZ(
+    	  xCoordinatesWider, yCoordinatesWider, zCoordinatesWider, scale, center);
 
       //delta::geometry::properties::explode(xCoordinatesWider, yCoordinatesWider, zCoordinatesWider, 5);
 
@@ -550,7 +552,7 @@ void dem::mappings::Plot::touchVertexLastTime(
 
         int faceIndex = _cellWriter->plotTriangle(vertexIndex);
 
-        _type->plotCell(faceIndex,3); //triangle
+        _type->plotCell(faceIndex,2); //triangle
         _level->plotCell(faceIndex,coarseGridVerticesEnumerator.getLevel()+1);
         _faceVertexAssociation->plotCell(faceIndex,_vertexCounter);
 
@@ -600,6 +602,7 @@ void dem::mappings::Plot::touchVertexLastTime(
         _particleInfluence->plotVertex(vertexPIndex, 0);
         _vertexColoring->plotVertex(vertexPIndex, 0);
       }
+
 
       //original mesh
       for (int j=0; j<particle.getNumberOfTriangles(); j++)

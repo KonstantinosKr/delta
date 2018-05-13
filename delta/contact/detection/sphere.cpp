@@ -23,7 +23,6 @@
  */
 
 #include <delta/contact/detection/sphere.h>
-#include "dem/mappings/Collision.h"
 #include "delta/core/algo.h"
 
 

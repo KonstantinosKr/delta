@@ -37,9 +37,9 @@ class delta::geometry::mesh::Mesh {
 		std::vector<std::array<iREAL, 3>> 	uniqueVertices);
 
 	Mesh(
-		std::vector<iREAL> xCoordinates,
-		std::vector<iREAL> yCoordinates,
-		std::vector<iREAL> zCoordinates);
+		std::vector<iREAL>& xCoordinates,
+		std::vector<iREAL>& yCoordinates,
+		std::vector<iREAL>& zCoordinates);
 
 	Mesh(std::vector<delta::geometry::mesh::Triangle> _triangles);
 
@@ -525,14 +525,9 @@ class delta::geometry::mesh::Mesh {
 	 *  faces pointer and unique vertices.
 	 *  This modifies the local data.
 	 *
-	 *  @param A vertex
-  	 *  @param B vertex
-	 *  @returns iREAL
+	 *  @returns void
 	 */
-	void compressFromVectors(
-		std::vector<iREAL>& xCoordinates,
-		std::vector<iREAL>& yCoordinates,
-		std::vector<iREAL>& zCoordinates);
+	void compressFromVectors();
 
 	std::vector<delta::geometry::mesh::Triangle> _triangles;
 

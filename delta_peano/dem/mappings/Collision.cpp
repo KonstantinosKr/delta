@@ -71,7 +71,7 @@ std::map<int, std::vector<dem::mappings::Collision::Collisions> >   dem::mapping
 dem::mappings::Collision::CollisionModel                            dem::mappings::Collision::_collisionModel;
 bool																   dem::mappings::Collision::_enableOverlapCheck;
 tarch::multicore::BooleanSemaphore                                  dem::mappings::Collision::_collisionSemaphore;
-iREAL                                                              dem::mappings::Collision::gravity = 0.0;
+iREAL                                                              	dem::mappings::Collision::gravity = 0.0;
 
 bool dem::mappings::Collision::RunGridTraversalInParallel           = true;
 bool dem::mappings::Collision::RunParticleLoopInParallel            = true;

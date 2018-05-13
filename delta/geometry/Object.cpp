@@ -190,7 +190,6 @@ void delta::geometry::Object::generateMesh(
   geometry->computeInertia(_material, mass, centerOfMass, inertia);
   geometry->computeInverseInertia(inertia, inverse, _isObstacle);
 
-  //printf("%f %f %f\n", centerOfMass[0], centerOfMass[1], centerOfMass[2]);
   _mesh = geometry;
 
   _inertia[0] = inertia[0];

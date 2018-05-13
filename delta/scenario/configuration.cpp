@@ -8,7 +8,6 @@
 #include <delta/world/arrayLayout.h>
 #include <delta/geometry/hardcoded/graphite.h>
 #include "delta/scenario/configuration.h"
-
 #include "delta/geometry/primitive/granulate.h"
 #include "delta/geometry/primitive/cube.h"
 

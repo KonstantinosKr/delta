@@ -21,8 +21,13 @@ namespace delta {
 	  void hopper(
 		  std::vector<delta::geometry::Object> &coarse,
 		  std::vector<delta::geometry::Object> &insitu,
-		  iREAL centre[3], int xzcuts, int ycuts, bool uniform,
-		  bool isSphere, int meshDensity, iREAL epsilon);
+		  iREAL centre[3],
+		  int xzcuts,
+		  int ycuts,
+		  bool uniform,
+		  bool isSphere,
+		  int meshDensity,
+		  iREAL epsilon);
 
 	  void friction(
 		  int 									scenario,
@@ -50,6 +55,11 @@ namespace delta {
 		  std::vector<delta::geometry::Object> &	fine);
 
 	  std::vector<delta::geometry::Object> twoParticlesCrash(bool isSphere, int meshDensity, iREAL epsilon);
+
+	  std::vector<delta::geometry::Object> rotateParticle(
+	  	bool 	isSphere,
+	  	int 		meshDensity,
+	  	iREAL 	epsilon);
 
 	} /* namespace scenarios */
   } /* namespace world */

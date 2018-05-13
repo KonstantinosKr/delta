@@ -49,6 +49,7 @@ iREAL                                	dem::mappings::CreateGrid::_maxParticleDia
 iREAL								 	dem::mappings::CreateGrid::_epsilon;
 int 								     	dem::mappings::CreateGrid::_noPointsPerParticle;
 bool                                  	dem::mappings::CreateGrid::_isSphere;
+bool                                  	dem::mappings::CreateGrid::_gravity;
 
 std::vector<delta::geometry::Object>     dem::mappings::CreateGrid::_coarseObjects;
 std::vector<delta::geometry::Object>     dem::mappings::CreateGrid::_insitufineObjects;
@@ -74,6 +75,7 @@ void dem::mappings::CreateGrid::setScenario(
 	_gridType             = gridType;
 	_epsilon              = epsilon;
 	_noPointsPerParticle  = noPointsPerGranulate;
+	_gravity					= true;
 }
 
 void dem::mappings::CreateGrid::deployEnviroment(
@@ -258,7 +260,6 @@ void dem::mappings::CreateGrid::beginIteration(
 		_coarseObjects, _insitufineObjects,
 		centre, xzcuts, ycuts, uni,
 		_isSphere, _noPointsPerParticle, _epsilon);
-
   } else if(_scenario[1] == friction)
   {
 	int sc = 0;
@@ -273,9 +274,10 @@ void dem::mappings::CreateGrid::beginIteration(
 	  sc = 3;
 	}
 	delta::world::scenarios::friction(sc,  _isSphere, centre, _noPointsPerParticle, _epsilon, _coarseObjects);
-  } else if(_scenario[0] == TwoParticlesCrash)
+  } else if(_scenario[0] == ParticleRotation)
   {
-	_coarseObjects = delta::world::scenarios::twoParticlesCrash(_isSphere, _noPointsPerParticle, _epsilon);
+	_coarseObjects = delta::world::scenarios::rotateParticle(_isSphere, _noPointsPerParticle, _epsilon);
+	_gravity = false;
   }
   else if(_scenario[0] == blackHoleWithCubes ||
           _scenario[0] == freefallWithCubes ||
@@ -294,6 +296,8 @@ void dem::mappings::CreateGrid::beginIteration(
   {
     return;
   }
+
+  dem::mappings::Collision::gravity	= _gravity==true ? 9.81 : 0.0;
 
   logTraceOutWith1Argument( "beginIteration(State)", solverState);
 }

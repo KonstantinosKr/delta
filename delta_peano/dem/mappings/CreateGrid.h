@@ -68,6 +68,7 @@ class dem::mappings::CreateGrid {
       nuclearDeck,
 
       TwoParticlesCrash,
+	  ParticleRotation,
 
       hopperUniform,
       hopperUniform1k,
@@ -122,8 +123,8 @@ class dem::mappings::CreateGrid {
         GridType gridType,
         int noPointsPerGranulate);
 
-    static bool     _isSphere;
-    static GridType _gridType;
+    static bool     	_isSphere;
+    static GridType 	_gridType;
   private:
     /**
      * Logging device for the trace macros.
@@ -131,7 +132,8 @@ class dem::mappings::CreateGrid {
     static tarch::logging::Log  _log;
 
     static Scenario _scenario[4];
-    static iREAL   _maxH;
+    static iREAL   	_maxH;
+    static bool 		_gravity;
 
     static iREAL   _minComputeDomain[3];
     static iREAL   _maxComputeDomain[3];
