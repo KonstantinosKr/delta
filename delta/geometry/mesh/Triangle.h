@@ -12,6 +12,7 @@
 #include <vector>
 #include <array>
 #include <cmath>
+#include <limits>
 
 namespace delta {
   namespace geometry {
