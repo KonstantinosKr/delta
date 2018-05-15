@@ -11,6 +11,7 @@ import sys
 import configparser
 import csv
 import collections
+from collections import OrderedDict
 
 def parseList(string):
     """
@@ -28,7 +29,7 @@ def parseEnvironment(config):
     """
     Parse the environment section.
     """
-    environmentSpace = {}
+    environmentSpace = OrderedDict()
     if "environment" in config and len(config["environment"].keys()):
         for key, value in config["environment"].items():
             environmentSpace[key] = parseList(value)
@@ -39,7 +40,7 @@ def parseParameters(config):
     """
     Parse the parameters section.
     """
-    parameterSpace = {}
+    parameterSpace = OrderedDict()
     if "parameters" in config and len(config["parameters"].keys()):
         for key, value in config["parameters"].items():
             parameterSpace[key] = parseList(value)
@@ -64,10 +65,10 @@ def parseOptionsFile(optionsFile,ignoreMetadata=False):
     projectPath      = general["project_path"]
     projectName      = general["project_name"]
 
-    buildFolderPath   = deltaRoot+"/output/"
-    scriptsFolderPath = deltaRoot+"/output/" + "scripts"
-    resultsFolderPath = projectPath+"/"+projectName+"/"
-    historyFolderPath = deltaRoot+"/output/"+"history"
+    buildFolderPath   = deltaRoot
+    scriptsFolderPath = outputPath + "/" + projectName + "scripts"
+    resultsFolderPath = outputPath + "/" + projectName + "results"
+    historyFolderPath = outputPath + "/" + projectName + "history"
 
     jobs             = dict(configParser["jobs"])
     environmentSpace = parseEnvironment(configParser)

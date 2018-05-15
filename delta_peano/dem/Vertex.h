@@ -14,7 +14,7 @@
 #include "peano/grid/Vertex.h"
 #include "peano/grid/VertexEnumerator.h"
 #include "peano/utils/Globals.h"
-#include "peano/heap/doubleHeap.h"
+#include "peano/heap/DoubleHeap.h"
 
 #include <iomanip>
 

@@ -6,6 +6,8 @@
 
 :synopsis: Generate benchmark suites for ExaHyPE.
 """
+from collections import OrderedDict
+
 def parseArgument(argv,i):
     if i<len(argv):
         return argv[i]
@@ -42,7 +44,9 @@ def dictProduct(dicts):
       {"number": 3, "color": "blue"}
     ]
     """
-    return (dict(zip(dicts, x)) for x in itertools.product(*dicts.values()))
+    dicts = OrderedDict(dicts)
+    keys = list(dicts)
+    return (OrderedDict(zip(keys, x)) for x in itertools.product(*dicts.values()))
 
 def hashDictionary(dictionary):
     """
@@ -178,7 +182,7 @@ def renderJobScript(templateBody,environmentDict,parameterDict,jobs,
     """
     renderedFile = templateBody
 
-    context = {}
+    context = OrderedDict()
     # mandatory
     context["nodes"] = nodes
     context["tasks"] = tasks
