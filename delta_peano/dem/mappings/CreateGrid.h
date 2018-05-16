@@ -31,7 +31,7 @@
 
 #include "delta/geometry/material.h"
 #include "delta/scenario/configuration.h"
-#include "delta/geometry/object.h"
+#include "delta/geometry/Object.h"
 
 namespace dem {
   namespace mappings {
