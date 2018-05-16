@@ -937,7 +937,7 @@ void dem::mappings::Collision::endIteration(
 	}
 
 	while (tarch::multicore::jobs::getNumberOfWaitingBackgroundJobs()>0) {
-		tarch::multicore::jobs::processBackgroundJobs();
+		tarch::multicore::jobs::startToProcessBackgroundJobs();
 	}
 
 	logTraceOutWith1Argument( "endIteration(State)", solverState);

@@ -118,7 +118,7 @@ void dem::mappings::ReluctantlyAdoptGridMerged::beginIteration(
   delta::contact::detection::cleanHybridStatistics();
 
   while (tarch::multicore::jobs::getNumberOfWaitingBackgroundJobs()>0) {
-    tarch::multicore::jobs::processBackgroundJobs();
+    tarch::multicore::jobs::startToProcessBackgroundJobs();
   }
 
   logTraceOutWith1Argument( "beginIteration(State)", solverState);

@@ -32,7 +32,7 @@ namespace dem {
 
   typedef peano::heap::PlainHeap< dem::records::Particle >      ParticleHeap;
 
-  typedef peano::heap::PlaindoubleHeapAlignment32               DEMdoubleHeap;
+  typedef peano::heap::PlainDoubleHeapAlignment32               DEMdoubleHeap;
   //typedef peano::heap::PlainiREALHeap                          DEMdoubleHeap;
 }
 

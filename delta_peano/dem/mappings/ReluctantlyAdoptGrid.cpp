@@ -272,7 +272,7 @@ void dem::mappings::ReluctantlyAdoptGrid::leaveCell(
       const tarch::la::Vector<DIMENSIONS,int>&      fineGridPositionOfCell
 ) {
   while (tarch::multicore::jobs::getNumberOfWaitingBackgroundJobs()>0) {
-    tarch::multicore::jobs::processBackgroundJobs();
+    tarch::multicore::jobs::startToProcessBackgroundJobs();
   }
 
   if(_state.getTwoParticlesAreClose() <= 0.0 && _backgroundTaskState.getTwoParticlesAreClose() <= 0.0) return;
