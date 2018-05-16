@@ -106,6 +106,8 @@ void dem::mappings::ReluctantlyAdoptGrid::beginIteration(
   if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::HybridStat)
   delta::contact::detection::cleanHybridStatistics();
 
+  tarch::multicore::jobs::startToProcessBackgroundJobs();
+
   logTraceOutWith1Argument( "beginIteration(State)", solverState);
 }
 
@@ -272,7 +274,7 @@ void dem::mappings::ReluctantlyAdoptGrid::leaveCell(
       const tarch::la::Vector<DIMENSIONS,int>&      fineGridPositionOfCell
 ) {
   while (tarch::multicore::jobs::getNumberOfWaitingBackgroundJobs()>0) {
-    tarch::multicore::jobs::startToProcessBackgroundJobs();
+    tarch::multicore::jobs::finishToProcessBackgroundJobs();
   }
 
   if(_state.getTwoParticlesAreClose() <= 0.0 && _backgroundTaskState.getTwoParticlesAreClose() <= 0.0) return;

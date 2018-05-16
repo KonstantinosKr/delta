@@ -897,6 +897,8 @@ void dem::mappings::Collision::beginIteration(
 	if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::HybridStat)
 	delta::contact::detection::cleanHybridStatistics();
 
+	tarch::multicore::jobs::startToProcessBackgroundJobs();
+
 	logTraceOutWith1Argument( "beginIteration(State)", solverState);
 }
 
@@ -937,7 +939,7 @@ void dem::mappings::Collision::endIteration(
 	}
 
 	while (tarch::multicore::jobs::getNumberOfWaitingBackgroundJobs()>0) {
-		tarch::multicore::jobs::startToProcessBackgroundJobs();
+		tarch::multicore::jobs::finishToProcessBackgroundJobs();
 	}
 
 	logTraceOutWith1Argument( "endIteration(State)", solverState);
