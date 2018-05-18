@@ -135,11 +135,11 @@ bool dem::runners::Runner::switchrepo(dem::repositories::Repository& repository,
   } else {
     if (gridType==mappings::CreateGrid::AdaptiveGrid)
     {
-      repository.switchToTimeStepOnDynamicGridMerged();
+      repository.switchToTimeStepOnDynamicGrid();
     }
     else if (gridType==mappings::CreateGrid::ReluctantAdaptiveGrid)
     {
-      repository.switchToTimeStepOnReluctantDynamicGridMerged();
+      repository.switchToTimeStepOnReluctantDynamicGrid();
     } else {
       repository.switchToTimeStep();
     }
