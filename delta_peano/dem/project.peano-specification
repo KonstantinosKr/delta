@@ -26,13 +26,7 @@ event-mapping:
   name: AdoptGrid
 
 event-mapping:
-  name: AdoptGridMerged
-
-event-mapping:
   name: ReluctantlyAdoptGrid
-  
-event-mapping:
-  name: ReluctantlyAdoptGridMerged
   
 event-mapping:
   name: Plot
