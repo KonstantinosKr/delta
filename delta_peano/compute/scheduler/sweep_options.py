@@ -67,7 +67,7 @@ def parseOptionsFile(optionsFile,ignoreMetadata=False):
 
     buildFolderPath   = deltaRoot
     scriptsFolderPath = outputPath + "/" + projectName + "/scripts"
-    resultsFolderPath = outputPath + "/" + projectName + "/results"
+    resultsFolderPath = projectPath + "/" + projectName
     historyFolderPath = outputPath + "/" + projectName + "/history"
 
     jobs             = dict(configParser["jobs"])
