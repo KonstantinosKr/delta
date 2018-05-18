@@ -35,7 +35,7 @@ namespace dem {
     *
     * 		   build date: 09-02-2014 14:40
     *
-    * @date   27/03/2018 13:02
+    * @date   18/05/2018 09:49
     */
    class dem::records::Cell { 
       
@@ -524,14 +524,11 @@ namespace dem {
                
                static void shutdownDatatype();
                
-               /**
-                * @param communicateSleep -1 Data exchange through blocking mpi
-                * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
-                * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
-                */
-               void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+               enum class ExchangeMode { Blocking, NonblockingWithPollingLoopOverTests, LoopOverProbeWithBlockingReceive };
                
-               void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+               void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
+               
+               void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
                
                static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
                
@@ -558,7 +555,7 @@ namespace dem {
     *
     * 		   build date: 09-02-2014 14:40
     *
-    * @date   27/03/2018 13:02
+    * @date   18/05/2018 09:49
     */
    class dem::records::CellPacked { 
       
@@ -1088,14 +1085,11 @@ namespace dem {
                
                static void shutdownDatatype();
                
-               /**
-                * @param communicateSleep -1 Data exchange through blocking mpi
-                * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
-                * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
-                */
-               void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+               enum class ExchangeMode { Blocking, NonblockingWithPollingLoopOverTests, LoopOverProbeWithBlockingReceive };
                
-               void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+               void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
+               
+               void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
                
                static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
                
@@ -1118,7 +1112,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   27/03/2018 13:02
+       * @date   18/05/2018 09:49
        */
       class dem::records::Cell { 
          
@@ -1730,14 +1724,11 @@ namespace dem {
                   
                   static void shutdownDatatype();
                   
-                  /**
-                   * @param communicateSleep -1 Data exchange through blocking mpi
-                   * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
-                   * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
-                   */
-                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  enum class ExchangeMode { Blocking, NonblockingWithPollingLoopOverTests, LoopOverProbeWithBlockingReceive };
                   
-                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
+                  
+                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
                   
                   static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
                   
@@ -1764,7 +1755,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   27/03/2018 13:02
+       * @date   18/05/2018 09:49
        */
       class dem::records::CellPacked { 
          
@@ -2423,14 +2414,11 @@ namespace dem {
                   
                   static void shutdownDatatype();
                   
-                  /**
-                   * @param communicateSleep -1 Data exchange through blocking mpi
-                   * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
-                   * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
-                   */
-                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  enum class ExchangeMode { Blocking, NonblockingWithPollingLoopOverTests, LoopOverProbeWithBlockingReceive };
                   
-                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
+                  
+                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
                   
                   static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
                   
@@ -2454,7 +2442,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   27/03/2018 13:02
+       * @date   18/05/2018 09:49
        */
       class dem::records::Cell { 
          
@@ -3025,14 +3013,11 @@ namespace dem {
                   
                   static void shutdownDatatype();
                   
-                  /**
-                   * @param communicateSleep -1 Data exchange through blocking mpi
-                   * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
-                   * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
-                   */
-                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  enum class ExchangeMode { Blocking, NonblockingWithPollingLoopOverTests, LoopOverProbeWithBlockingReceive };
                   
-                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
+                  
+                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
                   
                   static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
                   
@@ -3059,7 +3044,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   27/03/2018 13:02
+       * @date   18/05/2018 09:49
        */
       class dem::records::CellPacked { 
          
@@ -3671,14 +3656,11 @@ namespace dem {
                   
                   static void shutdownDatatype();
                   
-                  /**
-                   * @param communicateSleep -1 Data exchange through blocking mpi
-                   * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
-                   * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
-                   */
-                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  enum class ExchangeMode { Blocking, NonblockingWithPollingLoopOverTests, LoopOverProbeWithBlockingReceive };
                   
-                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
+                  
+                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
                   
                   static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
                   
@@ -3702,7 +3684,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   27/03/2018 13:02
+       * @date   18/05/2018 09:49
        */
       class dem::records::Cell { 
          
@@ -4232,14 +4214,11 @@ namespace dem {
                   
                   static void shutdownDatatype();
                   
-                  /**
-                   * @param communicateSleep -1 Data exchange through blocking mpi
-                   * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
-                   * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
-                   */
-                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  enum class ExchangeMode { Blocking, NonblockingWithPollingLoopOverTests, LoopOverProbeWithBlockingReceive };
                   
-                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
+                  
+                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
                   
                   static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
                   
@@ -4266,7 +4245,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   27/03/2018 13:02
+       * @date   18/05/2018 09:49
        */
       class dem::records::CellPacked { 
          
@@ -4837,14 +4816,11 @@ namespace dem {
                   
                   static void shutdownDatatype();
                   
-                  /**
-                   * @param communicateSleep -1 Data exchange through blocking mpi
-                   * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
-                   * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
-                   */
-                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  enum class ExchangeMode { Blocking, NonblockingWithPollingLoopOverTests, LoopOverProbeWithBlockingReceive };
                   
-                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
+                  
+                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
                   
                   static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
                   
@@ -4868,7 +4844,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   27/03/2018 13:02
+       * @date   18/05/2018 09:49
        */
       class dem::records::Cell { 
          
@@ -5398,14 +5374,11 @@ namespace dem {
                   
                   static void shutdownDatatype();
                   
-                  /**
-                   * @param communicateSleep -1 Data exchange through blocking mpi
-                   * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
-                   * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
-                   */
-                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  enum class ExchangeMode { Blocking, NonblockingWithPollingLoopOverTests, LoopOverProbeWithBlockingReceive };
                   
-                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
+                  
+                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
                   
                   static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
                   
@@ -5432,7 +5405,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   27/03/2018 13:02
+       * @date   18/05/2018 09:49
        */
       class dem::records::CellPacked { 
          
@@ -6003,14 +5976,11 @@ namespace dem {
                   
                   static void shutdownDatatype();
                   
-                  /**
-                   * @param communicateSleep -1 Data exchange through blocking mpi
-                   * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
-                   * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
-                   */
-                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  enum class ExchangeMode { Blocking, NonblockingWithPollingLoopOverTests, LoopOverProbeWithBlockingReceive };
                   
-                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
+                  
+                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
                   
                   static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
                   
@@ -6034,7 +6004,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   27/03/2018 13:02
+       * @date   18/05/2018 09:49
        */
       class dem::records::Cell { 
          
@@ -6687,14 +6657,11 @@ namespace dem {
                   
                   static void shutdownDatatype();
                   
-                  /**
-                   * @param communicateSleep -1 Data exchange through blocking mpi
-                   * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
-                   * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
-                   */
-                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  enum class ExchangeMode { Blocking, NonblockingWithPollingLoopOverTests, LoopOverProbeWithBlockingReceive };
                   
-                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
+                  
+                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
                   
                   static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
                   
@@ -6721,7 +6688,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   27/03/2018 13:02
+       * @date   18/05/2018 09:49
        */
       class dem::records::CellPacked { 
          
@@ -7421,14 +7388,11 @@ namespace dem {
                   
                   static void shutdownDatatype();
                   
-                  /**
-                   * @param communicateSleep -1 Data exchange through blocking mpi
-                   * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
-                   * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
-                   */
-                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  enum class ExchangeMode { Blocking, NonblockingWithPollingLoopOverTests, LoopOverProbeWithBlockingReceive };
                   
-                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
+                  
+                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
                   
                   static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
                   
@@ -7452,7 +7416,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   27/03/2018 13:02
+       * @date   18/05/2018 09:49
        */
       class dem::records::Cell { 
          
@@ -8064,14 +8028,11 @@ namespace dem {
                   
                   static void shutdownDatatype();
                   
-                  /**
-                   * @param communicateSleep -1 Data exchange through blocking mpi
-                   * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
-                   * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
-                   */
-                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  enum class ExchangeMode { Blocking, NonblockingWithPollingLoopOverTests, LoopOverProbeWithBlockingReceive };
                   
-                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
+                  
+                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
                   
                   static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
                   
@@ -8098,7 +8059,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   27/03/2018 13:02
+       * @date   18/05/2018 09:49
        */
       class dem::records::CellPacked { 
          
@@ -8751,14 +8712,11 @@ namespace dem {
                   
                   static void shutdownDatatype();
                   
-                  /**
-                   * @param communicateSleep -1 Data exchange through blocking mpi
-                   * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
-                   * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
-                   */
-                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  enum class ExchangeMode { Blocking, NonblockingWithPollingLoopOverTests, LoopOverProbeWithBlockingReceive };
                   
-                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
+                  
+                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
                   
                   static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
                   
@@ -8782,7 +8740,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   27/03/2018 13:02
+       * @date   18/05/2018 09:49
        */
       class dem::records::Cell { 
          
@@ -9394,14 +9352,11 @@ namespace dem {
                   
                   static void shutdownDatatype();
                   
-                  /**
-                   * @param communicateSleep -1 Data exchange through blocking mpi
-                   * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
-                   * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
-                   */
-                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  enum class ExchangeMode { Blocking, NonblockingWithPollingLoopOverTests, LoopOverProbeWithBlockingReceive };
                   
-                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
+                  
+                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
                   
                   static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
                   
@@ -9428,7 +9383,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   27/03/2018 13:02
+       * @date   18/05/2018 09:49
        */
       class dem::records::CellPacked { 
          
@@ -10081,14 +10036,11 @@ namespace dem {
                   
                   static void shutdownDatatype();
                   
-                  /**
-                   * @param communicateSleep -1 Data exchange through blocking mpi
-                   * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
-                   * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
-                   */
-                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  enum class ExchangeMode { Blocking, NonblockingWithPollingLoopOverTests, LoopOverProbeWithBlockingReceive };
                   
-                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
+                  
+                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
                   
                   static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
                   
@@ -10112,7 +10064,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   27/03/2018 13:02
+       * @date   18/05/2018 09:49
        */
       class dem::records::Cell { 
          
@@ -10683,14 +10635,11 @@ namespace dem {
                   
                   static void shutdownDatatype();
                   
-                  /**
-                   * @param communicateSleep -1 Data exchange through blocking mpi
-                   * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
-                   * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
-                   */
-                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  enum class ExchangeMode { Blocking, NonblockingWithPollingLoopOverTests, LoopOverProbeWithBlockingReceive };
                   
-                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
+                  
+                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
                   
                   static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
                   
@@ -10717,7 +10666,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   27/03/2018 13:02
+       * @date   18/05/2018 09:49
        */
       class dem::records::CellPacked { 
          
@@ -11329,14 +11278,11 @@ namespace dem {
                   
                   static void shutdownDatatype();
                   
-                  /**
-                   * @param communicateSleep -1 Data exchange through blocking mpi
-                   * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
-                   * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
-                   */
-                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  enum class ExchangeMode { Blocking, NonblockingWithPollingLoopOverTests, LoopOverProbeWithBlockingReceive };
                   
-                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
+                  
+                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
                   
                   static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
                   
@@ -11360,7 +11306,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   27/03/2018 13:02
+       * @date   18/05/2018 09:49
        */
       class dem::records::Cell { 
          
@@ -12054,14 +12000,11 @@ namespace dem {
                   
                   static void shutdownDatatype();
                   
-                  /**
-                   * @param communicateSleep -1 Data exchange through blocking mpi
-                   * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
-                   * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
-                   */
-                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  enum class ExchangeMode { Blocking, NonblockingWithPollingLoopOverTests, LoopOverProbeWithBlockingReceive };
                   
-                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
+                  
+                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
                   
                   static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
                   
@@ -12088,7 +12031,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   27/03/2018 13:02
+       * @date   18/05/2018 09:49
        */
       class dem::records::CellPacked { 
          
@@ -12829,14 +12772,11 @@ namespace dem {
                   
                   static void shutdownDatatype();
                   
-                  /**
-                   * @param communicateSleep -1 Data exchange through blocking mpi
-                   * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
-                   * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
-                   */
-                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  enum class ExchangeMode { Blocking, NonblockingWithPollingLoopOverTests, LoopOverProbeWithBlockingReceive };
                   
-                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
+                  
+                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
                   
                   static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
                   
@@ -12860,7 +12800,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   27/03/2018 13:02
+       * @date   18/05/2018 09:49
        */
       class dem::records::Cell { 
          
@@ -13513,14 +13453,11 @@ namespace dem {
                   
                   static void shutdownDatatype();
                   
-                  /**
-                   * @param communicateSleep -1 Data exchange through blocking mpi
-                   * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
-                   * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
-                   */
-                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  enum class ExchangeMode { Blocking, NonblockingWithPollingLoopOverTests, LoopOverProbeWithBlockingReceive };
                   
-                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
+                  
+                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
                   
                   static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
                   
@@ -13547,7 +13484,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   27/03/2018 13:02
+       * @date   18/05/2018 09:49
        */
       class dem::records::CellPacked { 
          
@@ -14247,14 +14184,11 @@ namespace dem {
                   
                   static void shutdownDatatype();
                   
-                  /**
-                   * @param communicateSleep -1 Data exchange through blocking mpi
-                   * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
-                   * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
-                   */
-                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  enum class ExchangeMode { Blocking, NonblockingWithPollingLoopOverTests, LoopOverProbeWithBlockingReceive };
                   
-                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
+                  
+                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
                   
                   static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
                   
@@ -14278,7 +14212,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   27/03/2018 13:02
+       * @date   18/05/2018 09:49
        */
       class dem::records::Cell { 
          
@@ -14931,14 +14865,11 @@ namespace dem {
                   
                   static void shutdownDatatype();
                   
-                  /**
-                   * @param communicateSleep -1 Data exchange through blocking mpi
-                   * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
-                   * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
-                   */
-                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  enum class ExchangeMode { Blocking, NonblockingWithPollingLoopOverTests, LoopOverProbeWithBlockingReceive };
                   
-                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
+                  
+                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
                   
                   static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
                   
@@ -14965,7 +14896,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   27/03/2018 13:02
+       * @date   18/05/2018 09:49
        */
       class dem::records::CellPacked { 
          
@@ -15659,14 +15590,11 @@ namespace dem {
                   
                   static void shutdownDatatype();
                   
-                  /**
-                   * @param communicateSleep -1 Data exchange through blocking mpi
-                   * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
-                   * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
-                   */
-                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  enum class ExchangeMode { Blocking, NonblockingWithPollingLoopOverTests, LoopOverProbeWithBlockingReceive };
                   
-                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
+                  
+                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
                   
                   static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
                   
@@ -15690,7 +15618,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   27/03/2018 13:02
+       * @date   18/05/2018 09:49
        */
       class dem::records::Cell { 
          
@@ -16425,14 +16353,11 @@ namespace dem {
                   
                   static void shutdownDatatype();
                   
-                  /**
-                   * @param communicateSleep -1 Data exchange through blocking mpi
-                   * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
-                   * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
-                   */
-                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  enum class ExchangeMode { Blocking, NonblockingWithPollingLoopOverTests, LoopOverProbeWithBlockingReceive };
                   
-                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
+                  
+                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
                   
                   static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
                   
@@ -16459,7 +16384,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   27/03/2018 13:02
+       * @date   18/05/2018 09:49
        */
       class dem::records::CellPacked { 
          
@@ -17241,14 +17166,11 @@ namespace dem {
                   
                   static void shutdownDatatype();
                   
-                  /**
-                   * @param communicateSleep -1 Data exchange through blocking mpi
-                   * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
-                   * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
-                   */
-                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  enum class ExchangeMode { Blocking, NonblockingWithPollingLoopOverTests, LoopOverProbeWithBlockingReceive };
                   
-                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
+                  
+                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
                   
                   static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
                   
@@ -17272,7 +17194,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   27/03/2018 13:02
+       * @date   18/05/2018 09:49
        */
       class dem::records::Cell { 
          
@@ -18007,14 +17929,11 @@ namespace dem {
                   
                   static void shutdownDatatype();
                   
-                  /**
-                   * @param communicateSleep -1 Data exchange through blocking mpi
-                   * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
-                   * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
-                   */
-                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  enum class ExchangeMode { Blocking, NonblockingWithPollingLoopOverTests, LoopOverProbeWithBlockingReceive };
                   
-                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
+                  
+                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
                   
                   static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
                   
@@ -18041,7 +17960,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   27/03/2018 13:02
+       * @date   18/05/2018 09:49
        */
       class dem::records::CellPacked { 
          
@@ -18823,14 +18742,11 @@ namespace dem {
                   
                   static void shutdownDatatype();
                   
-                  /**
-                   * @param communicateSleep -1 Data exchange through blocking mpi
-                   * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
-                   * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
-                   */
-                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  enum class ExchangeMode { Blocking, NonblockingWithPollingLoopOverTests, LoopOverProbeWithBlockingReceive };
                   
-                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
+                  
+                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
                   
                   static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
                   
@@ -18854,7 +18770,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   27/03/2018 13:02
+       * @date   18/05/2018 09:49
        */
       class dem::records::Cell { 
          
@@ -19548,14 +19464,11 @@ namespace dem {
                   
                   static void shutdownDatatype();
                   
-                  /**
-                   * @param communicateSleep -1 Data exchange through blocking mpi
-                   * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
-                   * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
-                   */
-                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  enum class ExchangeMode { Blocking, NonblockingWithPollingLoopOverTests, LoopOverProbeWithBlockingReceive };
                   
-                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
+                  
+                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
                   
                   static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
                   
@@ -19582,7 +19495,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   27/03/2018 13:02
+       * @date   18/05/2018 09:49
        */
       class dem::records::CellPacked { 
          
@@ -20323,14 +20236,11 @@ namespace dem {
                   
                   static void shutdownDatatype();
                   
-                  /**
-                   * @param communicateSleep -1 Data exchange through blocking mpi
-                   * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
-                   * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
-                   */
-                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  enum class ExchangeMode { Blocking, NonblockingWithPollingLoopOverTests, LoopOverProbeWithBlockingReceive };
                   
-                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
+                  
+                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
                   
                   static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
                   
@@ -20354,7 +20264,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   27/03/2018 13:02
+       * @date   18/05/2018 09:49
        */
       class dem::records::Cell { 
          
@@ -21130,14 +21040,11 @@ namespace dem {
                   
                   static void shutdownDatatype();
                   
-                  /**
-                   * @param communicateSleep -1 Data exchange through blocking mpi
-                   * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
-                   * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
-                   */
-                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  enum class ExchangeMode { Blocking, NonblockingWithPollingLoopOverTests, LoopOverProbeWithBlockingReceive };
                   
-                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
+                  
+                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
                   
                   static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
                   
@@ -21164,7 +21071,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   27/03/2018 13:02
+       * @date   18/05/2018 09:49
        */
       class dem::records::CellPacked { 
          
@@ -21987,14 +21894,11 @@ namespace dem {
                   
                   static void shutdownDatatype();
                   
-                  /**
-                   * @param communicateSleep -1 Data exchange through blocking mpi
-                   * @param communicateSleep  0 Data exchange through non-blocking mpi, i.e. pending messages are received via polling until MPI_Test succeeds
-                   * @param communicateSleep >0 Same as 0 but in addition, each unsuccessful MPI_Test is follows by an usleep
-                   */
-                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  enum class ExchangeMode { Blocking, NonblockingWithPollingLoopOverTests, LoopOverProbeWithBlockingReceive };
                   
-                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep);
+                  void send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
+                  
+                  void receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode );
                   
                   static bool isMessageInQueue(int tag, bool exchangeOnlyAttributesMarkedWithParallelise);
                   

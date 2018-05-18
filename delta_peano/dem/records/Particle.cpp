@@ -301,27 +301,27 @@ dem::records::ParticlePacked dem::records::Particle::convert() const{
          const int Attributes = 28;
          #endif
          MPI_Datatype subtypes[Attributes] = {
-              MPI_double		 //vertices
-            , MPI_double		 //verticesA
-            , MPI_double		 //verticesB
-            , MPI_double		 //verticesC
-            , MPI_double		 //verticesrefA
-            , MPI_double		 //verticesrefB
-            , MPI_double		 //verticesrefC
-            , MPI_double		 //orientation
-            , MPI_double		 //inertia
-            , MPI_double		 //inverse
-            , MPI_double		 //centre
-            , MPI_double		 //centreOfMass
-            , MPI_double		 //referentialCentreOfMass
-            , MPI_double		 //velocity
-            , MPI_double		 //angular
-            , MPI_double		 //referentialAngular
-            , MPI_double		 //diameter
-            , MPI_double		 //haloDiameter
-            , MPI_double		 //epsilon
-            , MPI_double		 //mass
-            , MPI_double		 //hMin
+              MPI_DOUBLE		 //vertices
+            , MPI_DOUBLE		 //verticesA
+            , MPI_DOUBLE		 //verticesB
+            , MPI_DOUBLE		 //verticesC
+            , MPI_DOUBLE		 //verticesrefA
+            , MPI_DOUBLE		 //verticesrefB
+            , MPI_DOUBLE		 //verticesrefC
+            , MPI_DOUBLE		 //orientation
+            , MPI_DOUBLE		 //inertia
+            , MPI_DOUBLE		 //inverse
+            , MPI_DOUBLE		 //centre
+            , MPI_DOUBLE		 //centreOfMass
+            , MPI_DOUBLE		 //referentialCentreOfMass
+            , MPI_DOUBLE		 //velocity
+            , MPI_DOUBLE		 //angular
+            , MPI_DOUBLE		 //referentialAngular
+            , MPI_DOUBLE		 //diameter
+            , MPI_DOUBLE		 //haloDiameter
+            , MPI_DOUBLE		 //epsilon
+            , MPI_DOUBLE		 //mass
+            , MPI_DOUBLE		 //hMin
             , MPI_INT		 //globalParticleId
             , MPI_INT		 //localParticleId
             , MPI_INT		 //numberOfTriangles
@@ -553,193 +553,225 @@ dem::records::ParticlePacked dem::records::Particle::convert() const{
       
    }
    
-   void dem::records::Particle::send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep) {
-      if (communicateSleep<0) {
-      
-         const int result = MPI_Send(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, destination, tag, tarch::parallel::Node::getInstance().getCommunicator());
-         if  (result!=MPI_SUCCESS) {
-            std::ostringstream msg;
-            msg << "was not able to send message dem::records::Particle "
-            << toString()
-            << " to node " << destination
-            << ": " << tarch::parallel::MPIReturnValueToString(result);
-            _log.error( "send(int)",msg.str() );
-         }
-         
-      }
-      else {
-      
-         MPI_Request* sendRequestHandle = new MPI_Request();
-         int          flag = 0;
-         int          result;
-         
-         clock_t      timeOutWarning   = -1;
-         clock_t      timeOutShutdown  = -1;
-         bool         triggeredTimeoutWarning = false;
-         
-         if (exchangeOnlyAttributesMarkedWithParallelise) {
-            result = MPI_Isend(
-               this, 1, Datatype, destination,
-               tag, tarch::parallel::Node::getInstance().getCommunicator(),
-               sendRequestHandle
-            );
-            
-         }
-         else {
-            result = MPI_Isend(
-               this, 1, FullDatatype, destination,
-               tag, tarch::parallel::Node::getInstance().getCommunicator(),
-               sendRequestHandle
-            );
-            
-         }
-         if  (result!=MPI_SUCCESS) {
-            std::ostringstream msg;
-            msg << "was not able to send message dem::records::Particle "
-            << toString()
-            << " to node " << destination
-            << ": " << tarch::parallel::MPIReturnValueToString(result);
-            _log.error( "send(int)",msg.str() );
-         }
-         result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
-         while (!flag) {
-            if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
-            if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-            result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
-            if (result!=MPI_SUCCESS) {
-               std::ostringstream msg;
-               msg << "testing for finished send task for dem::records::Particle "
-               << toString()
-               << " sent to node " << destination
-               << " failed: " << tarch::parallel::MPIReturnValueToString(result);
-               _log.error("send(int)", msg.str() );
-            }
-            
-            // deadlock aspect
-            if (
-               tarch::parallel::Node::getInstance().isTimeOutWarningEnabled() &&
-               (clock()>timeOutWarning) &&
-               (!triggeredTimeoutWarning)
-            ) {
-               tarch::parallel::Node::getInstance().writeTimeOutWarning(
-               "dem::records::Particle",
-               "send(int)", destination,tag,1
-               );
-               triggeredTimeoutWarning = true;
-            }
-            if (
-               tarch::parallel::Node::getInstance().isTimeOutDeadlockEnabled() &&
-               (clock()>timeOutShutdown)
-            ) {
-               tarch::parallel::Node::getInstance().triggerDeadlockTimeOut(
-               "dem::records::Particle",
-               "send(int)", destination,tag,1
-               );
-            }
-            
-         tarch::parallel::Node::getInstance().receiveDanglingMessages();
-         usleep(communicateSleep);
-         }
-         
-         delete sendRequestHandle;
-         #ifdef Debug
-         _log.debug("send(int,int)", "sent " + toString() );
-         #endif
-         
-      }
+   void dem::records::Particle::send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode) {
+      // ============================= 
+// start injected snippet/aspect 
+// ============================= 
+switch (mode) { 
+  case ExchangeMode::Blocking: 
+    {
+      const int result = MPI_Send(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, destination, tag, tarch::parallel::Node::getInstance().getCommunicator()); 
+       if  (result!=MPI_SUCCESS) { 
+         std::ostringstream msg; 
+         msg << "was not able to send message dem::records::Particle " 
+             << toString() 
+             << " to node " << destination 
+             << ": " << tarch::parallel::MPIReturnValueToString(result); 
+         _log.error( "send(int)",msg.str() ); 
+       } 
+    } 
+    break; 
+   case ExchangeMode::NonblockingWithPollingLoopOverTests: 
+    {
+      MPI_Request* sendRequestHandle = new MPI_Request(); 
+      int          flag = 0; 
+       int          result; 
+       clock_t      timeOutWarning   = -1; 
+       clock_t      timeOutShutdown  = -1; 
+       bool         triggeredTimeoutWarning = false;  
+       result = MPI_Isend(  
+         this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, destination,  
+         tag, tarch::parallel::Node::getInstance().getCommunicator(), 
+         sendRequestHandle  
+       ); 
+       if  (result!=MPI_SUCCESS) {  
+         std::ostringstream msg;  
+         msg << "was not able to send message dem::records::Particle "  
+             << toString() 
+             << " to node " << destination 
+             << ": " << tarch::parallel::MPIReturnValueToString(result);  
+         _log.error( "send(int)",msg.str() );  
+       }  
+       result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE ); 
+       while (!flag) { 
+         if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp(); 
+         if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp(); 
+         result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE ); 
+         if (result!=MPI_SUCCESS) { 
+           std::ostringstream msg; 
+           msg << "testing for finished send task for dem::records::Particle " 
+               << toString() 
+               << " sent to node " << destination 
+               << " failed: " << tarch::parallel::MPIReturnValueToString(result); 
+           _log.error("send(int)", msg.str() ); 
+         } 
+         if ( 
+           tarch::parallel::Node::getInstance().isTimeOutWarningEnabled() && 
+           (clock()>timeOutWarning) && 
+           (!triggeredTimeoutWarning) 
+         ) { 
+           tarch::parallel::Node::getInstance().writeTimeOutWarning( 
+             "dem::records::Particle", 
+             "send(int)", destination,tag,1 
+           ); 
+           triggeredTimeoutWarning = true; 
+         } 
+         if ( 
+           tarch::parallel::Node::getInstance().isTimeOutDeadlockEnabled() && 
+           (clock()>timeOutShutdown) 
+         ) { 
+           tarch::parallel::Node::getInstance().triggerDeadlockTimeOut( 
+             "dem::records::Particle", 
+             "send(int)", destination,tag,1 
+           ); 
+         } 
+ 	       tarch::parallel::Node::getInstance().receiveDanglingMessages(); 
+       } 
+       delete sendRequestHandle; 
+     }  
+     break; 
+   case ExchangeMode::LoopOverProbeWithBlockingReceive: 
+    assertionMsg(false,"should not be called"); 
+    break; 
+} 
+ // ============================= 
+// end injected snippet/aspect 
+// ============================= 
+
       
    }
    
    
    
-   void dem::records::Particle::receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep) {
-      if (communicateSleep<0) {
-      
-         const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), MPI_STATUS_IGNORE);
-         if ( result != MPI_SUCCESS ) {
-            std::ostringstream msg;
-            msg << "failed to start to receive dem::records::Particle from node "
-            << source << ": " << tarch::parallel::MPIReturnValueToString(result);
-            _log.error( "receive(int)", msg.str() );
-         }
-         
-      }
-      else {
-      
-         MPI_Request* sendRequestHandle = new MPI_Request();
-         int          flag = 0;
-         int          result;
-         
-         clock_t      timeOutWarning   = -1;
-         clock_t      timeOutShutdown  = -1;
-         bool         triggeredTimeoutWarning = false;
-         
-         if (exchangeOnlyAttributesMarkedWithParallelise) {
-            result = MPI_Irecv(
-               this, 1, Datatype, source, tag,
-               tarch::parallel::Node::getInstance().getCommunicator(), sendRequestHandle
-            );
-            
-         }
-         else {
-            result = MPI_Irecv(
-               this, 1, FullDatatype, source, tag,
-               tarch::parallel::Node::getInstance().getCommunicator(), sendRequestHandle
-            );
-            
-         }
-         if ( result != MPI_SUCCESS ) {
-            std::ostringstream msg;
-            msg << "failed to start to receive dem::records::Particle from node "
-            << source << ": " << tarch::parallel::MPIReturnValueToString(result);
-            _log.error( "receive(int)", msg.str() );
-         }
-         
-         result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
-         while (!flag) {
-            if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
-            if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-            result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
-            if (result!=MPI_SUCCESS) {
-               std::ostringstream msg;
-               msg << "testing for finished receive task for dem::records::Particle failed: "
-               << tarch::parallel::MPIReturnValueToString(result);
-               _log.error("receive(int)", msg.str() );
-            }
-            
-            // deadlock aspect
-            if (
-               tarch::parallel::Node::getInstance().isTimeOutWarningEnabled() &&
-               (clock()>timeOutWarning) &&
-               (!triggeredTimeoutWarning)
-            ) {
-               tarch::parallel::Node::getInstance().writeTimeOutWarning(
-               "dem::records::Particle",
-               "receive(int)", source,tag,1
-               );
-               triggeredTimeoutWarning = true;
-            }
-            if (
-               tarch::parallel::Node::getInstance().isTimeOutDeadlockEnabled() &&
-               (clock()>timeOutShutdown)
-            ) {
-               tarch::parallel::Node::getInstance().triggerDeadlockTimeOut(
-               "dem::records::Particle",
-               "receive(int)", source,tag,1
-               );
-            }
-            tarch::parallel::Node::getInstance().receiveDanglingMessages();
-            usleep(communicateSleep);
-            
-         }
-         
-         delete sendRequestHandle;
-         
-         #ifdef Debug
-         _log.debug("receive(int,int)", "received " + toString() ); 
-         #endif
-         
-      }
+   void dem::records::Particle::receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode) {
+      // ============================= 
+// start injected snippet/aspect 
+// ============================= 
+MPI_Status status; 
+switch (mode) { 
+  case ExchangeMode::Blocking: 
+    { 
+      const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE ); 
+      if ( result != MPI_SUCCESS ) { 
+        std::ostringstream msg; 
+        msg << "failed to start to receive dem::records::Particle from node " 
+            << source << ": " << tarch::parallel::MPIReturnValueToString(result); 
+        _log.error( "receive(int)", msg.str() ); 
+      } 
+    } 
+    break; 
+  case ExchangeMode::NonblockingWithPollingLoopOverTests: 
+    { 
+      int          flag = 0; 
+      int          result; 
+      clock_t      timeOutWarning   = -1; 
+      clock_t      timeOutShutdown  = -1; 
+      bool         triggeredTimeoutWarning = false; 
+      MPI_Request* sendRequestHandle = new MPI_Request(); 
+       result = MPI_Irecv( 
+        this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, 
+        tarch::parallel::Node::getInstance().getCommunicator(), sendRequestHandle 
+      ); 
+      if ( result != MPI_SUCCESS ) { 
+        std::ostringstream msg; 
+        msg << "failed to start to receive dem::records::Particle from node " 
+             << source << ": " << tarch::parallel::MPIReturnValueToString(result); 
+        _log.error( "receive(int)", msg.str() ); 
+      } 
+      result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE ); 
+      while (!flag) { 
+        if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp(); 
+        if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp(); 
+        if ( 
+          tarch::parallel::Node::getInstance().isTimeOutWarningEnabled() && 
+          (clock()>timeOutWarning) && 
+          (!triggeredTimeoutWarning) 
+        ) { 
+          tarch::parallel::Node::getInstance().writeTimeOutWarning( 
+            "dem::records::Particle", 
+            "receive(int)", source,tag,1 
+          ); 
+          triggeredTimeoutWarning = true; 
+        } 
+        if ( 
+          tarch::parallel::Node::getInstance().isTimeOutDeadlockEnabled() && 
+          (clock()>timeOutShutdown) 
+        ) { 
+          tarch::parallel::Node::getInstance().triggerDeadlockTimeOut( 
+            "dem::records::Particle", 
+            "receive(int)", source,tag,1 
+          ); 
+        } 
+        tarch::parallel::Node::getInstance().receiveDanglingMessages(); 
+        result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE ); 
+        if (result!=MPI_SUCCESS) { 
+          std::ostringstream msg; 
+          msg << "testing for finished receive task for dem::records::Particle failed: " 
+              << tarch::parallel::MPIReturnValueToString(result); 
+          _log.error("receive(int)", msg.str() ); 
+        } 
+      } 
+      delete sendRequestHandle; 
+    }    break; 
+  case ExchangeMode::LoopOverProbeWithBlockingReceive: 
+    {
+      int flag; 
+      clock_t      timeOutWarning   = -1; 
+      clock_t      timeOutShutdown  = -1; 
+      bool         triggeredTimeoutWarning = false; 
+      int result = MPI_Iprobe(source, tag, tarch::parallel::Node::getInstance().getCommunicator(), &flag, MPI_STATUS_IGNORE ); 
+       if (result!=MPI_SUCCESS) { 
+        std::ostringstream msg; 
+        msg << "testing for finished receive task for dem::records::Particle failed: " 
+            << tarch::parallel::MPIReturnValueToString(result); 
+        _log.error("receive(int)", msg.str() ); 
+      } 
+      while (!flag) { 
+        if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp(); 
+        if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp(); 
+        if ( 
+          tarch::parallel::Node::getInstance().isTimeOutWarningEnabled() && 
+          (clock()>timeOutWarning) && 
+          (!triggeredTimeoutWarning) 
+        ) { 
+          tarch::parallel::Node::getInstance().writeTimeOutWarning( 
+            "dem::records::Particle", 
+            "receive(int)", source,tag,1 
+          ); 
+          triggeredTimeoutWarning = true; 
+        } 
+        if ( 
+          tarch::parallel::Node::getInstance().isTimeOutDeadlockEnabled() && 
+          (clock()>timeOutShutdown) 
+        ) { 
+          tarch::parallel::Node::getInstance().triggerDeadlockTimeOut( 
+            "dem::records::Particle", 
+            "receive(int)", source,tag,1 
+          ); 
+        } 
+        tarch::parallel::Node::getInstance().receiveDanglingMessages(); 
+        result = MPI_Iprobe(source, tag, tarch::parallel::Node::getInstance().getCommunicator(), &flag, MPI_STATUS_IGNORE ); 
+         if (result!=MPI_SUCCESS) { 
+          std::ostringstream msg; 
+          msg << "testing for finished receive task for dem::records::Particle failed: " 
+              << tarch::parallel::MPIReturnValueToString(result); 
+          _log.error("receive(int)", msg.str() ); 
+        } 
+      } 
+      result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE ); 
+      if ( result != MPI_SUCCESS ) { 
+        std::ostringstream msg; 
+        msg << "failed to start to receive dem::records::Particle from node " 
+            << source << ": " << tarch::parallel::MPIReturnValueToString(result); 
+        _log.error( "receive(int)", msg.str() ); 
+      } 
+    }
+    break; 
+  } 
+// =========================== 
+// end injected snippet/aspect 
+// =========================== 
+
       
    }
    
@@ -1071,27 +1103,27 @@ dem::records::Particle dem::records::ParticlePacked::convert() const{
          const int Attributes = 28;
          #endif
          MPI_Datatype subtypes[Attributes] = {
-              MPI_double		 //vertices
-            , MPI_double		 //verticesA
-            , MPI_double		 //verticesB
-            , MPI_double		 //verticesC
-            , MPI_double		 //verticesrefA
-            , MPI_double		 //verticesrefB
-            , MPI_double		 //verticesrefC
-            , MPI_double		 //orientation
-            , MPI_double		 //inertia
-            , MPI_double		 //inverse
-            , MPI_double		 //centre
-            , MPI_double		 //centreOfMass
-            , MPI_double		 //referentialCentreOfMass
-            , MPI_double		 //velocity
-            , MPI_double		 //angular
-            , MPI_double		 //referentialAngular
-            , MPI_double		 //diameter
-            , MPI_double		 //haloDiameter
-            , MPI_double		 //epsilon
-            , MPI_double		 //mass
-            , MPI_double		 //hMin
+              MPI_DOUBLE		 //vertices
+            , MPI_DOUBLE		 //verticesA
+            , MPI_DOUBLE		 //verticesB
+            , MPI_DOUBLE		 //verticesC
+            , MPI_DOUBLE		 //verticesrefA
+            , MPI_DOUBLE		 //verticesrefB
+            , MPI_DOUBLE		 //verticesrefC
+            , MPI_DOUBLE		 //orientation
+            , MPI_DOUBLE		 //inertia
+            , MPI_DOUBLE		 //inverse
+            , MPI_DOUBLE		 //centre
+            , MPI_DOUBLE		 //centreOfMass
+            , MPI_DOUBLE		 //referentialCentreOfMass
+            , MPI_DOUBLE		 //velocity
+            , MPI_DOUBLE		 //angular
+            , MPI_DOUBLE		 //referentialAngular
+            , MPI_DOUBLE		 //diameter
+            , MPI_DOUBLE		 //haloDiameter
+            , MPI_DOUBLE		 //epsilon
+            , MPI_DOUBLE		 //mass
+            , MPI_DOUBLE		 //hMin
             , MPI_INT		 //globalParticleId
             , MPI_INT		 //localParticleId
             , MPI_INT		 //numberOfTriangles
@@ -1323,193 +1355,225 @@ dem::records::Particle dem::records::ParticlePacked::convert() const{
       
    }
    
-   void dem::records::ParticlePacked::send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep) {
-      if (communicateSleep<0) {
-      
-         const int result = MPI_Send(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, destination, tag, tarch::parallel::Node::getInstance().getCommunicator());
-         if  (result!=MPI_SUCCESS) {
-            std::ostringstream msg;
-            msg << "was not able to send message dem::records::ParticlePacked "
-            << toString()
-            << " to node " << destination
-            << ": " << tarch::parallel::MPIReturnValueToString(result);
-            _log.error( "send(int)",msg.str() );
-         }
-         
-      }
-      else {
-      
-         MPI_Request* sendRequestHandle = new MPI_Request();
-         int          flag = 0;
-         int          result;
-         
-         clock_t      timeOutWarning   = -1;
-         clock_t      timeOutShutdown  = -1;
-         bool         triggeredTimeoutWarning = false;
-         
-         if (exchangeOnlyAttributesMarkedWithParallelise) {
-            result = MPI_Isend(
-               this, 1, Datatype, destination,
-               tag, tarch::parallel::Node::getInstance().getCommunicator(),
-               sendRequestHandle
-            );
-            
-         }
-         else {
-            result = MPI_Isend(
-               this, 1, FullDatatype, destination,
-               tag, tarch::parallel::Node::getInstance().getCommunicator(),
-               sendRequestHandle
-            );
-            
-         }
-         if  (result!=MPI_SUCCESS) {
-            std::ostringstream msg;
-            msg << "was not able to send message dem::records::ParticlePacked "
-            << toString()
-            << " to node " << destination
-            << ": " << tarch::parallel::MPIReturnValueToString(result);
-            _log.error( "send(int)",msg.str() );
-         }
-         result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
-         while (!flag) {
-            if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
-            if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-            result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
-            if (result!=MPI_SUCCESS) {
-               std::ostringstream msg;
-               msg << "testing for finished send task for dem::records::ParticlePacked "
-               << toString()
-               << " sent to node " << destination
-               << " failed: " << tarch::parallel::MPIReturnValueToString(result);
-               _log.error("send(int)", msg.str() );
-            }
-            
-            // deadlock aspect
-            if (
-               tarch::parallel::Node::getInstance().isTimeOutWarningEnabled() &&
-               (clock()>timeOutWarning) &&
-               (!triggeredTimeoutWarning)
-            ) {
-               tarch::parallel::Node::getInstance().writeTimeOutWarning(
-               "dem::records::ParticlePacked",
-               "send(int)", destination,tag,1
-               );
-               triggeredTimeoutWarning = true;
-            }
-            if (
-               tarch::parallel::Node::getInstance().isTimeOutDeadlockEnabled() &&
-               (clock()>timeOutShutdown)
-            ) {
-               tarch::parallel::Node::getInstance().triggerDeadlockTimeOut(
-               "dem::records::ParticlePacked",
-               "send(int)", destination,tag,1
-               );
-            }
-            
-         tarch::parallel::Node::getInstance().receiveDanglingMessages();
-         usleep(communicateSleep);
-         }
-         
-         delete sendRequestHandle;
-         #ifdef Debug
-         _log.debug("send(int,int)", "sent " + toString() );
-         #endif
-         
-      }
+   void dem::records::ParticlePacked::send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode) {
+      // ============================= 
+// start injected snippet/aspect 
+// ============================= 
+switch (mode) { 
+  case ExchangeMode::Blocking: 
+    {
+      const int result = MPI_Send(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, destination, tag, tarch::parallel::Node::getInstance().getCommunicator()); 
+       if  (result!=MPI_SUCCESS) { 
+         std::ostringstream msg; 
+         msg << "was not able to send message dem::records::ParticlePacked " 
+             << toString() 
+             << " to node " << destination 
+             << ": " << tarch::parallel::MPIReturnValueToString(result); 
+         _log.error( "send(int)",msg.str() ); 
+       } 
+    } 
+    break; 
+   case ExchangeMode::NonblockingWithPollingLoopOverTests: 
+    {
+      MPI_Request* sendRequestHandle = new MPI_Request(); 
+      int          flag = 0; 
+       int          result; 
+       clock_t      timeOutWarning   = -1; 
+       clock_t      timeOutShutdown  = -1; 
+       bool         triggeredTimeoutWarning = false;  
+       result = MPI_Isend(  
+         this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, destination,  
+         tag, tarch::parallel::Node::getInstance().getCommunicator(), 
+         sendRequestHandle  
+       ); 
+       if  (result!=MPI_SUCCESS) {  
+         std::ostringstream msg;  
+         msg << "was not able to send message dem::records::ParticlePacked "  
+             << toString() 
+             << " to node " << destination 
+             << ": " << tarch::parallel::MPIReturnValueToString(result);  
+         _log.error( "send(int)",msg.str() );  
+       }  
+       result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE ); 
+       while (!flag) { 
+         if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp(); 
+         if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp(); 
+         result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE ); 
+         if (result!=MPI_SUCCESS) { 
+           std::ostringstream msg; 
+           msg << "testing for finished send task for dem::records::ParticlePacked " 
+               << toString() 
+               << " sent to node " << destination 
+               << " failed: " << tarch::parallel::MPIReturnValueToString(result); 
+           _log.error("send(int)", msg.str() ); 
+         } 
+         if ( 
+           tarch::parallel::Node::getInstance().isTimeOutWarningEnabled() && 
+           (clock()>timeOutWarning) && 
+           (!triggeredTimeoutWarning) 
+         ) { 
+           tarch::parallel::Node::getInstance().writeTimeOutWarning( 
+             "dem::records::ParticlePacked", 
+             "send(int)", destination,tag,1 
+           ); 
+           triggeredTimeoutWarning = true; 
+         } 
+         if ( 
+           tarch::parallel::Node::getInstance().isTimeOutDeadlockEnabled() && 
+           (clock()>timeOutShutdown) 
+         ) { 
+           tarch::parallel::Node::getInstance().triggerDeadlockTimeOut( 
+             "dem::records::ParticlePacked", 
+             "send(int)", destination,tag,1 
+           ); 
+         } 
+ 	       tarch::parallel::Node::getInstance().receiveDanglingMessages(); 
+       } 
+       delete sendRequestHandle; 
+     }  
+     break; 
+   case ExchangeMode::LoopOverProbeWithBlockingReceive: 
+    assertionMsg(false,"should not be called"); 
+    break; 
+} 
+ // ============================= 
+// end injected snippet/aspect 
+// ============================= 
+
       
    }
    
    
    
-   void dem::records::ParticlePacked::receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, int communicateSleep) {
-      if (communicateSleep<0) {
-      
-         const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), MPI_STATUS_IGNORE);
-         if ( result != MPI_SUCCESS ) {
-            std::ostringstream msg;
-            msg << "failed to start to receive dem::records::ParticlePacked from node "
-            << source << ": " << tarch::parallel::MPIReturnValueToString(result);
-            _log.error( "receive(int)", msg.str() );
-         }
-         
-      }
-      else {
-      
-         MPI_Request* sendRequestHandle = new MPI_Request();
-         int          flag = 0;
-         int          result;
-         
-         clock_t      timeOutWarning   = -1;
-         clock_t      timeOutShutdown  = -1;
-         bool         triggeredTimeoutWarning = false;
-         
-         if (exchangeOnlyAttributesMarkedWithParallelise) {
-            result = MPI_Irecv(
-               this, 1, Datatype, source, tag,
-               tarch::parallel::Node::getInstance().getCommunicator(), sendRequestHandle
-            );
-            
-         }
-         else {
-            result = MPI_Irecv(
-               this, 1, FullDatatype, source, tag,
-               tarch::parallel::Node::getInstance().getCommunicator(), sendRequestHandle
-            );
-            
-         }
-         if ( result != MPI_SUCCESS ) {
-            std::ostringstream msg;
-            msg << "failed to start to receive dem::records::ParticlePacked from node "
-            << source << ": " << tarch::parallel::MPIReturnValueToString(result);
-            _log.error( "receive(int)", msg.str() );
-         }
-         
-         result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
-         while (!flag) {
-            if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
-            if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
-            result = MPI_Test( sendRequestHandle, &flag, MPI_STATUS_IGNORE );
-            if (result!=MPI_SUCCESS) {
-               std::ostringstream msg;
-               msg << "testing for finished receive task for dem::records::ParticlePacked failed: "
-               << tarch::parallel::MPIReturnValueToString(result);
-               _log.error("receive(int)", msg.str() );
-            }
-            
-            // deadlock aspect
-            if (
-               tarch::parallel::Node::getInstance().isTimeOutWarningEnabled() &&
-               (clock()>timeOutWarning) &&
-               (!triggeredTimeoutWarning)
-            ) {
-               tarch::parallel::Node::getInstance().writeTimeOutWarning(
-               "dem::records::ParticlePacked",
-               "receive(int)", source,tag,1
-               );
-               triggeredTimeoutWarning = true;
-            }
-            if (
-               tarch::parallel::Node::getInstance().isTimeOutDeadlockEnabled() &&
-               (clock()>timeOutShutdown)
-            ) {
-               tarch::parallel::Node::getInstance().triggerDeadlockTimeOut(
-               "dem::records::ParticlePacked",
-               "receive(int)", source,tag,1
-               );
-            }
-            tarch::parallel::Node::getInstance().receiveDanglingMessages();
-            usleep(communicateSleep);
-            
-         }
-         
-         delete sendRequestHandle;
-         
-         #ifdef Debug
-         _log.debug("receive(int,int)", "received " + toString() ); 
-         #endif
-         
-      }
+   void dem::records::ParticlePacked::receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallelise, ExchangeMode mode) {
+      // ============================= 
+// start injected snippet/aspect 
+// ============================= 
+MPI_Status status; 
+switch (mode) { 
+  case ExchangeMode::Blocking: 
+    { 
+      const int   result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE ); 
+      if ( result != MPI_SUCCESS ) { 
+        std::ostringstream msg; 
+        msg << "failed to start to receive dem::records::ParticlePacked from node " 
+            << source << ": " << tarch::parallel::MPIReturnValueToString(result); 
+        _log.error( "receive(int)", msg.str() ); 
+      } 
+    } 
+    break; 
+  case ExchangeMode::NonblockingWithPollingLoopOverTests: 
+    { 
+      int          flag = 0; 
+      int          result; 
+      clock_t      timeOutWarning   = -1; 
+      clock_t      timeOutShutdown  = -1; 
+      bool         triggeredTimeoutWarning = false; 
+      MPI_Request* sendRequestHandle = new MPI_Request(); 
+       result = MPI_Irecv( 
+        this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, 
+        tarch::parallel::Node::getInstance().getCommunicator(), sendRequestHandle 
+      ); 
+      if ( result != MPI_SUCCESS ) { 
+        std::ostringstream msg; 
+        msg << "failed to start to receive dem::records::ParticlePacked from node " 
+             << source << ": " << tarch::parallel::MPIReturnValueToString(result); 
+        _log.error( "receive(int)", msg.str() ); 
+      } 
+      result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE ); 
+      while (!flag) { 
+        if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp(); 
+        if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp(); 
+        if ( 
+          tarch::parallel::Node::getInstance().isTimeOutWarningEnabled() && 
+          (clock()>timeOutWarning) && 
+          (!triggeredTimeoutWarning) 
+        ) { 
+          tarch::parallel::Node::getInstance().writeTimeOutWarning( 
+            "dem::records::ParticlePacked", 
+            "receive(int)", source,tag,1 
+          ); 
+          triggeredTimeoutWarning = true; 
+        } 
+        if ( 
+          tarch::parallel::Node::getInstance().isTimeOutDeadlockEnabled() && 
+          (clock()>timeOutShutdown) 
+        ) { 
+          tarch::parallel::Node::getInstance().triggerDeadlockTimeOut( 
+            "dem::records::ParticlePacked", 
+            "receive(int)", source,tag,1 
+          ); 
+        } 
+        tarch::parallel::Node::getInstance().receiveDanglingMessages(); 
+        result = MPI_Test( sendRequestHandle, &flag, source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE ); 
+        if (result!=MPI_SUCCESS) { 
+          std::ostringstream msg; 
+          msg << "testing for finished receive task for dem::records::ParticlePacked failed: " 
+              << tarch::parallel::MPIReturnValueToString(result); 
+          _log.error("receive(int)", msg.str() ); 
+        } 
+      } 
+      delete sendRequestHandle; 
+    }    break; 
+  case ExchangeMode::LoopOverProbeWithBlockingReceive: 
+    {
+      int flag; 
+      clock_t      timeOutWarning   = -1; 
+      clock_t      timeOutShutdown  = -1; 
+      bool         triggeredTimeoutWarning = false; 
+      int result = MPI_Iprobe(source, tag, tarch::parallel::Node::getInstance().getCommunicator(), &flag, MPI_STATUS_IGNORE ); 
+       if (result!=MPI_SUCCESS) { 
+        std::ostringstream msg; 
+        msg << "testing for finished receive task for dem::records::ParticlePacked failed: " 
+            << tarch::parallel::MPIReturnValueToString(result); 
+        _log.error("receive(int)", msg.str() ); 
+      } 
+      while (!flag) { 
+        if (timeOutWarning==-1)   timeOutWarning   = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp(); 
+        if (timeOutShutdown==-1)  timeOutShutdown  = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp(); 
+        if ( 
+          tarch::parallel::Node::getInstance().isTimeOutWarningEnabled() && 
+          (clock()>timeOutWarning) && 
+          (!triggeredTimeoutWarning) 
+        ) { 
+          tarch::parallel::Node::getInstance().writeTimeOutWarning( 
+            "dem::records::ParticlePacked", 
+            "receive(int)", source,tag,1 
+          ); 
+          triggeredTimeoutWarning = true; 
+        } 
+        if ( 
+          tarch::parallel::Node::getInstance().isTimeOutDeadlockEnabled() && 
+          (clock()>timeOutShutdown) 
+        ) { 
+          tarch::parallel::Node::getInstance().triggerDeadlockTimeOut( 
+            "dem::records::ParticlePacked", 
+            "receive(int)", source,tag,1 
+          ); 
+        } 
+        tarch::parallel::Node::getInstance().receiveDanglingMessages(); 
+        result = MPI_Iprobe(source, tag, tarch::parallel::Node::getInstance().getCommunicator(), &flag, MPI_STATUS_IGNORE ); 
+         if (result!=MPI_SUCCESS) { 
+          std::ostringstream msg; 
+          msg << "testing for finished receive task for dem::records::ParticlePacked failed: " 
+              << tarch::parallel::MPIReturnValueToString(result); 
+          _log.error("receive(int)", msg.str() ); 
+        } 
+      } 
+      result = MPI_Recv(this, 1, exchangeOnlyAttributesMarkedWithParallelise ? Datatype : FullDatatype, source, tag, tarch::parallel::Node::getInstance().getCommunicator(), source==MPI_ANY_SOURCE ? &status : MPI_STATUS_IGNORE ); 
+      if ( result != MPI_SUCCESS ) { 
+        std::ostringstream msg; 
+        msg << "failed to start to receive dem::records::ParticlePacked from node " 
+            << source << ": " << tarch::parallel::MPIReturnValueToString(result); 
+        _log.error( "receive(int)", msg.str() ); 
+      } 
+    }
+    break; 
+  } 
+// =========================== 
+// end injected snippet/aspect 
+// =========================== 
+
       
    }
    

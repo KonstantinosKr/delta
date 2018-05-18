@@ -391,7 +391,7 @@ dem::repositories::RepositoryArrayStack::ContinueCommand dem::repositories::Repo
     int masterNode = tarch::parallel::Node::getInstance().getGlobalMasterRank();
     assertion( masterNode != -1 );
 
-    _repositoryState.receive( masterNode, peano::parallel::SendReceiveBufferPool::getInstance().getIterationManagementTag(), true, ReceiveIterationControlMessagesBlocking );
+    _repositoryState.receive( masterNode, peano::parallel::SendReceiveBufferPool::getInstance().getIterationManagementTag(), true, records::RepositoryState::ExchangeMode::NonblockingWithPollingLoopOverTests );
 
     result = Continue;
     if (_repositoryState.getAction()==dem::records::RepositoryState::Terminate) {
