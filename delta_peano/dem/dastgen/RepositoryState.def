@@ -1,7 +1,7 @@
 // This file is part of the Peano project. For conditions of distribution and
 // use, please see the copyright notice at www.peano-framework.org
 class dem::records::RepositoryState { 
-  enum Action { WriteCheckpoint, ReadCheckpoint, Terminate, RunOnAllNodes,UseAdapterCreateGrid,UseAdapterCreateGridAndPlot,UseAdapterTimeStep,UseAdapterTimeStepAndPlot,UseAdapterCollision,UseAdapterMoveParticles,UseAdapterAdopt,UseAdapterAdoptReluctantly,UseAdapterPlotData,UseAdapterTimeStepOnDynamicGrid,UseAdapterTimeStepOnDynamicGridMerged,UseAdapterTimeStepAndPlotOnDynamicGrid,UseAdapterTimeStepOnReluctantDynamicGrid,UseAdapterTimeStepOnReluctantDynamicGridMerged,UseAdapterTimeStepAndPlotOnReluctantDynamicGrid,NumberOfAdapters};
+  enum Action { WriteCheckpoint, ReadCheckpoint, Terminate, RunOnAllNodes,UseAdapterCreateGrid,UseAdapterCreateGridAndPlot,UseAdapterTimeStep,UseAdapterTimeStepAndPlot,UseAdapterCollision,UseAdapterMoveParticles,UseAdapterAdopt,UseAdapterAdoptReluctantly,UseAdapterPlotData,UseAdapterTimeStepOnDynamicGrid,UseAdapterTimeStepAndPlotOnDynamicGrid,UseAdapterTimeStepOnReluctantDynamicGrid,UseAdapterTimeStepAndPlotOnReluctantDynamicGrid,NumberOfAdapters};
   persistent parallelise Action action;
   persistent parallelise int    numberOfIterations;
   persistent parallelise bool   exchangeBoundaryVertices;

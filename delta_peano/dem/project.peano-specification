@@ -85,10 +85,6 @@ adapter:
   merge-with-user-defined-mapping: AdoptGrid
   merge-with-user-defined-mapping: Collision
   merge-with-user-defined-mapping: MoveParticles
-
-adapter:
-  name: TimeStepOnDynamicGridMerged
-  merge-with-user-defined-mapping: AdoptGridMerged
   
 adapter:
   name: TimeStepAndPlotOnDynamicGrid
@@ -102,10 +98,6 @@ adapter:
   name: TimeStepOnReluctantDynamicGrid
   merge-with-user-defined-mapping: ReluctantlyAdoptGrid
   merge-with-user-defined-mapping: MoveParticles
-
-adapter:
-  name: TimeStepOnReluctantDynamicGridMerged
-  merge-with-user-defined-mapping: ReluctantlyAdoptGridMerged
 
 adapter:
   name: TimeStepAndPlotOnReluctantDynamicGrid

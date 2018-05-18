@@ -47,10 +47,8 @@ std::string dem::records::RepositoryState::toString(const Action& param) {
       case UseAdapterAdoptReluctantly: return "UseAdapterAdoptReluctantly";
       case UseAdapterPlotData: return "UseAdapterPlotData";
       case UseAdapterTimeStepOnDynamicGrid: return "UseAdapterTimeStepOnDynamicGrid";
-      case UseAdapterTimeStepOnDynamicGridMerged: return "UseAdapterTimeStepOnDynamicGridMerged";
       case UseAdapterTimeStepAndPlotOnDynamicGrid: return "UseAdapterTimeStepAndPlotOnDynamicGrid";
       case UseAdapterTimeStepOnReluctantDynamicGrid: return "UseAdapterTimeStepOnReluctantDynamicGrid";
-      case UseAdapterTimeStepOnReluctantDynamicGridMerged: return "UseAdapterTimeStepOnReluctantDynamicGridMerged";
       case UseAdapterTimeStepAndPlotOnReluctantDynamicGrid: return "UseAdapterTimeStepAndPlotOnReluctantDynamicGrid";
       case NumberOfAdapters: return "NumberOfAdapters";
    }
@@ -58,7 +56,7 @@ std::string dem::records::RepositoryState::toString(const Action& param) {
 }
 
 std::string dem::records::RepositoryState::getActionMapping() {
-   return "Action(WriteCheckpoint=0,ReadCheckpoint=1,Terminate=2,RunOnAllNodes=3,UseAdapterCreateGrid=4,UseAdapterCreateGridAndPlot=5,UseAdapterTimeStep=6,UseAdapterTimeStepAndPlot=7,UseAdapterCollision=8,UseAdapterMoveParticles=9,UseAdapterAdopt=10,UseAdapterAdoptReluctantly=11,UseAdapterPlotData=12,UseAdapterTimeStepOnDynamicGrid=13,UseAdapterTimeStepOnDynamicGridMerged=14,UseAdapterTimeStepAndPlotOnDynamicGrid=15,UseAdapterTimeStepOnReluctantDynamicGrid=16,UseAdapterTimeStepOnReluctantDynamicGridMerged=17,UseAdapterTimeStepAndPlotOnReluctantDynamicGrid=18,NumberOfAdapters=19)";
+   return "Action(WriteCheckpoint=0,ReadCheckpoint=1,Terminate=2,RunOnAllNodes=3,UseAdapterCreateGrid=4,UseAdapterCreateGridAndPlot=5,UseAdapterTimeStep=6,UseAdapterTimeStepAndPlot=7,UseAdapterCollision=8,UseAdapterMoveParticles=9,UseAdapterAdopt=10,UseAdapterAdoptReluctantly=11,UseAdapterPlotData=12,UseAdapterTimeStepOnDynamicGrid=13,UseAdapterTimeStepAndPlotOnDynamicGrid=14,UseAdapterTimeStepOnReluctantDynamicGrid=15,UseAdapterTimeStepAndPlotOnReluctantDynamicGrid=16,NumberOfAdapters=17)";
 }
 
 

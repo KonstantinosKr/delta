@@ -26,10 +26,8 @@
  #include "dem/adapters/AdoptReluctantly.h" 
  #include "dem/adapters/PlotData.h" 
  #include "dem/adapters/TimeStepOnDynamicGrid.h" 
- #include "dem/adapters/TimeStepOnDynamicGridMerged.h" 
  #include "dem/adapters/TimeStepAndPlotOnDynamicGrid.h" 
  #include "dem/adapters/TimeStepOnReluctantDynamicGrid.h" 
- #include "dem/adapters/TimeStepOnReluctantDynamicGridMerged.h" 
  #include "dem/adapters/TimeStepAndPlotOnReluctantDynamicGrid.h" 
 
 
@@ -66,10 +64,8 @@ class dem::repositories::RepositoryArrayStack: public dem::repositories::Reposit
     peano::grid::Grid<dem::Vertex,dem::Cell,dem::State,VertexStack,CellStack,dem::adapters::AdoptReluctantly> _gridWithAdoptReluctantly;
     peano::grid::Grid<dem::Vertex,dem::Cell,dem::State,VertexStack,CellStack,dem::adapters::PlotData> _gridWithPlotData;
     peano::grid::Grid<dem::Vertex,dem::Cell,dem::State,VertexStack,CellStack,dem::adapters::TimeStepOnDynamicGrid> _gridWithTimeStepOnDynamicGrid;
-    peano::grid::Grid<dem::Vertex,dem::Cell,dem::State,VertexStack,CellStack,dem::adapters::TimeStepOnDynamicGridMerged> _gridWithTimeStepOnDynamicGridMerged;
     peano::grid::Grid<dem::Vertex,dem::Cell,dem::State,VertexStack,CellStack,dem::adapters::TimeStepAndPlotOnDynamicGrid> _gridWithTimeStepAndPlotOnDynamicGrid;
     peano::grid::Grid<dem::Vertex,dem::Cell,dem::State,VertexStack,CellStack,dem::adapters::TimeStepOnReluctantDynamicGrid> _gridWithTimeStepOnReluctantDynamicGrid;
-    peano::grid::Grid<dem::Vertex,dem::Cell,dem::State,VertexStack,CellStack,dem::adapters::TimeStepOnReluctantDynamicGridMerged> _gridWithTimeStepOnReluctantDynamicGridMerged;
     peano::grid::Grid<dem::Vertex,dem::Cell,dem::State,VertexStack,CellStack,dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid> _gridWithTimeStepAndPlotOnReluctantDynamicGrid;
 
   
@@ -85,10 +81,8 @@ class dem::repositories::RepositoryArrayStack: public dem::repositories::Reposit
     tarch::timing::Measurement _measureAdoptReluctantlyCPUTime;
     tarch::timing::Measurement _measurePlotDataCPUTime;
     tarch::timing::Measurement _measureTimeStepOnDynamicGridCPUTime;
-    tarch::timing::Measurement _measureTimeStepOnDynamicGridMergedCPUTime;
     tarch::timing::Measurement _measureTimeStepAndPlotOnDynamicGridCPUTime;
     tarch::timing::Measurement _measureTimeStepOnReluctantDynamicGridCPUTime;
-    tarch::timing::Measurement _measureTimeStepOnReluctantDynamicGridMergedCPUTime;
     tarch::timing::Measurement _measureTimeStepAndPlotOnReluctantDynamicGridCPUTime;
 
     tarch::timing::Measurement _measureCreateGridCalendarTime;
@@ -101,10 +95,8 @@ class dem::repositories::RepositoryArrayStack: public dem::repositories::Reposit
     tarch::timing::Measurement _measureAdoptReluctantlyCalendarTime;
     tarch::timing::Measurement _measurePlotDataCalendarTime;
     tarch::timing::Measurement _measureTimeStepOnDynamicGridCalendarTime;
-    tarch::timing::Measurement _measureTimeStepOnDynamicGridMergedCalendarTime;
     tarch::timing::Measurement _measureTimeStepAndPlotOnDynamicGridCalendarTime;
     tarch::timing::Measurement _measureTimeStepOnReluctantDynamicGridCalendarTime;
-    tarch::timing::Measurement _measureTimeStepOnReluctantDynamicGridMergedCalendarTime;
     tarch::timing::Measurement _measureTimeStepAndPlotOnReluctantDynamicGridCalendarTime;
 
 
@@ -161,10 +153,8 @@ class dem::repositories::RepositoryArrayStack: public dem::repositories::Reposit
     virtual void switchToAdoptReluctantly();    
     virtual void switchToPlotData();    
     virtual void switchToTimeStepOnDynamicGrid();    
-    virtual void switchToTimeStepOnDynamicGridMerged();    
     virtual void switchToTimeStepAndPlotOnDynamicGrid();    
     virtual void switchToTimeStepOnReluctantDynamicGrid();    
-    virtual void switchToTimeStepOnReluctantDynamicGridMerged();    
     virtual void switchToTimeStepAndPlotOnReluctantDynamicGrid();    
 
     virtual bool isActiveAdapterCreateGrid() const;
@@ -177,10 +167,8 @@ class dem::repositories::RepositoryArrayStack: public dem::repositories::Reposit
     virtual bool isActiveAdapterAdoptReluctantly() const;
     virtual bool isActiveAdapterPlotData() const;
     virtual bool isActiveAdapterTimeStepOnDynamicGrid() const;
-    virtual bool isActiveAdapterTimeStepOnDynamicGridMerged() const;
     virtual bool isActiveAdapterTimeStepAndPlotOnDynamicGrid() const;
     virtual bool isActiveAdapterTimeStepOnReluctantDynamicGrid() const;
-    virtual bool isActiveAdapterTimeStepOnReluctantDynamicGridMerged() const;
     virtual bool isActiveAdapterTimeStepAndPlotOnReluctantDynamicGrid() const;
 
      
