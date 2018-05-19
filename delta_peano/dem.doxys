@@ -65,6 +65,9 @@
 
   /opt/intel/mic/bin/micnativeloadex ./dem-3d-release"
   nohup /opt/intel/vtune_amplifier_xe_2016/bin64/amplxe-cl -r xperiment -collect hotspots -no-auto-finalize -- ./dem-3d-release-novec > lol.log &
+  
+  archer
+  export TBB_SHLIB="-L/opt/intel/parallel_studio_xe_2017_ce/compilers_and_libraries_2017.0.098/linux/tbb/lib/intel64/gcc4.7/  -ltbb"
  \endcode
 
  */
