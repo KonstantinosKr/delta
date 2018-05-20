@@ -152,7 +152,7 @@ def verifyAllExecutablesExist(justWarn=False):
     messageType = "ERROR"
     if justWarn:
       messageType = "WARNING"
-
+    
     if not justWarn and not os.path.exists(projectPath):
         print("ERROR: build folder '"+projectPath+"' doesn't exist! Please run subprogram 'build' beforehand.",file=sys.stderr)
         sys.exit()
@@ -160,14 +160,13 @@ def verifyAllExecutablesExist(justWarn=False):
     allExecutablesExist = True
     for environmentDict in dictProduct(environmentSpace):
         for key, value in environmentDict.items():
-
-            executable = projectPath
-            print(projectPath)
+			
+            print("Checking that executable "+value+" @ "+projectPath+" exist")
+            executable = projectPath + value
             if not os.path.exists(executable):
                 allExecutablesExist = False
                 print(messageType+ ": application for " + \
-                      "environment="+str(environmentDict) + \
-                      " does not exist! ('"+executable+"')",file=sys.stderr)
+                      "executable does not exist! ('"+executable+"')",file=sys.stderr)
 
     if not justWarn and not allExecutablesExist:
         print("ERROR: subprogram failed as not all executables exist. Please adopt your options file according to the error messages.\n" + \
