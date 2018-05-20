@@ -184,6 +184,7 @@ int main(int argc, char** argv)
   #ifdef SharedMemoryParallelisation
 	  const int          numberOfCores       = atoi(argv[10]);
 
+	//GRID PARALLELISATION (EVENTS RUN IN PARALLEL)
     if (std::string(argv[11])=="true") {
       dem::mappings::Collision::RunGridTraversalInParallel = true;
     }
@@ -195,6 +196,7 @@ int main(int argc, char** argv)
       return -1;
     }
 
+	//PARTICLE PARALLELISATION (PARALLEL COMPARISONS AT VERTEX VISIT)
     if (std::string(argv[12])=="true") {
       dem::mappings::Collision::RunParticleLoopInParallel = true;
     }
@@ -206,6 +208,7 @@ int main(int argc, char** argv)
       return -1;
     }
 
+	//PARTICLE PARALLELISATION & NUMBER OF BACKGROUND TASKS (PARALLEL COMPARISONS AT VERTEX VISIT)
     if (std::string(argv[13])=="off") {
       dem::mappings::Collision::RunParticleComparisionsInBackground = false;
     }
@@ -228,6 +231,7 @@ int main(int argc, char** argv)
       }
     }
 
+   //AUTOTUNING (GRAIN of GRID DYNAMICALLY SET)
    if (std::string(argv[14])=="true")
    {
 	 autotune = true;
