@@ -131,8 +131,8 @@ def build(buildOnlyMissing=False):
                     print(" [FAILED]")
                     print("make errors/warnings=\n"+makeErr.decode('UTF-8'),file=sys.stderr)
                     sys.exit()
-
-                moveCommand   = "mv "+newExecutable+" "+executableLocation
+                
+                moveCommand   = "mv "+executableLocation+" "+projectPath
                 print(moveCommand)
                 subprocess.call(moveCommand,shell=True)
                 print("--------------------------------------------------------------------------------")
@@ -188,7 +188,7 @@ def renderJobScript(templateBody,environmentDict,parameterDict,jobs,
     context["tasks"] = tasks
     context["cores"] = cores
     context["ompthread"] = ompthread
-    context["job_name"] = jobName
+    context["job_name"] = "d"+jobName
     context["output_file"] = outputFileName
 
     context["environment"] = json.dumps(environmentDict).replace("\"","\\\"")
@@ -295,7 +295,7 @@ def generateScripts():
                             for parameterDict in dictProduct(parameterSpace):
                                 parameterDictHash = hashDictionary(parameterDict)
 
-                                executable   = buildFolderPath + value
+                                executable   = projectPath + value
 
                                 tbbthread = parameterDict["tbb-core-count"] #get core count from parameters
                                 if parameterDict["enable-tbb"] == "true" and changeJobScriptCores == True:
