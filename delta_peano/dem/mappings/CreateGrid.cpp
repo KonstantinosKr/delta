@@ -135,7 +135,6 @@ void dem::mappings::CreateGrid::deployEnviroment(
 	      //deleteCoarseObjects.push_back(i);
 	    }
 	  }
-	  printf("entered\n");
 	  /*
 	  for(unsigned i=0; i<deleteCoarseObjects.size(); i++)
 	  {
@@ -255,7 +254,6 @@ void dem::mappings::CreateGrid::beginIteration(
 
 	bool uni = false;
 	if(_scenario[2] == uniform) uni = true;
-
 	delta::world::scenarios::hopper(
 		_coarseObjects, _insitufineObjects,
 		centre, xzcuts, ycuts, uni,

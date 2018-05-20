@@ -95,14 +95,17 @@
     iREAL p[3] = {pos[0], pos[1] + maxRad+epsilon, pos[2]};
     objects[i].setCentre(p);
 
-    auto yCoordinates = objects[i].getMesh().getYCoordinatesAsVector();
-
-    if(yCoordinates.size() >= 0)
+    if(!isSphereOrNone)
     {
-      for(unsigned i=0; i<yCoordinates.size(); i++)
-      {
-        yCoordinates[i] += maxRad+epsilon;
-      }
+	  auto yCoordinates = objects[i].getMesh().getYCoordinatesAsVector();
+
+	  if(yCoordinates.size() >= 0)
+	  {
+		for(unsigned i=0; i<yCoordinates.size(); i++)
+		{
+		  yCoordinates[i] += maxRad+epsilon;
+		}
+	  }
     }
   }
 
@@ -183,7 +186,6 @@
     if(minRad >= objects[i].getRad()) minRad = objects[i].getRad();
   }
 
-
   //lift above max radii
   for(unsigned i=index; i<objects.size(); i++)
   {
@@ -191,14 +193,17 @@
     iREAL p[3] = {pos[0], pos[1] + maxRad+epsilon, pos[2]};
     objects[i].setCentre(p);
 
-    auto yCoordinates = objects[i].getMesh().getYCoordinatesAsVector();
-
-    if(yCoordinates.size() >= 0)
+    if(!isSphereOrNone)
     {
-      for(unsigned i=0; i<yCoordinates.size(); i++)
-      {
-        yCoordinates[i] += maxRad+epsilon;
-      }
+	  auto yCoordinates = objects[i].getMesh().getYCoordinatesAsVector();
+
+	  if(yCoordinates.size() >= 0)
+	  {
+		for(unsigned i=0; i<yCoordinates.size(); i++)
+		{
+		  yCoordinates[i] += maxRad+epsilon;
+		}
+	  }
     }
   }
   //////////////////////////////////////////////////////
