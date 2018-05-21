@@ -104,6 +104,8 @@ class dem::mappings::CreateGrid {
       n100k,
       n500k,
 
+	  turbine,
+
       friction,
       sstatic,
       slide,

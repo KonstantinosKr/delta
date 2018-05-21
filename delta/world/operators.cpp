@@ -24,6 +24,7 @@ void delta::world::operators::computeBoundary(
   iREAL minDiameter = std::numeric_limits<iREAL>::max();
   iREAL maxDiameter = std::numeric_limits<iREAL>::min();
 
+  #pragma omp parallel for
   for(unsigned i=0; i<coarseObjects.size(); i++)
   {
     iREAL ominx = coarseObjects[i].getMesh().getMinXAxis();
@@ -46,6 +47,7 @@ void delta::world::operators::computeBoundary(
     maxDiameter = coarseObjects[i].getRad() * 2.0;
   }
 
+  #pragma omp parallel for
   for(unsigned i=0; i<objects.size(); i++)
   {
     iREAL ominx = objects[i].getMesh().getMinXAxis();
@@ -68,6 +70,7 @@ void delta::world::operators::computeBoundary(
     maxDiameter = objects[i].getRad() * 2.0;
   }
 
+  #pragma omp parallel for
   for(unsigned i=0; i<fineObjects.size(); i++)
   {
    iREAL ominx = fineObjects[i].getMesh().getMinXAxis();

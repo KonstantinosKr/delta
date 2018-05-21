@@ -1060,7 +1060,7 @@ delta::geometry::mesh::Mesh *delta::geometry::hardcoded::generateHopper(
     iREAL  height,
     iREAL  hatch,
     int    meshRefinement,
-    iREAL gridH
+    iREAL 	gridH
 )
 {
   std::vector<iREAL>	xCoordinates;

@@ -4,12 +4,8 @@
 delta::geometry::mesh::Mesh *delta::geometry::hardcoded::generateBrickFB(
   iREAL center[3], iREAL h)
 {
-  std::vector<iREAL>  xCoordinates;
-  std::vector<iREAL>  yCoordinates;
-  std::vector<iREAL>  zCoordinates;
-
   char fileinput[100] = "input/bricksmall.vtk";
-  delta::geometry::mesh::Mesh *mesh = delta::core::readSingleVTKGeometry(fileinput);
+  delta::geometry::mesh::Mesh *mesh = delta::core::readVTKGeometry(fileinput);
 
   iREAL centerOfGeometry[3];
   mesh->getCenterOfGeometry(centerOfGeometry);
@@ -23,12 +19,8 @@ delta::geometry::mesh::Mesh *delta::geometry::hardcoded::generateBrickFB(
 
 delta::geometry::mesh::Mesh *delta::geometry::hardcoded::generateBrickFB()
 {
-  std::vector<iREAL>  xCoordinates;
-  std::vector<iREAL>  yCoordinates;
-  std::vector<iREAL>  zCoordinates;
-
   char fileinput[100] = "input/bricksmall.vtk";
-  delta::geometry::mesh::Mesh *mesh = delta::core::readSingleVTKGeometry(fileinput);
+  delta::geometry::mesh::Mesh *mesh = delta::core::readVTKGeometry(fileinput);
 
   iREAL center[] = {0,0,0};
   iREAL centerOfGeometry[3];
@@ -44,13 +36,9 @@ delta::geometry::mesh::Mesh *delta::geometry::hardcoded::generateBrickFB()
 delta::geometry::mesh::Mesh *delta::geometry::hardcoded::generateBrickFB(
   iREAL center[3])
 {
-  std::vector<iREAL>  xCoordinates;
-  std::vector<iREAL>  yCoordinates;
-  std::vector<iREAL>  zCoordinates;
-
   char fileinput[100] = "input/bricksmall.vtk";
 
-  delta::geometry::mesh::Mesh *mesh = delta::core::readSingleVTKGeometry(fileinput);
+  delta::geometry::mesh::Mesh *mesh = delta::core::readVTKGeometry(fileinput);
 
   iREAL centerOfGeometry[3];
 
@@ -66,13 +54,9 @@ delta::geometry::mesh::Mesh *delta::geometry::hardcoded::generateBrickFB(
 delta::geometry::mesh::Mesh *delta::geometry::hardcoded::generateKeyXK(
   iREAL center[3], iREAL h)
 {
-  std::vector<iREAL>  xCoordinates;
-  std::vector<iREAL>  yCoordinates;
-  std::vector<iREAL>  zCoordinates;
-
   char fileinput[100] = "input/keysmall.vtk";
 
-  delta::geometry::mesh::Mesh *mesh = delta::core::readSingleVTKGeometry(fileinput);
+  delta::geometry::mesh::Mesh *mesh = delta::core::readVTKGeometry(fileinput);
 
   iREAL centerOfGeometry[3];
 
@@ -88,13 +72,9 @@ delta::geometry::mesh::Mesh *delta::geometry::hardcoded::generateKeyXK(
 delta::geometry::mesh::Mesh *delta::geometry::hardcoded::generateKeyYK(
   iREAL center[3], iREAL h)
 {
-  std::vector<iREAL>  xCoordinates;
-  std::vector<iREAL>  yCoordinates;
-  std::vector<iREAL>  zCoordinates;
-
   char fileinput[100] = "input/keysmall.vtk";
 
-  delta::geometry::mesh::Mesh *mesh = delta::core::readSingleVTKGeometry(fileinput);
+  delta::geometry::mesh::Mesh *mesh = delta::core::readVTKGeometry(fileinput);
 
   iREAL centerOfGeometry[3];
   mesh->getCenterOfGeometry(centerOfGeometry);

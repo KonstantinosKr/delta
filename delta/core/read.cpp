@@ -66,7 +66,7 @@ void delta::core::parseModelGridSchematics(
   else std::cout << "Unable to open file";
 }
 
-delta::geometry::mesh::Mesh *delta::core::readSingleVTKGeometry(
+delta::geometry::mesh::Mesh *delta::core::readVTKGeometry(
 	char* fileName)
 {
   std::vector<iREAL> xCoordinates;
@@ -155,7 +155,7 @@ void delta::core::readScenarioSpecification(std::string fileName)
 
 }
 
-std::vector<delta::geometry::mesh::Mesh> delta::core::readSceneGeometry(std::string fileName)
+std::vector<delta::geometry::mesh::Mesh> delta::core::readGeometry(std::string fileName)
 {
   Assimp::Importer importer;
 
@@ -168,7 +168,7 @@ std::vector<delta::geometry::mesh::Mesh> delta::core::readSceneGeometry(std::str
   bool n = scene->HasMeshes();
   int nn = scene->mNumMeshes;
 
-  //printf("has %i meshes:%i\n", nn, n);
+  printf("Importing %i Meshes.\n", nn);
 
   std::vector<delta::geometry::mesh::Mesh> meshVector;
 
@@ -182,8 +182,10 @@ std::vector<delta::geometry::mesh::Mesh> delta::core::readSceneGeometry(std::str
 	std::vector<iREAL> g_vp;
 	g_vp.reserve(3 * mesh->mNumVertices);
 
-	//printf("read %i vertices\n", mesh->mNumVertices);
+	//printf("Read %i vertices\n", mesh->mNumVertices);
+
 	//vertices
+	#pragma omp parallel for
 	for(uint v_i = 0; v_i < mesh->mNumVertices; v_i++)
 	{
 	  if(mesh->HasPositions())
@@ -194,8 +196,9 @@ std::vector<delta::geometry::mesh::Mesh> delta::core::readSceneGeometry(std::str
 		g_vp.push_back(vp->z);
 
 		std::array<iREAL, 3> vertex = {vp->x, vp->y, vp->z};
-		uniqueVertices.push_back(vertex);
 
+		#pragma omp critical
+		uniqueVertices.push_back(vertex);
 		//std::cout << vp->x << " " << vp->y << " " << vp->z << std::endl;
 	  }
 	}
@@ -203,6 +206,7 @@ std::vector<delta::geometry::mesh::Mesh> delta::core::readSceneGeometry(std::str
 	//printf("number of triangles: %i\n", mesh->mNumFaces);
 
 	//only triangle faces
+	#pragma omp parallel for
 	for(uint f_i = 0; f_i < mesh->mNumFaces; f_i++)
 	{
 	  //only triangle faces
@@ -212,18 +216,21 @@ std::vector<delta::geometry::mesh::Mesh> delta::core::readSceneGeometry(std::str
 		int idxB = mesh->mFaces[f_i].mIndices[index+1];
 		int idxC = mesh->mFaces[f_i].mIndices[index+2];
 		std::array<int, 3> triangle = {idxA, idxB, idxC};
-
 		/*
 		std::cout << uniqueVertices[idxA][0] << " " << uniqueVertices[idxA][1] << " " << uniqueVertices[idxA][2] << std::endl;
 		std::cout << uniqueVertices[idxB][0] << " " << uniqueVertices[idxB][1] << " " << uniqueVertices[idxB][2] << std::endl;
 		std::cout << uniqueVertices[idxC][0] << " " << uniqueVertices[idxC][1] << " " << uniqueVertices[idxC][2] << std::endl;*/
 
+		#pragma omp critical
 		triangleFaces.push_back(triangle);
 	  }
 	}
 
+	printf("entered\n");
 	delta::geometry::mesh::Mesh *meshgeometry = new delta::geometry::mesh::Mesh(triangleFaces, uniqueVertices);
+	printf("entered2\n");
 	meshVector.push_back(*meshgeometry);
+	printf("entered3\n");
   }
 
   return meshVector;

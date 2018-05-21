@@ -26,12 +26,12 @@ namespace delta {
 			std::vector<std::vector<std::string>> 	&componentGrid,
 			std::vector<std::string> 				&componentSeq);
 
-		delta::geometry::mesh::Mesh* readSingleVTKGeometry(
+		delta::geometry::mesh::Mesh* readVTKGeometry(
 			char* 				fileName);
 
 		void readScenarioSpecification(std::string fileName);
 
-		std::vector<delta::geometry::mesh::Mesh> readSceneGeometry(
+		std::vector<delta::geometry::mesh::Mesh> readGeometry(
 			std::string fileName);
 	}
 }

@@ -364,7 +364,6 @@ void delta::geometry::operators::triangle::meshDenser(
     std::vector<iREAL>&  yCoordinates,
     std::vector<iREAL>&  zCoordinates)
 {
-
   if(meshRefinement < 1) return;
   std::vector<iREAL>  xNewCoordinates;
   std::vector<iREAL>  yNewCoordinates;

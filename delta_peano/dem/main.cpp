@@ -380,6 +380,11 @@ int main(int argc, char** argv)
     scenarioArray[1] = dem::mappings::CreateGrid::nonescenario;
     scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
   }
+  else if (scenario=="turbine") {
+    scenarioArray[0] = dem::mappings::CreateGrid::turbine;
+    scenarioArray[1] = dem::mappings::CreateGrid::nonescenario;
+    scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
+  }
   else if (scenario=="hopperUniform") {
     scenarioArray[0] = dem::mappings::CreateGrid::hopperUniform;
     scenarioArray[1] = dem::mappings::CreateGrid::hopper;

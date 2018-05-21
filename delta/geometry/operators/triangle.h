@@ -32,7 +32,7 @@
 #include <array>
 #include <delta/geometry/material.h>
 #include <delta/geometry/Object.h>
-#include <delta/geometry/primitive/surface.h>
+#include <delta/geometry/hardcoded/surface.h>
 #include <delta/geometry/operators/physics.h>
 #include <delta/geometry/mesh/Mesh.h>
 

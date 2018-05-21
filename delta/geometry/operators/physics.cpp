@@ -193,19 +193,19 @@ void delta::geometry::operators::physics::computeInverseInertia(
   INVERT (a, x, det);
 	//INVERT (inertia, inverse, det);
 
-	//zero inverse because it is an object
-	if(isObject)
+  //zero inverse because it is an object
+  if(isObject)
+  {
+	for (int j = 0; j < 9; j++)
 	{
-		for (int j = 0; j < 9; j++)
-		{
-			inverse[j] = 0.0;
-		}
-	} else {
-		for (int j = 0; j < 9; j++)
-		{
-		  inverse[j] = x[j];
-		}
+		inverse[j] = 0.0;
 	}
+  } else {
+	for (int j = 0; j < 9; j++)
+	{
+	  inverse[j] = x[j];
+	}
+  }
 }
 
 iREAL delta::geometry::operators::physics::simplex_J (

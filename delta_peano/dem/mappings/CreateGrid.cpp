@@ -258,6 +258,10 @@ void dem::mappings::CreateGrid::beginIteration(
 		_coarseObjects, _insitufineObjects,
 		centre, xzcuts, ycuts, uni,
 		_isSphere, _noPointsPerParticle, _epsilon);
+  } else if(_scenario[0] == turbine)
+  {
+	delta::world::scenarios::turbine(_coarseObjects, _isSphere, _noPointsPerParticle, _epsilon);
+	printf("passed\n");
   } else if(_scenario[1] == friction)
   {
 	int sc = 0;
@@ -274,8 +278,13 @@ void dem::mappings::CreateGrid::beginIteration(
 	delta::world::scenarios::friction(sc,  _isSphere, centre, _noPointsPerParticle, _epsilon, _coarseObjects);
   } else if(_scenario[0] == ParticleRotation)
   {
-	_coarseObjects = delta::world::scenarios::rotateParticle(_isSphere, _noPointsPerParticle, _epsilon);
+	delta::world::scenarios::rotateParticle(_coarseObjects, _isSphere, _noPointsPerParticle, _epsilon);
 	_gravity = false;
+  }
+  else if(_scenario[0] == TwoParticlesCrash)
+  {
+  delta::world::scenarios::twoParticlesCrash(_coarseObjects, _isSphere, _noPointsPerParticle, _epsilon);
+  _gravity = false;
   }
   else if(_scenario[0] == blackHoleWithCubes ||
           _scenario[0] == freefallWithCubes ||

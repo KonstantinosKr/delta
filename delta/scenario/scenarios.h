@@ -29,6 +29,12 @@ namespace delta {
 		  int meshDensity,
 		  iREAL epsilon);
 
+	  void turbine(
+	  	std::vector<delta::geometry::Object>& 	coarseObjects,
+	  	bool 									isSphere,
+	  	int 										meshDensity,
+	  	iREAL 									epsilon);
+
 	  void friction(
 		  int 									scenario,
 		  bool 									isSphere,
@@ -54,12 +60,17 @@ namespace delta {
 		  iREAL 									epsilon,
 		  std::vector<delta::geometry::Object> &	fine);
 
-	  std::vector<delta::geometry::Object> twoParticlesCrash(bool isSphere, int meshDensity, iREAL epsilon);
+	  void twoParticlesCrash(
+		  std::vector<delta::geometry::Object>& 	coarseObject,
+		  bool 									isSphere,
+		  int 									meshDensity,
+		  iREAL 									epsilon);
 
-	  std::vector<delta::geometry::Object> rotateParticle(
-	  	bool 	isSphere,
-	  	int 		meshDensity,
-	  	iREAL 	epsilon);
+	  void rotateParticle(
+		  std::vector<delta::geometry::Object>& 	coarseObject,
+		  bool 									isSphere,
+		  int 									meshDensity,
+		  iREAL 									epsilon);
 
 	} /* namespace scenarios */
   } /* namespace world */

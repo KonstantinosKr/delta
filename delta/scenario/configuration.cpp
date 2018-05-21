@@ -8,8 +8,8 @@
 #include <delta/world/arrayLayout.h>
 #include <delta/geometry/hardcoded/graphite.h>
 #include "delta/scenario/configuration.h"
-#include "delta/geometry/primitive/granulate.h"
-#include "delta/geometry/primitive/cube.h"
+#include "delta/geometry/hardcoded/granulate.h"
+#include "delta/geometry/hardcoded/cube.h"
 
  void delta::world::configuration::uniformlyDistributedTotalMass(
 	  std::vector<delta::geometry::Object> &insitu,
@@ -566,7 +566,8 @@ void delta::world::configuration::nonUniformlyDistributedTotalMass(
   {
     auto material = delta::geometry::material::MaterialType::GRAPHITE;
 
-    delta::geometry::Object obj("FB", i, particleGrid[i], material, false, false, epsilon, {0,0,0}, {0,0,0});
+    delta::geometry::mesh::Mesh *geometry = delta::geometry::hardcoded::generateBrickFB(position, scalePercentage);
+    delta::geometry::Object obj("FB", i, geometry, particleGrid[i], material, false, false, epsilon, {0,0,0}, {0,0,0});
     obj.setRad(scalePercentage);
     objects.push_back(obj);
   }

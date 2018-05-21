@@ -65,6 +65,7 @@ namespace delta {
 			iREAL alphaX)
 		{
 		  const iREAL pi = std::acos(-1);
+
 		  for (unsigned i=0;i<xCoordinates.size(); i++)
 		  {
 			  iREAL x = xCoordinates[i];
@@ -90,6 +91,7 @@ namespace delta {
 			iREAL alphaY)
 		{
 		  const iREAL pi = std::acos(-1);
+
 		  for (unsigned i=0;i<xCoordinates.size(); i++) {
 			  iREAL x = xCoordinates[i];
 			  iREAL y = yCoordinates[i];
@@ -114,6 +116,7 @@ namespace delta {
 			iREAL alphaZ)
 		{
 		  const iREAL pi = std::acos(-1);
+
 		  for (unsigned i=0;i<xCoordinates.size(); i++) {
 			  iREAL x = xCoordinates[i];
 			  iREAL y = yCoordinates[i];

@@ -60,6 +60,19 @@ class delta::geometry::mesh::Mesh {
 		std::vector<iREAL>& zCoordinates);
 
 	/*
+	 *  Flatten Data Structure
+	 *
+	 *  Returns the SoA data structure of the object oriented
+	 *  structure of triangles.
+	 *
+	 *  @param xCoordinates : x axis elements array of mesh
+	 *  @param yCoordinates : y axis elements array of mesh
+	 *  @param zCoordinates : z axis elements array of mesh
+	 *  @returns void but through parameters by reference
+	 */
+	void flatten ();
+
+	/*
 	 *  Replace Data Structure
 	 *
 	 *  Set SoA data structure with SoA passed.
@@ -336,6 +349,17 @@ class delta::geometry::mesh::Mesh {
 	iREAL 					getXZWidth();
 
 	/*
+	 *  Get Diameter Width
+	 *
+	 *  Returns diameter.
+	 *
+	 *
+	 *  @param none
+	 *  @returns iREAL
+	 */
+	iREAL getDiameter();
+
+	/*
 	 *  Get Triangle Faces
 	 *
 	 *  Returns vector of triangle faces as
@@ -529,7 +553,19 @@ class delta::geometry::mesh::Mesh {
 	 */
 	void compressFromVectors();
 
-	std::vector<delta::geometry::mesh::Triangle> _triangles;
+	/*
+	 *  Compress from vectors
+	 *
+	 *  Compresses SoA data structure into triangle
+	 *  faces pointer and unique vertices.
+	 *  This modifies the local data.
+	 *
+	 *  @returns void
+	 */
+	void compressFromVectors(
+		std::vector<iREAL>& xCoordinates,
+		std::vector<iREAL>& yCoordinates,
+		std::vector<iREAL>& zCoordinates);
 
 	std::vector<std::array<int, 3>> 				_triangleFaces;
 	std::vector<std::array<iREAL, 3>>		 	_uniqueVertices;

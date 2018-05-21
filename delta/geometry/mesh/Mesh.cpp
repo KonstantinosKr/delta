@@ -21,32 +21,7 @@ delta::geometry::mesh::Mesh::Mesh(
 	std::vector<std::array<int, 3>> 				triangleFaces,
 	std::vector<std::array<iREAL, 3>> 			uniqueVertices)
 {
-  for(int i=0; i<triangleFaces.size(); i++)
-  {
-	std::array<iREAL, 3> A = uniqueVertices[triangleFaces[i][0]];
-	std::array<iREAL, 3> B = uniqueVertices[triangleFaces[i][1]];
-	std::array<iREAL, 3> C = uniqueVertices[triangleFaces[i][2]];
-
-	delta::geometry::mesh::Triangle *triangle =
-		new delta::geometry::mesh::Triangle( A[0], A[1], A[2],
-											B[0], B[1], 	B[2],
-											C[0], C[1], C[2]);
-	_triangles.push_back(*triangle);
-
-	_xCoordinates.push_back(A[0]);
-	_yCoordinates.push_back(A[1]);
-	_zCoordinates.push_back(A[2]);
-
-	_xCoordinates.push_back(B[0]);
-	_yCoordinates.push_back(B[1]);
-	_zCoordinates.push_back(B[2]);
-
-	_xCoordinates.push_back(C[0]);
-	_yCoordinates.push_back(C[1]);
-	_zCoordinates.push_back(C[2]);
-  }
-
-  compressFromVectors();
+  delta::geometry::mesh::Mesh::flatten();
 }
 
 delta::geometry::mesh::Mesh::Mesh(
@@ -56,12 +31,6 @@ delta::geometry::mesh::Mesh::Mesh(
 {
   for(int i=0; i<xCoordinates.size(); i+=3)
   {
-	delta::geometry::mesh::Triangle *triangle =
-		new delta::geometry::mesh::Triangle( xCoordinates[i], 	yCoordinates[i], 	zCoordinates[i],
-											xCoordinates[i+1], 	yCoordinates[i+1], 	zCoordinates[i+1],
-											xCoordinates[i+2], 	yCoordinates[i+2], 	zCoordinates[i+2]);
-	_triangles.push_back(*triangle);
-
 	_xCoordinates.push_back(xCoordinates[i]);
 	_yCoordinates.push_back(yCoordinates[i]);
 	_zCoordinates.push_back(zCoordinates[i]);
@@ -78,49 +47,8 @@ delta::geometry::mesh::Mesh::Mesh(
   compressFromVectors();
 }
 
-delta::geometry::mesh::Mesh::Mesh(std::vector<delta::geometry::mesh::Triangle> triangles)
-{
-  _triangles.insert(_triangles.begin(), triangles.begin(), triangles.end());
-
-  _xCoordinates.clear();
-  _yCoordinates.clear();
-  _zCoordinates.clear();
-
-  for(int i=0; i<triangles.size(); i++)
-  {
-	iREAL xA = triangles[i].getVertexA()[0];
-	iREAL yA = triangles[i].getVertexA()[1];
-	iREAL zA = triangles[i].getVertexA()[2];
-
-	iREAL xB = triangles[i].getVertexB()[0];
-	iREAL yB = triangles[i].getVertexB()[1];
-	iREAL zB = triangles[i].getVertexB()[2];
-
-	iREAL xC = triangles[i].getVertexC()[0];
-	iREAL yC = triangles[i].getVertexC()[1];
-	iREAL zC = triangles[i].getVertexC()[2];
-
-	_xCoordinates.push_back(xA);
-	_yCoordinates.push_back(yA);
-	_zCoordinates.push_back(zA);
-
-	_xCoordinates.push_back(xB);
-	_yCoordinates.push_back(yB);
-	_zCoordinates.push_back(zB);
-
-	_xCoordinates.push_back(xC);
-	_yCoordinates.push_back(yC);
-	_zCoordinates.push_back(zC);
-  }
-
-  compressFromVectors();
-}
-
 void delta::geometry::mesh::Mesh::compressFromVectors()
 {
-  //_triangleFaces.clear();
-  //_uniqueVertices.clear();
-
   std::hash<std::string> v_hash;
   std::map<unsigned int, std::array<iREAL,3>> vertices;
 
@@ -211,24 +139,145 @@ void delta::geometry::mesh::Mesh::compressFromVectors()
   }
 }
 
-void delta::geometry::mesh::Mesh::flatten (
+void delta::geometry::mesh::Mesh::compressFromVectors(
 	std::vector<iREAL>& xCoordinates,
 	std::vector<iREAL>& yCoordinates,
 	std::vector<iREAL>& zCoordinates)
 {
-  for(int i=0; i<_triangles.size(); i++)
+  std::hash<std::string> v_hash;
+  std::map<unsigned int, std::array<iREAL,3>> vertices;
+
+  for(int i=0; i<xCoordinates.size(); i+=3)
   {
-	xCoordinates.push_back(_triangles[i].getVertexA()[0]);
-	xCoordinates.push_back(_triangles[i].getVertexB()[1]);
-	xCoordinates.push_back(_triangles[i].getVertexC()[2]);
 
-	yCoordinates.push_back(_triangles[i].getVertexA()[0]);
-	yCoordinates.push_back(_triangles[i].getVertexB()[1]);
-	yCoordinates.push_back(_triangles[i].getVertexC()[2]);
+	iREAL xA = xCoordinates[i];
+	iREAL yA = yCoordinates[i];
+	iREAL zA = zCoordinates[i];
 
-	zCoordinates.push_back(_triangles[i].getVertexA()[0]);
-	zCoordinates.push_back(_triangles[i].getVertexB()[1]);
-	zCoordinates.push_back(_triangles[i].getVertexC()[2]);
+	iREAL xB = xCoordinates[i+1];
+	iREAL yB = yCoordinates[i+1];
+	iREAL zB = zCoordinates[i+1];
+
+	iREAL xC = xCoordinates[i+2];
+	iREAL yC = yCoordinates[i+2];
+	iREAL zC = zCoordinates[i+2];
+
+	std::ostringstream ssA;
+	ssA << xA << yA << zA;
+	std::string A(ssA.str());
+	unsigned int uniqueIDA = v_hash(A);
+
+	if(vertices.count(uniqueIDA) == 0)
+	{
+	  std::array<iREAL, 3> v = {xA, yA, zA};
+	  vertices[uniqueIDA] = v;
+	  _uniqueVertices.push_back(vertices[uniqueIDA]);
+	}
+
+	std::ostringstream ssB;
+	ssB << xB << yB << zB;
+	std::string B(ssB.str());
+	unsigned int uniqueIDB = v_hash(B);
+
+	if(vertices.count(uniqueIDB) == 0)
+	{
+	  std::array<iREAL, 3> v = {xB, yB, zB};
+	  vertices[uniqueIDB] = v;
+	  _uniqueVertices.push_back(vertices[uniqueIDB]);
+	}
+
+	std::ostringstream ssC;
+	ssC << xC << yC << zC;
+	std::string C(ssC.str());
+	unsigned int uniqueIDC = v_hash(C);
+
+	if(vertices.count(uniqueIDC) == 0)
+	{
+	  std::array<iREAL, 3> v = {xC, yC, zC};
+	  vertices[uniqueIDC] = v;
+	  _uniqueVertices.push_back(vertices[uniqueIDC]);
+	}
+
+	int va=0,vb=0,vc=0;
+
+	//search for vertices to construct triangleface
+	for(int i=0; i<_uniqueVertices.size(); i++)
+	{
+	  //printf("entered loop: %i\n", i);
+	  std::ostringstream ssr;
+	  ssr << _uniqueVertices[i][0] << _uniqueVertices[i][1] << _uniqueVertices[i][2];
+	  std::string tt(ssr.str());
+	  unsigned int id = v_hash(tt);
+
+	  if(id == uniqueIDA)
+	  {
+		va = i;
+		//printf("entered A : %i\n", i);
+		//std::cout << _uniqueVertices[i][0] << " " << _uniqueVertices[i][1] << " " << _uniqueVertices[i][2] << std::endl;
+	  }
+	  if(id == uniqueIDB)
+	  {
+		vb = i;
+		//printf("entered B : %i\n", i);
+		//std::cout << _uniqueVertices[i][0] << " " << _uniqueVertices[i][1] << " " << _uniqueVertices[i][2] << std::endl;
+	  }
+	  if(id == uniqueIDC)
+	  {
+		vc = i;
+		//printf("entered C : %i\n", i);
+		//std::cout << _uniqueVertices[i][0] << " " << _uniqueVertices[i][1] << " " << _uniqueVertices[i][2] << std::endl;
+	  }
+	}
+	std::array<int, 3> loc = {va, vb, vc};
+
+	_triangleFaces.push_back(loc);
+  }
+}
+
+void delta::geometry::mesh::Mesh::flatten()
+{
+  for(int i=0; i<_triangleFaces.size(); i++)
+  {
+	std::array<iREAL, 3> A = _uniqueVertices[_triangleFaces[i][0]];
+	std::array<iREAL, 3> B = _uniqueVertices[_triangleFaces[i][1]];
+	std::array<iREAL, 3> C = _uniqueVertices[_triangleFaces[i][2]];
+
+	_xCoordinates.push_back(A[0]);
+	_yCoordinates.push_back(A[1]);
+	_zCoordinates.push_back(A[2]);
+
+	_xCoordinates.push_back(B[0]);
+	_yCoordinates.push_back(B[1]);
+	_zCoordinates.push_back(B[2]);
+
+	_xCoordinates.push_back(C[0]);
+	_yCoordinates.push_back(C[1]);
+	_zCoordinates.push_back(C[2]);
+  }
+}
+
+void delta::geometry::mesh::Mesh::flatten(
+	std::vector<iREAL>& xCoordinates,
+	std::vector<iREAL>& yCoordinates,
+	std::vector<iREAL>& zCoordinates)
+{
+  for(int i=0; i<_triangleFaces.size(); i++)
+  {
+	std::array<iREAL, 3> A = _uniqueVertices[_triangleFaces[i][0]];
+	std::array<iREAL, 3> B = _uniqueVertices[_triangleFaces[i][1]];
+	std::array<iREAL, 3> C = _uniqueVertices[_triangleFaces[i][2]];
+
+	xCoordinates.push_back(A[0]);
+	yCoordinates.push_back(A[1]);
+	zCoordinates.push_back(A[2]);
+
+	xCoordinates.push_back(B[0]);
+	yCoordinates.push_back(B[1]);
+	zCoordinates.push_back(B[2]);
+
+	xCoordinates.push_back(C[0]);
+	yCoordinates.push_back(C[1]);
+	zCoordinates.push_back(C[2]);
   }
 }
 
@@ -237,14 +286,23 @@ void delta::geometry::mesh::Mesh::replace (
 	std::vector<iREAL>& yCoordinates,
 	std::vector<iREAL>& zCoordinates)
 {
-  _triangles.clear();
+  _xCoordinates.clear();
+  _yCoordinates.clear();
+  _zCoordinates.clear();
+
   for(int i=0; i<xCoordinates.size(); i+=3)
   {
-	delta::geometry::mesh::Triangle *triangle =
-		new delta::geometry::mesh::Triangle( xCoordinates[i], 	yCoordinates[i], 	zCoordinates[i],
-											xCoordinates[i+1], 	yCoordinates[i+1], 	zCoordinates[i+1],
-											xCoordinates[i+2], 	yCoordinates[i+2], 	zCoordinates[i+2]);
-	_triangles.push_back(*triangle);
+	_xCoordinates.push_back(xCoordinates[i]);
+	_yCoordinates.push_back(yCoordinates[i]);
+	_zCoordinates.push_back(zCoordinates[i]);
+
+	_xCoordinates.push_back(xCoordinates[i+1]);
+	_yCoordinates.push_back(yCoordinates[i+1]);
+	_zCoordinates.push_back(zCoordinates[i+1]);
+
+	_xCoordinates.push_back(xCoordinates[i+2]);
+	_yCoordinates.push_back(yCoordinates[i+2]);
+	_zCoordinates.push_back(zCoordinates[i+2]);
   }
 }
 
@@ -362,6 +420,13 @@ iREAL delta::geometry::mesh::Mesh::computeDistanceAB(
     std::array<iREAL, 3> B)
 {
   return std::sqrt(((B[0]-A[0])*(B[0]-A[0]))+((B[1]-A[1])*(B[1]-A[1]))+((B[2]-A[2])*(B[2]-A[2])));
+}
+
+iREAL delta::geometry::mesh::Mesh::getDiameter()
+{
+  iREAL width = delta::geometry::mesh::Mesh::getXYZWidth();
+
+  return width;
 }
 
 iREAL delta::geometry::mesh::Mesh::getXYZWidth()

@@ -1,8 +1,8 @@
 #include <delta/geometry/Object.h>
 #include <stdio.h>
 #include <delta/core/algo.h>
-#include <delta/geometry/primitive/granulate.h>
-#include <delta/geometry/primitive/cube.h>
+#include <delta/geometry/hardcoded/granulate.h>
+#include <delta/geometry/hardcoded/cube.h>
 #include <delta/geometry/hardcoded/graphite.h>
 #include <delta/geometry/hardcoded/hopper.h>
 
@@ -77,22 +77,47 @@ std::array<iREAL, 3> 					angular)
   this->_angularVelocity[1] = angular[1];
   this->_angularVelocity[2] = angular[2];
 
-  this->_rad				= 	0;
-  this->_haloDiameter 	= 	0;
-  this->_diameter		=	0;
-  this->_mass			=	0;
-  this->_epsilon			=	0;
-
   this-> _mesh			= 	mesh;
 
-  std::array<iREAL, 3> 	_refAngularVelocity;
-
   std::array<iREAL, 3> 	_centreOfMass;
-  std::array<iREAL, 3> 	_refCentreOfMass;
 
-  std::array<iREAL, 9> 	_inertia;
-  std::array<iREAL, 9> 	_inverse;
-  std::array<iREAL, 9> 	_orientation;
+  iREAL mass, centerOfMass[3], inertia[9], inverse[9];
+
+  mesh->computeInertia(_material, mass, centerOfMass, inertia);
+  mesh->computeInverseInertia(inertia, inverse, _isObstacle);
+
+  _mesh = mesh;
+
+  _inertia[0] = inertia[0];
+  _inertia[1] = inertia[1];
+  _inertia[2] = inertia[2];
+  _inertia[3] = inertia[3];
+  _inertia[4] = inertia[4];
+  _inertia[5] = inertia[5];
+  _inertia[6] = inertia[6];
+  _inertia[7] = inertia[7];
+  _inertia[8] = inertia[8];
+
+  _inverse[0] = inertia[0];
+  _inverse[1] = inertia[1];
+  _inverse[2] = inertia[2];
+  _inverse[3] = inertia[3];
+  _inverse[4] = inertia[4];
+  _inverse[5] = inertia[5];
+  _inverse[6] = inertia[6];
+  _inverse[7] = inertia[7];
+  _inverse[8] = inertia[8];
+
+  _centreOfMass[0] = centerOfMass[0];
+  _centreOfMass[1] = centerOfMass[1];
+  _centreOfMass[2] = centerOfMass[2];
+
+  _mass = mass;
+
+  this->_diameter		=	mesh->getDiameter();
+  this->_rad				= 	_diameter/2;
+  this->_haloDiameter 	= 	(_diameter+epsilon*2) * 1.1;;
+  this->_mass			=	mass;
 
   //dimensions
   _wx = 0;
@@ -100,7 +125,7 @@ std::array<iREAL, 3> 					angular)
   _wz = 0;
 }
 
-
+//sphere object
 delta::geometry::Object::Object(
 std::string                   			component,
 iREAL									rad,
@@ -219,6 +244,7 @@ void delta::geometry::Object::generateMesh(
   _mass = mass;
   _rad = rad;
 }
+
 
 std::string delta::geometry::Object::getComponent()
 {
