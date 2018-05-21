@@ -87,18 +87,18 @@ class dem::mappings::Collision {
      * protected.
      */
     static void collisionDetection(
-      dem::records::Particle   particleA,
-      int                      numberOfTrianglesA,
-      const iREAL*            xCoordinatesA,
-      const iREAL*            yCoordinatesA,
-      const iREAL*            zCoordinatesA,
-      dem::records::Particle   particleB,
-      int                      numberOfTrianglesB,
-      const iREAL*            xCoordinatesB,
-      const iREAL*            yCoordinatesB,
-      const iREAL*            zCoordinatesB,
-      State*                   state,
-      bool                     protectStateAccess
+      const dem::records::Particle&   	particleA,
+      int                      			numberOfTrianglesA,
+      const iREAL*            			xCoordinatesA,
+      const iREAL*            			yCoordinatesA,
+      const iREAL*            			zCoordinatesA,
+      const dem::records::Particle&   	particleB,
+      int                      			numberOfTrianglesB,
+      const iREAL*            			xCoordinatesB,
+      const iREAL*           			yCoordinatesB,
+      const iREAL*            			zCoordinatesB,
+      State*                   			state,
+      bool                     			protectStateAccess
     );
 
     static void collideParticlesOfTwoDifferentVertices(

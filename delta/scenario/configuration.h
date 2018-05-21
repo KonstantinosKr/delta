@@ -137,7 +137,8 @@ namespace delta {
 		   *  @param meshDensity				: mesh density
 		   *  @returns objects
 		   */
-		 std::vector<delta::geometry::Object> uniformlyDistributedTotalMass(
+		 void uniformlyDistributedTotalMass(
+	      std::vector<delta::geometry::Object>&	insitu,
 		  iREAL 									position[3],
 		  int 									xzcuts,
 		  int 									ycuts,
@@ -167,7 +168,8 @@ namespace delta {
 		   *  @param meshDensity				: mesh density
 		   *  @returns objects
 		   */
-		 std::vector<delta::geometry::Object> nonUniformlyDistributedTotalMass(
+		 void nonUniformlyDistributedTotalMass(
+		  std::vector<delta::geometry::Object>&	insitu,
 		  iREAL 									position[3],
 		  int 									xzcuts,
 		  int 									ycuts,

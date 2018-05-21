@@ -80,22 +80,22 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::bf(
   tarch::multicore::Lock lock(semaphore,false);
 #endif
 
-  #ifdef SharedTBB
-	// Take care: grain size has to be positive even if loop degenerates
-	const int grainSize = numberOfTrianglesA;
-	tbb::parallel_for(
-	 tbb::blocked_range<int>(0, numberOfTrianglesA, grainSize), [&](const tbb::blocked_range<int>& r)
-	 {
-	   for(std::vector<int>::size_type iA=0; iA<r.size(); iA+=3)
-  #else
+#ifdef SharedTBB
+  // Take care: grain size has to be positive even if loop degenerates
+  const int grainSize = numberOfTrianglesA;
+  tbb::parallel_for(
+   tbb::blocked_range<int>(0, numberOfTrianglesA, grainSize), [&](const tbb::blocked_range<int>& r)
+   {
+	for(std::vector<int>::size_type iA=0; iA<r.size(); iA+=3)
+#else
   #ifdef ompTriangle
 	#pragma omp parallel for shared(result) firstprivate(numberOfTrianglesA, numberOfTrianglesB, epsilonA, epsilonB, frictionA, frictionB, particleA, particleB, xCoordinatesOfPointsOfGeometryA, yCoordinatesOfPointsOfGeometryA, zCoordinatesOfPointsOfGeometryA, xCoordinatesOfPointsOfGeometryB, yCoordinatesOfPointsOfGeometryB, zCoordinatesOfPointsOfGeometryB)
   #endif
   for(int iA=0; iA<numberOfTrianglesA; iA+=3)
-  #endif
+#endif
   {
     __attribute__ ((aligned(byteAlignment))) contactpoint *nearestContactPoint = nullptr;
-    __attribute__ ((aligned(byteAlignment))) iREAL dd = 1E99;
+    __attribute__ ((aligned(byteAlignment))) iREAL dd = epsilonA+epsilonB;
 
     #pragma omp simd
     for(int iB=0; iB<numberOfTrianglesB; iB+=3)
@@ -104,9 +104,9 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::bf(
       __attribute__ ((aligned(byteAlignment))) iREAL xPA=0.0;
       __attribute__ ((aligned(byteAlignment))) iREAL yPA=0.0;
       __attribute__ ((aligned(byteAlignment))) iREAL zPA=0.0;
-      __attribute__ ((aligned(byteAlignment))) iREAL xPB=0.0;
-      __attribute__ ((aligned(byteAlignment))) iREAL yPB=0.0;
-      __attribute__ ((aligned(byteAlignment))) iREAL zPB=0.0;
+      __attribute__ ((aligned(byteAlignment))) iREAL xPB=1.0;
+      __attribute__ ((aligned(byteAlignment))) iREAL yPB=1.0;
+      __attribute__ ((aligned(byteAlignment))) iREAL zPB=1.0;
 
       bf(xCoordinatesOfPointsOfGeometryA+(iA),
 		 yCoordinatesOfPointsOfGeometryA+(iA),
@@ -133,7 +133,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::bf(
     {
 	#ifdef SharedTBB
 	  lock.lock();
-	  result.push_back(*nearestContactPoint);
+		result.push_back(*nearestContactPoint);
 	  lock.free();
 	#else
 	  #ifdef ompTriangle

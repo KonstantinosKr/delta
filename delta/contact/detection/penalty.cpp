@@ -67,7 +67,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::penaltyStat
   for (int iA = 0; iA<numberOfTrianglesOfGeometryA*3; iA+=3)
   {
     __attribute__ ((aligned(byteAlignment))) iREAL	epsilonMargin = (epsilonA+epsilonB);
-    __attribute__ ((aligned(byteAlignment))) iREAL dd = 1E99;
+    __attribute__ ((aligned(byteAlignment))) iREAL dd = epsilonA+epsilonB;
     contactpoint *nearestContactPoint = nullptr;
 
     #if defined(__INTEL_COMPILER)

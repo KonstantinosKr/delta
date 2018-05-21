@@ -76,12 +76,12 @@ void delta::world::scenarios::hopper(
 
   if(uniform)
   {
-	insitu = delta::world::configuration::uniformlyDistributedTotalMass(pos, xzcuts, ycuts, gridxyLength, totalMass, hopperWidth, hopperParticles, epsilon, isSphere, meshDensity);
+	delta::world::configuration::uniformlyDistributedTotalMass(insitu, pos, xzcuts, ycuts, gridxyLength, totalMass, hopperWidth, hopperParticles, epsilon, isSphere, meshDensity);
   }
   else
   {
 	iREAL gridCellLength = ((iREAL)gridxyLength/(iREAL)xzcuts) - epsilon*4;
-	insitu = delta::world::configuration::nonUniformlyDistributedTotalMass(pos, xzcuts, ycuts, gridxyLength, totalMass, hopperWidth, hopperParticles, epsilon, isSphere, gridCellLength, meshDensity);
+	delta::world::configuration::nonUniformlyDistributedTotalMass(insitu, pos, xzcuts, ycuts, gridxyLength, totalMass, hopperWidth, hopperParticles, epsilon, isSphere, gridCellLength, meshDensity);
   }
 
   //////////////////////////////////////////////////////

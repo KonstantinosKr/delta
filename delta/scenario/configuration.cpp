@@ -11,7 +11,8 @@
 #include "delta/geometry/primitive/granulate.h"
 #include "delta/geometry/primitive/cube.h"
 
- std::vector<delta::geometry::Object> delta::world::configuration::uniformlyDistributedTotalMass(
+ void delta::world::configuration::uniformlyDistributedTotalMass(
+	  std::vector<delta::geometry::Object> &insitu,
 	  iREAL 		position[3],
 	  int 		xzcuts,
 	  int 		ycuts,
@@ -24,7 +25,6 @@
       int 		noPointsPerParticle
       )
 {
-   std::vector<delta::geometry::Object> objects;
    //create xzy cuts above hopper, position starts at left lower inner corner
    std::vector<std::array<iREAL, 3>> grid = delta::world::layout::makeGridLayout(position, xzcuts, ycuts, gridxyLength);
 
@@ -35,7 +35,7 @@
 
      delta::geometry::Object particles(isSphereOrNone ? "sphere": "granulate", 0, p, delta::geometry::material::MaterialType::WOOD, false, false, epsilon, {0, -1, 0}, {0,0,0});
 
-     objects.push_back(particles);
+     insitu.push_back(particles);
 
      if(p[0] < xmin) xmin = p[0];
      if(p[0] > xmax) xmax = p[0];
@@ -48,19 +48,19 @@
    //printf("length1:%f\n", subGridLength);
    //printf("length2:%f\n", _hopperWidth-margin*2);
 
-   for(unsigned i=0; i<objects.size(); i++)
+   for(unsigned i=0; i<insitu.size(); i++)
    {
-     std::array<iREAL, 3> position = objects[i].getCentre();
+     std::array<iREAL, 3> position = insitu[i].getCentre();
      position[0] += dx;  position[2] += dx;
      iREAL tmp[3] = {position[0], position[1], position[2]};
-     objects[i].setCentre(tmp);
+     insitu[i].setCentre(tmp);
    }
 
   if(isSphereOrNone)
   {
-    delta::world::configuration::uniSphereRadius(totalMass, index, objects);
+    delta::world::configuration::uniSphereRadius(totalMass, index, insitu);
   } else {
-    delta::world::configuration::uniMeshGeometry(totalMass, noPointsPerParticle, objects, index);
+    delta::world::configuration::uniMeshGeometry(totalMass, noPointsPerParticle, insitu, index);
 
     /*
     delta::world::uniCubeGeometry(
@@ -81,23 +81,23 @@
   iREAL maxRad = 0.0;
   iREAL minRad = 1.00;
 
-  for(unsigned i=index; i<objects.size(); i++)
+  for(unsigned i=index; i<insitu.size(); i++)
   {
-    if(maxRad <= objects[i].getRad()) maxRad = objects[i].getRad();
-    if(minRad >= objects[i].getRad()) minRad = objects[i].getRad();
+    if(maxRad <= insitu[i].getRad()) maxRad = insitu[i].getRad();
+    if(minRad >= insitu[i].getRad()) minRad = insitu[i].getRad();
   }
 
 
   //lift above max radii
-  for(unsigned i=index; i<objects.size(); i++)
+  for(unsigned i=index; i<insitu.size(); i++)
   {
-    std::array<iREAL, 3> pos = objects[i].getCentre();
+    std::array<iREAL, 3> pos = insitu[i].getCentre();
     iREAL p[3] = {pos[0], pos[1] + maxRad+epsilon, pos[2]};
-    objects[i].setCentre(p);
+    insitu[i].setCentre(p);
 
     if(!isSphereOrNone)
     {
-	  auto yCoordinates = objects[i].getMesh().getYCoordinatesAsVector();
+	  auto yCoordinates = insitu[i].getMesh().getYCoordinatesAsVector();
 
 	  if(yCoordinates.size() >= 0)
 	  {
@@ -108,24 +108,22 @@
 	  }
     }
   }
-
-  return objects;
 }
 
- std::vector<delta::geometry::Object> delta::world::configuration::nonUniformlyDistributedTotalMass(
-		  iREAL position[3],
-		  int xzcuts,
-		  int ycuts,
-		  iREAL gridxyLength,
-		  iREAL totalMass,
-		  iREAL hopperWidth,
-		  int index,
-		  iREAL epsilon,
-          iREAL isSphereOrNone,
-          iREAL subcellx,
-          int _noPointsPerParticle)
+void delta::world::configuration::nonUniformlyDistributedTotalMass(
+    std::vector<delta::geometry::Object> &	insitu,
+    iREAL 									position[3],
+    int 										xzcuts,
+	int 										ycuts,
+	iREAL 									gridxyLength,
+	iREAL		 							totalMass,
+	iREAL 									hopperWidth,
+	int 										index,
+	iREAL 									epsilon,
+	iREAL 									isSphereOrNone,
+	iREAL 									subcellx,
+	int 										_noPointsPerParticle)
 {
-   std::vector<delta::geometry::Object> objects;
    //create xzy cuts above hopper, position starts at left lower inner corner
    std::vector<std::array<iREAL, 3>> grid = delta::world::layout::makeGridLayout(position, xzcuts, ycuts, gridxyLength);
 
@@ -140,7 +138,7 @@
 
      delta::geometry::Object particles(isSphereOrNone ? "sphere": "granulate", 0, p, delta::geometry::material::MaterialType::WOOD, isObstacle, isFriction, epsilon, {0, -1, 0}, {0,0,0});
 
-     objects.push_back(particles);
+     insitu.push_back(particles);
 
      if(p[0] < xmin) xmin = p[0];
      if(p[0] > xmax) xmax = p[0];
@@ -153,17 +151,17 @@
    //printf("length1:%f\n", subGridLength);
    //printf("length2:%f\n", _hopperWidth-margin*2);
 
-   for(unsigned i=0; i<objects.size(); i++)
+   for(unsigned i=0; i<insitu.size(); i++)
    {
-     std::array<iREAL, 3> position = objects[i].getCentre();
+     std::array<iREAL, 3> position = insitu[i].getCentre();
      position[0] += dx;  position[2] += dx;
      iREAL tmp[3] = {position[0], position[1], position[2]};
-     objects[i].setCentre(tmp);
+     insitu[i].setCentre(tmp);
    }
 
   if(isSphereOrNone)
   {
-    delta::world::configuration::nonUniSphereRadius(totalMass, index, subcellx, objects);
+    delta::world::configuration::nonUniSphereRadius(totalMass, index, subcellx, insitu);
   } else {
 
 	/*
@@ -180,22 +178,22 @@
   iREAL maxRad = 0.0;
   iREAL minRad = 1.00;
 
-  for(unsigned i=index; i<objects.size(); i++)
+  for(unsigned i=index; i<insitu.size(); i++)
   {
-    if(maxRad <= objects[i].getRad()) maxRad = objects[i].getRad();
-    if(minRad >= objects[i].getRad()) minRad = objects[i].getRad();
+    if(maxRad <= insitu[i].getRad()) maxRad = insitu[i].getRad();
+    if(minRad >= insitu[i].getRad()) minRad = insitu[i].getRad();
   }
 
   //lift above max radii
-  for(unsigned i=index; i<objects.size(); i++)
+  for(unsigned i=index; i<insitu.size(); i++)
   {
-    std::array<iREAL, 3> pos = objects[i].getCentre();
+    std::array<iREAL, 3> pos = insitu[i].getCentre();
     iREAL p[3] = {pos[0], pos[1] + maxRad+epsilon, pos[2]};
-    objects[i].setCentre(p);
+    insitu[i].setCentre(p);
 
     if(!isSphereOrNone)
     {
-	  auto yCoordinates = objects[i].getMesh().getYCoordinatesAsVector();
+	  auto yCoordinates = insitu[i].getMesh().getYCoordinatesAsVector();
 
 	  if(yCoordinates.size() >= 0)
 	  {
@@ -208,8 +206,6 @@
   }
   //////////////////////////////////////////////////////
   //////////////////////////////////////////////////////
-
-  return objects;
 }
 
  void delta::world::configuration::uniSphereRadius(

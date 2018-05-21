@@ -295,18 +295,18 @@ bool dem::mappings::Collision::triggerParticleTooClose(
 }
 
 void dem::mappings::Collision::collisionDetection(
-  dem::records::Particle   particleA,
-  int                      numberOfTrianglesA,
-  const iREAL*            xCoordinatesA,
-  const iREAL*            yCoordinatesA,
-  const iREAL*            zCoordinatesA,
-  dem::records::Particle   particleB,
-  int                      numberOfTrianglesB,
-  const iREAL*            xCoordinatesB,
-  const iREAL*            yCoordinatesB,
-  const iREAL*            zCoordinatesB,
-  State* state,
-  bool   protectStateAccess)
+  const dem::records::Particle&   	particleA,
+  int                      			numberOfTrianglesA,
+  const iREAL*	           			xCoordinatesA,
+  const iREAL*            			yCoordinatesA,
+  const iREAL*            			zCoordinatesA,
+  const dem::records::Particle&  	particleB,
+  int                      			numberOfTrianglesB,
+  const iREAL*            			xCoordinatesB,
+  const iREAL*            			yCoordinatesB,
+  const iREAL*            			zCoordinatesB,
+  State* 							state,
+  bool   							protectStateAccess)
 {
   if(_enableOverlapCheck)
   {
@@ -415,7 +415,6 @@ void dem::mappings::Collision::collisionDetection(
 							particleB.getFriction(),
 							particleB.getGlobalParticleId(),
 							_collisionSemaphore);
-
       break;
     case CollisionModel::Penalty:
 
@@ -584,7 +583,7 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 ) {
   logDebug( "collideParticlesOfTwoDifferentVertices(...)", vertexA.toString() << ", " << vertexA.getNumberOfRealAndVirtualParticles() );
   logDebug( "collideParticlesOfTwoDifferentVertices(...)", vertexB.toString() << ", " << vertexB.getNumberOfRealAndVirtualParticles() );
-
+return;
   #ifdef SharedTBB
   // Take care: grain size has to be possitive even if loop degenerates
   const int grainSize = (RunParticleLoopInParallel || vertexA.getNumberOfParticles()==0) ? 1 : vertexA.getNumberOfParticles();
@@ -1056,7 +1055,7 @@ void dem::mappings::Collision::leaveCell(
     const tarch::la::Vector<DIMENSIONS,int>&                       fineGridPositionOfCell
 ) {
 
-  all_to_all(fineGridVertices, fineGridVerticesEnumerator, _state, _backgroundTaskState);
+  //all_to_all(fineGridVertices, fineGridVerticesEnumerator, _state, _backgroundTaskState);
 
 }
 

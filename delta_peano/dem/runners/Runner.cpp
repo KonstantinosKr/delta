@@ -157,7 +157,7 @@ std::string dem::runners::Runner::initSharedMemory( bool useAutotuning, int tbbT
   #ifdef SharedMemoryParallelisation
     tarch::multicore::Core::getInstance().configure(tbbThreads, tarch::multicore::Core::UseDefaultStackSize);
 
-    tarch::multicore::Core::getInstance().pinThreads(false);
+    tarch::multicore::Core::getInstance().pinThreads(true);
 
     if(useAutotuning)
     {

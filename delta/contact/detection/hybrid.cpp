@@ -266,7 +266,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::hybridWithP
     __attribute__ ((aligned(byteAlignment))) contactpoint *nearestContactPoint = nullptr;
     __attribute__ ((aligned(byteAlignment))) iREAL xPA[10000], yPA[10000], zPA[10000], xPB[10000], yPB[10000], zPB[10000], d[10000];
     __attribute__ ((aligned(byteAlignment))) bool failed[10000] = {0};
-    __attribute__ ((aligned(byteAlignment))) iREAL dd = 1E99;
+    __attribute__ ((aligned(byteAlignment))) iREAL dd = epsilonA+epsilonB;
 
     #pragma omp simd
     for (int iB=0; iB<numberOfTrianglesB; iB+=3)
@@ -381,7 +381,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::hybridBatch
     __attribute__ ((aligned(byteAlignment))) iREAL epsilonMargin = (epsilonA+epsilonB);
     __attribute__ ((aligned(byteAlignment))) contactpoint *nearestContactPoint = nullptr;
     __attribute__ ((aligned(byteAlignment))) const iREAL MaxErrorOfPenaltyMethod = (epsilonA+epsilonB)/16;
-    __attribute__ ((aligned(byteAlignment))) iREAL dd = 1E99;
+    __attribute__ ((aligned(byteAlignment))) iREAL dd = epsilonA+epsilonB;
 
     __attribute__ ((aligned(byteAlignment))) iREAL xPA[10000], yPA[10000], zPA[10000], xPB[10000], yPB[10000], zPB[10000], d[10000];
     __attribute__ ((aligned(byteAlignment))) bool failed[10000];
@@ -524,7 +524,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::hybridTrian
 
     __attribute__ ((aligned(byteAlignment))) iREAL xPA[10000], yPA[10000], zPA[10000], xPB[10000], yPB[10000], zPB[10000], d[10000];
     __attribute__ ((aligned(byteAlignment))) bool failed[10000];
-    __attribute__ ((aligned(byteAlignment))) iREAL dd = 1E99;
+    __attribute__ ((aligned(byteAlignment))) iREAL dd = epsilonA+epsilonB;
 
     #ifdef ompTriangle
       #pragma omp critical
