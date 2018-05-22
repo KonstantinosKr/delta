@@ -235,3 +235,76 @@ std::vector<delta::geometry::mesh::Mesh> delta::core::readGeometry(std::string f
 
   return meshVector;
 }
+
+
+delta::geometry::mesh::Mesh* delta::core::readPartGeometry(std::string fileName)
+{
+  Assimp::Importer importer;
+
+  const aiScene* scene = importer.ReadFile( fileName,
+        aiProcess_CalcTangentSpace       |
+        aiProcess_Triangulate            |
+        aiProcess_JoinIdenticalVertices  |
+        aiProcess_SortByPType);
+
+  bool n = scene->HasMeshes();
+  int nn = scene->mNumMeshes;
+
+  printf("Importing %i Meshes.\n", nn);
+
+  std::vector<std::array<int, 3>> 	triangleFaces;
+  std::vector<std::array<iREAL, 3>> 	uniqueVertices;
+
+  const aiMesh* mesh = scene->mMeshes[0];
+
+  std::vector<iREAL> g_vp;
+  g_vp.reserve(3 * mesh->mNumVertices);
+
+  printf("Read %i vertices\n", mesh->mNumVertices);
+
+  //vertices
+  #pragma omp parallel for
+  for(uint v_i = 0; v_i < mesh->mNumVertices; v_i++)
+  {
+	if(mesh->HasPositions())
+	{
+	  const aiVector3D* vp = &(mesh->mVertices[v_i]);
+	  g_vp.push_back(vp->x);
+	  g_vp.push_back(vp->y);
+	  g_vp.push_back(vp->z);
+
+	  std::array<iREAL, 3> vertex = {vp->x, vp->y, vp->z};
+
+	  #pragma omp critical
+	  uniqueVertices.push_back(vertex);
+	  //std::cout << vp->x << " " << vp->y << " " << vp->z << std::endl;
+	}
+  }
+
+  //printf("number of triangles: %i\n", mesh->mNumFaces);
+
+  //only triangle faces
+  #pragma omp parallel for
+  for(uint f_i = 0; f_i < mesh->mNumFaces; f_i++)
+  {
+	//only triangle faces
+	for(uint index = 0; index < mesh->mFaces[f_i].mNumIndices; index+=3)
+	{
+	  int idxA = mesh->mFaces[f_i].mIndices[index];
+	  int idxB = mesh->mFaces[f_i].mIndices[index+1];
+	  int idxC = mesh->mFaces[f_i].mIndices[index+2];
+	  std::array<int, 3> triangle = {idxA, idxB, idxC};
+	  /*
+	  std::cout << uniqueVertices[idxA][0] << " " << uniqueVertices[idxA][1] << " " << uniqueVertices[idxA][2] << std::endl;
+	  std::cout << uniqueVertices[idxB][0] << " " << uniqueVertices[idxB][1] << " " << uniqueVertices[idxB][2] << std::endl;
+	  std::cout << uniqueVertices[idxC][0] << " " << uniqueVertices[idxC][1] << " " << uniqueVertices[idxC][2] << std::endl;*/
+
+	  #pragma omp critical
+	  triangleFaces.push_back(triangle);
+	}
+  }
+
+  delta::geometry::mesh::Mesh *meshgeometry = new delta::geometry::mesh::Mesh(triangleFaces, uniqueVertices);
+
+  return meshgeometry;
+}

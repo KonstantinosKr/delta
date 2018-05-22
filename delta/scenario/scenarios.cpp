@@ -105,14 +105,16 @@ void delta::world::scenarios::turbine(
 	int 										meshDensity,
 	iREAL 									epsilon)
 {
-  std::vector<delta::geometry::mesh::Mesh> meshes = delta::core::readGeometry("input/turbine.stl");
+  delta::geometry::mesh::Mesh *mesh = delta::core::readPartGeometry("input/turbine.stl");
 
   std::array<iREAL, 3> 					centre 	= {0.5, 0.5, 0.5};
   std::array<iREAL, 3> 					linear 	= {0.0, 0.0, 0.0};
   std::array<iREAL, 3> 					angular 	= {2.0, 0.0, 0.0};
 
   printf("passed\n");
-  delta::geometry::Object * object = new  delta::geometry::Object("mesh", 0, &meshes[0], centre,
+  printf("mesh%i\n", mesh->getTriangleFaces().size());
+
+  delta::geometry::Object * object = new  delta::geometry::Object("mesh", 0, mesh, centre,
 										  delta::geometry::material::MaterialType::WOOD,
 										  false, false, epsilon, linear, angular);
   coarseObjects.push_back(*object);
