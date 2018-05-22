@@ -31,8 +31,9 @@ namespace delta {
 
 		void readScenarioSpecification(std::string fileName);
 
-		std::vector<delta::geometry::mesh::Mesh> readGeometry(
-			std::string fileName);
+		std::vector<delta::geometry::mesh::Mesh> readGeometry(std::string fileName);
+
+		delta::geometry::mesh::Mesh* readPartGeometry(std::string fileName);
 	}
 }
 

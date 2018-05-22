@@ -306,6 +306,7 @@ void dem::mappings::CreateGrid::beginIteration(
 
   dem::mappings::Collision::gravity	= _gravity==true ? 9.81 : 0.0;
 
+  printf("arrived\n");
   logTraceOutWith1Argument( "beginIteration(State)", solverState);
 }
 

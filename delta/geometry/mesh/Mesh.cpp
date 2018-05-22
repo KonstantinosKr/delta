@@ -18,9 +18,12 @@ delta::geometry::mesh::Mesh::Mesh()
 }
 
 delta::geometry::mesh::Mesh::Mesh(
-	std::vector<std::array<int, 3>> 				triangleFaces,
-	std::vector<std::array<iREAL, 3>> 			uniqueVertices)
+	std::vector<std::array<int, 3>> 			triangleFaces,
+	std::vector<std::array<iREAL, 3>> 		uniqueVertices)
 {
+  this->_triangleFaces = &(triangleFaces);
+  this->_uniqueVertices = &(triangleFaces);
+
   delta::geometry::mesh::Mesh::flatten();
 }
 
@@ -236,7 +239,7 @@ void delta::geometry::mesh::Mesh::compressFromVectors(
 
 void delta::geometry::mesh::Mesh::flatten()
 {
-  for(int i=0; i<_triangleFaces.size(); i++)
+  for(int i=0; i<_triangleFaces->size(); i++)
   {
 	std::array<iREAL, 3> A = _uniqueVertices[_triangleFaces[i][0]];
 	std::array<iREAL, 3> B = _uniqueVertices[_triangleFaces[i][1]];
