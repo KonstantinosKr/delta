@@ -21,8 +21,8 @@ delta::geometry::mesh::Mesh::Mesh(
 	std::vector<std::array<int, 3>> 			triangleFaces,
 	std::vector<std::array<iREAL, 3>> 		uniqueVertices)
 {
-  this->_triangleFaces = &(triangleFaces);
-  this->_uniqueVertices = &(triangleFaces);
+  this->_triangleFaces = triangleFaces;
+  this->_uniqueVertices = triangleFaces;
 
   delta::geometry::mesh::Mesh::flatten();
 }
