@@ -1,12 +1,12 @@
 from os import listdir
 from os.path import isfile, join
 
-searchString = "msh10"
-projectName = "peano_ivy_two-particles-crash"
-time = "00:01:00"
+searchString = ""
+projectName = "peano_knl_two-particles-crash"
+time = "00:30:00"
 
-purepath = '/Users/konstantinos/Downloads/'
-#purepath = '/work/knl-login/durkk/'
+#purepath = '/Users/konstantinos/Downloads/'
+purepath = '/work/knl-users/durkk/'
 #purepath = '/work/e573/e573/durkk/'
 
 scriptsPath = "/" + purepath + "/" + projectName + "/scripts/"
