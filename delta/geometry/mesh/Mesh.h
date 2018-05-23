@@ -567,8 +567,8 @@ class delta::geometry::mesh::Mesh {
 		std::vector<iREAL>& yCoordinates,
 		std::vector<iREAL>& zCoordinates);
 
-	std::vector<std::array<int, 3>>* 			_triangleFaces;
-	std::vector<std::array<iREAL, 3>>*		 	_uniqueVertices;
+	std::vector<std::array<int, 3>> 			_triangleFaces;
+	std::vector<std::array<iREAL, 3>>		 	_uniqueVertices;
 
     std::vector<iREAL>   						_xCoordinates;
     std::vector<iREAL>   						_yCoordinates;

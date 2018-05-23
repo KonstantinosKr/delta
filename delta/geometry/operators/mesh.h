@@ -14,19 +14,19 @@
 namespace delta {
   namespace geometry {
 	namespace operators {
-	namespace mesh {
+	  namespace mesh {
 
-	  void moveMeshFromPositionToOrigin(
-		  std::vector<iREAL> &xCoordinates,
-		  std::vector<iREAL> &yCoordinates,
-		  std::vector<iREAL> &zCoordinates,
-		  iREAL center[3]);
+	    void moveMeshFromPositionToOrigin(
+		    std::vector<iREAL> &xCoordinates,
+		    std::vector<iREAL> &yCoordinates,
+		    std::vector<iREAL> &zCoordinates,
+		    iREAL center[3]);
 
-	  void moveMeshFromOriginToPosition(
-		  std::vector<iREAL> &xCoordinates,
-		  std::vector<iREAL> &yCoordinates,
-		  std::vector<iREAL> &zCoordinates,
-		  iREAL center[3]);
+	    void moveMeshFromOriginToPosition(
+		    std::vector<iREAL> &xCoordinates,
+		    std::vector<iREAL> &yCoordinates,
+		    std::vector<iREAL> &zCoordinates,
+		    iREAL center[3]);
 
 		void scaleXYZ(
 			std::vector<iREAL> &xCoordinates,

@@ -18,11 +18,11 @@ delta::geometry::mesh::Mesh::Mesh()
 }
 
 delta::geometry::mesh::Mesh::Mesh(
-	std::vector<std::array<int, 3>> 			triangleFaces,
+	std::vector<std::array<int, 3>> 		triangleFaces,
 	std::vector<std::array<iREAL, 3>> 		uniqueVertices)
 {
   this->_triangleFaces = triangleFaces;
-  this->_uniqueVertices = triangleFaces;
+  this->_uniqueVertices = uniqueVertices;
 
   delta::geometry::mesh::Mesh::flatten();
 }
@@ -242,11 +242,14 @@ void delta::geometry::mesh::Mesh::compressFromVectors(
 void delta::geometry::mesh::Mesh::flatten()
 {
   #pragma omp parallel for
-  for(int i=0; i<_triangleFaces->size(); i++)
+  for(int i=0; i<_triangleFaces.size(); i++)
   {
-	std::array<iREAL, 3> A = _uniqueVertices[_triangleFaces[i][0]];
-	std::array<iREAL, 3> B = _uniqueVertices[_triangleFaces[i][1]];
-	std::array<iREAL, 3> C = _uniqueVertices[_triangleFaces[i][2]];
+    int idxA = _triangleFaces[i][0]; 
+    int idxB = _triangleFaces[i][1]; 
+    int idxC = _triangleFaces[i][2]; 
+	std::array<iREAL, 3> A = _uniqueVertices[idxA];
+	std::array<iREAL, 3> B = _uniqueVertices[idxB];
+	std::array<iREAL, 3> C = _uniqueVertices[idxC];
 
 	_xCoordinates.push_back(A[0]);
 	_yCoordinates.push_back(A[1]);
@@ -270,9 +273,12 @@ void delta::geometry::mesh::Mesh::flatten(
   #pragma omp parallel for
   for(int i=0; i<_triangleFaces.size(); i++)
   {
-	std::array<iREAL, 3> A = _uniqueVertices[_triangleFaces[i][0]];
-	std::array<iREAL, 3> B = _uniqueVertices[_triangleFaces[i][1]];
-	std::array<iREAL, 3> C = _uniqueVertices[_triangleFaces[i][2]];
+    int idxA = _triangleFaces[i][0]; 
+    int idxB = _triangleFaces[i][1]; 
+    int idxC = _triangleFaces[i][2]; 
+	std::array<iREAL, 3> A = _uniqueVertices[idxA];
+	std::array<iREAL, 3> B = _uniqueVertices[idxB];
+	std::array<iREAL, 3> C = _uniqueVertices[idxC];
 
 	xCoordinates.push_back(A[0]);
 	yCoordinates.push_back(A[1]);
