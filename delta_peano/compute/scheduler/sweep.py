@@ -7,6 +7,8 @@
 :synopsis: Generate benchmark suites for ExaHyPE.
 """
 from collections import OrderedDict
+from os import listdir
+from os.path import isfile, join
 
 def parseArgument(argv,i):
     if i<len(argv):
@@ -131,7 +133,7 @@ def build(buildOnlyMissing=False):
                     print(" [FAILED]")
                     print("make errors/warnings=\n"+makeErr.decode('UTF-8'),file=sys.stderr)
                     sys.exit()
-                
+
                 moveCommand   = "mv "+executableLocation+" "+projectPath
                 print(moveCommand)
                 subprocess.call(moveCommand,shell=True)
@@ -152,7 +154,7 @@ def verifyAllExecutablesExist(justWarn=False):
     messageType = "ERROR"
     if justWarn:
       messageType = "WARNING"
-    
+
     if not justWarn and not os.path.exists(projectPath):
         print("ERROR: build folder '"+projectPath+"' doesn't exist! Please run subprogram 'build' beforehand.",file=sys.stderr)
         sys.exit()
@@ -160,7 +162,7 @@ def verifyAllExecutablesExist(justWarn=False):
     allExecutablesExist = True
     for environmentDict in dictProduct(environmentSpace):
         for key, value in environmentDict.items():
-			
+
             print("Checking that executable "+value+" @ "+projectPath+" exist")
             executable = projectPath + value
             if not os.path.exists(executable):
@@ -534,6 +536,99 @@ def submitJobs():
                                 (output, err) = process.communicate()
                                 process.wait()
                                 jobIds.append(extractJobId(output.decode("UTF_8")))
+
+    if not os.path.exists(historyFolderPath):
+        print("create directory "+historyFolderPath)
+        os.makedirs(historyFolderPath)
+
+    submittedJobsPath = historyFolderPath + "/" + hashSweep() + ".submitted"
+
+    with open(submittedJobsPath, "w") as submittedJobsFile:
+        submittedJobsFile.write(json.dumps(jobIds))
+
+    print("submitted "+str(len(jobIds))+" jobs")
+    print("job ids are memorised in: "+submittedJobsPath)
+    command="cp "+optionsFile+" "+submittedJobsPath.replace(".submitted",".ini")
+    print(command)
+    process = subprocess.Popen([command], stdout=subprocess.PIPE, shell=True)
+    (output, err) = process.communicate()
+    process.wait()
+
+def submitJobsArcher():
+    """
+    Submit all jobs spanned by the options.
+    """
+    jobSubmissionTool    = general["job_submission"]
+
+    cpus = jobs["num_cpus"]
+
+    # verify everything is fine
+    verifyAllExecutablesExist()
+    verifyAllJobScriptsExist()
+
+    if not os.path.exists(resultsFolderPath):
+        print("create directory "+resultsFolderPath)
+        os.makedirs(resultsFolderPath)
+
+    # loop over job scrips
+    jobIds = []
+
+
+
+
+
+    searchString = ""
+    projectName = projectName
+
+    purepath = scriptsFolderPath
+
+    scriptsPath = "/" + purepath + "/" + projectName + "/scripts/"
+    outputDirectory = purepath + "/"+ projectName + "/"+ projectName +".job"
+
+    job = "\
+    #!/bin/bash\n"+"\
+    #PBS -N "+projectName+"\n" + "\
+    #PBS -l select=1:aoe=quad_100\n" + "\
+    #PBS -l walltime="+jobs["time"]+"\n" + "\
+    #PBS -A e573-durkk\n" + "\
+    #PBS -m ae\n" + "\
+    #PBS -M konstantinos.krestenitis@durham.ac.uk\n" + "\
+    #PBS -V\n" + "\
+    export OMP_NUM_THREADS=1\n" + "\
+    export PBS_O_WORKDIR=$(readlink -f $PBS_O_WORKDIR)\n" + "\
+    cd $PBS_O_WORKDIR\n" + "\
+    "
+
+    file = open(outputDirectory, 'w+')
+    print(outputDirectory)
+    file.write(job)
+
+    selectedFiles = [join(scriptsPath, f) for f in listdir(scriptsPath) if isfile(join(scriptsPath, f)) and searchString in f]
+
+    commands = []
+    for i in selectedFiles:
+        with open(i) as f:
+            for line in f:
+                if "aprun" in line and "#aprun" not in line:
+                    commands.append(line)
+                    file.write(line + "\n")
+                    file.write("echo finished run\n")
+
+    print(commands)
+    print(file)
+
+    f.close()
+    jobFilePath = outputDirectory
+
+
+
+
+    command=jobSubmissionTool + " " + jobFilePath
+    print(command)
+    process = subprocess.Popen([command], stdout=subprocess.PIPE, shell=True)
+    (output, err) = process.communicate()
+    process.wait()
+    jobIds.append(extractJobId(output.decode("UTF_8")))
 
     if not os.path.exists(historyFolderPath):
         print("create directory "+historyFolderPath)
