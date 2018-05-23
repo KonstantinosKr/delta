@@ -58,7 +58,7 @@ void delta::contact::detection::penaltyTune(
   }
 
   std::vector<triangleSetStat> particleTriangleSet;
-  #ifdef ompTriangle
+  #ifdef OMPTriangle
     #pragma omp parallel for
   #endif
   for (int iA = 0; iA<numberOfTrianglesOfGeometryA*3; iA+=3)

@@ -61,7 +61,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::penaltyStat
 
   std::vector<contactpoint> result;
 
-  #ifdef ompTriangle
+  #ifdef OMPTriangle
     #pragma omp parallel for
   #endif
   for (int iA = 0; iA<numberOfTrianglesOfGeometryA*3; iA+=3)
@@ -105,7 +105,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::penaltyStat
     }
     if (nearestContactPoint != nullptr)
     {
-      #ifdef ompTriangle
+      #ifdef OMPTriangle
         #pragma omp critical
       #endif
       result.push_back(*nearestContactPoint);
@@ -181,7 +181,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::penalty(
 	 {
 	   for(std::vector<int>::size_type iA=0; iA<r.size(); iA+=3)
   #else
-  #ifdef ompTriangle
+  #ifdef OMPTriangle
 	#pragma omp parallel for shared(result) firstprivate(numberOfTrianglesA, numberOfTrianglesB, epsilonA, epsilonB, frictionA, frictionB, particleA, particleB, xCoordinatesOfPointsOfGeometryA, yCoordinatesOfPointsOfGeometryA, zCoordinatesOfPointsOfGeometryA, xCoordinatesOfPointsOfGeometryB, yCoordinatesOfPointsOfGeometryB, zCoordinatesOfPointsOfGeometryB)
   #endif
   for(int iA=0; iA<numberOfTrianglesA; iA+=3)
@@ -236,7 +236,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::penalty(
 		result.push_back(*nearestContactPoint);
 		lock.free();
 	#else
-		#ifdef ompTriangle
+		#ifdef OMPTriangle
 		  #pragma omp critical
 		#endif
 		result.push_back(*nearestContactPoint);

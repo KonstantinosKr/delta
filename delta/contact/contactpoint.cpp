@@ -28,7 +28,7 @@ delta::contact::contactpoint::contactpoint(const contactpoint& copy) {
   slave = copy.slave;
 }
 
-#if defined(ompParticle) || defined(ompTriangle)
+#if defined(ompParticle) || defined(OMPTriangle)
 #pragma omp declare simd notinbranch
 #endif
 delta::contact::contactpoint::contactpoint(
@@ -72,7 +72,7 @@ delta::contact::contactpoint::contactpoint(
   slave = slaveID;
 }
 
-#if defined(ompParticle) || defined(ompTriangle)
+#if defined(ompParticle) || defined(OMPTriangle)
 #pragma omp declare simd notinbranch
 #endif
 iREAL delta::contact::contactpoint::getDistance() const {

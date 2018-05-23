@@ -115,7 +115,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::hybridWithP
 	   {
 		 for(std::vector<int>::size_type iA=0; iA<r.size(); iA+=3)
   #else
-  #ifdef ompTriangle
+  #ifdef OMPTriangle
 	#pragma omp parallel for shared(result) firstprivate(numberOfTrianglesA, numberOfTrianglesB, epsilonA, epsilonB, frictionA, frictionB, particleA, particleB, xCoordinatesOfPointsOfGeometryA, yCoordinatesOfPointsOfGeometryA, zCoordinatesOfPointsOfGeometryA, xCoordinatesOfPointsOfGeometryB, yCoordinatesOfPointsOfGeometryB, zCoordinatesOfPointsOfGeometryB)
   #endif
   for(int iA=0; iA<numberOfTrianglesB; iA+=3)
@@ -175,7 +175,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::hybridWithP
 		result.push_back(*nearestContactPoint);
 		lock.free();
 	#else
-		#ifdef ompTriangle
+		#ifdef OMPTriangle
 		  #pragma omp critical
 		#endif
 		result.push_back(*nearestContactPoint);
@@ -257,7 +257,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::hybridWithP
 	  {
 		for(std::vector<int>::size_type iA=0; iA<r.size(); iA+=3)
   #else
-  #ifdef ompTriangle
+  #ifdef OMPTriangle
 	#pragma omp parallel for shared(result) firstprivate(numberOfTrianglesA, numberOfTrianglesB, epsilonA, epsilonB, frictionA, frictionB, particleA, particleB, xCoordinatesOfPointsOfGeometryA, yCoordinatesOfPointsOfGeometryA, zCoordinatesOfPointsOfGeometryA, xCoordinatesOfPointsOfGeometryB, yCoordinatesOfPointsOfGeometryB, zCoordinatesOfPointsOfGeometryB)
   #endif
   for(int iA=0; iA<numberOfTrianglesA; iA+=3)
@@ -329,7 +329,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::hybridWithP
 			  result.push_back(*nearestContactPoint);
 			lock.free();
 		#else
-			#ifdef ompTriangle
+			#ifdef OMPTriangle
 			  #pragma omp critical
 			#endif
 			result.push_back(*nearestContactPoint);
@@ -373,7 +373,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::hybridBatch
   __assume_aligned(zCoordinatesOfPointsOfGeometryB, byteAlignment);
   #endif
 
-  #ifdef ompTriangle
+  #ifdef OMPTriangle
     #pragma omp parallel for schedule(static)
   #endif
   for (int iA=0; iA<numberOfPointsOfGeometryA*3; iA+=3)
@@ -386,7 +386,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::hybridBatch
     __attribute__ ((aligned(byteAlignment))) iREAL xPA[10000], yPA[10000], zPA[10000], xPB[10000], yPB[10000], zPB[10000], d[10000];
     __attribute__ ((aligned(byteAlignment))) bool failed[10000];
 
-    #ifdef ompTriangle
+    #ifdef OMPTriangle
       #pragma omp critical
     #endif
     {
@@ -425,7 +425,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::hybridBatch
 
     iREAL localbatchError = counter * MaxErrorOfPenaltyMethod;
 
-    #ifdef ompTriangle
+    #ifdef OMPTriangle
       #pragma omp critical
     #endif
     {
@@ -434,7 +434,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::hybridBatch
     if(localbatchError > ((iREAL)MaxErrorOfPenaltyMethod*(iREAL)numberOfPointsOfGeometryB)/32)
     {
       fail = true;
-      #ifdef ompTriangle
+      #ifdef OMPTriangle
         #pragma omp critical
       #endif
       _numberOfBatchFails += 1;
@@ -474,7 +474,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::hybridBatch
     for (int iB=0; iB<numberOfPointsOfGeometryB*3; iB+=3) {
       if ( d[iB] <= minD && d[iB] < epsilonMargin) {
         delta::contact::contactpoint* nearestContactPoint = new contactpoint(xPA[iB], yPA[iB], zPA[iB], epsilonA, particleA, xPB[iB], yPB[iB], zPB[iB], epsilonB, particleB, frictionA && frictionB);
-        #ifdef ompTriangle
+        #ifdef OMPTriangle
           #pragma omp critical
         #endif
         result.push_back(*nearestContactPoint);
@@ -513,7 +513,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::hybridTrian
   __assume_aligned(zCoordinatesOfPointsOfGeometryB, byteAlignment);
   #endif
 
-  #ifdef ompTriangle
+  #ifdef OMPTriangle
     #pragma omp parallel for schedule(static)
   #endif
   for (int iA=0; iA<numberOfPointsOfGeometryA*3; iA+=3)
@@ -526,7 +526,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::hybridTrian
     __attribute__ ((aligned(byteAlignment))) bool failed[10000];
     __attribute__ ((aligned(byteAlignment))) iREAL dd = epsilonA+epsilonB;
 
-    #ifdef ompTriangle
+    #ifdef OMPTriangle
       #pragma omp critical
     #endif
     {
@@ -562,7 +562,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::hybridTrian
 
     iREAL localbatchError = counter * MaxErrorOfPenaltyMethod;
 
-    #ifdef ompTriangle
+    #ifdef OMPTriangle
       #pragma omp critical
     #endif
     {
@@ -572,7 +572,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::hybridTrian
     if(localbatchError > ((iREAL)MaxErrorOfPenaltyMethod*(iREAL)numberOfPointsOfGeometryB)/32)
     {
       fail = true;
-      #ifdef ompTriangle
+      #ifdef OMPTriangle
         #pragma omp critical
       #endif
       _numberOfBatchFails += 1;
@@ -610,7 +610,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::hybridTrian
     for (int iB=0; iB<numberOfPointsOfGeometryB*3; iB+=3) {
       if ( d[iB] <= minD && d[iB] < epsilonMargin) {
         delta::contact::contactpoint* nearestContactPoint = new contactpoint(xPA[iB], yPA[iB], zPA[iB], epsilonA, particleA, xPB[iB], yPB[iB], zPB[iB], epsilonB, particleB, frictionA && frictionB);
-        #ifdef ompTriangle
+        #ifdef OMPTriangle
           #pragma omp critical
         #endif
         result.push_back(*nearestContactPoint);
