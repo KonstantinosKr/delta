@@ -48,8 +48,6 @@ ICCNOVEC=-O3 -Wall -no-vec -qno-openmp-simd -no-ipo -qopt-report=5 -fstrict-alia
 ICCNOVECCNT=-g $(ICCNOVEC) 
 ##############################################################################################
 
-#COMPILER_CFLAGS=-std=c++14 -fast -fstrict-aliasing  -DMPICH_IGNORE_CXX_SEEK -fno-rtti -no-ipo -ip -xhost -wd603,3128
-
 default: header
 	@echo Please specify build target. Available targets are:
 	@echo clean
