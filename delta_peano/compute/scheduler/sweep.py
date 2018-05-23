@@ -199,10 +199,10 @@ def renderJobScript(templateBody,environmentDict,parameterDict,jobs,
 
     commandLineArguments = ""
     for key,value in parameterDict.items():
-        #commandLineArguments += " -"+key+" "+value
         commandLineArguments += " " + value
     context["app"] = appName+commandLineArguments
-
+    print(commandLineArguments)
+    
     consistent = True
     # verify all mandatory(!) sweep options are defined in template
     keysInTemplate = [m.group(2) for m in re.finditer("(\{\{((\w|-)+)\}\})",templateBody)]
@@ -578,26 +578,21 @@ def submitJobsArcher():
 
 
     searchString = ""
-    projectName = projectName
 
-    purepath = scriptsFolderPath
+    scriptsPath = scriptsFolderPath
+    outputDirectory = projectPath + projectName + "/"+ projectName +".job"
 
-    scriptsPath = "/" + purepath + "/" + projectName + "/scripts/"
-    outputDirectory = purepath + "/"+ projectName + "/"+ projectName +".job"
-
-    job = "\
-    #!/bin/bash\n"+"\
-    #PBS -N "+projectName+"\n" + "\
-    #PBS -l select=1:aoe=quad_100\n" + "\
-    #PBS -l walltime="+jobs["time"]+"\n" + "\
-    #PBS -A e573-durkk\n" + "\
-    #PBS -m ae\n" + "\
-    #PBS -M konstantinos.krestenitis@durham.ac.uk\n" + "\
-    #PBS -V\n" + "\
-    export OMP_NUM_THREADS=1\n" + "\
-    export PBS_O_WORKDIR=$(readlink -f $PBS_O_WORKDIR)\n" + "\
-    cd $PBS_O_WORKDIR\n" + "\
-    "
+    job = "#!/bin/bash\n\
+#PBS -N "+projectName+"\n\
+#PBS -l select=1:aoe=quad_100\n\
+#PBS -l walltime="+jobs["time"]+"\n\
+#PBS -A e573-durkk\n\
+#PBS -m ae\n\
+#PBS -M konstantinos.krestenitis@durham.ac.uk\n\
+#PBS -V\n\
+export OMP_NUM_THREADS=1\n\
+export PBS_O_WORKDIR=$(readlink -f $PBS_O_WORKDIR)\n\
+cd $PBS_O_WORKDIR\n"
 
     file = open(outputDirectory, 'w+')
     print(outputDirectory)
@@ -614,8 +609,7 @@ def submitJobsArcher():
                     file.write(line + "\n")
                     file.write("echo finished run\n")
 
-    print(commands)
-    print(file)
+    #print(commands)
 
     f.close()
     jobFilePath = outputDirectory
@@ -684,7 +678,7 @@ if __name__ == "__main__":
     import sweep_analysis
     import sweep_options
 
-    subprograms = ["build","buildMissing","scripts","submit","cancel","parseAdapters","parseMetrics","cleanBuild", "cleanScripts","cleanResults","cleanAll"]
+    subprograms = ["build","buildMissing","scripts","submit","submitArcher","cancel","parseAdapters","parseMetrics","cleanBuild", "cleanScripts","cleanResults","cleanAll"]
 
     if haveToPrintHelpMessage(sys.argv):
         info = \
@@ -768,6 +762,8 @@ typical workflow:
         generateScripts()
     elif subprogram == "submit":
         submitJobs()
+    elif subprogram == "submitArcher":
+        submitJobsArcher()
     elif subprogram == "cancel":
         cancelJobs()
     elif subprogram == "parseAdapters":

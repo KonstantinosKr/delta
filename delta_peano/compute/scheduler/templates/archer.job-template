@@ -22,14 +22,3 @@ cd $PBS_O_WORKDIR
 
 #aprun -n 768 castep+samp input
 aprun -n 1 -d {{cores}} {{app}}
-aprun -n 1 -d {{cores}} {{app}}
-aprun -n 1 -d {{cores}} {{app}}
-aprun -n 1 -d {{cores}} {{app}}
-aprun -n 1 -d {{cores}} {{app}}
-aprun -n 1 -d {{cores}} {{app}}
-aprun -n 1 -d {{cores}} {{app}}
-aprun -n 1 -d {{cores}} {{app}}
-aprun -n 1 -d {{cores}} {{app}}
-aprun -n 1 -d {{cores}} {{app}}
-aprun -n 1 -d {{cores}} {{app}}
-
