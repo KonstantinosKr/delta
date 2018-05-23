@@ -417,7 +417,7 @@ void delta::geometry::hardcoded::generateOuterHopper(
   std::vector<iREAL> eLxCoordinates;
   std::vector<iREAL> eLyCoordinates;
   std::vector<iREAL> eLzCoordinates;
-
+  #pragma omp parallel for
   for(unsigned i=0;i<xCoordinates.size(); i++)
   {
     if(i==10 || i==29 || i==0 || i==34)

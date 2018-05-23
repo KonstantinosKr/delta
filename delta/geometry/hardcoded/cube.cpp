@@ -572,21 +572,28 @@ delta::geometry::mesh::Mesh *delta::geometry::primitive::cube::generateHullCube(
   zCoordinates.resize(numberOfTriangles*3);
 
   int counter = 0;
+  #pragma omp parallel for
   for(delta::hull::TRI *t = tr, *e = t + pointlength; t < e; t ++)
   {//iterate through triangles and assign value
     xCoordinates[counter] = (t->ver [0][0]/(mul)) + center[0];
     yCoordinates[counter] = (t->ver [0][1]/(mul)) + center[1];
     zCoordinates[counter] = (t->ver [0][2]/(mul)) + center[2];
+    
+    #pragma omp atomic 
     counter++;
 
     xCoordinates[counter] = (t->ver [1][0]/(mul)) + center[0];
     yCoordinates[counter] = (t->ver [1][1]/(mul)) + center[1];
     zCoordinates[counter] = (t->ver [1][2]/(mul)) + center[2];
+    
+    #pragma omp atomic 
     counter++;
 
     xCoordinates[counter] = (t->ver [2][0]/(mul)) + center[0];
     yCoordinates[counter] = (t->ver [2][1]/(mul)) + center[1];
     zCoordinates[counter] = (t->ver [2][2]/(mul)) + center[2];
+    
+    #pragma omp atomic 
     counter++;
   }
   free(tr);
@@ -677,27 +684,32 @@ delta::geometry::mesh::Mesh *delta::geometry::primitive::cube::generateHullCube(
   zCoordinates.resize(numberOfTriangles*3);
 
   int counter = 0;
+  #pragma omp parallel for
   for(delta::hull::TRI *t = tr, *e = t + pointlength; t < e; t ++)
   {//iterate through triangles and assign value
     xCoordinates[counter] = (t->ver [0][0]/(mul));
     yCoordinates[counter] = (t->ver [0][1]/(mul));
     zCoordinates[counter] = (t->ver [0][2]/(mul));
+    #pragma omp atomic 
     counter++;
 
     xCoordinates[counter] = (t->ver [1][0]/(mul));
     yCoordinates[counter] = (t->ver [1][1]/(mul));
     zCoordinates[counter] = (t->ver [1][2]/(mul));
+    #pragma omp atomic 
     counter++;
 
     xCoordinates[counter] = (t->ver [2][0]/(mul));
     yCoordinates[counter] = (t->ver [2][1]/(mul));
     zCoordinates[counter] = (t->ver [2][2]/(mul));
+    #pragma omp atomic 
     counter++;
   }
   free(tr);
 
   const iREAL pi = std::acos(-1);
 
+  #pragma omp parallel for
   for (unsigned i=0;i<xCoordinates.size(); i++) {
     iREAL xc = xCoordinates[i];
     iREAL yc = yCoordinates[i];
@@ -714,6 +726,7 @@ delta::geometry::mesh::Mesh *delta::geometry::primitive::cube::generateHullCube(
     zCoordinates[i] =   M[6] * xc + M[7] * yc + M[8] * zc;
   }
 
+  #pragma omp parallel for
   for (unsigned i=0;i<xCoordinates.size(); i++) {
     iREAL xc = xCoordinates[i];
     iREAL yc = yCoordinates[i];
@@ -730,6 +743,7 @@ delta::geometry::mesh::Mesh *delta::geometry::primitive::cube::generateHullCube(
     zCoordinates[i] =   M[6] * xc + M[7] * yc + M[8] * zc;
   }
 
+  #pragma omp parallel for
   for (unsigned i=0;i<xCoordinates.size(); i++) {
     iREAL xc = xCoordinates[i];
     iREAL yc = yCoordinates[i];
@@ -746,6 +760,7 @@ delta::geometry::mesh::Mesh *delta::geometry::primitive::cube::generateHullCube(
     zCoordinates[i] =   M[6] * xc + M[7] * yc + M[8] * zc;
   }
 
+  #pragma omp parallel for
   for (unsigned i=0;i<xCoordinates.size(); i++) {
     xCoordinates[i] += center[0];
     yCoordinates[i] += center[1];

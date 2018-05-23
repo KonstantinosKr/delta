@@ -32,6 +32,7 @@ delta::geometry::mesh::Mesh::Mesh(
 	std::vector<iREAL>& yCoordinates,
 	std::vector<iREAL>& zCoordinates)
 {
+  #pragma omp parallel for
   for(int i=0; i<xCoordinates.size(); i+=3)
   {
 	_xCoordinates.push_back(xCoordinates[i]);
@@ -55,9 +56,9 @@ void delta::geometry::mesh::Mesh::compressFromVectors()
   std::hash<std::string> v_hash;
   std::map<unsigned int, std::array<iREAL,3>> vertices;
 
+  #pragma omp parallel for
   for(int i=0; i<_xCoordinates.size(); i+=3)
   {
-
 	iREAL xA = _xCoordinates[i];
 	iREAL yA = _yCoordinates[i];
 	iREAL zA = _zCoordinates[i];
@@ -137,7 +138,7 @@ void delta::geometry::mesh::Mesh::compressFromVectors()
 	  }
 	}
 	std::array<int, 3> loc = {va, vb, vc};
-
+    #pragma omp atomic
 	_triangleFaces.push_back(loc);
   }
 }
@@ -150,6 +151,7 @@ void delta::geometry::mesh::Mesh::compressFromVectors(
   std::hash<std::string> v_hash;
   std::map<unsigned int, std::array<iREAL,3>> vertices;
 
+  #pragma omp parallel for
   for(int i=0; i<xCoordinates.size(); i+=3)
   {
 
@@ -232,13 +234,14 @@ void delta::geometry::mesh::Mesh::compressFromVectors(
 	  }
 	}
 	std::array<int, 3> loc = {va, vb, vc};
-
+    #pragma omp atomic
 	_triangleFaces.push_back(loc);
   }
 }
 
 void delta::geometry::mesh::Mesh::flatten()
 {
+  #pragma omp parallel for
   for(int i=0; i<_triangleFaces->size(); i++)
   {
 	std::array<iREAL, 3> A = _uniqueVertices[_triangleFaces[i][0]];
@@ -264,6 +267,7 @@ void delta::geometry::mesh::Mesh::flatten(
 	std::vector<iREAL>& yCoordinates,
 	std::vector<iREAL>& zCoordinates)
 {
+  #pragma omp parallel for
   for(int i=0; i<_triangleFaces.size(); i++)
   {
 	std::array<iREAL, 3> A = _uniqueVertices[_triangleFaces[i][0]];
@@ -293,6 +297,7 @@ void delta::geometry::mesh::Mesh::replace (
   _yCoordinates.clear();
   _zCoordinates.clear();
 
+  #pragma omp parallel for
   for(int i=0; i<xCoordinates.size(); i+=3)
   {
 	_xCoordinates.push_back(xCoordinates[i]);
@@ -659,6 +664,7 @@ void delta::geometry::mesh::Mesh::getCenterOfMass(
 
   unsigned nVertices = xCoordinates.size();
 
+  #pragma omp parallel for
   for(unsigned i=0;i<nVertices;i++)
   {
     centreOfMassX += xCoordinates[i];
@@ -687,6 +693,7 @@ void delta::geometry::mesh::Mesh::explode(
 
   std::vector<iREAL> exCoordinates, eyCoordinates, ezCoordinates;
 
+  #pragma omp parallel for
   for(unsigned i=0;i<xCoordinates.size();i+=3)
   {
     iREAL A[3], B[3], C[3];
@@ -719,18 +726,21 @@ void delta::geometry::mesh::Mesh::explode(
     N[0] = N[0]/mag;
     N[1] = N[1]/mag;
     N[2] = N[2]/mag;
+    
+    #pragma omp atomic
+    {
+        exCoordinates.push_back(xCoordinates[i] + length * N[0]);
+        eyCoordinates.push_back(yCoordinates[i] + length * N[1]);
+        ezCoordinates.push_back(zCoordinates[i] + length * N[2]);
 
-    exCoordinates.push_back(xCoordinates[i] + length * N[0]);
-    eyCoordinates.push_back(yCoordinates[i] + length * N[1]);
-    ezCoordinates.push_back(zCoordinates[i] + length * N[2]);
+        exCoordinates.push_back(xCoordinates[i+1] + length * N[0]);
+        eyCoordinates.push_back(yCoordinates[i+1] + length * N[1]);
+        ezCoordinates.push_back(zCoordinates[i+1] + length * N[2]);
 
-    exCoordinates.push_back(xCoordinates[i+1] + length * N[0]);
-    eyCoordinates.push_back(yCoordinates[i+1] + length * N[1]);
-    ezCoordinates.push_back(zCoordinates[i+1] + length * N[2]);
-
-    exCoordinates.push_back(xCoordinates[i+2] + length * N[0]);
-    eyCoordinates.push_back(yCoordinates[i+2] + length * N[1]);
-    ezCoordinates.push_back(zCoordinates[i+2] + length * N[2]);
+        exCoordinates.push_back(xCoordinates[i+2] + length * N[0]);
+        eyCoordinates.push_back(yCoordinates[i+2] + length * N[1]);
+        ezCoordinates.push_back(zCoordinates[i+2] + length * N[2]);
+    }
   }
 
   xCoordinates.insert(xCoordinates.end(), exCoordinates.begin(), exCoordinates.end());
@@ -749,7 +759,8 @@ void delta::geometry::mesh::Mesh::exploded(
   this->flatten(xCoordinates, yCoordinates, zCoordinates);
 
   std::vector<iREAL> exCoordinates, eyCoordinates, ezCoordinates;
-
+    
+  #pragma omp paralle for
   for(unsigned i=0;i<xCoordinates.size();i+=3)
   {
     iREAL A[3], B[3], C[3];
@@ -807,6 +818,7 @@ iREAL delta::geometry::mesh::Mesh::getHMin()
 
   iREAL min = 1E99;
 
+  #pragma omp parallel for
   for(unsigned i=0; i<xCoordinates.size(); i+=3)
   {
 	iREAL A[3], B[3], C[3];
@@ -828,7 +840,8 @@ iREAL delta::geometry::mesh::Mesh::getHMin()
 
 	if (std::min(std::min(AB, BC), CA) < min)
 	{
-		min = std::min(std::min(AB, BC), CA);
+      #pragma omp atomic
+	  min = std::min(std::min(AB, BC), CA);
 	}
   }
 

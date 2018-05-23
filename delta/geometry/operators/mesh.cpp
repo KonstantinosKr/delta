@@ -18,7 +18,8 @@ namespace delta {
 			std::vector<iREAL> &zCoordinates,
 			iREAL center[3])
 		{
-		  for(unsigned i=0;i<xCoordinates.size();i++)
+          #pragma omp parallel for
+          for(unsigned i=0;i<xCoordinates.size();i++)
 		  {
 			xCoordinates[i] = xCoordinates[i]-center[0];
 			yCoordinates[i] = yCoordinates[i]-center[1];
@@ -32,6 +33,7 @@ namespace delta {
 			std::vector<iREAL> &zCoordinates,
 			iREAL center[3])
 		{
+          #pragma omp parallel for
 		  for(unsigned i=0;i<xCoordinates.size();i++)
 		  {
 			xCoordinates[i] = (xCoordinates[i])+center[0];
@@ -49,6 +51,7 @@ namespace delta {
 		{
 		  delta::geometry::operators::mesh::moveMeshFromPositionToOrigin(xCoordinates, yCoordinates, zCoordinates, position);
 
+          #pragma omp parallel for
 		  for(unsigned i=0;i<xCoordinates.size();i++)
 		  {
 			  xCoordinates[i] = xCoordinates[i]*scale;
@@ -66,6 +69,7 @@ namespace delta {
 		{
 		  const iREAL pi = std::acos(-1);
 
+          #pragma omp parallel for
 		  for (unsigned i=0;i<xCoordinates.size(); i++)
 		  {
 			  iREAL x = xCoordinates[i];
@@ -92,6 +96,7 @@ namespace delta {
 		{
 		  const iREAL pi = std::acos(-1);
 
+          #pragma omp parallel for
 		  for (unsigned i=0;i<xCoordinates.size(); i++) {
 			  iREAL x = xCoordinates[i];
 			  iREAL y = yCoordinates[i];
@@ -117,6 +122,7 @@ namespace delta {
 		{
 		  const iREAL pi = std::acos(-1);
 
+          #pragma omp parallel for
 		  for (unsigned i=0;i<xCoordinates.size(); i++) {
 			  iREAL x = xCoordinates[i];
 			  iREAL y = yCoordinates[i];

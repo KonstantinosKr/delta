@@ -152,8 +152,8 @@ std::array<iREAL, 3> 					angular)
   this->_centreOfMass[2] = _centre[2];
 
   this->_material 		= material;
-  this->_isObstacle 		= isObstacle;
-  this->_isFriction 		= isFriction;
+  this->_isObstacle 	= isObstacle;
+  this->_isFriction 	= isFriction;
 
   this->_epsilon 		= epsilon;
 
@@ -244,7 +244,6 @@ void delta::geometry::Object::generateMesh(
   _mass = mass;
   _rad = rad;
 }
-
 
 std::string delta::geometry::Object::getComponent()
 {

@@ -210,6 +210,7 @@ std::vector<delta::geometry::mesh::Mesh> delta::core::readGeometry(std::string f
 	for(uint f_i = 0; f_i < mesh->mNumFaces; f_i++)
 	{
 	  //only triangle faces
+	  #pragma omp parallel for
 	  for(uint index = 0; index < mesh->mFaces[f_i].mNumIndices; index+=3)
 	  {
 		int idxA = mesh->mFaces[f_i].mIndices[index];

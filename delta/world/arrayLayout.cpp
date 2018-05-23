@@ -69,7 +69,7 @@ std::vector<std::array<iREAL, 3>> delta::world::layout::array3d(
 
 	iREAL length = getDiscritization(xyzAxisLength, partitions);
 
- iREAL resetx = position[0];
+    iREAL resetx = position[0];
 	iREAL resetz = position[2];
 
 	for(int i=0;i<partitions;i++)
