@@ -55,7 +55,7 @@
   setenv TBB_INC "-I/opt/intel/tbb/include/"
   setenv TBB_SHLIB "-L/ddn/apps/Cluster-Apps/intel/xe_2017.2/tbb/lib/intel64/gcc4.7/ -ltbb"
 
-  phi1 - Sandy/KNC
+  Xeon Phi Cluster - Sandy/KNC
   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/intel/composer_xe_2015/lib/mic/:/opt/intel/tbb/lib/mic/
   export SINK_LD_LIBRARY_PATH=/opt/intel/composer_xe_2015/lib/mic/:/opt/intel/tbb/lib/mic
   export PATH=$PATH:/opt/intel/bin:/opt/intel/impi/5.1.1.109/bin64
@@ -63,10 +63,11 @@
   export TBB_SHLIB="-L/opt/intel/tbb/lib/mic -ltbb"
   export TBB_SHLIB="-L/opt/intel/tbb/lib/intel64/gcc4.4/ -ltbb"
 
+  VTune Amplifier
   /opt/intel/mic/bin/micnativeloadex ./dem-3d-release"
   nohup /opt/intel/vtune_amplifier_xe_2016/bin64/amplxe-cl -r xperiment -collect hotspots -no-auto-finalize -- ./dem-3d-release-novec > lol.log &
   
-  archer
+  Archer
   export TBB_SHLIB="-L/opt/intel/parallel_studio_xe_2017_ce/compilers_and_libraries_2017.0.098/linux/tbb/lib/intel64/gcc4.7/  -ltbb"
  \endcode
 
