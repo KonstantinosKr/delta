@@ -22,3 +22,7 @@ shared-memory*
 delta_peano/latex/
 
 delta_peano/doxygen-html/
+
+*.vtk
+
+delta_peano/delta-icc-release-tbb
