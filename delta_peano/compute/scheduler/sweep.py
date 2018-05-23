@@ -576,6 +576,7 @@ def submitJobsArcher():
 
 
 
+    name = hashlib.md5(projectName.encode()).hexdigest()[:4]
 
     searchString = ""
 
@@ -583,7 +584,7 @@ def submitJobsArcher():
     outputDirectory = projectPath + projectName + "/"+ projectName +".job"
 
     job = "#!/bin/bash\n\
-#PBS -N "+projectName+"\n\
+#PBS -N "+name+"\n\
 #PBS -l select=1:aoe=quad_100\n\
 #PBS -l walltime="+jobs["time"]+"\n\
 #PBS -A e573-durkk\n\
