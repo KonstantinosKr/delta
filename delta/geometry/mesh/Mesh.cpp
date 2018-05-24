@@ -138,7 +138,7 @@ void delta::geometry::mesh::Mesh::compressFromVectors()
 	  }
 	}
 	std::array<int, 3> loc = {va, vb, vc};
-    #pragma omp atomic
+    #pragma omp critical
 	_triangleFaces.push_back(loc);
   }
 }
@@ -234,7 +234,7 @@ void delta::geometry::mesh::Mesh::compressFromVectors(
 	  }
 	}
 	std::array<int, 3> loc = {va, vb, vc};
-    #pragma omp atomic
+    #pragma omp critical
 	_triangleFaces.push_back(loc);
   }
 }
@@ -733,7 +733,7 @@ void delta::geometry::mesh::Mesh::explode(
     N[1] = N[1]/mag;
     N[2] = N[2]/mag;
     
-    #pragma omp atomic
+    #pragma omp critical
     {
         exCoordinates.push_back(xCoordinates[i] + length * N[0]);
         eyCoordinates.push_back(yCoordinates[i] + length * N[1]);
@@ -766,7 +766,7 @@ void delta::geometry::mesh::Mesh::exploded(
 
   std::vector<iREAL> exCoordinates, eyCoordinates, ezCoordinates;
     
-  #pragma omp paralle for
+  #pragma omp parallel for
   for(unsigned i=0;i<xCoordinates.size();i+=3)
   {
     iREAL A[3], B[3], C[3];
@@ -846,7 +846,7 @@ iREAL delta::geometry::mesh::Mesh::getHMin()
 
 	if (std::min(std::min(AB, BC), CA) < min)
 	{
-      #pragma omp atomic
+      #pragma omp critical
 	  min = std::min(std::min(AB, BC), CA);
 	}
   }
