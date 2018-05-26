@@ -572,28 +572,28 @@ delta::geometry::mesh::Mesh *delta::geometry::primitive::cube::generateHullCube(
   zCoordinates.resize(numberOfTriangles*3);
 
   int counter = 0;
-  #pragma omp parallel for
+  //#pragma omp parallel for
   for(delta::hull::TRI *t = tr, *e = t + pointlength; t < e; t ++)
   {//iterate through triangles and assign value
     xCoordinates[counter] = (t->ver [0][0]/(mul)) + center[0];
     yCoordinates[counter] = (t->ver [0][1]/(mul)) + center[1];
     zCoordinates[counter] = (t->ver [0][2]/(mul)) + center[2];
     
-    #pragma omp atomic 
+    //#pragma omp atomic
     counter++;
 
     xCoordinates[counter] = (t->ver [1][0]/(mul)) + center[0];
     yCoordinates[counter] = (t->ver [1][1]/(mul)) + center[1];
     zCoordinates[counter] = (t->ver [1][2]/(mul)) + center[2];
     
-    #pragma omp atomic 
+    //#pragma omp atomic
     counter++;
 
     xCoordinates[counter] = (t->ver [2][0]/(mul)) + center[0];
     yCoordinates[counter] = (t->ver [2][1]/(mul)) + center[1];
     zCoordinates[counter] = (t->ver [2][2]/(mul)) + center[2];
     
-    #pragma omp atomic 
+    //#pragma omp atomic
     counter++;
   }
   free(tr);
@@ -684,25 +684,25 @@ delta::geometry::mesh::Mesh *delta::geometry::primitive::cube::generateHullCube(
   zCoordinates.resize(numberOfTriangles*3);
 
   int counter = 0;
-  #pragma omp parallel for
+  //#pragma omp parallel for
   for(delta::hull::TRI *t = tr, *e = t + pointlength; t < e; t ++)
   {//iterate through triangles and assign value
     xCoordinates[counter] = (t->ver [0][0]/(mul));
     yCoordinates[counter] = (t->ver [0][1]/(mul));
     zCoordinates[counter] = (t->ver [0][2]/(mul));
-    #pragma omp atomic 
+    //#pragma omp atomic
     counter++;
 
     xCoordinates[counter] = (t->ver [1][0]/(mul));
     yCoordinates[counter] = (t->ver [1][1]/(mul));
     zCoordinates[counter] = (t->ver [1][2]/(mul));
-    #pragma omp atomic 
+    //#pragma omp atomic
     counter++;
 
     xCoordinates[counter] = (t->ver [2][0]/(mul));
     yCoordinates[counter] = (t->ver [2][1]/(mul));
     zCoordinates[counter] = (t->ver [2][2]/(mul));
-    #pragma omp atomic 
+    //#pragma omp atomic
     counter++;
   }
   free(tr);

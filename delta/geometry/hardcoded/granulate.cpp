@@ -29,7 +29,7 @@ void delta::geometry::primitive::granulate::generateParticle(
     yCoordinates[2*i-1>=0 ? 2*i-1 : 2*numberOfTriangles-1] = center[1] + localRadius * std::sin(2.0*pi * (1.0/numberOfTriangles*i) );
   }
 }
-
+//reposition particle
 delta::geometry::mesh::Mesh *delta::geometry::primitive::granulate::loadParticle(
   iREAL  center[3],
   iREAL  h
@@ -43,7 +43,7 @@ delta::geometry::mesh::Mesh *delta::geometry::primitive::granulate::loadParticle
   delta::geometry::mesh::Mesh *mesh =  delta::core::readVTKGeometry(fileinput);
 
   iREAL diagonal = mesh->computeDiagonal();
-  mesh->scaleXYZ(h/1.0/diagonal, center);
+  mesh->scaleXYZ(h/1.0/diagonal);
 
   mesh->replace(xCoordinates, yCoordinates, zCoordinates);
 

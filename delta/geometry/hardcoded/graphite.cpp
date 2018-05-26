@@ -11,7 +11,7 @@ delta::geometry::mesh::Mesh *delta::geometry::hardcoded::generateBrickFB(
   mesh->getCenterOfGeometry(centerOfGeometry);
   mesh->moveMeshFromPositionToOrigin(centerOfGeometry);
   mesh->rotateX(-0.25);
-  mesh->scaleXYZ(h, centerOfGeometry);
+  mesh->scaleXYZ(h);
   mesh->moveMeshFromOriginToPosition(center);
 
   return mesh;
@@ -62,7 +62,7 @@ delta::geometry::mesh::Mesh *delta::geometry::hardcoded::generateKeyXK(
 
   mesh->getCenterOfGeometry(centerOfGeometry);
   mesh->moveMeshFromPositionToOrigin(centerOfGeometry);
-  mesh->scaleXYZ(h, centerOfGeometry);
+  mesh->scaleXYZ(h);
   mesh->moveMeshFromOriginToPosition(center);
 
   return mesh;
@@ -79,7 +79,7 @@ delta::geometry::mesh::Mesh *delta::geometry::hardcoded::generateKeyYK(
   iREAL centerOfGeometry[3];
   mesh->getCenterOfGeometry(centerOfGeometry);
   mesh->moveMeshFromPositionToOrigin(centerOfGeometry);
-  mesh->scaleXYZ(h, centerOfGeometry);
+  mesh->scaleXYZ(h);
   mesh->moveMeshFromOriginToPosition(center);
 
   return mesh;

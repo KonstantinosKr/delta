@@ -268,7 +268,7 @@ void delta::world::configuration::nonUniformlyDistributedTotalMass(
     std::vector<iREAL> yCoordinates = objects[j].getMesh().getYCoordinatesAsVector();
     std::vector<iREAL> zCoordinates = objects[j].getMesh().getZCoordinatesAsVector();
 
-    objects[j].getMesh().scaleXYZ(rescale, position);
+    objects[j].getMesh().scaleXYZ(rescale);
 
     //iREAL mt = delta::geometry::properties::getMass(xCoordinatesArray[j], yCoordinatesArray[j], zCoordinatesArray[j], delta::geometry::material::MaterialType::WOOD);
     //iREAL vt = delta::geometry::properties::getVolume(xCoordinatesArray[j], yCoordinatesArray[j], zCoordinatesArray[j]);
@@ -322,7 +322,7 @@ void delta::world::configuration::nonUniformlyDistributedTotalMass(
   {
     std::array<iREAL, 3> ar = particleGrid[j]; position[0] = ar[0]; position[1] = ar[1]; position[2] = ar[2];
     delta::geometry::mesh::Mesh mesh = meshArray[j];
-    mesh.scaleXYZ(rescale, position);
+    mesh.scaleXYZ(rescale);
     meshArray[j] = mesh;
   }
 }
@@ -434,7 +434,7 @@ void delta::world::configuration::nonUniformlyDistributedTotalMass(
     std::array<iREAL, 3> ar = particleGrid[j]; position[0] = ar[0]; position[1] = ar[1]; position[2] = ar[2];
 
     delta::geometry::mesh::Mesh mesh = meshArray[j];
-    mesh.scaleXYZ(rescale, position);
+    mesh.scaleXYZ(rescale);
 
     rad[j] = rad[j] * rescale;
 

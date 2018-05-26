@@ -216,27 +216,28 @@ std::vector<delta::geometry::mesh::Mesh> delta::core::readGeometry(std::string f
 		int idxA = mesh->mFaces[f_i].mIndices[index];
 		int idxB = mesh->mFaces[f_i].mIndices[index+1];
 		int idxC = mesh->mFaces[f_i].mIndices[index+2];
-		std::array<int, 3> triangle = {idxA, idxB, idxC};
-		/*
-		std::cout << uniqueVertices[idxA][0] << " " << uniqueVertices[idxA][1] << " " << uniqueVertices[idxA][2] << std::endl;
+		std::array<int, 3> *triangle = new  std::array<int, 3>{999999, idxB, idxC};
+
+		/*std::cout << uniqueVertices[idxA][0] << " " << uniqueVertices[idxA][1] << " " << uniqueVertices[idxA][2] << std::endl;
 		std::cout << uniqueVertices[idxB][0] << " " << uniqueVertices[idxB][1] << " " << uniqueVertices[idxB][2] << std::endl;
 		std::cout << uniqueVertices[idxC][0] << " " << uniqueVertices[idxC][1] << " " << uniqueVertices[idxC][2] << std::endl;*/
 
 		#pragma omp critical
-		triangleFaces.push_back(triangle);
+		triangleFaces.push_back(*triangle);
 	  }
 	}
 
-	printf("entered\n");
+	printf("Faces Size: %i\n", triangleFaces.size());
+	for(int i=0; i<triangleFaces.size(); i++)
+	{
+		std::cout << triangleFaces[i][0] << " " << triangleFaces[i][1] << " " << triangleFaces[i][2] << std::endl;
+	}
 	delta::geometry::mesh::Mesh *meshgeometry = new delta::geometry::mesh::Mesh(triangleFaces, uniqueVertices);
-	printf("entered2\n");
 	meshVector.push_back(*meshgeometry);
-	printf("entered3\n");
   }
 
   return meshVector;
 }
-
 
 delta::geometry::mesh::Mesh* delta::core::readPartGeometry(std::string fileName)
 {
@@ -264,7 +265,7 @@ delta::geometry::mesh::Mesh* delta::core::readPartGeometry(std::string fileName)
   printf("Read %i vertices\n", mesh->mNumVertices);
 
   //vertices
-  #pragma omp parallel for
+  //#pragma omp parallel for
   for(uint v_i = 0; v_i < mesh->mNumVertices; v_i++)
   {
 	if(mesh->HasPositions())
@@ -276,7 +277,7 @@ delta::geometry::mesh::Mesh* delta::core::readPartGeometry(std::string fileName)
 
 	  std::array<iREAL, 3> vertex = {vp->x, vp->y, vp->z};
 
-	  #pragma omp critical
+	  //#pragma omp critical
 	  uniqueVertices.push_back(vertex);
 	  //std::cout << vp->x << " " << vp->y << " " << vp->z << std::endl;
 	}
@@ -285,27 +286,22 @@ delta::geometry::mesh::Mesh* delta::core::readPartGeometry(std::string fileName)
   //printf("number of triangles: %i\n", mesh->mNumFaces);
 
   //only triangle faces
-  #pragma omp parallel for
+  //#pragma omp parallel for
   for(uint f_i = 0; f_i < mesh->mNumFaces; f_i++)
   {
 	//only triangle faces
+	//#pragma omp parallel for
 	for(uint index = 0; index < mesh->mFaces[f_i].mNumIndices; index+=3)
 	{
 	  int idxA = mesh->mFaces[f_i].mIndices[index];
 	  int idxB = mesh->mFaces[f_i].mIndices[index+1];
 	  int idxC = mesh->mFaces[f_i].mIndices[index+2];
 	  std::array<int, 3> triangle = {idxA, idxB, idxC};
-	  /*
-	  std::cout << uniqueVertices[idxA][0] << " " << uniqueVertices[idxA][1] << " " << uniqueVertices[idxA][2] << std::endl;
-	  std::cout << uniqueVertices[idxB][0] << " " << uniqueVertices[idxB][1] << " " << uniqueVertices[idxB][2] << std::endl;
-	  std::cout << uniqueVertices[idxC][0] << " " << uniqueVertices[idxC][1] << " " << uniqueVertices[idxC][2] << std::endl;*/
 
-	  #pragma omp critical
+	  //#pragma omp critical
 	  triangleFaces.push_back(triangle);
 	}
   }
 
-  delta::geometry::mesh::Mesh *meshgeometry = new delta::geometry::mesh::Mesh(triangleFaces, uniqueVertices);
-
-  return meshgeometry;
+  return new delta::geometry::mesh::Mesh(triangleFaces, uniqueVertices);
 }

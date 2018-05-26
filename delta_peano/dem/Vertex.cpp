@@ -52,8 +52,7 @@ void dem::Vertex::destroy() const {
 
 int dem::Vertex::createParticle(
 	delta::geometry::Object Object,
-    int particleId,
-    int localparticleId)
+    int particleId)
 {
   ParticleHeap::getInstance().getData( _vertexData.getParticles() ).push_back( records::Particle() );
 
@@ -123,7 +122,7 @@ int dem::Vertex::createParticle(
   newParticle._persistentRecords._isObstacle 		= Object.getIsObstacle();
   newParticle._persistentRecords._material 			= int(Object.getMaterial());
   newParticle._persistentRecords._globalParticleId 	= particleId;
-  newParticle._persistentRecords._localParticleId   	= localparticleId;
+  newParticle._persistentRecords._localParticleId   	= 0;
 
   newParticle._persistentRecords._velocity    		= tarch::la::Vector<DIMENSIONS,iREAL>(0.0);
   newParticle._persistentRecords._angular		 	= tarch::la::Vector<DIMENSIONS,iREAL>(0.0);
@@ -173,8 +172,7 @@ int dem::Vertex::createParticle(
 
 int dem::Vertex::createSubParticle(
 	delta::geometry::Object Object,
-    int particleId,
-    int localparticleId)
+    int particleId)
 {
   std::vector<iREAL> xCoordinates = Object.getMesh().getXCoordinatesAsVector();
   std::vector<iREAL> yCoordinates = Object.getMesh().getYCoordinatesAsVector();
@@ -263,7 +261,7 @@ int dem::Vertex::createSubParticle(
   newParticle._persistentRecords._isObstacle        	= Object.getIsObstacle();
   newParticle._persistentRecords._material          	= int(Object.getMaterial());
   newParticle._persistentRecords._globalParticleId  	= particleId;
-  newParticle._persistentRecords._localParticleId  	= localparticleId;
+  newParticle._persistentRecords._localParticleId  	= 0;
 
   newParticle._persistentRecords._velocity    		= tarch::la::Vector<DIMENSIONS,iREAL>(0.0);
   newParticle._persistentRecords._angular     		= tarch::la::Vector<DIMENSIONS,iREAL>(0.0);

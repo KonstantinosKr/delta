@@ -79,14 +79,13 @@ std::array<iREAL, 3> 					angular)
 
   this-> _mesh			= 	mesh;
 
-  std::array<iREAL, 3> 	_centreOfMass;
+  iREAL po[3] = {centre[0], centre[1], centre[2]};
+  mesh->moveMeshToPosition(po);
 
   iREAL mass, centerOfMass[3], inertia[9], inverse[9];
 
   mesh->computeInertia(_material, mass, centerOfMass, inertia);
   mesh->computeInverseInertia(inertia, inverse, _isObstacle);
-
-  _mesh = mesh;
 
   _inertia[0] = inertia[0];
   _inertia[1] = inertia[1];
@@ -112,11 +111,9 @@ std::array<iREAL, 3> 					angular)
   _centreOfMass[1] = centerOfMass[1];
   _centreOfMass[2] = centerOfMass[2];
 
-  _mass = mass;
-
   this->_diameter		=	mesh->getDiameter();
   this->_rad				= 	_diameter/2;
-  this->_haloDiameter 	= 	(_diameter+epsilon*2) * 1.1;;
+  this->_haloDiameter 	= 	(_diameter+epsilon*2) * 1.1;
   this->_mass			=	mass;
 
   //dimensions
@@ -152,8 +149,8 @@ std::array<iREAL, 3> 					angular)
   this->_centreOfMass[2] = _centre[2];
 
   this->_material 		= material;
-  this->_isObstacle 	= isObstacle;
-  this->_isFriction 	= isFriction;
+  this->_isObstacle 		= isObstacle;
+  this->_isFriction 		= isFriction;
 
   this->_epsilon 		= epsilon;
 
@@ -165,8 +162,8 @@ std::array<iREAL, 3> 					angular)
   this->_angularVelocity[1] = angular[1];
   this->_angularVelocity[2] = angular[2];
 
-  this->_haloDiameter 	= 	0;
-  this->_diameter		=	0;
+  this->_haloDiameter 	= 	(_diameter+epsilon*2) * 1.1;
+  this->_diameter		=	rad*2;
   this->_mass			=	0;
 
   this-> _mesh			= 	nullptr;

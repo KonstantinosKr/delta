@@ -159,10 +159,10 @@ void dem::mappings::CreateGrid::deployObject(
     particleNumber = vertex.createSphereParticle(object, _numberOfParticles);
   } else if(object.getComponent() == "mesh")
   {
-	particleNumber = vertex.createSubParticle(object, _numberOfParticles, 0);
+	particleNumber = vertex.createSubParticle(object, _numberOfParticles);
 	_numberOfTriangles += object.getNumberOfTriangles();
   } else {
-    particleNumber = vertex.createParticle(object, _numberOfParticles, 0);
+    particleNumber = vertex.createParticle(object, _numberOfParticles);
 	_numberOfTriangles += object.getNumberOfTriangles();
   }
 
@@ -261,7 +261,7 @@ void dem::mappings::CreateGrid::beginIteration(
   } else if(_scenario[0] == turbine)
   {
 	delta::world::scenarios::turbine(_coarseObjects, _isSphere, _noPointsPerParticle, _epsilon);
-	printf("passed\n");
+	  _gravity = false;
   } else if(_scenario[1] == friction)
   {
 	int sc = 0;
@@ -306,7 +306,6 @@ void dem::mappings::CreateGrid::beginIteration(
 
   dem::mappings::Collision::gravity	= _gravity==true ? 9.81 : 0.0;
 
-  printf("arrived\n");
   logTraceOutWith1Argument( "beginIteration(State)", solverState);
 }
 

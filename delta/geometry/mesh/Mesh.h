@@ -33,8 +33,8 @@ class delta::geometry::mesh::Mesh {
 	Mesh();
 
 	Mesh(
-		std::vector<std::array<int, 3>>			triangleFaces,
-		std::vector<std::array<iREAL, 3>> 		uniqueVertices);
+		std::vector<std::array<int, 3>> 		&triangleFaces,
+		std::vector<std::array<iREAL, 3>> 	&uniqueVertices);
 
 	Mesh(
 		std::vector<iREAL>& xCoordinates,
@@ -90,6 +90,18 @@ class delta::geometry::mesh::Mesh {
 		std::vector<iREAL>& zCoordinates);
 
 	/*
+	 *  Move Mesh To Position
+	 *
+	 *  Set center of geometry to position.
+	 *  This modifies the local data.
+	 *
+	 *
+	 *  @param centre : centre of geometry
+	 *  @returns void
+	 */
+	void moveMeshToPosition(iREAL center[3]);
+
+	/*
 	 *  Move Mesh From Position To Origin
 	 *
 	 *  Set center of geometry to origin.
@@ -120,10 +132,10 @@ class delta::geometry::mesh::Mesh {
 	 *  This modifies the local data.
 	 *
 	 *
-	 *  @param scale : centre of geometry
+	 *  @param scale : scale factor
 	 *  @returns void
 	 */
-	void scaleXYZ(iREAL scale, iREAL position[3]);
+	void scaleXYZ(iREAL scale);
 
 	/*
 	 *  Rotate X
@@ -567,7 +579,16 @@ class delta::geometry::mesh::Mesh {
 		std::vector<iREAL>& yCoordinates,
 		std::vector<iREAL>& zCoordinates);
 
-	std::vector<std::array<int, 3>> 			_triangleFaces;
+	/*
+	 *  Print arrays to screen
+	 *
+	 *
+	 *  @returns void
+	 */
+
+    void toString();
+
+	std::vector<std::array<int, 3>> 				_triangleFaces;
 	std::vector<std::array<iREAL, 3>>		 	_uniqueVertices;
 
     std::vector<iREAL>   						_xCoordinates;

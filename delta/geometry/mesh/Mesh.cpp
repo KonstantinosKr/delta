@@ -18,12 +18,11 @@ delta::geometry::mesh::Mesh::Mesh()
 }
 
 delta::geometry::mesh::Mesh::Mesh(
-	std::vector<std::array<int, 3>> 		triangleFaces,
-	std::vector<std::array<iREAL, 3>> 		uniqueVertices)
+	std::vector<std::array<int, 3>> 		&triangleFaces,
+	std::vector<std::array<iREAL, 3>> 	&uniqueVertices)
 {
-  this->_triangleFaces = triangleFaces;
-  this->_uniqueVertices = uniqueVertices;
-
+  _triangleFaces = triangleFaces;
+  _uniqueVertices = uniqueVertices;
   delta::geometry::mesh::Mesh::flatten();
 }
 
@@ -32,7 +31,7 @@ delta::geometry::mesh::Mesh::Mesh(
 	std::vector<iREAL>& yCoordinates,
 	std::vector<iREAL>& zCoordinates)
 {
-  #pragma omp parallel for
+  //#pragma omp parallel for
   for(int i=0; i<xCoordinates.size(); i+=3)
   {
 	_xCoordinates.push_back(xCoordinates[i]);
@@ -54,9 +53,11 @@ delta::geometry::mesh::Mesh::Mesh(
 void delta::geometry::mesh::Mesh::compressFromVectors()
 {
   std::hash<std::string> v_hash;
-  std::map<unsigned int, std::array<iREAL,3>> vertices;
 
-  #pragma omp parallel for
+  _uniqueVertices.clear();
+  _triangleFaces.clear();
+
+  //#pragma omp parallel for
   for(int i=0; i<_xCoordinates.size(); i+=3)
   {
 	iREAL xA = _xCoordinates[i];
@@ -71,16 +72,19 @@ void delta::geometry::mesh::Mesh::compressFromVectors()
 	iREAL yC = _yCoordinates[i+2];
 	iREAL zC = _zCoordinates[i+2];
 
+	std::map<unsigned int, std::array<iREAL,3>> 	hashToVerticesMap;
+	std::map<unsigned int, unsigned int> 		hashToVertexPositionMap;
+
 	std::ostringstream ssA;
 	ssA << xA << yA << zA;
 	std::string A(ssA.str());
 	unsigned int uniqueIDA = v_hash(A);
 
-	if(vertices.count(uniqueIDA) == 0)
+	if(hashToVerticesMap.count(uniqueIDA) == 0)
 	{
-	  std::array<iREAL, 3> v = {xA, yA, zA};
-	  vertices[uniqueIDA] = v;
-	  _uniqueVertices.push_back(vertices[uniqueIDA]);
+	  hashToVerticesMap[uniqueIDA] = {xA, yA, zA};
+	  _uniqueVertices.push_back(hashToVerticesMap[uniqueIDA]);
+	  hashToVertexPositionMap[uniqueIDA] = _uniqueVertices.size()-1;
 	}
 
 	std::ostringstream ssB;
@@ -88,11 +92,11 @@ void delta::geometry::mesh::Mesh::compressFromVectors()
 	std::string B(ssB.str());
 	unsigned int uniqueIDB = v_hash(B);
 
-	if(vertices.count(uniqueIDB) == 0)
+	if(hashToVerticesMap.count(uniqueIDB) == 0)
 	{
-	  std::array<iREAL, 3> v = {xB, yB, zB};
-	  vertices[uniqueIDB] = v;
-	  _uniqueVertices.push_back(vertices[uniqueIDB]);
+	  hashToVerticesMap[uniqueIDB] = {xB, yB, zB};
+	  _uniqueVertices.push_back(hashToVerticesMap[uniqueIDB]);
+	  hashToVertexPositionMap[uniqueIDB] = _uniqueVertices.size()-1;
 	}
 
 	std::ostringstream ssC;
@@ -100,45 +104,19 @@ void delta::geometry::mesh::Mesh::compressFromVectors()
 	std::string C(ssC.str());
 	unsigned int uniqueIDC = v_hash(C);
 
-	if(vertices.count(uniqueIDC) == 0)
+	if(hashToVerticesMap.count(uniqueIDC) == 0)
 	{
-	  std::array<iREAL, 3> v = {xC, yC, zC};
-	  vertices[uniqueIDC] = v;
-	  _uniqueVertices.push_back(vertices[uniqueIDC]);
+	  hashToVerticesMap[uniqueIDC] = {xC, yC, zC};
+	  _uniqueVertices.push_back(hashToVerticesMap[uniqueIDC]);
+	  hashToVertexPositionMap[uniqueIDC] = _uniqueVertices.size()-1;
 	}
 
-	int va=0,vb=0,vc=0;
+	int a = hashToVertexPositionMap[uniqueIDA];
+	int b = hashToVertexPositionMap[uniqueIDB];
+	int c = hashToVertexPositionMap[uniqueIDC];
+	std::array<int, 3> loc = {a, b, c};
 
-	//search for vertices to construct triangleface
-	for(int i=0; i<_uniqueVertices.size(); i++)
-	{
-	  //printf("entered loop: %i\n", i);
-	  std::ostringstream ssr;
-	  ssr << _uniqueVertices[i][0] << _uniqueVertices[i][1] << _uniqueVertices[i][2];
-	  std::string tt(ssr.str());
-	  unsigned int id = v_hash(tt);
-
-	  if(id == uniqueIDA)
-	  {
-		va = i;
-		//printf("entered A : %i\n", i);
-		//std::cout << _uniqueVertices[i][0] << " " << _uniqueVertices[i][1] << " " << _uniqueVertices[i][2] << std::endl;
-	  }
-	  if(id == uniqueIDB)
-	  {
-		vb = i;
-		//printf("entered B : %i\n", i);
-		//std::cout << _uniqueVertices[i][0] << " " << _uniqueVertices[i][1] << " " << _uniqueVertices[i][2] << std::endl;
-	  }
-	  if(id == uniqueIDC)
-	  {
-		vc = i;
-		//printf("entered C : %i\n", i);
-		//std::cout << _uniqueVertices[i][0] << " " << _uniqueVertices[i][1] << " " << _uniqueVertices[i][2] << std::endl;
-	  }
-	}
-	std::array<int, 3> loc = {va, vb, vc};
-    #pragma omp critical
+    //#pragma omp critical
 	_triangleFaces.push_back(loc);
   }
 }
@@ -151,10 +129,9 @@ void delta::geometry::mesh::Mesh::compressFromVectors(
   std::hash<std::string> v_hash;
   std::map<unsigned int, std::array<iREAL,3>> vertices;
 
-  #pragma omp parallel for
+  //#pragma omp parallel for
   for(int i=0; i<xCoordinates.size(); i+=3)
   {
-
 	iREAL xA = xCoordinates[i];
 	iREAL yA = yCoordinates[i];
 	iREAL zA = zCoordinates[i];
@@ -167,16 +144,19 @@ void delta::geometry::mesh::Mesh::compressFromVectors(
 	iREAL yC = yCoordinates[i+2];
 	iREAL zC = zCoordinates[i+2];
 
+	std::map<unsigned int, std::array<iREAL,3>> 	hashToVerticesMap;
+	std::map<unsigned int, unsigned int> 		hashToVertexPositionMap;
+
 	std::ostringstream ssA;
 	ssA << xA << yA << zA;
 	std::string A(ssA.str());
 	unsigned int uniqueIDA = v_hash(A);
 
-	if(vertices.count(uniqueIDA) == 0)
+	if(hashToVerticesMap.count(uniqueIDA) == 0)
 	{
-	  std::array<iREAL, 3> v = {xA, yA, zA};
-	  vertices[uniqueIDA] = v;
-	  _uniqueVertices.push_back(vertices[uniqueIDA]);
+	  hashToVerticesMap[uniqueIDA] = {xA, yA, zA};
+	  _uniqueVertices.push_back(hashToVerticesMap[uniqueIDA]);
+	  hashToVertexPositionMap[uniqueIDA] = _uniqueVertices.size()-1;
 	}
 
 	std::ostringstream ssB;
@@ -184,11 +164,11 @@ void delta::geometry::mesh::Mesh::compressFromVectors(
 	std::string B(ssB.str());
 	unsigned int uniqueIDB = v_hash(B);
 
-	if(vertices.count(uniqueIDB) == 0)
+	if(hashToVerticesMap.count(uniqueIDB) == 0)
 	{
-	  std::array<iREAL, 3> v = {xB, yB, zB};
-	  vertices[uniqueIDB] = v;
-	  _uniqueVertices.push_back(vertices[uniqueIDB]);
+	  hashToVerticesMap[uniqueIDB] = {xB, yB, zB};
+	  _uniqueVertices.push_back(hashToVerticesMap[uniqueIDB]);
+	  hashToVertexPositionMap[uniqueIDB] = _uniqueVertices.size()-1;
 	}
 
 	std::ostringstream ssC;
@@ -196,60 +176,39 @@ void delta::geometry::mesh::Mesh::compressFromVectors(
 	std::string C(ssC.str());
 	unsigned int uniqueIDC = v_hash(C);
 
-	if(vertices.count(uniqueIDC) == 0)
+	if(hashToVerticesMap.count(uniqueIDC) == 0)
 	{
-	  std::array<iREAL, 3> v = {xC, yC, zC};
-	  vertices[uniqueIDC] = v;
-	  _uniqueVertices.push_back(vertices[uniqueIDC]);
+	  hashToVerticesMap[uniqueIDC] = {xC, yC, zC};
+	  _uniqueVertices.push_back(hashToVerticesMap[uniqueIDC]);
+	  hashToVertexPositionMap[uniqueIDC] = _uniqueVertices.size()-1;
 	}
 
-	int va=0,vb=0,vc=0;
+	int a = hashToVertexPositionMap[uniqueIDA];
+	int b = hashToVertexPositionMap[uniqueIDB];
+	int c = hashToVertexPositionMap[uniqueIDC];
+	std::array<int, 3> loc = {a, b, c};
 
-	//search for vertices to construct triangleface
-	for(int i=0; i<_uniqueVertices.size(); i++)
-	{
-	  //printf("entered loop: %i\n", i);
-	  std::ostringstream ssr;
-	  ssr << _uniqueVertices[i][0] << _uniqueVertices[i][1] << _uniqueVertices[i][2];
-	  std::string tt(ssr.str());
-	  unsigned int id = v_hash(tt);
-
-	  if(id == uniqueIDA)
-	  {
-		va = i;
-		//printf("entered A : %i\n", i);
-		//std::cout << _uniqueVertices[i][0] << " " << _uniqueVertices[i][1] << " " << _uniqueVertices[i][2] << std::endl;
-	  }
-	  if(id == uniqueIDB)
-	  {
-		vb = i;
-		//printf("entered B : %i\n", i);
-		//std::cout << _uniqueVertices[i][0] << " " << _uniqueVertices[i][1] << " " << _uniqueVertices[i][2] << std::endl;
-	  }
-	  if(id == uniqueIDC)
-	  {
-		vc = i;
-		//printf("entered C : %i\n", i);
-		//std::cout << _uniqueVertices[i][0] << " " << _uniqueVertices[i][1] << " " << _uniqueVertices[i][2] << std::endl;
-	  }
-	}
-	std::array<int, 3> loc = {va, vb, vc};
-    #pragma omp critical
+    //#pragma omp critical
 	_triangleFaces.push_back(loc);
   }
 }
 
 void delta::geometry::mesh::Mesh::flatten()
 {
-  #pragma omp parallel for
+  _xCoordinates.clear();
+  _yCoordinates.clear();
+  _zCoordinates.clear();
+  //#pragma omp parallel for
   for(int i=0; i<_triangleFaces.size(); i++)
   {
-    int idxA = _triangleFaces[i][0]; 
-    int idxB = _triangleFaces[i][1]; 
-    int idxC = _triangleFaces[i][2]; 
+    int idxA = _triangleFaces[i][0];
+    int idxB = _triangleFaces[i][1];
+    int idxC = _triangleFaces[i][2];
+
 	std::array<iREAL, 3> A = _uniqueVertices[idxA];
 	std::array<iREAL, 3> B = _uniqueVertices[idxB];
 	std::array<iREAL, 3> C = _uniqueVertices[idxC];
+	//std::cout << _triangleFaces[i][0] << " " << _triangleFaces[i][1] << " " << _triangleFaces[i][2] << std::endl;
 
 	_xCoordinates.push_back(A[0]);
 	_yCoordinates.push_back(A[1]);
@@ -270,7 +229,7 @@ void delta::geometry::mesh::Mesh::flatten(
 	std::vector<iREAL>& yCoordinates,
 	std::vector<iREAL>& zCoordinates)
 {
-  #pragma omp parallel for
+  //#pragma omp parallel for
   for(int i=0; i<_triangleFaces.size(); i++)
   {
     int idxA = _triangleFaces[i][0]; 
@@ -303,7 +262,7 @@ void delta::geometry::mesh::Mesh::replace (
   _yCoordinates.clear();
   _zCoordinates.clear();
 
-  #pragma omp parallel for
+  //#pragma omp parallel for
   for(int i=0; i<xCoordinates.size(); i+=3)
   {
 	_xCoordinates.push_back(xCoordinates[i]);
@@ -318,6 +277,8 @@ void delta::geometry::mesh::Mesh::replace (
 	_yCoordinates.push_back(yCoordinates[i+2]);
 	_zCoordinates.push_back(zCoordinates[i+2]);
   }
+
+  compressFromVectors();
 }
 
 std::vector<iREAL> delta::geometry::mesh::Mesh::getXCoordinatesAsVector()
@@ -349,6 +310,20 @@ iREAL* delta::geometry::mesh::Mesh::getZCoordinates()
   return _zCoordinates.data();
 }
 
+void delta::geometry::mesh::Mesh::moveMeshToPosition(iREAL center[3])
+{
+  std::vector<iREAL> xCoordinates;
+  std::vector<iREAL> yCoordinates;
+  std::vector<iREAL> zCoordinates;
+
+  this->flatten(xCoordinates, yCoordinates, zCoordinates);
+  iREAL currentPosition[3] = {0,0,0};
+  getCenterOfGeometry(currentPosition);
+  delta::geometry::operators::mesh::moveMeshFromPositionToOrigin(xCoordinates, yCoordinates, zCoordinates, currentPosition);
+  delta::geometry::operators::mesh::moveMeshFromOriginToPosition(xCoordinates, yCoordinates, zCoordinates, center);
+  this->replace(xCoordinates, yCoordinates, zCoordinates);
+}
+
 void delta::geometry::mesh::Mesh::moveMeshFromPositionToOrigin(iREAL center[3])
 {
   std::vector<iREAL> xCoordinates;
@@ -376,8 +351,7 @@ void delta::geometry::mesh::Mesh::moveMeshFromOriginToPosition(iREAL center[3])
 }
 
 void delta::geometry::mesh::Mesh::scaleXYZ(
-    iREAL scale,
-    iREAL position[3])
+    iREAL scale)
 {
   std::vector<iREAL> xCoordinates;
   std::vector<iREAL> yCoordinates;
@@ -385,9 +359,12 @@ void delta::geometry::mesh::Mesh::scaleXYZ(
 
   this->flatten(xCoordinates, yCoordinates, zCoordinates);
 
-  delta::geometry::operators::mesh::scaleXYZ(xCoordinates, yCoordinates, zCoordinates, scale, position);
+  iREAL currentPosition[3] = {0,0,0};
+  getCenterOfGeometry(currentPosition);
+  delta::geometry::operators::mesh::moveMeshFromPositionToOrigin(xCoordinates, yCoordinates, zCoordinates, currentPosition);
+  delta::geometry::operators::mesh::scaleXYZ(xCoordinates, yCoordinates, zCoordinates, scale, currentPosition);
 
-  this->replace(xCoordinates, yCoordinates, zCoordinates);
+  this->replace	(xCoordinates, yCoordinates, zCoordinates);
 }
 
 void delta::geometry::mesh::Mesh::rotateX(iREAL alphaX)
@@ -670,7 +647,7 @@ void delta::geometry::mesh::Mesh::getCenterOfMass(
 
   unsigned nVertices = xCoordinates.size();
 
-  #pragma omp parallel for
+  //#pragma omp parallel for
   for(unsigned i=0;i<nVertices;i++)
   {
     centreOfMassX += xCoordinates[i];
@@ -699,7 +676,7 @@ void delta::geometry::mesh::Mesh::explode(
 
   std::vector<iREAL> exCoordinates, eyCoordinates, ezCoordinates;
 
-  #pragma omp parallel for
+  //#pragma omp parallel for
   for(unsigned i=0;i<xCoordinates.size();i+=3)
   {
     iREAL A[3], B[3], C[3];
@@ -733,7 +710,7 @@ void delta::geometry::mesh::Mesh::explode(
     N[1] = N[1]/mag;
     N[2] = N[2]/mag;
     
-    #pragma omp critical
+   // #pragma omp critical
     {
         exCoordinates.push_back(xCoordinates[i] + length * N[0]);
         eyCoordinates.push_back(yCoordinates[i] + length * N[1]);
@@ -766,7 +743,7 @@ void delta::geometry::mesh::Mesh::exploded(
 
   std::vector<iREAL> exCoordinates, eyCoordinates, ezCoordinates;
     
-  #pragma omp parallel for
+  //#pragma omp parallel for
   for(unsigned i=0;i<xCoordinates.size();i+=3)
   {
     iREAL A[3], B[3], C[3];
@@ -824,7 +801,7 @@ iREAL delta::geometry::mesh::Mesh::getHMin()
 
   iREAL min = 1E99;
 
-  #pragma omp parallel for
+  //#pragma omp parallel for
   for(unsigned i=0; i<xCoordinates.size(); i+=3)
   {
 	iREAL A[3], B[3], C[3];
@@ -846,7 +823,7 @@ iREAL delta::geometry::mesh::Mesh::getHMin()
 
 	if (std::min(std::min(AB, BC), CA) < min)
 	{
-      #pragma omp critical
+      //#pragma omp critical
 	  min = std::min(std::min(AB, BC), CA);
 	}
   }
@@ -906,6 +883,16 @@ std::vector<std::array<int, 3>> delta::geometry::mesh::Mesh::getTriangleFaces()
 std::vector<std::array<iREAL, 3>> delta::geometry::mesh::Mesh::getUniqueVertices()
 {
   return _uniqueVertices;
+}
+
+void delta::geometry::mesh::Mesh::toString()
+{
+  for(int i=0; i<_xCoordinates.size(); i+=3)
+  {
+	std::cout << _xCoordinates[i] << _yCoordinates[i] << _zCoordinates[i];
+	std::cout << _xCoordinates[i + 1] << _yCoordinates[i + 1] << _zCoordinates[i + 1];
+	std::cout << _xCoordinates[i + 2] << _yCoordinates[i + 2] << _zCoordinates[i + 2];
+  }
 }
 
 delta::geometry::mesh::Mesh::Mesh::~Mesh() {

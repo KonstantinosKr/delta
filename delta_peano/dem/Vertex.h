@@ -92,13 +92,11 @@ class dem::Vertex: public peano::grid::Vertex< dem::records::Vertex > {
      */
     int createParticle(
     		delta::geometry::Object Object,
-		int particleId,
-		int localparticleId);
+		int particleId);
 
     int createSubParticle(
     		delta::geometry::Object Object,
-        int particleId,
-        int localparticleId);
+        int particleId);
 
     int createSphereParticle(
     		delta::geometry::Object Object,

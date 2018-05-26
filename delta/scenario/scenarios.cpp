@@ -105,30 +105,32 @@ void delta::world::scenarios::turbine(
 	int 										meshDensity,
 	iREAL 									epsilon)
 {
-  delta::geometry::mesh::Mesh *mesh = delta::core::readPartGeometry("input/turbine.stl");
+  delta::geometry::mesh::Mesh *meshA = delta::core::readPartGeometry("input/turbine.stl");
 
-  std::array<iREAL, 3> 					centre 	= {0.5, 0.5, 0.5};
+  std::array<iREAL, 3> 					centre 	= {0.5, 0.5, 0.43};
   std::array<iREAL, 3> 					linear 	= {0.0, 0.0, 0.0};
-  std::array<iREAL, 3> 					angular 	= {2.0, 0.0, 0.0};
+  std::array<iREAL, 3> 					angular 	= {-2.0, 0.0, 0.0};
 
-  printf("passed\n");
-  printf("mesh%i\n", mesh->getTriangleFaces().size());
+  meshA->scaleXYZ(0.1);
+  delta::geometry::Object turbineA("turbine", 0, meshA, centre,
+								  delta::geometry::material::MaterialType::WOOD,
+								  false, false, epsilon, linear, angular);
 
-  delta::geometry::Object * object = new  delta::geometry::Object("mesh", 0, mesh, centre,
-										  delta::geometry::material::MaterialType::WOOD,
-										  false, false, epsilon, linear, angular);
-  coarseObjects.push_back(*object);
 
-/*
-  centre 	= {0.5, 0.5, 0.5};
+  coarseObjects.push_back(turbineA);
+
+
+  delta::geometry::mesh::Mesh *meshB = delta::core::readPartGeometry("input/turbine.stl");
+
+  centre 	= {0.5, 0.5, 0.57};
   linear 	= {0.0, 0.0, 0.0};
-  angular 	= {-1.0, 0.0, 0.0};
+  angular 	= {1.0, 0.0, 0.0};
 
-  delta::geometry::mesh::Mesh copy = meshes[0];
-  object = new  delta::geometry::Object("mesh", 1, &copy, centre,
-										delta::geometry::material::MaterialType::WOOD,
-										false, false, epsilon, linear, angular);
-  coarseObjects.push_back(*object);*/
+  meshB->scaleXYZ(0.1);
+  delta::geometry::Object turbineB("turbine", 0, meshB, centre,
+								  delta::geometry::material::MaterialType::WOOD,
+								  false, false, epsilon, linear, angular);
+  coarseObjects.push_back(turbineB);
 }
 
 void delta::world::scenarios::rotateParticle(
@@ -168,7 +170,7 @@ void delta::world::scenarios::twoParticlesCrash(
 
   std::array<iREAL, 3> centreArray = {0.2, 0.2, 0.2};
   std::array<iREAL, 3> linear = {0.1, 0.1, 0.1};
-printf("entered\n");
+
   if(isSphere)
   {
 	delta::geometry::Object objectA("sphere", 0.01, 0, centreArray, delta::geometry::material::MaterialType::WOOD, false, false, epsilon, linear, {0,0,0});
