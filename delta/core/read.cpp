@@ -44,7 +44,7 @@ void delta::core::parseModelGridSchematics(
   std::string line;
   //46 * 46
   std::ifstream myfile;
-  myfile.open(fileName);
+  myfile.open(fileName.c_str());
 
   if (myfile.is_open())
   {
@@ -206,27 +206,26 @@ std::vector<delta::geometry::mesh::Mesh> delta::core::readGeometry(std::string f
 	//printf("number of triangles: %i\n", mesh->mNumFaces);
 
 	//only triangle faces
-	#pragma omp parallel for
+	//#pragma omp parallel for
 	for(uint f_i = 0; f_i < mesh->mNumFaces; f_i++)
 	{
 	  //only triangle faces
-	  #pragma omp parallel for
+	  //#pragma omp parallel for
 	  for(uint index = 0; index < mesh->mFaces[f_i].mNumIndices; index+=3)
 	  {
 		int idxA = mesh->mFaces[f_i].mIndices[index];
 		int idxB = mesh->mFaces[f_i].mIndices[index+1];
 		int idxC = mesh->mFaces[f_i].mIndices[index+2];
-		std::array<int, 3> *triangle = new  std::array<int, 3>{999999, idxB, idxC};
+		std::array<int, 3> triangle = {idxA, idxB, idxC};
 
 		/*std::cout << uniqueVertices[idxA][0] << " " << uniqueVertices[idxA][1] << " " << uniqueVertices[idxA][2] << std::endl;
 		std::cout << uniqueVertices[idxB][0] << " " << uniqueVertices[idxB][1] << " " << uniqueVertices[idxB][2] << std::endl;
 		std::cout << uniqueVertices[idxC][0] << " " << uniqueVertices[idxC][1] << " " << uniqueVertices[idxC][2] << std::endl;*/
 
-		#pragma omp critical
-		triangleFaces.push_back(*triangle);
+		//#pragma omp critical
+		triangleFaces.push_back(triangle);
 	  }
 	}
-
 	printf("Faces Size: %i\n", triangleFaces.size());
 	for(int i=0; i<triangleFaces.size(); i++)
 	{
