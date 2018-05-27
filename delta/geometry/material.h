@@ -34,10 +34,7 @@ namespace delta {
         GRAPHITEGOLD
       };
 
-      const static std::map<delta::geometry::material::MaterialType, delta::geometry::material::MaterialDensity> materialToDensitymap =
-      {{delta::geometry::material::MaterialType::WOOD, delta::geometry::material::MaterialDensity::WOOD},
-      {delta::geometry::material::MaterialType::GRAPHITE, delta::geometry::material::MaterialDensity::GRAPHITE},
-      {delta::geometry::material::MaterialType::GOLD, delta::geometry::material::MaterialDensity::GOLD}};
+      static std::map<delta::geometry::material::MaterialType, delta::geometry::material::MaterialDensity> materialToDensitymap;
 
       /*
       static struct InterfaceTri{
