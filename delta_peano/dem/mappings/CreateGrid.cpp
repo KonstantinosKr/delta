@@ -258,10 +258,10 @@ void dem::mappings::CreateGrid::beginIteration(
 	delta::world::scenarios::hopper(_coarseObjects, _insitufineObjects,
 		centre, xzcuts, ycuts, uni, _isSphere, _noPointsPerParticle, _epsilon);
 
-	for(int i=0; i<_insitufineObjects.size(); i++)
-	{
-	  printf("rad: %f\n", _insitufineObjects[i].getDiameter());
-	}
+	//for(int i=0; i<_insitufineObjects.size(); i++)
+	//{
+	  //printf("rad: %f\n", _insitufineObjects[i].getDiameter());
+	//}
 	//printf("%i\n", _insitufineObjects.size());
   } else if(_scenario[0] == turbine)
   {
