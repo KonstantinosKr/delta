@@ -254,10 +254,15 @@ void dem::mappings::CreateGrid::beginIteration(
 
 	bool uni = false;
 	if(_scenario[2] == uniform) uni = true;
-	delta::world::scenarios::hopper(
-		_coarseObjects, _insitufineObjects,
-		centre, xzcuts, ycuts, uni,
-		_isSphere, _noPointsPerParticle, _epsilon);
+
+	delta::world::scenarios::hopper(_coarseObjects, _insitufineObjects,
+		centre, xzcuts, ycuts, uni, _isSphere, _noPointsPerParticle, _epsilon);
+
+	for(int i=0; i<_insitufineObjects.size(); i++)
+	{
+	  printf("rad: %f\n", _insitufineObjects[i].getDiameter());
+	}
+	//printf("%i\n", _insitufineObjects.size());
   } else if(_scenario[0] == turbine)
   {
 	delta::world::scenarios::turbine(_coarseObjects, _isSphere, _noPointsPerParticle, _epsilon);
@@ -544,7 +549,7 @@ void dem::mappings::CreateGrid::createHangingVertex(
 ) {
 	logTraceInWith6Arguments( "createHangingVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
-  fineGridVertex.init();
+	fineGridVertex.init();
 
 	logTraceOutWith1Argument( "createHangingVertex(...)", fineGridVertex );
 }

@@ -27,6 +27,7 @@
 
 delta::core::Delta::Delta()
 {
+  printf("init material\n");
   delta::geometry::material::materialInit();
   /*
   std::vector<delta::geometry::mesh::Mesh> meshes = readSceneGeometry("input/keySmall.stl");

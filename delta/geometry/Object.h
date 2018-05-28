@@ -79,33 +79,6 @@ class delta::geometry::Object
 	std::array<iREAL, 3> 					angular);
 
 	/*
-	 *  Generate Mesh
-	 *
-	 *  Creates mesh using mesh density value.
-	 *	This modifies local data.
-	 *
-	 *  @param wx : width of x axis
-	 *  @param wy : width of y axis
-	 *  @param wz : width of z axis
-	 *  @param rx : rotation along x axis
-	 *  @param ry : rotation along y axis
-	 *  @param rz : rotation along z axis
-	 *  @param mesh : mesh density
-	 *  @param rad : radius
-	 *  @returns void
-	 */
-    void generateMesh(
-			iREAL wx,
-			iREAL wy,
-			iREAL wz,
-			iREAL rx,
-			iREAL ry,
-			iREAL rz,
-			int mesh,
-			iREAL rad
-			);
-
-	/*
 	 *  Set Particle ID
 	 *
 	 *  Set particle id using id value.

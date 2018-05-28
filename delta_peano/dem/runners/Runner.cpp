@@ -65,42 +65,6 @@ void dem::runners::Runner::precondition(dem::repositories::Repository& repositor
 
   /////////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////////
-
-
-  /*
-  //////////////////PLOT STEP ZERO//////////////////////////////////////////////////////
-  if((plot == EveryIteration) ||  (plot == Track) ||
-      (plot == UponChange && (repository.getState().getNumberOfContactPoints()>0 ||
-                              !repository.getState().isGridStationary() || 0%50==0 ||
-                              repository.getState().getNumberOfParticleReassignments()>0 )) ||
-      (plot == EveryBatch && 0%50 == 0) ||
-      ((plot == Adaptive && ((elapsed > realSnapshot) || (0 == 0)))))
-  {
-    timestamp = repository.getState().getTime();
-    repository.getState().setTimeStep(0);
-
-    repository.switchToPlotData();
-    repository.iterate();
-
-    logInfo("runAsMaster(...)", "i=" << 0
-      << ", reassigns=" << repository.getState().getNumberOfParticleReassignments()
-      << ", par-cmp=" << repository.getState().getNumberOfParticleComparisons()
-      << ", tri-cmp=" << repository.getState().getNumberOfTriangleComparisons()
-      << ", cnpt=" << repository.getState().getNumberOfContactPoints()
-      << ", v=" << repository.getState().getNumberOfInnerVertices()
-      << ", t=" << repository.getState().getTime()
-      << ", dt=" << repository.getState().getTimeStepSize()
-      << ", mvij=" << repository.getState().getMaximumVelocityApproach()
-      << ", plot=" << 1);
-
-    logInfo("runAsMaster(...)",
-           "h_min(real)=" << repository.getState().getMinimumMeshWidth()
-      << ", h_max(real)=" << repository.getState().getMaximumMeshWidth());
-
-    elapsed = repository.getState().getTime() - timestamp;
-    repository.getState().finishedTimeStep(initialStepSize);
-  }
-  */
 }
 
 dem::runners::Runner::Runner() {
@@ -282,8 +246,6 @@ int dem::runners::Runner::runAsMaster(
 {
   peano::utils::UserInterface::writeHeader();
 
-  delta::core::Delta();
-
   dem::mappings::AdoptGrid::_refinementCoefficient = 1.8;
   dem::mappings::AdoptGrid::_coarsenCoefficient = 0.5;
 
@@ -316,7 +278,43 @@ int dem::runners::Runner::runAsMaster(
 
   tuneOrNotTotune(useAutotuning, sharedMemoryPropertiesFileName);
 
-  for (int i=0; i<iterations; i++)
+
+  int i=0;
+
+  //////////////////PLOT STEP ZERO//////////////////////////////////////////////////////
+  if((plot == EveryIteration) ||  (plot == Track) ||
+      (plot == UponChange && (repository.getState().getNumberOfContactPoints()>0 ||
+                              !repository.getState().isGridStationary() || 0%50==0 ||
+                              repository.getState().getNumberOfParticleReassignments()>0 )) ||
+      (plot == EveryBatch && 0%50 == 0) ||
+      ((plot == Adaptive && ((elapsed > realSnapshot) || (0 == 0)))))
+  {
+    timestamp = repository.getState().getTime();
+    repository.getState().setTimeStep(i);
+
+    repository.switchToPlotData();
+    repository.iterate();
+
+    logInfo("runAsMaster(...)", "i=" << 0
+      << ", reassigns=" << repository.getState().getNumberOfParticleReassignments()
+      << ", par-cmp=" << repository.getState().getNumberOfParticleComparisons()
+      << ", tri-cmp=" << repository.getState().getNumberOfTriangleComparisons()
+      << ", cnpt=" << repository.getState().getNumberOfContactPoints()
+      << ", v=" << repository.getState().getNumberOfInnerVertices()
+      << ", t=" << repository.getState().getTime()
+      << ", dt=" << repository.getState().getTimeStepSize()
+      << ", mvij=" << repository.getState().getMaximumVelocityApproach()
+      << ", plot=" << 1);
+
+    logInfo("runAsMaster(...)",
+           "h_min(real)=" << repository.getState().getMinimumMeshWidth()
+      << ", h_max(real)=" << repository.getState().getMaximumMeshWidth());
+
+    elapsed = repository.getState().getTime() - timestamp;
+    repository.getState().finishedTimeStep(initialStepSize);
+  }
+
+  for (i=i+0; i<iterations; i++)
   {
     timestamp = repository.getState().getTime();
     repository.getState().setTimeStep(i);

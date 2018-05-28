@@ -175,44 +175,38 @@ std::array<iREAL, 3> 					angular)
 
 }
 
-void delta::geometry::Object::generateMesh(
-		iREAL wx,
-		iREAL wy,
-		iREAL wz,
-		iREAL rx,
-		iREAL ry,
-		iREAL rz,
-		int 	  mesh,
-		iREAL rad)
+std::string delta::geometry::Object::getComponent()
 {
-  iREAL position[3] = {_centre[0], _centre[1], _centre[2]};
+  return _component;
+}
 
-  delta::geometry::mesh::Mesh *geometry;
-  if(_component == "granulate")
-  {
-	geometry = delta::geometry::primitive::granulate::generateParticle(position, rad*2, mesh);
-  } else if(_component == "granulate-load")
-  {
-	geometry = delta::geometry::primitive::granulate::loadParticle(position, (rad*2));
-  } else if(_component == "cube")
-  {
-	geometry = delta::geometry::primitive::cube::generateHullCube(position, wx, wy, wz, rx, ry, rz, mesh);
-  }
-  else if(_component == "hopper")
-  {
-    iREAL _hopperHatch = 0.05; iREAL _hopperThickness = 0.005; int refinement = 0;
-    geometry = delta::geometry::hardcoded::generateHopper(position, wx, _hopperThickness, wy, _hopperHatch, refinement, 0.01);
-  } else if(_component == "FB")
-  {
-	geometry = delta::geometry::hardcoded::generateBrickFB(position, rad);
-  }
+void delta::geometry::Object::setParticleID(int id)
+{
+  _globalParticleID = id;
+}
+
+void delta::geometry::Object::setMesh(
+    std::vector<iREAL> xCoordinates,
+    std::vector<iREAL> yCoordinates,
+    std::vector<iREAL> zCoordinates)
+{
+  _mesh = new delta::geometry::mesh::Mesh(xCoordinates, yCoordinates, zCoordinates);
+}
+
+delta::geometry::mesh::Mesh delta::geometry::Object::getMesh()
+{
+  return *_mesh;
+}
+
+void delta::geometry::Object::setMesh(
+    delta::geometry::mesh::Mesh& mesh)
+{
+  _mesh = &mesh;
 
   iREAL mass, centerOfMass[3], inertia[9], inverse[9];
 
-  geometry->computeInertia(_material, mass, centerOfMass, inertia);
-  geometry->computeInverseInertia(inertia, inverse, _isObstacle);
-
-  _mesh = geometry;
+  _mesh->computeInertia(_material, mass, centerOfMass, inertia);
+  _mesh->computeInverseInertia(inertia, inverse, _isObstacle);
 
   _inertia[0] = inertia[0];
   _inertia[1] = inertia[1];
@@ -239,41 +233,6 @@ void delta::geometry::Object::generateMesh(
   _centreOfMass[2] = centerOfMass[2];
 
   _mass = mass;
-  _rad = rad;
-}
-
-std::string delta::geometry::Object::getComponent()
-{
-  return _component;
-}
-
-void delta::geometry::Object::setParticleID(int id)
-{
-  _globalParticleID = id;
-}
-
-void delta::geometry::Object::setMesh(
-    std::vector<iREAL> xCoordinates,
-    std::vector<iREAL> yCoordinates,
-    std::vector<iREAL> zCoordinates)
-{
-  _mesh = new delta::geometry::mesh::Mesh(xCoordinates, yCoordinates, zCoordinates);
-}
-
-delta::geometry::mesh::Mesh delta::geometry::Object::getMesh()
-{
-  if(_component != "mesh")
-  {
-	//printf("error getMesh called while particle is sphere\n");
-  }
-
-  return *_mesh;
-}
-
-void delta::geometry::Object::setMesh(
-    delta::geometry::mesh::Mesh& mesh)
-{
-  _mesh = &mesh;
 }
 
 iREAL delta::geometry::Object::getHaloDiameter()
@@ -335,6 +294,8 @@ iREAL delta::geometry::Object::getRad()
 void delta::geometry::Object::setRad(iREAL rad)
 {
   _rad = rad;
+  this->_haloDiameter 	= 	(_diameter+_epsilon*2) * 1.1;
+  this->_diameter		=	rad*2;
 }
 
 iREAL delta::geometry::Object::getMass()

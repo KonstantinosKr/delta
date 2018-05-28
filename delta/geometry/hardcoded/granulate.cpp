@@ -18,7 +18,7 @@ void delta::geometry::primitive::granulate::generateParticle(
 
   const iREAL MaxConvexity = 0.6;
   
-  #pragma omp parallel for
+  //#pragma omp parallel for
   for (int i=0; i<numberOfTriangles; i++) {
     iREAL localRadius = h/2.0 * (static_cast<iREAL>( rand() ) / static_cast<iREAL>(RAND_MAX) * MaxConvexity + 1.0 - MaxConvexity);
 
@@ -67,7 +67,7 @@ delta::geometry::mesh::Mesh *delta::geometry::primitive::granulate::generatePart
 
   iREAL v[100000][3];
 
-  #pragma omp parallel for
+  //#pragma omp parallel for
   for(int i = 0; i<pointsize; i++) //create point cloud and do delaunay hull triangulation
   {
     iREAL rng1 = 0;
@@ -103,28 +103,28 @@ delta::geometry::mesh::Mesh *delta::geometry::primitive::granulate::generatePart
   zCoordinates.resize(numberOfTriangles*3);
 
   int counter = 0;
-  #pragma omp parallel for
+  //#pragma omp parallel for
   for(delta::hull::TRI *t = tr, *e = t + pointlength; t < e; t ++)
   {//iterate through triangles and assign value
     xCoordinates[counter] = (t->ver [0][0]/(mul)) + center[0];
     yCoordinates[counter] = (t->ver [0][1]/(mul)) + center[1];
     zCoordinates[counter] = (t->ver [0][2]/(mul)) + center[2];
     
-    #pragma omp atomic
+    //#pragma omp atomic
     counter++;
 
     xCoordinates[counter] = (t->ver [1][0]/(mul)) + center[0];
     yCoordinates[counter] = (t->ver [1][1]/(mul)) + center[1];
     zCoordinates[counter] = (t->ver [1][2]/(mul)) + center[2];
 
-    #pragma omp atomic
+    //#pragma omp atomic
     counter++;
 
     xCoordinates[counter] = (t->ver [2][0]/(mul)) + center[0];
     yCoordinates[counter] = (t->ver [2][1]/(mul)) + center[1];
     zCoordinates[counter] = (t->ver [2][2]/(mul)) + center[2];
 
-    #pragma omp atomic
+    //#pragma omp atomic
     counter++;
   }
   free(tr);

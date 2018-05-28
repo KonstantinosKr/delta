@@ -503,7 +503,7 @@ void dem::mappings::Plot::touchVertexLastTime(
     	  xCoordinatesWider, yCoordinatesWider, zCoordinatesWider, scale, center);
 
       //delta::geometry::properties::explode(xCoordinatesWider, yCoordinatesWider, zCoordinatesWider, 5);
-
+/*
       for (int j=0; j<particle.getNumberOfTriangles(); j++)
       {
         int vertexIndex[3];
@@ -601,7 +601,7 @@ void dem::mappings::Plot::touchVertexLastTime(
         _particleEpsilon->plotVertex(vertexPIndex, 0);
         _particleInfluence->plotVertex(vertexPIndex, 0);
         _vertexColoring->plotVertex(vertexPIndex, 0);
-      }
+      }*/
 
 
       //original mesh

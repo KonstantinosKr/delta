@@ -308,6 +308,7 @@ void dem::mappings::Collision::collisionDetection(
   State* 							state,
   bool   							protectStateAccess)
 {
+
   if(_enableOverlapCheck)
   {
     bool overlap = delta::contact::detection::isSphereOverlayInContact(

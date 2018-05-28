@@ -226,10 +226,11 @@ std::vector<delta::geometry::mesh::Mesh> delta::core::readGeometry(std::string f
 		triangleFaces.push_back(triangle);
 	  }
 	}
-	printf("Faces Size: %i\n", triangleFaces.size());
+
+	//printf("Faces Size: %i\n", triangleFaces.size());
 	for(int i=0; i<triangleFaces.size(); i++)
 	{
-		std::cout << triangleFaces[i][0] << " " << triangleFaces[i][1] << " " << triangleFaces[i][2] << std::endl;
+	  std::cout << triangleFaces[i][0] << " " << triangleFaces[i][1] << " " << triangleFaces[i][2] << std::endl;
 	}
 	delta::geometry::mesh::Mesh *meshgeometry = new delta::geometry::mesh::Mesh(triangleFaces, uniqueVertices);
 	meshVector.push_back(*meshgeometry);

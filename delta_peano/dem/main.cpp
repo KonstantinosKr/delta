@@ -561,6 +561,7 @@ int main(int argc, char** argv)
     programExitCode = tarch::tests::TestCaseRegistry::getInstance().getTestCaseCollection().getNumberOfErrors();
   }
 
+  delta::core::Delta();
   if (programExitCode==0)
   {
     tarch::logging::CommandLineLogger::getInstance().addFilterListEntry( ::tarch::logging::CommandLineLogger::FilterListEntry( "debug", -1, "dem", false ) );

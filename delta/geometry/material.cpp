@@ -9,9 +9,8 @@
 
 void delta::geometry::material::materialInit()
 {
-  materialToDensitymap[delta::geometry::material::MaterialType::WOOD] = delta::geometry::material::MaterialDensity::WOOD;
-  materialToDensitymap[delta::geometry::material::MaterialType::GRAPHITE] = delta::geometry::material::MaterialDensity::GRAPHITE;
-  materialToDensitymap[delta::geometry::material::MaterialType::GOLD] = delta::geometry::material::MaterialDensity::GOLD;
+
+  //printf("d: %f\n", materialToDensitymap[delta::geometry::material::MaterialType::WOOD]);
 
 /*
   InterfaceTri woodwoodTri = {0.8, 400};

@@ -19,11 +19,12 @@ namespace delta {
          WOOD=3
        };
 
-      enum class MaterialDensity: int{
-        GOLD=20000,
-        GRAPHITE=1000,
-        WOOD=1000
-      };
+
+      /*  enum class MaterialDensity: int{
+          GOLD=20000,
+          GRAPHITE=1000,
+          WOOD=1000
+        };*/
 
       enum class MaterialInteraction: char{
         WOODWOOD,//6
@@ -34,7 +35,10 @@ namespace delta {
         GRAPHITEGOLD
       };
 
-      static std::map<delta::geometry::material::MaterialType, delta::geometry::material::MaterialDensity> materialToDensitymap;
+      static const std::map<delta::geometry::material::MaterialType, iREAL> materialToDensitymap(
+    	  		  {{delta::geometry::material::MaterialType::WOOD, 20000},
+    	  		  {delta::geometry::material::MaterialType::GRAPHITE, 1000},
+    	  		  {delta::geometry::material::MaterialType::GOLD, 1000}});
 
       /*
       static struct InterfaceTri{
@@ -53,7 +57,7 @@ namespace delta {
 
       int getInterfaceType(int materialA, int materialB);
 
-      void materialInit();
+      extern void materialInit();
       int getCollisionInterface();
     }
   }

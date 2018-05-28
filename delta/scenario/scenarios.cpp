@@ -74,7 +74,7 @@ void delta::world::scenarios::hopper(
   ////////////////////////////////////////////////////////////////////
   //////////PARTICLE GRID/////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////
-  iREAL totalMass = 0.05;
+  iREAL totalMass = 0.5;
 
   iREAL margin = (hopperThickness + epsilon) * 4;
   iREAL gridxyLength = hopperWidth-margin/2;
@@ -116,9 +116,7 @@ void delta::world::scenarios::turbine(
 								  delta::geometry::material::MaterialType::WOOD,
 								  false, false, epsilon, linear, angular);
 
-
   coarseObjects.push_back(turbineA);
-
 
   delta::geometry::mesh::Mesh *meshB = delta::core::readPartGeometry("input/turbine.stl");
 
@@ -252,7 +250,7 @@ void delta::world::scenarios::friction(
 	  } else {
 		iREAL pos[3] = {position[0], position[1], position[2]};
 		delta::geometry::mesh::Mesh *geometry = delta::geometry::primitive::cube::generateHullCube(pos, rad, rad, rad, 0, 0, 0, 0);
-		delta::geometry::Object objectA("cube", 1, position, delta::geometry::material::MaterialType::WOOD, false, true, epsilon, {0,0,0}, {0,0,0});
+		delta::geometry::Object objectA("cube", 1, geometry, position, delta::geometry::material::MaterialType::WOOD, false, true, epsilon, {0,0,0}, {0,0,0});
 		coarse.push_back(objectA);
 	  }
   } else if(scenario == 2)
