@@ -606,10 +606,10 @@ cd $PBS_O_WORKDIR\n"
         with open(i) as f:
             for line in f:
                 if "aprun" in line and "#aprun" not in line:
-                    file.write("echo 'starting" + line + "'\n")
+                    file.write("echo starting : " + line + "\n")
                     commands.append(line)
                     file.write(line + "\n")
-                    file.write("echo 'ending" + line + "'\n")
+                    file.write("echo ending : " + line + "\n")
 
     #print(commands)
 
