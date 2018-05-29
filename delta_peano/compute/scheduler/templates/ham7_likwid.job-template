@@ -30,7 +30,9 @@ setenv TBB_SHLIB "-L/ddn/apps/Cluster-Apps/intel/xe_2017.2/tbb/lib/intel64/gcc4.
 
 setenv I_MPI_FABRICS "tmi"
 
-setenv OMP_NUM_THREADS {{ompthread}}
+#{{ompthread}}
+
+setenv OMP_NUM_THREADS {{cores}}
 
 # pipe some information into output file
 #echo "Timestamp (YYYY/MM/dd:hh:mm:ss): `date +%Y/%m/%d:%H:%M:%S`"
