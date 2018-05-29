@@ -20,13 +20,17 @@
 #SBATCH --mail-user={{mail}}
 module purge
 module load slurm
-module load intel/xe_2017.2
 module load intelmpi/intel/2017.2
+module load intel/xe_2018.2
 module unload gcc/4.9.1
 module load gcc/4.9.1
 
 setenv TBB_SHLIB "-L/ddn/apps/Cluster-Apps/intel/xe_2017.2/tbb/lib/intel64/gcc4.7 -ltbb"
 setenv LD_LIBRARY_PATH /ddn/home/rfmw74/libraries/assimp/lib/:$LD_LIBRARY_PATH
+
+setenv ASSIMP_INC "-I/ddn/home/rfmw74/libraries/assimp/include/"
+setenv ASSIMP_LIB "-L/ddn/home/rfmw74/libraries/assimp/lib/ -lassimp"
+
 setenv I_MPI_FABRICS "tmi"
 
 setenv OMP_NUM_THREADS {{ompthread}}
