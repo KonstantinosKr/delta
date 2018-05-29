@@ -589,7 +589,7 @@ export OMP_NUM_THREADS="+cpus"\n\
 export KMP_AFFINITY=disabled\n\
 export PBS_O_WORKDIR=$(readlink -f $PBS_O_WORKDIR)\n\
 export PBS_O_WORKDIR=/work/knl-users/durkk/\n\
-cd $PBS_O_WORKDIR\n"
+cd $PBS_O_WORKDIR \n"
 
     file = open(outputDirectory, 'w+')
     print(outputDirectory)
