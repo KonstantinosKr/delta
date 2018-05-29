@@ -202,7 +202,7 @@ def renderJobScript(templateBody,environmentDict,parameterDict,jobs,
         commandLineArguments += " " + value
     context["app"] = appName+commandLineArguments
     print(commandLineArguments)
-    
+
     consistent = True
     # verify all mandatory(!) sweep options are defined in template
     keysInTemplate = [m.group(2) for m in re.finditer("(\{\{((\w|-)+)\}\})",templateBody)]
@@ -570,12 +570,6 @@ def submitJobsArcher():
         print("create directory "+resultsFolderPath)
         os.makedirs(resultsFolderPath)
 
-    # loop over job scrips
-    jobIds = []
-
-
-
-
     name = hashlib.md5(projectName.encode()).hexdigest()[:4]
 
     searchString = ""
@@ -591,7 +585,7 @@ def submitJobsArcher():
 #PBS -m ae\n\
 #PBS -M konstantinos.krestenitis@durham.ac.uk\n\
 #PBS -V\n\
-export OMP_NUM_THREADS=1\n\
+export OMP_NUM_THREADS="+cpus"\n\
 export KMP_AFFINITY=disabled\n\
 export PBS_O_WORKDIR=$(readlink -f $PBS_O_WORKDIR)\n\
 export PBS_O_WORKDIR=/work/knl-users/durkk/\n\
@@ -613,12 +607,8 @@ cd $PBS_O_WORKDIR\n"
                     file.write(line + "\n")
                     file.write("echo ending : " + line + "\n")
 
-    #print(commands)
-
     f.close()
     jobFilePath = outputDirectory
-
-
 
 
     command=jobSubmissionTool + " " + jobFilePath
