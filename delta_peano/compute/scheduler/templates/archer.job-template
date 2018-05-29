@@ -6,7 +6,6 @@
 #PBS -m ae
 #PBS -M {{mail}}
 #PBS -V
-
 #PBS -o {{output_file}}
 #Job file: {{job_file}} 
 #Tasks: {{tasks}}
@@ -15,10 +14,11 @@
 #Parameters: {{parameters}}
 
 export OMP_NUM_THREADS={{ompthread}}
+export KMP_AFFINITY=disabled
 
 export PBS_O_WORKDIR=$(readlink -f $PBS_O_WORKDIR)
 # Change to the directory that the job was submitted from
 cd $PBS_O_WORKDIR
 
-#aprun -n 768 castep+samp input
-aprun -n 1 -d {{cores}} {{app}}
+#aprun -n 1 castep+samp input
+aprun -n 1 -d {{cores}} -cc depth {{app}}
