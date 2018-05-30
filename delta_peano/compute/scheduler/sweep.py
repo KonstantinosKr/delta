@@ -587,7 +587,7 @@ def submitJobsArcher():
 #PBS -N "+name+"\n\
 #PBS -l select=1:aoe=quad_100\n\
 #PBS -l walltime="+jobs["time"]+"\n\
-#PBS -A e573-durkk\n\
+#PBS -A k01-durkk\n\
 #PBS -m ae\n\
 #PBS -M konstantinos.krestenitis@durham.ac.uk\n\
 #PBS -V\n\
