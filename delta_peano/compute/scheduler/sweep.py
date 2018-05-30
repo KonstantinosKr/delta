@@ -570,6 +570,12 @@ def submitJobsArcher():
         print("create directory "+resultsFolderPath)
         os.makedirs(resultsFolderPath)
 
+    # loop over job scrips
+    jobIds = []
+
+
+
+
     name = hashlib.md5(projectName.encode()).hexdigest()[:4]
 
     searchString = ""
@@ -606,6 +612,8 @@ cd $PBS_O_WORKDIR \n"
                     commands.append(line)
                     file.write(line + "\n")
                     file.write("echo ending : " + line + "\n")
+
+    #print(commands)
 
     f.close()
     jobFilePath = outputDirectory
