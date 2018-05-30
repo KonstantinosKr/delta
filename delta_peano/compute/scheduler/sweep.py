@@ -585,7 +585,7 @@ def submitJobsArcher():
 #PBS -m ae\n\
 #PBS -M konstantinos.krestenitis@durham.ac.uk\n\
 #PBS -V\n\
-export OMP_NUM_THREADS="+cpus"\n\
+export OMP_NUM_THREADS="+cpus+"\n\
 export KMP_AFFINITY=disabled\n\
 export PBS_O_WORKDIR=$(readlink -f $PBS_O_WORKDIR)\n\
 export PBS_O_WORKDIR=/work/knl-users/durkk/\n\
