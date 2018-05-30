@@ -302,7 +302,7 @@ def jobList():
                                                      "-bck" + str(backtasks) + \
                                                      "-tun" + parameterDict["autotuning"]
                                 else:
-                                    jobName        = "-s" + parameterDict["scenarios"] + \
+                                    jobName        = "s" + parameterDict["scenarios"] + \
                                                      "-g" + parameterDict["grid-type"] + \
                                                      "-cm" + parameterDict["collision-model"] + \
                                                      "-n" + nodes + \
@@ -379,7 +379,7 @@ def generateScripts():
                                                      "-bck" + str(backtasks) + \
                                                      "-tun" + parameterDict["autotuning"]
                                 else:
-                                    jobName        = "-s" + parameterDict["scenarios"] + \
+                                    jobName        = "s" + parameterDict["scenarios"] + \
                                                      "-g" + parameterDict["grid-type"] + \
                                                      "-cm" + parameterDict["collision-model"] + \
                                                      "-n" + nodes + \
@@ -568,7 +568,6 @@ cd $PBS_O_WORKDIR \n"
                     commands.append(line)
                     file.write(line + "\n")
                     file.write("echo ending : " + line + "\n")
-
 
     f.close()
     jobFilePath = outputDirectory
