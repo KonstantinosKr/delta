@@ -15,10 +15,8 @@
 
 export OMP_NUM_THREADS={{ompthread}}
 export KMP_AFFINITY=disabled
-
 export PBS_O_WORKDIR=$(readlink -f $PBS_O_WORKDIR)
-
+export PBS_O_WORKDIR=/work/e573/e573/durkk/
 cd $PBS_O_WORKDIR
 
-#aprun -n 1 castep+samp input
 aprun -n 1 -d {{cores}} -cc depth {{app}}

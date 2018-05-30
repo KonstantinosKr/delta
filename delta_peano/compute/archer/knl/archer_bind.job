@@ -1,0 +1,17 @@
+#!/bin/bash
+#PBS -N aff
+#PBS -l select=1:aoe=quad_100
+#PBS -l walltime=00:05:00
+#PBS -A k01-durkk
+#PBS -m ae
+#PBS -M konstantinos.krestenitis@durham.ac.uk
+#PBS -V
+#PBS -o bind_output
+
+export OMP_NUM_THREADS=64
+export KMP_AFFINITY=disabled
+export PBS_O_WORKDIR=$(readlink -f $PBS_O_WORKDIR)
+export PBS_O_WORKDIR=/work/e573/e573/durkk/
+cd $PBS_O_WORKDIR
+
+aprun -n 1 -d 64 -cc depth acheck -v
