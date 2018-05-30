@@ -189,7 +189,7 @@ def renderJobScript(templateBody,environmentDict,parameterDict,jobs,
     context["tasks"] = tasks
     context["cores"] = cores
     context["ompthread"] = ompthread
-    context["job_name"] = "d"+jobName
+    context["job_name"] = hashlib.md5(jobName.encode()).hexdigest()[:4]
     context["output_file"] = outputFileName
 
     context["environment"] = json.dumps(environmentDict).replace("\"","\\\"")
