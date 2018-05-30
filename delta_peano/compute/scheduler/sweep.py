@@ -258,29 +258,8 @@ def verifySweepAgreesWithHistoricExperiments():
                 print("parameters used in PREVIOUS experiment:  "+ ", ".join(sorted(otherParameterSpace.keys())))
                 sys.exit()
 
-def generateScripts():
-    """
-    Generate spec files and job scripts.
-    """
-    cpus       = jobs["num_cpus"]
-
-    jobScriptTemplatePath = general["job_template"]
-
-    jobScriptTemplate = None
-    try:
-        with open(jobScriptTemplatePath, "r") as templateFile:
-            jobScriptTemplate=templateFile.read()
-    except IOError:
-        print("ERROR: couldn\'t open template file: "+jobScriptTemplatePath,file=sys.stderr)
-        sys.exit()
-
-    if not os.path.exists(scriptsFolderPath):
-        print("create directory "+scriptsFolderPath)
-        os.makedirs(scriptsFolderPath)
-
-    # check if required executables exist
-    verifyAllExecutablesExist(True)
-
+def jobList():
+    jobNameList = []
     # generate job scrips
     jobScripts = 0
     changeJobScriptCores = True
@@ -334,20 +313,45 @@ def generateScripts():
                                                      "-bck" + str(backtasks) + \
                                                      "-tun" + parameterDict["autotuning"] +\
                                                      "-msh" + str(parameterDict["mesh-density"])
+                                jobNameList.append(jobName)
+    return jobNameList
 
-                                jobFilePrefix  = scriptsFolderPath + "/" + value + "-" + parameterDictHash + jobName
-                                jobFilePath    = jobFilePrefix + ".job"
-                                outputFileName = resultsFolderPath + "/" + value + "-" + jobName + ".out"
+def generateScripts():
+    """
+    Generate spec files and job scripts.
+    """
+    cpus       = jobs["num_cpus"]
 
-                                jobScriptBody = renderJobScript(jobScriptTemplate,environmentDict,parameterDict,jobs,
-                                                                jobName,jobFilePath,outputFileName,executable,
-                                                                nodes,tasks,cores,ompthread)
-                                with open(jobFilePath, "w") as jobFile:
-                                    jobFile.write(jobScriptBody)
+    jobScriptTemplatePath = general["job_template"]
 
-                                jobScripts+=1
+    jobScriptTemplate = None
+    try:
+        with open(jobScriptTemplatePath, "r") as templateFile:
+            jobScriptTemplate=templateFile.read()
+    except IOError:
+        print("ERROR: couldn\'t open template file: "+jobScriptTemplatePath,file=sys.stderr)
+        sys.exit()
 
-    print("generated job scripts: "+str(jobScripts))
+    if not os.path.exists(scriptsFolderPath):
+        print("create directory "+scriptsFolderPath)
+        os.makedirs(scriptsFolderPath)
+
+    # check if required executables exist
+    verifyAllExecutablesExist(True)
+    jobNameList = jobList()
+
+    for jobName in jobNameList:
+        jobFilePrefix  = scriptsFolderPath + "/" + value + "-" + parameterDictHash + jobName
+        jobFilePath    = jobFilePrefix + ".job"
+        outputFileName = resultsFolderPath + "/" + value + "-" + jobName + ".out"
+
+        jobScriptBody = renderJobScript(jobScriptTemplate,environmentDict,parameterDict,jobs,
+                                        jobName,jobFilePath,outputFileName,executable,
+                                        nodes,tasks,cores,ompthread)
+        with open(jobFilePath, "w") as jobFile:
+            jobFile.write(jobScriptBody)
+
+    print("generated job scripts: "+str(len(jobNameList))
 
 def verifyAllJobScriptsExist():
     """
@@ -360,70 +364,22 @@ def verifyAllJobScriptsExist():
         sys.exit()
 
     allJobScriptsExist = True
-    changeJobScriptCores = True
-    for nodes in nodeCounts:
-        for tasks in taskCounts:
-            for parsedCores in coreCounts:
-                cores = parsedCores
-                if parsedCores=="auto":
-                    cores=str(int(int(cpus) / int(tasks)))
-                for ompthread in ompthreadCounts:
-                    for environmentDict in dictProduct(environmentSpace):
-                        for key, value in environmentDict.items():
-                            for parameterDict in dictProduct(parameterSpace):
-                                parameterDictHash = hashDictionary(parameterDict)
+    jobNameList = jobList()
 
-                                tbbthread = parameterDict["tbb-core-count"] #get core count from parameters
-                                if parameterDict["enable-tbb"] == "true" and changeJobScriptCores == True:
-                                    cores = tbbthread
+    for jobName in jobNameList:
+        jobFilePrefix  = scriptsFolderPath + "/" + value + "-" + parameterDictHash + jobName
+        jobFilePath    = jobFilePrefix + ".job"
 
-                                if  parameterDict["enable-p-to-p"] == "true":
-                                    backtasks = parameterDict["background-count"]
-                                else:
-                                    backtasks = str(0)
-
-                                if cores == "omp":
-                                    cores = ompthread
-
-                                jobName = ""
-
-                                if parameterDict["collision-model"] == "sphere":
-                                    jobName        = "-s" + parameterDict["scenarios"] + \
-                                                     "-g" + parameterDict["grid-type"] + \
-                                                     "-cm" + parameterDict["collision-model"] + \
-                                                     "-n" + nodes + \
-                                                     "-t" + tasks+ \
-                                                     "-c" + cores+ \
-                                                     "-tbb" + str(tbbthread)+ \
-                                                     "-omp" + str(ompthread) + \
-                                                     "-bck" + str(backtasks) + \
-                                                     "-tun" + parameterDict["autotuning"]
-                                else:
-                                    jobName        = "-s" + parameterDict["scenarios"] + \
-                                                     "-g" + parameterDict["grid-type"] + \
-                                                     "-cm" + parameterDict["collision-model"] + \
-                                                     "-n" + nodes + \
-                                                     "-t" + tasks+ \
-                                                     "-c" + cores+ \
-                                                     "-tbb" + str(tbbthread)+ \
-                                                     "-omp" + str(ompthread) + \
-                                                     "-bck" + str(backtasks) + \
-                                                     "-tun" + parameterDict["autotuning"] + \
-                                                     "-msh" + str(parameterDict["mesh-density"])
-
-                                jobFilePrefix  = scriptsFolderPath + "/" + value + "-" + parameterDictHash + jobName
-                                jobFilePath    = jobFilePrefix + ".job"
-
-                                if not os.path.exists(jobFilePath):
-                                    allJobScriptsExist = False
-                                    print("ERROR: job script for " + \
-                                          "environment="+str(value)+ \
-                                          ", parameters="+str(parameterDict) + \
-                                          ", nodes="+nodes + \
-                                          ", tasks="+tasks + \
-                                          ", cores="+cores + \
-                                          ", ompthreads="+ompthread + \
-                                          " does not exist! ('"+jobFilePath+"')",file=sys.stderr)
+        if not os.path.exists(jobFilePath):
+            allJobScriptsExist = False
+            print("ERROR: job script for " + \
+                  "environment="+str(value)+ \
+                  ", parameters="+str(parameterDict) + \
+                  ", nodes="+nodes + \
+                  ", tasks="+tasks + \
+                  ", cores="+cores + \
+                  ", ompthreads="+ompthread + \
+                  " does not exist! ('"+jobFilePath+"')",file=sys.stderr)
     if not allJobScriptsExist:
         print("ERROR: subprogram failed! Please adopt your sweep options file according to the error messages.\n" + \
               "       Then rerun the 'scripts' subprogram.")
@@ -476,66 +432,19 @@ def submitJobs():
 
     # loop over job scrips
     jobIds = []
-    changeJobScriptCores = True
-    for nodes in nodeCounts:
-        for tasks in taskCounts:
-            for parsedCores in coreCounts:
-                cores = parsedCores
-                if parsedCores=="auto":
-                    cores=str(int(int(cpus) / int(tasks)))
-                for ompthread in ompthreadCounts:
-                    for environmentDict in dictProduct(environmentSpace):
-                        for key, value in environmentDict.items():
-                            for parameterDict in dictProduct(parameterSpace):
-                                parameterDictHash = hashDictionary(parameterDict)
 
-                                tbbthread = parameterDict["tbb-core-count"] #get core count from parameters
-                                if parameterDict["enable-tbb"] == "true" and changeJobScriptCores == True:
-                                    cores = tbbthread
+    jobNameList = jobList()
 
-                                if  parameterDict["enable-p-to-p"] == "true":
-                                    backtasks = parameterDict["background-count"]
-                                else:
-                                    backtasks = str(0)
+    for jobName in jobNameList:
+        jobFilePrefix  = scriptsFolderPath + "/" + value + "-" + parameterDictHash + jobName
+        jobFilePath    = jobFilePrefix + ".job"
 
-                                if cores == "omp":
-                                    cores = ompthread
-
-                                jobName = ""
-
-                                if parameterDict["collision-model"] == "sphere":
-                                    jobName        = "-s" + parameterDict["scenarios"] + \
-                                                     "-g" + parameterDict["grid-type"] + \
-                                                     "-cm" + parameterDict["collision-model"] + \
-                                                     "-n" + nodes + \
-                                                     "-t" + tasks+ \
-                                                     "-c" + cores+ \
-                                                     "-tbb" + str(tbbthread)+ \
-                                                     "-omp" + str(ompthread) + \
-                                                     "-bck" + str(backtasks) + \
-                                                     "-tun" + parameterDict["autotuning"]
-                                else:
-                                    jobName        = "-s" + parameterDict["scenarios"] + \
-                                                     "-g" + parameterDict["grid-type"] + \
-                                                     "-cm" + parameterDict["collision-model"] + \
-                                                     "-n" + nodes + \
-                                                     "-t" + tasks+ \
-                                                     "-c" + cores+ \
-                                                     "-tbb" + str(tbbthread)+ \
-                                                     "-omp" + str(ompthread) + \
-                                                     "-bck" + str(backtasks) + \
-                                                     "-tun" + parameterDict["autotuning"] + \
-                                                     "-msh" + str(parameterDict["mesh-density"])
-
-                                jobFilePrefix  = scriptsFolderPath + "/" + value + "-" + parameterDictHash + jobName
-                                jobFilePath    = jobFilePrefix + ".job"
-
-                                command=jobSubmissionTool + " " + jobFilePath
-                                print(command)
-                                process = subprocess.Popen([command], stdout=subprocess.PIPE, shell=True)
-                                (output, err) = process.communicate()
-                                process.wait()
-                                jobIds.append(extractJobId(output.decode("UTF_8")))
+        command=jobSubmissionTool + " " + jobFilePath
+        print(command)
+        process = subprocess.Popen([command], stdout=subprocess.PIPE, shell=True)
+        (output, err) = process.communicate()
+        process.wait()
+        jobIds.append(extractJobId(output.decode("UTF_8")))
 
     if not os.path.exists(historyFolderPath):
         print("create directory "+historyFolderPath)
@@ -554,7 +463,7 @@ def submitJobs():
     (output, err) = process.communicate()
     process.wait()
 
-def submitJobsArcher():
+def submitJobsKNL():
     """
     Submit all jobs spanned by the options.
     """
@@ -572,9 +481,6 @@ def submitJobsArcher():
 
     # loop over job scrips
     jobIds = []
-
-
-
 
     name = hashlib.md5(projectName.encode()).hexdigest()[:4]
 
@@ -613,7 +519,6 @@ cd $PBS_O_WORKDIR \n"
                     file.write(line + "\n")
                     file.write("echo ending : " + line + "\n")
 
-    #print(commands)
 
     f.close()
     jobFilePath = outputDirectory
@@ -764,8 +669,8 @@ typical workflow:
         generateScripts()
     elif subprogram == "submit":
         submitJobs()
-    elif subprogram == "submitArcher":
-        submitJobsArcher()
+    elif subprogram == "submitKNL":
+        submitJobsKNL()
     elif subprogram == "cancel":
         cancelJobs()
     elif subprogram == "parseAdapters":
