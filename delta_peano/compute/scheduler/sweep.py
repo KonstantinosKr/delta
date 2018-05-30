@@ -546,7 +546,6 @@ def submitJobsKNL():
 #PBS -m ae\n\
 #PBS -M konstantinos.krestenitis@durham.ac.uk\n\
 #PBS -V\n\
-export OMP_NUM_THREADS="+cpus+"\n\
 export KMP_AFFINITY=disabled\n\
 export PBS_O_WORKDIR=$(readlink -f $PBS_O_WORKDIR)\n\
 export PBS_O_WORKDIR=/work/knl-users/durkk/\n\
@@ -563,6 +562,8 @@ cd $PBS_O_WORKDIR \n"
         with open(i) as f:
             for line in f:
                 if "aprun" in line and "#aprun" not in line:
+                    cores = line.split(" ")[4]
+                    file.write("export OMP_NUM_THREADS="+cores+"\n\")
                     file.write("echo starting : " + line + "\n")
                     commands.append(line)
                     file.write(line + "\n")
