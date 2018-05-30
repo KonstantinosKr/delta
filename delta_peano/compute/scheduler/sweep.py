@@ -563,7 +563,7 @@ cd $PBS_O_WORKDIR \n"
             for line in f:
                 if "aprun" in line and "#aprun" not in line:
                     cores = line.split(" ")[4]
-                    file.write("export OMP_NUM_THREADS="+cores+"\n\")
+                    file.write("export OMP_NUM_THREADS="+cores+"\n")
                     file.write("echo starting : " + line + "\n")
                     commands.append(line)
                     file.write(line + "\n")
@@ -635,7 +635,7 @@ if __name__ == "__main__":
     import sweep_analysis
     import sweep_options
 
-    subprograms = ["build","buildMissing","scripts","submit","submitArcher","cancel","parseAdapters","parseMetrics","cleanBuild", "cleanScripts","cleanResults","cleanAll"]
+    subprograms = ["build","buildMissing","scripts","submit","submitKNL","cancel","parseAdapters","parseMetrics","cleanBuild", "cleanScripts","cleanResults","cleanAll"]
 
     if haveToPrintHelpMessage(sys.argv):
         info = \
