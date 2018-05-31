@@ -584,7 +584,7 @@ void dem::mappings::Collision::collideParticlesOfTwoDifferentVertices(
 ) {
   logDebug( "collideParticlesOfTwoDifferentVertices(...)", vertexA.toString() << ", " << vertexA.getNumberOfRealAndVirtualParticles() );
   logDebug( "collideParticlesOfTwoDifferentVertices(...)", vertexB.toString() << ", " << vertexB.getNumberOfRealAndVirtualParticles() );
-return;
+
   #ifdef SharedTBB
   // Take care: grain size has to be possitive even if loop degenerates
   const int grainSize = (RunParticleLoopInParallel || vertexA.getNumberOfParticles()==0) ? 1 : vertexA.getNumberOfParticles();
