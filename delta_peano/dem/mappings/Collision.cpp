@@ -960,66 +960,66 @@ void dem::mappings::Collision::touchVertexFirstTime(
 
 	for(int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
 	{
-		records::Particle& currentParticle = fineGridVertex.getParticle(i);
+	  records::Particle& currentParticle = fineGridVertex.getParticle(i);
 
-		//if value doesn't exist in map - no collision - skip particle
-		if(_activeCollisions.count(currentParticle.getGlobalParticleId())==0) {continue;}
+	  //if value doesn't exist in map - no collision - skip particle
+	  if(_activeCollisions.count(currentParticle.getGlobalParticleId())==0) {continue;}
 
-		//iREAL force[3]  = {0.0,gravity*currentParticle._persistentRecords.getMass()*(-10),0.0};
-		iREAL force[3]  = {0.0,0.0,0.0};
-		iREAL torque[3] = {0.0,0.0,0.0};
+	  //iREAL force[3]  = {0.0,gravity*currentParticle._persistentRecords.getMass()*(-10),0.0};
+	  iREAL force[3]  = {0.0,0.0,0.0};
+	  iREAL torque[3] = {0.0,0.0,0.0};
 
-		//collisions with partner particles
-		for(std::vector<Collisions>::iterator p = _activeCollisions[currentParticle.getGlobalParticleId()].begin();
-		                                      p != _activeCollisions[currentParticle.getGlobalParticleId()].end();
-		                                      p++)
-		{
-			iREAL rforce[3]  = {0.0,0.0,0.0};
-			iREAL rtorque[3] = {0.0,0.0,0.0};
+	  //collisions with partner particles
+	  for(std::vector<Collisions>::iterator p = _activeCollisions[currentParticle.getGlobalParticleId()].begin();
+											p != _activeCollisions[currentParticle.getGlobalParticleId()].end();
+											p++)
+	  {
+		  iREAL rforce[3]  = {0.0,0.0,0.0};
+		  iREAL rtorque[3] = {0.0,0.0,0.0};
 
-			delta::contact::forces::getContactsForces(p->_contactPoints,
-                                       &(currentParticle._persistentRecords._centreOfMass(0)),
-                                       &(currentParticle._persistentRecords._referentialCentreOfMass(0)),
-                                       &(currentParticle._persistentRecords._angular(0)),
-                                       &(currentParticle._persistentRecords._referentialAngular(0)),
-                                       &(currentParticle._persistentRecords._velocity(0)),
-                                       currentParticle.getMass(),
-                                       &(currentParticle._persistentRecords._inverse(0)),
-                                       &(currentParticle._persistentRecords._orientation(0)),
-                                       currentParticle.getMaterial(),
-                                       &(p->_copyOfPartnerParticle._persistentRecords._centreOfMass(0)),
-                                       &(p->_copyOfPartnerParticle._persistentRecords._referentialCentreOfMass(0)),
-                                       &(p->_copyOfPartnerParticle._persistentRecords._angular(0)),
-                                       &(p->_copyOfPartnerParticle._persistentRecords._referentialAngular(0)),
-                                       &(p->_copyOfPartnerParticle._persistentRecords._velocity(0)),
-                                       p->_copyOfPartnerParticle.getMass(),
-                                       &(p->_copyOfPartnerParticle._persistentRecords._inverse(0)),
-                                       &(p->_copyOfPartnerParticle._persistentRecords._orientation(0)),
-                                       p->_copyOfPartnerParticle.getMaterial(),
-                                       rforce, rtorque,
-                                       (dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere));
+		  delta::contact::forces::getContactsForces(p->_contactPoints,
+									 &(currentParticle._persistentRecords._centreOfMass(0)),
+									 &(currentParticle._persistentRecords._referentialCentreOfMass(0)),
+									 &(currentParticle._persistentRecords._angular(0)),
+									 &(currentParticle._persistentRecords._referentialAngular(0)),
+									 &(currentParticle._persistentRecords._velocity(0)),
+									 currentParticle.getMass(),
+									 &(currentParticle._persistentRecords._inverse(0)),
+									 &(currentParticle._persistentRecords._orientation(0)),
+									 currentParticle.getMaterial(),
+									 &(p->_copyOfPartnerParticle._persistentRecords._centreOfMass(0)),
+									 &(p->_copyOfPartnerParticle._persistentRecords._referentialCentreOfMass(0)),
+									 &(p->_copyOfPartnerParticle._persistentRecords._angular(0)),
+									 &(p->_copyOfPartnerParticle._persistentRecords._referentialAngular(0)),
+									 &(p->_copyOfPartnerParticle._persistentRecords._velocity(0)),
+									 p->_copyOfPartnerParticle.getMass(),
+									 &(p->_copyOfPartnerParticle._persistentRecords._inverse(0)),
+									 &(p->_copyOfPartnerParticle._persistentRecords._orientation(0)),
+									 p->_copyOfPartnerParticle.getMaterial(),
+									 rforce, rtorque,
+									 (dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere));
 
-			force[0] += rforce[0];
-			force[1] += rforce[1];
-			force[2] += rforce[2];
+		  force[0] += rforce[0];
+		  force[1] += rforce[1];
+		  force[2] += rforce[2];
 
-			torque[0] += rtorque[0];
-			torque[1] += rtorque[1];
-			torque[2] += rtorque[2];
+		  torque[0] += rtorque[0];
+		  torque[1] += rtorque[1];
+		  torque[2] += rtorque[2];
 		}
 
 		if(!currentParticle.getIsObstacle())
 		{
-			currentParticle._persistentRecords._velocity(0) += timeStepSize * (force[0] / currentParticle.getMass());
-			currentParticle._persistentRecords._velocity(1) += timeStepSize * (force[1] / currentParticle.getMass());
-			currentParticle._persistentRecords._velocity(2) += timeStepSize * (force[2] / currentParticle.getMass());
+		  currentParticle._persistentRecords._velocity(0) += timeStepSize * (force[0] / currentParticle.getMass());
+		  currentParticle._persistentRecords._velocity(1) += timeStepSize * (force[1] / currentParticle.getMass());
+		  currentParticle._persistentRecords._velocity(2) += timeStepSize * (force[2] / currentParticle.getMass());
 
-			delta::dynamics::updateAngular(&currentParticle._persistentRecords._referentialAngular(0),
-                                      &currentParticle._persistentRecords._orientation(0),
-                                      &currentParticle._persistentRecords._inertia(0),
-                                      &currentParticle._persistentRecords._inverse(0),
-                                      currentParticle.getMass(), //why mass is passed here, remove if not used
-                                      torque, timeStepSize);
+		  delta::dynamics::updateAngular(&currentParticle._persistentRecords._referentialAngular(0),
+									&currentParticle._persistentRecords._orientation(0),
+									&currentParticle._persistentRecords._inertia(0),
+									&currentParticle._persistentRecords._inverse(0),
+									currentParticle.getMass(), //why mass is passed here, remove if not used
+									torque, timeStepSize);
 		}
 	}
 
@@ -1055,9 +1055,7 @@ void dem::mappings::Collision::leaveCell(
     dem::Cell&           coarseGridCell,
     const tarch::la::Vector<DIMENSIONS,int>&                       fineGridPositionOfCell
 ) {
-
-  //all_to_all(fineGridVertices, fineGridVerticesEnumerator, _state, _backgroundTaskState);
-
+  all_to_all(fineGridVertices, fineGridVerticesEnumerator, _state, _backgroundTaskState);
 }
 
 void dem::mappings::Collision::touchVertexLastTime(
