@@ -545,6 +545,7 @@ def submitJobsKNL():
 #PBS -A k01-durkk\n\
 #PBS -m ae\n\
 #PBS -M konstantinos.krestenitis@durham.ac.uk\n\
+#PBS -o "+projectPath + projectName + "/"+ projectName +".out\n\
 #PBS -V\n\
 export KMP_AFFINITY=disabled\n\
 export PBS_O_WORKDIR=$(readlink -f $PBS_O_WORKDIR)\n\

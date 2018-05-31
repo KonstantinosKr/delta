@@ -111,14 +111,11 @@ namespace delta {
 		   *  @returns void
 		   */
 		 void nonUniMeshGeometry(
-			iREAL 										totalMass,
-			delta::geometry::material::MaterialType 		material,
-			iREAL 										subcellx,
-			int 											meshDensity,
-			std::vector<std::array<iREAL, 3>> &			particleGrid,
-			std::vector<std::string> &					componentGrid,
-			std::vector<delta::geometry::mesh::Mesh>  &	meshArray,
-			int 											index);
+		    iREAL totalMass,
+		    delta::geometry::material::MaterialType material,
+		    iREAL subcellx,
+			int meshDensity,
+			std::vector<delta::geometry::Object> &objects);
 
 		  /*
 		   *  NonUniform Distributed Total Mass

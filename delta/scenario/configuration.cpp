@@ -163,20 +163,9 @@ void delta::world::configuration::nonUniformlyDistributedTotalMass(
   {
     delta::world::configuration::nonUniSphereRadius(totalMass, index, subcellx, insitu);
   } else {
-/*
-    iREAL totalMass,
-    delta::geometry::material::MaterialType material,
-    iREAL subcellx, int meshDensity,
-    std::vector<std::array<iREAL, 3>> &particleGrid,
-    std::vector<std::string> &componentGrid,
-    std::vector<delta::geometry::mesh::Mesh>  &meshArray,
-	int index*/
-/*
     delta::world::configuration::nonUniMeshGeometry(
-        totalMass,
-        subcellx,
-        _noPointsPerParticle);*/
-   }
+       totalMass, material, subcellx, _noPointsPerParticle, insitu);
+  }
 
   //////////////////////////////////////////////////////
   /////MIN AND MAX RADIUS//////////////////////////////
@@ -384,19 +373,16 @@ void delta::world::configuration::nonUniformlyDistributedTotalMass(
  void delta::world::configuration::nonUniMeshGeometry(
     iREAL totalMass,
     delta::geometry::material::MaterialType material,
-    iREAL subcellx, int meshDensity,
-    std::vector<std::array<iREAL, 3>> &particleGrid,
-    std::vector<std::string> &componentGrid,
-    std::vector<delta::geometry::mesh::Mesh>  &meshArray,
-	int index)
+    iREAL subcellx,
+	int meshDensity,
+	std::vector<delta::geometry::Object> &objects)
 {
-  iREAL massPerParticle = totalMass/(iREAL)particleGrid.size();
+  iREAL massPerParticle = totalMass/(iREAL)objects.size();
   iREAL radius = std::pow((3.0*massPerParticle)/(4.0 * 3.14 * int(delta::geometry::material::materialToDensitymap.find(material)->second)), (1.0/3.0));
 
   iREAL reMassTotal = 0;
   //iREAL masssphere = 0;
 
-  iREAL position[3];
   //std::vector<iREAL> rad;
   iREAL mindiam = radius;
   iREAL maxdiam = radius*2;
@@ -405,20 +391,18 @@ void delta::world::configuration::nonUniformlyDistributedTotalMass(
 
   std::vector<iREAL> rad;
 
-  for(auto i:particleGrid)
+  for(int i=0; i<objects.size(); i++)
   {
-    std::vector<iREAL>  xCoordinates, yCoordinates, zCoordinates;
-
-    position[0] = i[0]; position[1] = i[1]; position[2] = i[2];
-
     iREAL particleDiameter = mindiam + (iREAL)(rand()) / ((iREAL) (RAND_MAX/(maxdiam-mindiam)));
 
     rad.push_back(particleDiameter/2);
     radius = particleDiameter/2;
 
+    iREAL position[3] = { objects[i].getCentre()[0], objects[i].getCentre()[1], objects[i].getCentre()[2]};
+
     delta::geometry::mesh::Mesh *mesh =
     	  delta::geometry::primitive::granulate::generateParticle(position, (radius*2), meshDensity);
-    meshArray.push_back(*mesh);
+	objects[i].setMesh(*mesh);
 
     iREAL mt = mesh->computeMass(material);
     //iREAL vt = delta::geometry::properties::getVolume(xCoordinates, yCoordinates, zCoordinates);
@@ -427,21 +411,15 @@ void delta::world::configuration::nonUniformlyDistributedTotalMass(
     reMassTotal += mt;
     //masssphere += mt;
     //printf("SphereVol:%f SphereMas:%f TriVol:%.10f TriMas:%f\n", vs, ms, vt, mt);
-    xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
-
-    componentGrid.push_back("nonSpherical");
   }
 
   iREAL rescale = std::pow((totalMass/reMassTotal), 1.0/3.0);
   //printf("MASSSPHERE:%f MASSMESH:%f RESCALE:%f\n", masssphere, reMassTotal, rescale);
 
   //reMassTotal=0;
-  for(unsigned j=0; j<meshArray.size(); j++)
+  for(unsigned j=0; j<objects.size(); j++)
   {
-    std::array<iREAL, 3> ar = particleGrid[j]; position[0] = ar[0]; position[1] = ar[1]; position[2] = ar[2];
-
-    delta::geometry::mesh::Mesh mesh = meshArray[j];
-    mesh.scaleXYZ(rescale);
+    objects[j].getMesh().scaleXYZ(rescale);
 
     rad[j] = rad[j] * rescale;
 
