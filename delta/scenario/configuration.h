@@ -32,7 +32,6 @@ namespace delta {
 		   */
 		 void uniSphereRadius(
 			iREAL totalMass,
-			int 	index,
 			std::vector<delta::geometry::Object>& objects);
 
 		  /*
@@ -49,8 +48,7 @@ namespace delta {
 		 void uniMeshGeometry(
 			iREAL 									totalMass,
 			int 										noPointsPerParticle,
-			std::vector<delta::geometry::Object> &	objects,
-			int 										index);
+			std::vector<delta::geometry::Object> &	objects);
 
 		  /*
 		   *  Uniform Cube
@@ -58,24 +56,15 @@ namespace delta {
 		   *  Setup uniform distributed cube setup
 		   *
 		   *  @param totalMass				: total mass of setup
-		   *  @param material 				: mesh density
-		   *  @param meshDensity				: objects
-		   *  @param rad 					: radius
-		   *  @param particleGrid			: particleGrid layout
-		   *  @param componentGrid			: componentGrid layout
-		   *  @param meshArray				: meshes
+		   *  @param meshDensity				: meshDensity
+		   *  @param objects					: objects
 		   *  @param index					: index
 		   *  @returns void
 		   */
 		 void uniCubeGeometry(
-			iREAL 										totalMass,
-			delta::geometry::material::MaterialType 		material,
-			int 											meshDensity,
-			std::vector<iREAL>  &						rad,
-			std::vector<std::array<iREAL, 3>> &			particleGrid,
-			std::vector<std::string> &					componentGrid,
-			std::vector<delta::geometry::mesh::Mesh>  &	meshArray,
-			int 											index);
+		    iREAL 								totalMass,
+		    int 									noPointsPerParticle,
+		    std::vector<delta::geometry::Object> &objects);
 
 		  /*
 		   *  NonUniform Sphere
@@ -90,7 +79,6 @@ namespace delta {
 		   */
 		 void nonUniSphereRadius(
 			iREAL 									totalMass,
-			int 										index,
 			iREAL 									subcellx,
 			std::vector<delta::geometry::Object>& 	objects);
 
@@ -100,22 +88,33 @@ namespace delta {
 		   *  Setup non uniform distributed mass mesh setup
 		   *
 		   *  @param totalMass				: total mass of setup
-		   *  @param material 				: material type
 		   *  @param subcellx 				: cell position length
-		   *  @param meshDensity				: objects
-		   *  @param rad 					: radius
-		   *  @param particleGrid			: particleGrid layout
-		   *  @param componentGrid			: componentGrid layout
-		   *  @param meshArray				: meshes
-		   *  @param index					: index
+		   *  @param meshDensity 			: mesh density
+		   *  @param objects 				: the objects
 		   *  @returns void
 		   */
 		 void nonUniMeshGeometry(
-		    iREAL totalMass,
-		    delta::geometry::material::MaterialType material,
-		    iREAL subcellx,
-			int meshDensity,
-			std::vector<delta::geometry::Object> &objects);
+		    iREAL 									totalMass,
+		    iREAL 									subcellx,
+			int 										meshDensity,
+			std::vector<delta::geometry::Object> &	objects);
+
+		  /*
+		   *  NonUniform Mesh
+		   *
+		   *  Setup non uniform distributed mass mesh setup
+		   *
+		   *  @param totalMass				: total mass of setup
+		   *  @param subcellx 				: cell position length
+		   *  @param meshDensity 			: mesh density
+		   *  @param objects 				: the objects
+		   *  @returns void
+		   */
+		 void nonUniCubeGeometry(
+		  iREAL totalMass,
+		  iREAL subcellx,
+		  int meshDensity,
+		  std::vector<delta::geometry::Object> &objects);
 
 		  /*
 		   *  NonUniform Distributed Total Mass
