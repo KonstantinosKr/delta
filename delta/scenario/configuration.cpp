@@ -12,28 +12,32 @@
 #include "delta/geometry/hardcoded/cube.h"
 
  void delta::world::configuration::uniformlyDistributedTotalMass(
-	  std::vector<delta::geometry::Object> &insitu,
-	  iREAL 		position[3],
-	  int 		xzcuts,
-	  int 		ycuts,
-	  iREAL 		gridxyLength,
-      iREAL 		totalMass,
-	  iREAL 		hopperWidth,
-      int 		index,
-	  iREAL 		epsilon,
-      bool 		isSphereOrNone,
-      int 		noPointsPerParticle
+	  std::vector<delta::geometry::Object> &	insitu,
+	  iREAL 									position[3],
+	  int 									xzcuts,
+	  int 									ycuts,
+	  iREAL 									gridxyLength,
+      iREAL 									totalMass,
+	  iREAL 									hopperWidth,
+      int 									index,
+	  iREAL 									epsilon,
+      bool 									isSphereOrNone,
+      int 									noPointsPerParticle
       )
 {
    //create xzy cuts above hopper, position starts at left lower inner corner
    std::vector<std::array<iREAL, 3>> grid = delta::world::layout::makeGridLayout(position, xzcuts, ycuts, gridxyLength);
+
+   delta::geometry::material::MaterialType material = delta::geometry::material::MaterialType::WOOD;
+   bool isObstacle = false;
+   bool isFriction = false;
 
    iREAL xmin = 1; iREAL xmax = 0;
    for(unsigned i=0; i<grid.size(); i++)
    {
      std::array<iREAL, 3> p = {grid[i][0], grid[i][1], grid[i][2]};
 
-     delta::geometry::Object particles(isSphereOrNone ? "sphere": "granulate", 0, p, delta::geometry::material::MaterialType::WOOD, false, false, epsilon, {0, 0, 0}, {0,0,0});
+     delta::geometry::Object particles(isSphereOrNone ? "sphere": "granulate", index+i, p, material, isObstacle, isFriction, epsilon, {0, 0, 0}, {0,0,0});
      insitu.push_back(particles);
 
      if(p[0] < xmin) xmin = p[0];
@@ -62,11 +66,7 @@
     delta::world::configuration::uniSphereRadius(totalMass, insitu);
   } else {
     //delta::world::configuration::uniMeshGeometry(totalMass, noPointsPerParticle, insitu);
-
-    delta::world::configuration::uniCubeGeometry(
-        totalMass,
-        noPointsPerParticle,
-		insitu);
+    delta::world::configuration::uniCubeGeometry(totalMass, noPointsPerParticle, insitu);
   }
 
   //////////////////////////////////////////////////////
@@ -75,14 +75,14 @@
   iREAL maxRad = 0.0;
   iREAL minRad = 1.00;
 
-  for(unsigned i=index; i<insitu.size(); i++)
+  for(unsigned i=0; i<insitu.size(); i++)
   {
     if(maxRad <= insitu[i].getRad()) maxRad = insitu[i].getRad();
     if(minRad >= insitu[i].getRad()) minRad = insitu[i].getRad();
   }
 
   //lift above max radii
-  for(unsigned i=index; i<insitu.size(); i++)
+  for(unsigned i=0; i<insitu.size(); i++)
   {
     std::array<iREAL, 3> pos = insitu[i].getCentre();
     iREAL p[3] = {pos[0], pos[1] + maxRad+epsilon, pos[2]};
@@ -130,7 +130,7 @@ void delta::world::configuration::nonUniformlyDistributedTotalMass(
    {
      std::array<iREAL, 3> p = {grid[i][0], grid[i][1], grid[i][2]};
 
-     delta::geometry::Object particles(isSphereOrNone ? "sphere": "granulate", 0, p, material, false, false, epsilon, {0, -1, 0}, {0,0,0});
+     delta::geometry::Object particles(isSphereOrNone ? "sphere": "granulate", index+1, p, material, isObstacle, isFriction, epsilon, {0,0,0}, {0,0,0});
      insitu.push_back(particles);
 
      if(p[0] < xmin) xmin = p[0];
@@ -156,8 +156,7 @@ void delta::world::configuration::nonUniformlyDistributedTotalMass(
   {
     delta::world::configuration::nonUniSphereRadius(totalMass, subcellx, insitu);
   } else {
-    delta::world::configuration::nonUniMeshGeometry(
-       totalMass, subcellx, noPointsPerParticle, insitu);
+    delta::world::configuration::nonUniMeshGeometry(totalMass, subcellx, noPointsPerParticle, insitu);
   }
 
   //////////////////////////////////////////////////////
@@ -166,14 +165,14 @@ void delta::world::configuration::nonUniformlyDistributedTotalMass(
   iREAL maxRad = 0.0;
   iREAL minRad = 1.00;
 
-  for(unsigned i=index; i<insitu.size(); i++)
+  for(unsigned i=0; i<insitu.size(); i++)
   {
     if(maxRad <= insitu[i].getRad()) maxRad = insitu[i].getRad();
     if(minRad >= insitu[i].getRad()) minRad = insitu[i].getRad();
   }
 
   //lift above max radii
-  for(unsigned i=index; i<insitu.size(); i++)
+  for(unsigned i=0; i<insitu.size(); i++)
   {
     std::array<iREAL, 3> pos = insitu[i].getCentre();
     iREAL p[3] = {pos[0], pos[1] + maxRad+epsilon, pos[2]};

@@ -65,12 +65,12 @@ peano::MappingSpecification   dem::mappings::Collision::descendSpecification(int
 	return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidCoarseGridRaces,true);
 }
 
-tarch::logging::Log                                                 dem::mappings::Collision::_log( "dem::mappings::Collision" );
-std::map<int, std::vector<dem::mappings::Collision::Collisions> >   dem::mappings::Collision::_activeCollisions;
-std::map<int, std::vector<dem::mappings::Collision::Collisions> >   dem::mappings::Collision::_collisionsOfNextTraversal;
-dem::mappings::Collision::CollisionModel                            dem::mappings::Collision::_collisionModel;
-bool																   dem::mappings::Collision::_enableOverlapCheck;
-tarch::multicore::BooleanSemaphore                                  dem::mappings::Collision::_collisionSemaphore;
+tarch::logging::Log                                                 	dem::mappings::Collision::_log( "dem::mappings::Collision" );
+std::map<int, std::vector<dem::mappings::Collision::Collisions> >   	dem::mappings::Collision::_activeCollisions;
+std::map<int, std::vector<dem::mappings::Collision::Collisions> >   	dem::mappings::Collision::_collisionsOfNextTraversal;
+dem::mappings::Collision::CollisionModel                            	dem::mappings::Collision::_collisionModel;
+bool																   	dem::mappings::Collision::_enableOverlapCheck;
+tarch::multicore::BooleanSemaphore                                  	dem::mappings::Collision::_collisionSemaphore;
 iREAL                                                              	dem::mappings::Collision::gravity = 0.0;
 
 bool dem::mappings::Collision::RunGridTraversalInParallel           = true;
@@ -86,13 +86,16 @@ void dem::mappings::Collision::addCollision(
 ) {
   assertion( !newContactPoints.empty() );
 
+  int particleIDA = particleA.getGlobalParticleId();
+  int particleIDB = particleB.getGlobalParticleId();
+
   //////////////START initial insertion of collision vectors into _collisionsOfNextTraversal<id, collision> map for next move update of particle A and B
   if( _collisionsOfNextTraversal.count(particleA.getGlobalParticleId())==0 ) {
-    _collisionsOfNextTraversal.insert(std::pair<int,std::vector<Collisions>>(particleA.getGlobalParticleId(), std::vector<Collisions>()));
+    _collisionsOfNextTraversal.insert(std::pair<int,std::vector<Collisions>>(particleIDA, std::vector<Collisions>()));
   }
 
   if( _collisionsOfNextTraversal.count(particleB.getGlobalParticleId())==0 ) {
-    _collisionsOfNextTraversal.insert(std::pair<int,std::vector<Collisions>>(particleB.getGlobalParticleId(), std::vector<Collisions>()));
+    _collisionsOfNextTraversal.insert(std::pair<int,std::vector<Collisions>>(particleIDB, std::vector<Collisions>()));
   }
   ///////////////END
 
@@ -102,19 +105,19 @@ void dem::mappings::Collision::addCollision(
   //////////////END
 
   /////////////////START if already exist | find and assign reference collision list to dataA or dataB particle
-  for (std::vector<Collisions>::iterator p=_collisionsOfNextTraversal[particleA.getGlobalParticleId()].begin();
+  for (std::vector<Collisions>::iterator p=_collisionsOfNextTraversal[particleIDA].begin();
      p!=_collisionsOfNextTraversal[particleA.getGlobalParticleId()].end();  p++)
   {
-    if(p->_copyOfPartnerParticle.getGlobalParticleId()==particleB.getGlobalParticleId())
+    if(p->_copyOfPartnerParticle.getGlobalParticleId()==particleIDB)
     {
       dataSetA = &(*p);
     }
   }
 
-  for(std::vector<Collisions>::iterator p=_collisionsOfNextTraversal[particleB.getGlobalParticleId()].begin();
+  for(std::vector<Collisions>::iterator p=_collisionsOfNextTraversal[particleIDB].begin();
      p!=_collisionsOfNextTraversal[particleB.getGlobalParticleId()].end(); p++)
   {
-    if(p->_copyOfPartnerParticle.getGlobalParticleId()==particleA.getGlobalParticleId())
+    if(p->_copyOfPartnerParticle.getGlobalParticleId()==particleIDA)
     {
       dataSetB = &(*p);
     }
@@ -134,13 +137,13 @@ void dem::mappings::Collision::addCollision(
   if(dataSetA==nullptr)
   {
     //START push_back collisions object into corresponding both A and B particle index collision list
-    _collisionsOfNextTraversal[particleA.getGlobalParticleId()].push_back( Collisions() );
-    _collisionsOfNextTraversal[particleB.getGlobalParticleId()].push_back( Collisions() );
+    _collisionsOfNextTraversal[particleIDA].push_back( Collisions() );
+    _collisionsOfNextTraversal[particleIDB].push_back( Collisions() );
     //END push_back
 
     //START reference of vector to data A and B ready to used
-    dataSetA = &(_collisionsOfNextTraversal[particleA.getGlobalParticleId()].back());
-    dataSetB = &(_collisionsOfNextTraversal[particleB.getGlobalParticleId()].back());
+    dataSetA = &(_collisionsOfNextTraversal[particleIDA].back());
+    dataSetB = &(_collisionsOfNextTraversal[particleIDB].back());
     //END
 
     //START add copy of master and slave particles to sets (dual contact reference)
@@ -912,6 +915,10 @@ void dem::mappings::Collision::endIteration(
 
 	_activeCollisions.clear();
 
+	while (tarch::multicore::jobs::getNumberOfWaitingBackgroundJobs()>0) {
+	  tarch::multicore::jobs::finishToProcessBackgroundJobs();
+	}
+
 	assertion( _activeCollisions.empty() );
 	assertion( _state.getNumberOfContactPoints()==0 || !_collisionsOfNextTraversal.empty() );
 
@@ -922,24 +929,20 @@ void dem::mappings::Collision::endIteration(
 
 	if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::PenaltyStat)
 	{
-		std::vector<int> penaltyStatistics = delta::contact::detection::getPenaltyStatistics();
-		for (int i=0; i<static_cast<int>(penaltyStatistics.size()); i++)
-		{
-			logInfo( "endIteration(State)", i << " Newton iterations: " << penaltyStatistics[i] );
-		}
+	  std::vector<int> penaltyStatistics = delta::contact::detection::getPenaltyStatistics();
+	  for (int i=0; i<static_cast<int>(penaltyStatistics.size()); i++)
+	  {
+		logInfo( "endIteration(State)", i << " Newton iterations: " << penaltyStatistics[i] );
+	  }
 	}
 
 	if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::HybridStat)
 	{
-	logInfo( "endIteration(State)", std::endl
+	  logInfo( "endIteration(State)", std::endl
 								 << "Penalty Fails: " << delta::contact::detection::getPenaltyFails() << " PenaltyFail avg: " << (iREAL)delta::contact::detection::getPenaltyFails()/(iREAL)delta::contact::detection::getBatchSize() << std::endl
 								 << "Batch Size: " << delta::contact::detection::getBatchSize() << std::endl
 								 << "Batch Fails: " << delta::contact::detection::getBatchFails() << " BatchFail avg: " << (iREAL)delta::contact::detection::getBatchFails()/(iREAL)delta::contact::detection::getBatchSize() << std::endl
 								 << "BatchError avg: " << (iREAL)delta::contact::detection::getBatchError()/(iREAL)delta::contact::detection::getBatchSize());
-	}
-
-	while (tarch::multicore::jobs::getNumberOfWaitingBackgroundJobs()>0) {
-		tarch::multicore::jobs::finishToProcessBackgroundJobs();
 	}
 
 	logTraceOutWith1Argument( "endIteration(State)", solverState);
