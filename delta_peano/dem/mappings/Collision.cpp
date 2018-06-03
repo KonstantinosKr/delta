@@ -889,8 +889,8 @@ void dem::mappings::Collision::beginIteration(
 
 	_state = solverState;
 	_backgroundTaskState = solverState;
-	//_state.clearAccumulatedData();//redundant
-	//_backgroundTaskState.clearAccumulatedData();
+	_state.clearAccumulatedData();//redundant
+	_backgroundTaskState.clearAccumulatedData();
 
 	assertion( _collisionsOfNextTraversal.empty() );
 

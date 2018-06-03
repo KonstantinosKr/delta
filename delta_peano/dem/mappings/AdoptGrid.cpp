@@ -348,7 +348,9 @@ void dem::mappings::AdoptGrid::destroyVertex(
 ) {
   logTraceInWith6Arguments( "destroyVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
+  tarch::multicore::Lock lock(_AdoptSemaphore);
   liftAllParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator);
+  lock.free();
 
   //assertion( fineGridVertex.getNumberOfParticles()==0 );
   fineGridVertex.destroy();
