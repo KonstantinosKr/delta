@@ -41,9 +41,9 @@ peano::MappingSpecification   dem::mappings::AdoptGrid::descendSpecification(int
 }
 
 tarch::logging::Log dem::mappings::AdoptGrid::_log( "dem::mappings::AdoptGrid" );
-tarch::multicore::BooleanSemaphore  dem::mappings::AdoptGrid::_AdoptSemaphore;
-iREAL dem::mappings::AdoptGrid::_refinementCoefficient;
-iREAL dem::mappings::AdoptGrid::_coarsenCoefficient;
+tarch::multicore::BooleanSemaphore  		dem::mappings::AdoptGrid::_AdoptSemaphore;
+iREAL 									dem::mappings::AdoptGrid::_refinementCoefficient;
+iREAL 									dem::mappings::AdoptGrid::_coarsenCoefficient;
 
 void dem::mappings::dropParticles(
   dem::Vertex&                                 fineGridVertex,
