@@ -87,6 +87,7 @@ void dem::mappings::liftAllParticles(
   dem::Vertex * const                           coarseGridVertices,
   const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator
 ) {
+
   int i=0;
   while (i<fineGridVertex.getNumberOfParticles())
   {
@@ -337,19 +338,19 @@ void dem::mappings::AdoptGrid::createBoundaryVertex(
 }
 
 void dem::mappings::AdoptGrid::destroyVertex(
-      const dem::Vertex&   fineGridVertex,
-      const tarch::la::Vector<DIMENSIONS,iREAL>&                    fineGridX,
-      const tarch::la::Vector<DIMENSIONS,iREAL>&                    fineGridH,
-      dem::Vertex * const  coarseGridVertices,
-      const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator,
-      dem::Cell&           coarseGridCell,
-      const tarch::la::Vector<DIMENSIONS,int>&                       fineGridPositionOfVertex
+      const dem::Vertex&   								fineGridVertex,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&         fineGridX,
+      const tarch::la::Vector<DIMENSIONS,iREAL>&         fineGridH,
+      dem::Vertex * const  								coarseGridVertices,
+      const peano::grid::VertexEnumerator&          		coarseGridVerticesEnumerator,
+      dem::Cell&           								coarseGridCell,
+      const tarch::la::Vector<DIMENSIONS,int>&           fineGridPositionOfVertex
 ) {
   logTraceInWith6Arguments( "destroyVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
   liftAllParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator);
 
-  assertion( fineGridVertex.getNumberOfParticles()==0 );
+  //assertion( fineGridVertex.getNumberOfParticles()==0 );
   fineGridVertex.destroy();
 
   logTraceOutWith1Argument( "destroyVertex(...)", fineGridVertex );
