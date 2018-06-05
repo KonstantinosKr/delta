@@ -336,14 +336,10 @@ int dem::runners::Runner::runAsMaster(
 
   for (i=i+0; i<iterations; i++)
   {
-    printf("entered\n");
     timestamp = repository.getState().getTime();
     repository.getState().setTimeStep(i);
-    printf("entered\n");
     bool plotThisTraversal = switchrepo(repository, i, gridType, plot, elapsed, realSnapshot);
-    printf("entered\n");
     repository.iterate();
-    printf("entered\n");
     elapsed = repository.getState().getTime() - timestamp;
 
     logInfo("runAsMaster(...)", "i=" << i
