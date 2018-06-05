@@ -26,6 +26,9 @@ event-mapping:
   name: AdoptGrid
 
 event-mapping:
+  name: FlopAdoptGrid
+
+event-mapping:
   name: ReluctantlyAdoptGrid
   
 event-mapping:
@@ -69,6 +72,10 @@ adapter:
   name: AdoptReluctantly
   merge-with-user-defined-mapping: ReluctantlyAdoptGrid
 
+adapter:
+  name: FlopAdopt
+  merge-with-user-defined-mapping: FlopAdoptGrid
+
 adapter: 
   name: PlotData
   merge-with-user-defined-mapping: Plot
@@ -100,3 +107,15 @@ adapter:
   merge-with-user-defined-mapping: Plot
   merge-with-predefined-mapping: VTKGridVisualiser(grid)
  
+adapter:
+  name: TimeStepOnFlopDynamicGrid
+  merge-with-user-defined-mapping: FlopAdoptGrid
+  merge-with-user-defined-mapping: Collision
+  merge-with-user-defined-mapping: MoveParticles
+
+adapter:
+  name: TimeStepAndPlotOnFlopDynamicGrid
+  merge-with-user-defined-mapping: ReluctantlyAdoptGrid
+  merge-with-user-defined-mapping: MoveParticles
+  merge-with-user-defined-mapping: Plot
+  merge-with-predefined-mapping: VTKGridVisualiser(grid)

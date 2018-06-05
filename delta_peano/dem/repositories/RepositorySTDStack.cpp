@@ -44,11 +44,14 @@ dem::repositories::RepositorySTDStack::RepositorySTDStack(
   _gridWithMoveParticles(_vertexStack,_cellStack,_geometry,_solverState,domainSize,computationalDomainOffset,_regularGridContainer,_traversalOrderOnTopLevel),
   _gridWithAdopt(_vertexStack,_cellStack,_geometry,_solverState,domainSize,computationalDomainOffset,_regularGridContainer,_traversalOrderOnTopLevel),
   _gridWithAdoptReluctantly(_vertexStack,_cellStack,_geometry,_solverState,domainSize,computationalDomainOffset,_regularGridContainer,_traversalOrderOnTopLevel),
+  _gridWithAdoptFlop(_vertexStack,_cellStack,_geometry,_solverState,domainSize,computationalDomainOffset,_regularGridContainer,_traversalOrderOnTopLevel),
   _gridWithPlotData(_vertexStack,_cellStack,_geometry,_solverState,domainSize,computationalDomainOffset,_regularGridContainer,_traversalOrderOnTopLevel),
   _gridWithTimeStepOnDynamicGrid(_vertexStack,_cellStack,_geometry,_solverState,domainSize,computationalDomainOffset,_regularGridContainer,_traversalOrderOnTopLevel),
   _gridWithTimeStepAndPlotOnDynamicGrid(_vertexStack,_cellStack,_geometry,_solverState,domainSize,computationalDomainOffset,_regularGridContainer,_traversalOrderOnTopLevel),
   _gridWithTimeStepOnReluctantDynamicGrid(_vertexStack,_cellStack,_geometry,_solverState,domainSize,computationalDomainOffset,_regularGridContainer,_traversalOrderOnTopLevel),
   _gridWithTimeStepAndPlotOnReluctantDynamicGrid(_vertexStack,_cellStack,_geometry,_solverState,domainSize,computationalDomainOffset,_regularGridContainer,_traversalOrderOnTopLevel),
+  _gridWithTimeStepOnFlopDynamicGrid(_vertexStack,_cellStack,_geometry,_solverState,domainSize,computationalDomainOffset,_regularGridContainer,_traversalOrderOnTopLevel),
+  _gridWithTimeStepAndPlotOnFlopDynamicGrid(_vertexStack,_cellStack,_geometry,_solverState,domainSize,computationalDomainOffset,_regularGridContainer,_traversalOrderOnTopLevel),
 
   _repositoryState() {
   logTraceIn( "RepositorySTDStack(...)" );
@@ -79,11 +82,14 @@ dem::repositories::RepositorySTDStack::RepositorySTDStack(
   _gridWithMoveParticles(_vertexStack,_cellStack,_geometry,_solverState,_regularGridContainer,_traversalOrderOnTopLevel),
   _gridWithAdopt(_vertexStack,_cellStack,_geometry,_solverState,_regularGridContainer,_traversalOrderOnTopLevel),
   _gridWithAdoptReluctantly(_vertexStack,_cellStack,_geometry,_solverState,_regularGridContainer,_traversalOrderOnTopLevel),
+  _gridWithAdoptFlop(_vertexStack,_cellStack,_geometry,_solverState,_regularGridContainer,_traversalOrderOnTopLevel),
   _gridWithPlotData(_vertexStack,_cellStack,_geometry,_solverState,_regularGridContainer,_traversalOrderOnTopLevel),
   _gridWithTimeStepOnDynamicGrid(_vertexStack,_cellStack,_geometry,_solverState,_regularGridContainer,_traversalOrderOnTopLevel),
   _gridWithTimeStepAndPlotOnDynamicGrid(_vertexStack,_cellStack,_geometry,_solverState,_regularGridContainer,_traversalOrderOnTopLevel),
   _gridWithTimeStepOnReluctantDynamicGrid(_vertexStack,_cellStack,_geometry,_solverState,_regularGridContainer,_traversalOrderOnTopLevel),
   _gridWithTimeStepAndPlotOnReluctantDynamicGrid(_vertexStack,_cellStack,_geometry,_solverState,_regularGridContainer,_traversalOrderOnTopLevel),
+  _gridWithTimeStepOnFlopDynamicGrid(_vertexStack,_cellStack,_geometry,_solverState,_regularGridContainer,_traversalOrderOnTopLevel),
+  _gridWithTimeStepAndPlotOnFlopDynamicGrid(_vertexStack,_cellStack,_geometry,_solverState,_regularGridContainer,_traversalOrderOnTopLevel),
 
   _repositoryState() {
   logTraceIn( "RepositorySTDStack(Geometry&)" );
@@ -130,11 +136,14 @@ void dem::repositories::RepositorySTDStack::restart(
   _gridWithMoveParticles.restart(domainSize,domainOffset,domainLevel, positionOfCentralElementWithRespectToCoarserRemoteLevel);
   _gridWithAdopt.restart(domainSize,domainOffset,domainLevel, positionOfCentralElementWithRespectToCoarserRemoteLevel);
   _gridWithAdoptReluctantly.restart(domainSize,domainOffset,domainLevel, positionOfCentralElementWithRespectToCoarserRemoteLevel);
+  _gridWithAdoptFlop.restart(domainSize,domainOffset,domainLevel, positionOfCentralElementWithRespectToCoarserRemoteLevel);
   _gridWithPlotData.restart(domainSize,domainOffset,domainLevel, positionOfCentralElementWithRespectToCoarserRemoteLevel);
   _gridWithTimeStepOnDynamicGrid.restart(domainSize,domainOffset,domainLevel, positionOfCentralElementWithRespectToCoarserRemoteLevel);
   _gridWithTimeStepAndPlotOnDynamicGrid.restart(domainSize,domainOffset,domainLevel, positionOfCentralElementWithRespectToCoarserRemoteLevel);
   _gridWithTimeStepOnReluctantDynamicGrid.restart(domainSize,domainOffset,domainLevel, positionOfCentralElementWithRespectToCoarserRemoteLevel);
   _gridWithTimeStepAndPlotOnReluctantDynamicGrid.restart(domainSize,domainOffset,domainLevel, positionOfCentralElementWithRespectToCoarserRemoteLevel);
+  _gridWithTimeStepOnFlopDynamicGrid.restart(domainSize,domainOffset,domainLevel, positionOfCentralElementWithRespectToCoarserRemoteLevel);
+  _gridWithTimeStepAndPlotOnFlopDynamicGrid.restart(domainSize,domainOffset,domainLevel, positionOfCentralElementWithRespectToCoarserRemoteLevel);
 
 
   _solverState.restart();
@@ -166,11 +175,14 @@ void dem::repositories::RepositorySTDStack::terminate() {
   _gridWithMoveParticles.terminate();
   _gridWithAdopt.terminate();
   _gridWithAdoptReluctantly.terminate();
+  _gridWithAdoptFlop.terminate();
   _gridWithPlotData.terminate();
   _gridWithTimeStepOnDynamicGrid.terminate();
   _gridWithTimeStepAndPlotOnDynamicGrid.terminate();
   _gridWithTimeStepOnReluctantDynamicGrid.terminate();
   _gridWithTimeStepAndPlotOnReluctantDynamicGrid.terminate();
+  _gridWithTimeStepOnFlopDynamicGrid.terminate();
+  _gridWithTimeStepAndPlotOnFlopDynamicGrid.terminate();
 
 
   logTraceOut( "terminate()" );
@@ -247,11 +259,14 @@ void dem::repositories::RepositorySTDStack::iterate(int numberOfIterations, bool
       case dem::records::RepositoryState::UseAdapterMoveParticles: watch.startTimer(); _gridWithMoveParticles.iterate(); watch.stopTimer(); _measureMoveParticlesCPUTime.setValue( watch.getCPUTime() ); _measureMoveParticlesCalendarTime.setValue( watch.getCalendarTime() ); break;
       case dem::records::RepositoryState::UseAdapterAdopt: watch.startTimer(); _gridWithAdopt.iterate(); watch.stopTimer(); _measureAdoptCPUTime.setValue( watch.getCPUTime() ); _measureAdoptCalendarTime.setValue( watch.getCalendarTime() ); break;
       case dem::records::RepositoryState::UseAdapterAdoptReluctantly: watch.startTimer(); _gridWithAdoptReluctantly.iterate(); watch.stopTimer(); _measureAdoptReluctantlyCPUTime.setValue( watch.getCPUTime() ); _measureAdoptReluctantlyCalendarTime.setValue( watch.getCalendarTime() ); break;
+      case dem::records::RepositoryState::UseAdapterAdoptFlop: watch.startTimer(); _gridWithAdoptFlop.iterate(); watch.stopTimer(); _measureAdoptFlopCPUTime.setValue( watch.getCPUTime() ); _measureAdoptFlopCalendarTime.setValue( watch.getCalendarTime() ); break;
       case dem::records::RepositoryState::UseAdapterPlotData: watch.startTimer(); _gridWithPlotData.iterate(); watch.stopTimer(); _measurePlotDataCPUTime.setValue( watch.getCPUTime() ); _measurePlotDataCalendarTime.setValue( watch.getCalendarTime() ); break;
       case dem::records::RepositoryState::UseAdapterTimeStepOnDynamicGrid: watch.startTimer(); _gridWithTimeStepOnDynamicGrid.iterate(); watch.stopTimer(); _measureTimeStepOnDynamicGridCPUTime.setValue( watch.getCPUTime() ); _measureTimeStepOnDynamicGridCalendarTime.setValue( watch.getCalendarTime() ); break;
       case dem::records::RepositoryState::UseAdapterTimeStepAndPlotOnDynamicGrid: watch.startTimer(); _gridWithTimeStepAndPlotOnDynamicGrid.iterate(); watch.stopTimer(); _measureTimeStepAndPlotOnDynamicGridCPUTime.setValue( watch.getCPUTime() ); _measureTimeStepAndPlotOnDynamicGridCalendarTime.setValue( watch.getCalendarTime() ); break;
       case dem::records::RepositoryState::UseAdapterTimeStepOnReluctantDynamicGrid: watch.startTimer(); _gridWithTimeStepOnReluctantDynamicGrid.iterate(); watch.stopTimer(); _measureTimeStepOnReluctantDynamicGridCPUTime.setValue( watch.getCPUTime() ); _measureTimeStepOnReluctantDynamicGridCalendarTime.setValue( watch.getCalendarTime() ); break;
       case dem::records::RepositoryState::UseAdapterTimeStepAndPlotOnReluctantDynamicGrid: watch.startTimer(); _gridWithTimeStepAndPlotOnReluctantDynamicGrid.iterate(); watch.stopTimer(); _measureTimeStepAndPlotOnReluctantDynamicGridCPUTime.setValue( watch.getCPUTime() ); _measureTimeStepAndPlotOnReluctantDynamicGridCalendarTime.setValue( watch.getCalendarTime() ); break;
+      case dem::records::RepositoryState::UseAdapterTimeStepOnFlopDynamicGrid: watch.startTimer(); _gridWithTimeStepOnFlopDynamicGrid.iterate(); watch.stopTimer(); _measureTimeStepOnFlopDynamicGridCPUTime.setValue( watch.getCPUTime() ); _measureTimeStepOnFlopDynamicGridCalendarTime.setValue( watch.getCalendarTime() ); break;
+      case dem::records::RepositoryState::UseAdapterTimeStepAndPlotOnFlopDynamicGrid: watch.startTimer(); _gridWithTimeStepAndPlotOnFlopDynamicGrid.iterate(); watch.stopTimer(); _measureTimeStepAndPlotOnFlopDynamicGridCPUTime.setValue( watch.getCPUTime() ); _measureTimeStepAndPlotOnFlopDynamicGridCalendarTime.setValue( watch.getCalendarTime() ); break;
 
       case dem::records::RepositoryState::Terminate:
         assertionMsg( false, "this branch/state should never be reached" ); 
@@ -291,11 +306,14 @@ void dem::repositories::RepositorySTDStack::iterate(int numberOfIterations, bool
  void dem::repositories::RepositorySTDStack::switchToMoveParticles() { _repositoryState.setAction(dem::records::RepositoryState::UseAdapterMoveParticles); }
  void dem::repositories::RepositorySTDStack::switchToAdopt() { _repositoryState.setAction(dem::records::RepositoryState::UseAdapterAdopt); }
  void dem::repositories::RepositorySTDStack::switchToAdoptReluctantly() { _repositoryState.setAction(dem::records::RepositoryState::UseAdapterAdoptReluctantly); }
+ void dem::repositories::RepositorySTDStack::switchToAdoptFlop() { _repositoryState.setAction(dem::records::RepositoryState::UseAdapterAdoptFlop); }
  void dem::repositories::RepositorySTDStack::switchToPlotData() { _repositoryState.setAction(dem::records::RepositoryState::UseAdapterPlotData); }
  void dem::repositories::RepositorySTDStack::switchToTimeStepOnDynamicGrid() { _repositoryState.setAction(dem::records::RepositoryState::UseAdapterTimeStepOnDynamicGrid); }
  void dem::repositories::RepositorySTDStack::switchToTimeStepAndPlotOnDynamicGrid() { _repositoryState.setAction(dem::records::RepositoryState::UseAdapterTimeStepAndPlotOnDynamicGrid); }
  void dem::repositories::RepositorySTDStack::switchToTimeStepOnReluctantDynamicGrid() { _repositoryState.setAction(dem::records::RepositoryState::UseAdapterTimeStepOnReluctantDynamicGrid); }
  void dem::repositories::RepositorySTDStack::switchToTimeStepAndPlotOnReluctantDynamicGrid() { _repositoryState.setAction(dem::records::RepositoryState::UseAdapterTimeStepAndPlotOnReluctantDynamicGrid); }
+ void dem::repositories::RepositorySTDStack::switchToTimeStepOnFlopDynamicGrid() { _repositoryState.setAction(dem::records::RepositoryState::UseAdapterTimeStepOnFlopDynamicGrid); }
+ void dem::repositories::RepositorySTDStack::switchToTimeStepAndPlotOnFlopDynamicGrid() { _repositoryState.setAction(dem::records::RepositoryState::UseAdapterTimeStepAndPlotOnFlopDynamicGrid); }
 
 
 
@@ -307,11 +325,14 @@ void dem::repositories::RepositorySTDStack::iterate(int numberOfIterations, bool
  bool dem::repositories::RepositorySTDStack::isActiveAdapterMoveParticles() const { return _repositoryState.getAction() == dem::records::RepositoryState::UseAdapterMoveParticles; }
  bool dem::repositories::RepositorySTDStack::isActiveAdapterAdopt() const { return _repositoryState.getAction() == dem::records::RepositoryState::UseAdapterAdopt; }
  bool dem::repositories::RepositorySTDStack::isActiveAdapterAdoptReluctantly() const { return _repositoryState.getAction() == dem::records::RepositoryState::UseAdapterAdoptReluctantly; }
+ bool dem::repositories::RepositorySTDStack::isActiveAdapterAdoptFlop() const { return _repositoryState.getAction() == dem::records::RepositoryState::UseAdapterAdoptFlop; }
  bool dem::repositories::RepositorySTDStack::isActiveAdapterPlotData() const { return _repositoryState.getAction() == dem::records::RepositoryState::UseAdapterPlotData; }
  bool dem::repositories::RepositorySTDStack::isActiveAdapterTimeStepOnDynamicGrid() const { return _repositoryState.getAction() == dem::records::RepositoryState::UseAdapterTimeStepOnDynamicGrid; }
  bool dem::repositories::RepositorySTDStack::isActiveAdapterTimeStepAndPlotOnDynamicGrid() const { return _repositoryState.getAction() == dem::records::RepositoryState::UseAdapterTimeStepAndPlotOnDynamicGrid; }
  bool dem::repositories::RepositorySTDStack::isActiveAdapterTimeStepOnReluctantDynamicGrid() const { return _repositoryState.getAction() == dem::records::RepositoryState::UseAdapterTimeStepOnReluctantDynamicGrid; }
  bool dem::repositories::RepositorySTDStack::isActiveAdapterTimeStepAndPlotOnReluctantDynamicGrid() const { return _repositoryState.getAction() == dem::records::RepositoryState::UseAdapterTimeStepAndPlotOnReluctantDynamicGrid; }
+ bool dem::repositories::RepositorySTDStack::isActiveAdapterTimeStepOnFlopDynamicGrid() const { return _repositoryState.getAction() == dem::records::RepositoryState::UseAdapterTimeStepOnFlopDynamicGrid; }
+ bool dem::repositories::RepositorySTDStack::isActiveAdapterTimeStepAndPlotOnFlopDynamicGrid() const { return _repositoryState.getAction() == dem::records::RepositoryState::UseAdapterTimeStepAndPlotOnFlopDynamicGrid; }
 
 
 
@@ -396,11 +417,14 @@ void dem::repositories::RepositorySTDStack::logIterationStatistics(bool logAllAd
    if (logAllAdapters || _measureMoveParticlesCPUTime.getNumberOfMeasurements()>0) logInfo( "logIterationStatistics()", "| MoveParticles \t |  " << _measureMoveParticlesCPUTime.getNumberOfMeasurements() << " \t |  " << _measureMoveParticlesCPUTime.getAccumulatedValue() << " \t |  " << _measureMoveParticlesCPUTime.getValue()  << " \t |  " << _measureMoveParticlesCalendarTime.getAccumulatedValue() << " \t |  " << _measureMoveParticlesCalendarTime.getValue() << " \t |  " << _measureMoveParticlesCPUTime.toString() << " \t |  " << _measureMoveParticlesCalendarTime.toString() );
    if (logAllAdapters || _measureAdoptCPUTime.getNumberOfMeasurements()>0) logInfo( "logIterationStatistics()", "| Adopt \t |  " << _measureAdoptCPUTime.getNumberOfMeasurements() << " \t |  " << _measureAdoptCPUTime.getAccumulatedValue() << " \t |  " << _measureAdoptCPUTime.getValue()  << " \t |  " << _measureAdoptCalendarTime.getAccumulatedValue() << " \t |  " << _measureAdoptCalendarTime.getValue() << " \t |  " << _measureAdoptCPUTime.toString() << " \t |  " << _measureAdoptCalendarTime.toString() );
    if (logAllAdapters || _measureAdoptReluctantlyCPUTime.getNumberOfMeasurements()>0) logInfo( "logIterationStatistics()", "| AdoptReluctantly \t |  " << _measureAdoptReluctantlyCPUTime.getNumberOfMeasurements() << " \t |  " << _measureAdoptReluctantlyCPUTime.getAccumulatedValue() << " \t |  " << _measureAdoptReluctantlyCPUTime.getValue()  << " \t |  " << _measureAdoptReluctantlyCalendarTime.getAccumulatedValue() << " \t |  " << _measureAdoptReluctantlyCalendarTime.getValue() << " \t |  " << _measureAdoptReluctantlyCPUTime.toString() << " \t |  " << _measureAdoptReluctantlyCalendarTime.toString() );
+   if (logAllAdapters || _measureAdoptFlopCPUTime.getNumberOfMeasurements()>0) logInfo( "logIterationStatistics()", "| AdoptFlop \t |  " << _measureAdoptFlopCPUTime.getNumberOfMeasurements() << " \t |  " << _measureAdoptFlopCPUTime.getAccumulatedValue() << " \t |  " << _measureAdoptFlopCPUTime.getValue()  << " \t |  " << _measureAdoptFlopCalendarTime.getAccumulatedValue() << " \t |  " << _measureAdoptFlopCalendarTime.getValue() << " \t |  " << _measureAdoptFlopCPUTime.toString() << " \t |  " << _measureAdoptFlopCalendarTime.toString() );
    if (logAllAdapters || _measurePlotDataCPUTime.getNumberOfMeasurements()>0) logInfo( "logIterationStatistics()", "| PlotData \t |  " << _measurePlotDataCPUTime.getNumberOfMeasurements() << " \t |  " << _measurePlotDataCPUTime.getAccumulatedValue() << " \t |  " << _measurePlotDataCPUTime.getValue()  << " \t |  " << _measurePlotDataCalendarTime.getAccumulatedValue() << " \t |  " << _measurePlotDataCalendarTime.getValue() << " \t |  " << _measurePlotDataCPUTime.toString() << " \t |  " << _measurePlotDataCalendarTime.toString() );
    if (logAllAdapters || _measureTimeStepOnDynamicGridCPUTime.getNumberOfMeasurements()>0) logInfo( "logIterationStatistics()", "| TimeStepOnDynamicGrid \t |  " << _measureTimeStepOnDynamicGridCPUTime.getNumberOfMeasurements() << " \t |  " << _measureTimeStepOnDynamicGridCPUTime.getAccumulatedValue() << " \t |  " << _measureTimeStepOnDynamicGridCPUTime.getValue()  << " \t |  " << _measureTimeStepOnDynamicGridCalendarTime.getAccumulatedValue() << " \t |  " << _measureTimeStepOnDynamicGridCalendarTime.getValue() << " \t |  " << _measureTimeStepOnDynamicGridCPUTime.toString() << " \t |  " << _measureTimeStepOnDynamicGridCalendarTime.toString() );
    if (logAllAdapters || _measureTimeStepAndPlotOnDynamicGridCPUTime.getNumberOfMeasurements()>0) logInfo( "logIterationStatistics()", "| TimeStepAndPlotOnDynamicGrid \t |  " << _measureTimeStepAndPlotOnDynamicGridCPUTime.getNumberOfMeasurements() << " \t |  " << _measureTimeStepAndPlotOnDynamicGridCPUTime.getAccumulatedValue() << " \t |  " << _measureTimeStepAndPlotOnDynamicGridCPUTime.getValue()  << " \t |  " << _measureTimeStepAndPlotOnDynamicGridCalendarTime.getAccumulatedValue() << " \t |  " << _measureTimeStepAndPlotOnDynamicGridCalendarTime.getValue() << " \t |  " << _measureTimeStepAndPlotOnDynamicGridCPUTime.toString() << " \t |  " << _measureTimeStepAndPlotOnDynamicGridCalendarTime.toString() );
    if (logAllAdapters || _measureTimeStepOnReluctantDynamicGridCPUTime.getNumberOfMeasurements()>0) logInfo( "logIterationStatistics()", "| TimeStepOnReluctantDynamicGrid \t |  " << _measureTimeStepOnReluctantDynamicGridCPUTime.getNumberOfMeasurements() << " \t |  " << _measureTimeStepOnReluctantDynamicGridCPUTime.getAccumulatedValue() << " \t |  " << _measureTimeStepOnReluctantDynamicGridCPUTime.getValue()  << " \t |  " << _measureTimeStepOnReluctantDynamicGridCalendarTime.getAccumulatedValue() << " \t |  " << _measureTimeStepOnReluctantDynamicGridCalendarTime.getValue() << " \t |  " << _measureTimeStepOnReluctantDynamicGridCPUTime.toString() << " \t |  " << _measureTimeStepOnReluctantDynamicGridCalendarTime.toString() );
    if (logAllAdapters || _measureTimeStepAndPlotOnReluctantDynamicGridCPUTime.getNumberOfMeasurements()>0) logInfo( "logIterationStatistics()", "| TimeStepAndPlotOnReluctantDynamicGrid \t |  " << _measureTimeStepAndPlotOnReluctantDynamicGridCPUTime.getNumberOfMeasurements() << " \t |  " << _measureTimeStepAndPlotOnReluctantDynamicGridCPUTime.getAccumulatedValue() << " \t |  " << _measureTimeStepAndPlotOnReluctantDynamicGridCPUTime.getValue()  << " \t |  " << _measureTimeStepAndPlotOnReluctantDynamicGridCalendarTime.getAccumulatedValue() << " \t |  " << _measureTimeStepAndPlotOnReluctantDynamicGridCalendarTime.getValue() << " \t |  " << _measureTimeStepAndPlotOnReluctantDynamicGridCPUTime.toString() << " \t |  " << _measureTimeStepAndPlotOnReluctantDynamicGridCalendarTime.toString() );
+   if (logAllAdapters || _measureTimeStepOnFlopDynamicGridCPUTime.getNumberOfMeasurements()>0) logInfo( "logIterationStatistics()", "| TimeStepOnFlopDynamicGrid \t |  " << _measureTimeStepOnFlopDynamicGridCPUTime.getNumberOfMeasurements() << " \t |  " << _measureTimeStepOnFlopDynamicGridCPUTime.getAccumulatedValue() << " \t |  " << _measureTimeStepOnFlopDynamicGridCPUTime.getValue()  << " \t |  " << _measureTimeStepOnFlopDynamicGridCalendarTime.getAccumulatedValue() << " \t |  " << _measureTimeStepOnFlopDynamicGridCalendarTime.getValue() << " \t |  " << _measureTimeStepOnFlopDynamicGridCPUTime.toString() << " \t |  " << _measureTimeStepOnFlopDynamicGridCalendarTime.toString() );
+   if (logAllAdapters || _measureTimeStepAndPlotOnFlopDynamicGridCPUTime.getNumberOfMeasurements()>0) logInfo( "logIterationStatistics()", "| TimeStepAndPlotOnFlopDynamicGrid \t |  " << _measureTimeStepAndPlotOnFlopDynamicGridCPUTime.getNumberOfMeasurements() << " \t |  " << _measureTimeStepAndPlotOnFlopDynamicGridCPUTime.getAccumulatedValue() << " \t |  " << _measureTimeStepAndPlotOnFlopDynamicGridCPUTime.getValue()  << " \t |  " << _measureTimeStepAndPlotOnFlopDynamicGridCalendarTime.getAccumulatedValue() << " \t |  " << _measureTimeStepAndPlotOnFlopDynamicGridCalendarTime.getValue() << " \t |  " << _measureTimeStepAndPlotOnFlopDynamicGridCPUTime.toString() << " \t |  " << _measureTimeStepAndPlotOnFlopDynamicGridCalendarTime.toString() );
 
 }
 
@@ -414,11 +438,14 @@ void dem::repositories::RepositorySTDStack::clearIterationStatistics() {
    _measureMoveParticlesCPUTime.erase();
    _measureAdoptCPUTime.erase();
    _measureAdoptReluctantlyCPUTime.erase();
+   _measureAdoptFlopCPUTime.erase();
    _measurePlotDataCPUTime.erase();
    _measureTimeStepOnDynamicGridCPUTime.erase();
    _measureTimeStepAndPlotOnDynamicGridCPUTime.erase();
    _measureTimeStepOnReluctantDynamicGridCPUTime.erase();
    _measureTimeStepAndPlotOnReluctantDynamicGridCPUTime.erase();
+   _measureTimeStepOnFlopDynamicGridCPUTime.erase();
+   _measureTimeStepAndPlotOnFlopDynamicGridCPUTime.erase();
 
    _measureCreateGridCalendarTime.erase();
    _measureCreateGridAndPlotCalendarTime.erase();
@@ -428,10 +455,13 @@ void dem::repositories::RepositorySTDStack::clearIterationStatistics() {
    _measureMoveParticlesCalendarTime.erase();
    _measureAdoptCalendarTime.erase();
    _measureAdoptReluctantlyCalendarTime.erase();
+   _measureAdoptFlopCalendarTime.erase();
    _measurePlotDataCalendarTime.erase();
    _measureTimeStepOnDynamicGridCalendarTime.erase();
    _measureTimeStepAndPlotOnDynamicGridCalendarTime.erase();
    _measureTimeStepOnReluctantDynamicGridCalendarTime.erase();
    _measureTimeStepAndPlotOnReluctantDynamicGridCalendarTime.erase();
+   _measureTimeStepOnFlopDynamicGridCalendarTime.erase();
+   _measureTimeStepAndPlotOnFlopDynamicGridCalendarTime.erase();
 
 }

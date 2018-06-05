@@ -287,6 +287,14 @@ int main(int argc, char** argv)
       return -1;
     }
   }
+  else if (gridTypeIdentifier=="flop-grid") {
+    gridType = dem::mappings::CreateGrid::FlopAdaptiveGrid;
+    if(argc != NumberOfArguments)
+    {
+    	printManual();
+      return -1;
+    }
+  }
   else if (gridTypeIdentifier == "range")
   {
 	  if(argc != NumberOfArguments+2)

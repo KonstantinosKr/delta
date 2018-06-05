@@ -257,12 +257,6 @@ void dem::mappings::CreateGrid::beginIteration(
 
 	delta::world::scenarios::hopper(_coarseObjects, _insitufineObjects,
 		centre, xzcuts, ycuts, uni, _isSphere, _noPointsPerParticle, _epsilon);
-
-	//for(int i=0; i<_insitufineObjects.size(); i++)
-	//{
-	  //printf("rad: %f\n", _insitufineObjects[i].getDiameter());
-	//}
-	//printf("%i\n", _insitufineObjects.size());
   } else if(_scenario[0] == turbine)
   {
 	delta::world::scenarios::turbine(_coarseObjects, _isSphere, _noPointsPerParticle, _epsilon);
@@ -446,7 +440,7 @@ void dem::mappings::CreateGrid::createInnerVertex(
     {
       fineGridVertex.refine();
     }
-    else if((_gridType == AdaptiveGrid || _gridType == ReluctantAdaptiveGrid))
+    else if((_gridType == AdaptiveGrid || _gridType == ReluctantAdaptiveGrid || _gridType == FlopAdaptiveGrid))
     {
       if(fineGridX(0) >= _minComputeDomain[0] && fineGridX(0) <= _maxComputeDomain[0] &&
          fineGridX(1) >= _minComputeDomain[1] && fineGridX(1) <= _maxComputeDomain[1] &&
@@ -486,7 +480,7 @@ void dem::mappings::CreateGrid::createBoundaryVertex(
 	{
 	  fineGridVertex.refine();
 	}
-	else if((_gridType == AdaptiveGrid || _gridType == ReluctantAdaptiveGrid))
+	else if((_gridType == AdaptiveGrid || _gridType == ReluctantAdaptiveGrid || _gridType == FlopAdaptiveGrid))
 	{
 	  if(fineGridX(0) >= _minComputeDomain[0] && fineGridX(0) <= _maxComputeDomain[0] &&
 		 fineGridX(1) >= _minComputeDomain[1] && fineGridX(1) <= _maxComputeDomain[1] &&

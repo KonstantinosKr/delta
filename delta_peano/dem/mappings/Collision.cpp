@@ -885,24 +885,24 @@ void dem::mappings::Collision::mergeWithWorkerThread(const Collision& workerThre
 void dem::mappings::Collision::beginIteration(
 		dem::State&  solverState
 ) {
-	logTraceInWith1Argument( "beginIteration(State)", solverState );
+  logTraceInWith1Argument( "beginIteration(State)", solverState );
 
-	_state = solverState;
-	_backgroundTaskState = solverState;
-	_state.clearAccumulatedData();//redundant
-	_backgroundTaskState.clearAccumulatedData();
+  _state = solverState;
+  _backgroundTaskState = solverState;
+  _state.clearAccumulatedData();//redundant
+  _backgroundTaskState.clearAccumulatedData();
 
-	assertion( _collisionsOfNextTraversal.empty() );
+  assertion( _collisionsOfNextTraversal.empty() );
 
-	if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::PenaltyStat)
-	delta::contact::detection::cleanPenaltyStatistics();
+  if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::PenaltyStat)
+  delta::contact::detection::cleanPenaltyStatistics();
 
-	if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::HybridStat)
-	delta::contact::detection::cleanHybridStatistics();
+  if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::HybridStat)
+  delta::contact::detection::cleanHybridStatistics();
 
-	tarch::multicore::jobs::startToProcessBackgroundJobs();
+  tarch::multicore::jobs::startToProcessBackgroundJobs();
 
-	logTraceOutWith1Argument( "beginIteration(State)", solverState);
+  logTraceOutWith1Argument( "beginIteration(State)", solverState);
 }
 
 void dem::mappings::Collision::endIteration(

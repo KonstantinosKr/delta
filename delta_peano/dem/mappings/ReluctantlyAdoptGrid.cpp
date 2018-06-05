@@ -480,7 +480,6 @@ void dem::mappings::ReluctantlyAdoptGrid::destroyVertex(
   liftAllParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator);
   lock.free();
 
-  //assertion( fineGridVertex.getNumberOfParticles()==0 );
   fineGridVertex.destroy();
 
   logTraceOutWith1Argument( "destroyVertex(...)", fineGridVertex );

@@ -24,11 +24,14 @@
  #include "dem/adapters/MoveParticles.h" 
  #include "dem/adapters/Adopt.h" 
  #include "dem/adapters/AdoptReluctantly.h" 
+ #include "dem/adapters/AdoptFlop.h" 
  #include "dem/adapters/PlotData.h" 
  #include "dem/adapters/TimeStepOnDynamicGrid.h" 
  #include "dem/adapters/TimeStepAndPlotOnDynamicGrid.h" 
  #include "dem/adapters/TimeStepOnReluctantDynamicGrid.h" 
  #include "dem/adapters/TimeStepAndPlotOnReluctantDynamicGrid.h" 
+ #include "dem/adapters/TimeStepOnFlopDynamicGrid.h" 
+ #include "dem/adapters/TimeStepAndPlotOnFlopDynamicGrid.h" 
 
 
 
@@ -62,11 +65,14 @@ class dem::repositories::RepositorySTDStack: public dem::repositories::Repositor
     peano::grid::Grid<dem::Vertex,dem::Cell,dem::State,VertexStack,CellStack,dem::adapters::MoveParticles> _gridWithMoveParticles;
     peano::grid::Grid<dem::Vertex,dem::Cell,dem::State,VertexStack,CellStack,dem::adapters::Adopt> _gridWithAdopt;
     peano::grid::Grid<dem::Vertex,dem::Cell,dem::State,VertexStack,CellStack,dem::adapters::AdoptReluctantly> _gridWithAdoptReluctantly;
+    peano::grid::Grid<dem::Vertex,dem::Cell,dem::State,VertexStack,CellStack,dem::adapters::AdoptFlop> _gridWithAdoptFlop;
     peano::grid::Grid<dem::Vertex,dem::Cell,dem::State,VertexStack,CellStack,dem::adapters::PlotData> _gridWithPlotData;
     peano::grid::Grid<dem::Vertex,dem::Cell,dem::State,VertexStack,CellStack,dem::adapters::TimeStepOnDynamicGrid> _gridWithTimeStepOnDynamicGrid;
     peano::grid::Grid<dem::Vertex,dem::Cell,dem::State,VertexStack,CellStack,dem::adapters::TimeStepAndPlotOnDynamicGrid> _gridWithTimeStepAndPlotOnDynamicGrid;
     peano::grid::Grid<dem::Vertex,dem::Cell,dem::State,VertexStack,CellStack,dem::adapters::TimeStepOnReluctantDynamicGrid> _gridWithTimeStepOnReluctantDynamicGrid;
     peano::grid::Grid<dem::Vertex,dem::Cell,dem::State,VertexStack,CellStack,dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid> _gridWithTimeStepAndPlotOnReluctantDynamicGrid;
+    peano::grid::Grid<dem::Vertex,dem::Cell,dem::State,VertexStack,CellStack,dem::adapters::TimeStepOnFlopDynamicGrid> _gridWithTimeStepOnFlopDynamicGrid;
+    peano::grid::Grid<dem::Vertex,dem::Cell,dem::State,VertexStack,CellStack,dem::adapters::TimeStepAndPlotOnFlopDynamicGrid> _gridWithTimeStepAndPlotOnFlopDynamicGrid;
 
      
    dem::records::RepositoryState               _repositoryState;
@@ -79,11 +85,14 @@ class dem::repositories::RepositorySTDStack: public dem::repositories::Repositor
     tarch::timing::Measurement _measureMoveParticlesCPUTime;
     tarch::timing::Measurement _measureAdoptCPUTime;
     tarch::timing::Measurement _measureAdoptReluctantlyCPUTime;
+    tarch::timing::Measurement _measureAdoptFlopCPUTime;
     tarch::timing::Measurement _measurePlotDataCPUTime;
     tarch::timing::Measurement _measureTimeStepOnDynamicGridCPUTime;
     tarch::timing::Measurement _measureTimeStepAndPlotOnDynamicGridCPUTime;
     tarch::timing::Measurement _measureTimeStepOnReluctantDynamicGridCPUTime;
     tarch::timing::Measurement _measureTimeStepAndPlotOnReluctantDynamicGridCPUTime;
+    tarch::timing::Measurement _measureTimeStepOnFlopDynamicGridCPUTime;
+    tarch::timing::Measurement _measureTimeStepAndPlotOnFlopDynamicGridCPUTime;
 
     tarch::timing::Measurement _measureCreateGridCalendarTime;
     tarch::timing::Measurement _measureCreateGridAndPlotCalendarTime;
@@ -93,11 +102,14 @@ class dem::repositories::RepositorySTDStack: public dem::repositories::Repositor
     tarch::timing::Measurement _measureMoveParticlesCalendarTime;
     tarch::timing::Measurement _measureAdoptCalendarTime;
     tarch::timing::Measurement _measureAdoptReluctantlyCalendarTime;
+    tarch::timing::Measurement _measureAdoptFlopCalendarTime;
     tarch::timing::Measurement _measurePlotDataCalendarTime;
     tarch::timing::Measurement _measureTimeStepOnDynamicGridCalendarTime;
     tarch::timing::Measurement _measureTimeStepAndPlotOnDynamicGridCalendarTime;
     tarch::timing::Measurement _measureTimeStepOnReluctantDynamicGridCalendarTime;
     tarch::timing::Measurement _measureTimeStepAndPlotOnReluctantDynamicGridCalendarTime;
+    tarch::timing::Measurement _measureTimeStepOnFlopDynamicGridCalendarTime;
+    tarch::timing::Measurement _measureTimeStepAndPlotOnFlopDynamicGridCalendarTime;
 
    
   public:
@@ -145,11 +157,14 @@ class dem::repositories::RepositorySTDStack: public dem::repositories::Repositor
     virtual void switchToMoveParticles();    
     virtual void switchToAdopt();    
     virtual void switchToAdoptReluctantly();    
+    virtual void switchToAdoptFlop();    
     virtual void switchToPlotData();    
     virtual void switchToTimeStepOnDynamicGrid();    
     virtual void switchToTimeStepAndPlotOnDynamicGrid();    
     virtual void switchToTimeStepOnReluctantDynamicGrid();    
     virtual void switchToTimeStepAndPlotOnReluctantDynamicGrid();    
+    virtual void switchToTimeStepOnFlopDynamicGrid();    
+    virtual void switchToTimeStepAndPlotOnFlopDynamicGrid();    
 
     virtual bool isActiveAdapterCreateGrid() const;
     virtual bool isActiveAdapterCreateGridAndPlot() const;
@@ -159,11 +174,14 @@ class dem::repositories::RepositorySTDStack: public dem::repositories::Repositor
     virtual bool isActiveAdapterMoveParticles() const;
     virtual bool isActiveAdapterAdopt() const;
     virtual bool isActiveAdapterAdoptReluctantly() const;
+    virtual bool isActiveAdapterAdoptFlop() const;
     virtual bool isActiveAdapterPlotData() const;
     virtual bool isActiveAdapterTimeStepOnDynamicGrid() const;
     virtual bool isActiveAdapterTimeStepAndPlotOnDynamicGrid() const;
     virtual bool isActiveAdapterTimeStepOnReluctantDynamicGrid() const;
     virtual bool isActiveAdapterTimeStepAndPlotOnReluctantDynamicGrid() const;
+    virtual bool isActiveAdapterTimeStepOnFlopDynamicGrid() const;
+    virtual bool isActiveAdapterTimeStepAndPlotOnFlopDynamicGrid() const;
 
    
     #ifdef Parallel

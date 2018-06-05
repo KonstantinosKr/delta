@@ -33,8 +33,8 @@
 
 namespace peano {
   namespace grid {
-    template class Grid<dem::Vertex,dem::Cell,dem::State, peano::stacks::VertexArrayStack<dem::Vertex> ,peano::stacks::CellArrayStack<dem::Cell> ,dem::adapters::TimeStepAndPlotOnDynamicGrid>;
-    template class Grid<dem::Vertex,dem::Cell,dem::State, peano::stacks::VertexSTDStack<  dem::Vertex> ,peano::stacks::CellSTDStack<  dem::Cell> ,dem::adapters::TimeStepAndPlotOnDynamicGrid>;
+    template class Grid<dem::Vertex,dem::Cell,dem::State, peano::stacks::VertexArrayStack<dem::Vertex> ,peano::stacks::CellArrayStack<dem::Cell> ,dem::adapters::AdoptFlop>;
+    template class Grid<dem::Vertex,dem::Cell,dem::State, peano::stacks::VertexSTDStack<  dem::Vertex> ,peano::stacks::CellSTDStack<  dem::Cell> ,dem::adapters::AdoptFlop>;
   }
 }
 

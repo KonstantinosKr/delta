@@ -21,11 +21,14 @@
  #include "dem/adapters/MoveParticles.h" 
  #include "dem/adapters/Adopt.h" 
  #include "dem/adapters/AdoptReluctantly.h" 
+ #include "dem/adapters/AdoptFlop.h" 
  #include "dem/adapters/PlotData.h" 
  #include "dem/adapters/TimeStepOnDynamicGrid.h" 
  #include "dem/adapters/TimeStepAndPlotOnDynamicGrid.h" 
  #include "dem/adapters/TimeStepOnReluctantDynamicGrid.h" 
  #include "dem/adapters/TimeStepAndPlotOnReluctantDynamicGrid.h" 
+ #include "dem/adapters/TimeStepOnFlopDynamicGrid.h" 
+ #include "dem/adapters/TimeStepAndPlotOnFlopDynamicGrid.h" 
 
 
 namespace peano {

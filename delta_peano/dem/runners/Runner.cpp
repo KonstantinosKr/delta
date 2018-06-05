@@ -21,6 +21,7 @@
 #include "dem/mappings/CreateGrid.h"
 #include "dem/mappings/Plot.h"
 #include "dem/mappings/ReluctantlyAdoptGrid.h"
+#include "dem/mappings/FlopAdoptGrid.h"
 
 #include <stdlib.h>
 #include <string>
@@ -35,10 +36,14 @@ void dem::runners::Runner::precondition(dem::repositories::Repository& repositor
   } else if(gridType == dem::mappings::CreateGrid::GridType::ReluctantAdaptiveGrid)
   {
 	logInfo( "runAsMaster(...)", "reluctantly adopt grid" );
+  } else if(gridType == dem::mappings::CreateGrid::GridType::FlopAdaptiveGrid)
+  {
+	logInfo( "runAsMaster(...)", "flop adopt grid" );
   }
 
   if(gridType == dem::mappings::CreateGrid::GridType::AdaptiveGrid ||
-	 gridType == dem::mappings::CreateGrid::GridType::ReluctantAdaptiveGrid)
+	 gridType == dem::mappings::CreateGrid::GridType::ReluctantAdaptiveGrid ||
+	 gridType == dem::mappings::CreateGrid::GridType::FlopAdaptiveGrid)
   {
 	repository.switchToAdopt();
 	for(int i=0; i<6; i++)
@@ -93,6 +98,10 @@ bool dem::runners::Runner::switchrepo(dem::repositories::Repository& repository,
     else if (gridType==mappings::CreateGrid::ReluctantAdaptiveGrid)
     {
       repository.switchToTimeStepAndPlotOnReluctantDynamicGrid();
+    }
+    else if (gridType==mappings::CreateGrid::FlopAdaptiveGrid)
+    {
+      repository.switchToTimeStepAndPlotOnFlopDynamicGrid();
     } else {
       repository.switchToTimeStepAndPlot();
     }
@@ -104,7 +113,12 @@ bool dem::runners::Runner::switchrepo(dem::repositories::Repository& repository,
     else if (gridType==mappings::CreateGrid::ReluctantAdaptiveGrid)
     {
       repository.switchToTimeStepOnReluctantDynamicGrid();
-    } else {
+    }
+    else if(gridType==mappings::CreateGrid::FlopAdaptiveGrid)
+    {
+      repository.switchToTimeStepOnFlopDynamicGrid();
+    }
+    else {
       repository.switchToTimeStep();
     }
   }
@@ -137,6 +151,9 @@ std::string dem::runners::Runner::initSharedMemory( bool useAutotuning, int tbbT
 		  break;
 		case dem::mappings::CreateGrid::AdaptiveGrid:
 		  sharedMemoryPropertiesFileName += "adaptive-grid";
+		  break;
+		case dem::mappings::CreateGrid::FlopAdaptiveGrid:
+		  sharedMemoryPropertiesFileName += "flop-grid";
 		  break;
 		case dem::mappings::CreateGrid::ReluctantAdaptiveGrid:
 		  sharedMemoryPropertiesFileName += "reluctant-grid";
@@ -252,6 +269,9 @@ int dem::runners::Runner::runAsMaster(
   dem::mappings::ReluctantlyAdoptGrid::_coarsenCoefficientReluctant = 1.8;
   dem::mappings::ReluctantlyAdoptGrid::_refinementCoefficientReluctant = 0.5;
 
+  //dem::mappings::FlopAdoptGrid::_coarsenCoefficient = 1.8;
+  //dem::mappings::FlopAdoptGrid::_refinementCoefficient = 0.5;
+
   logInfo( "runAsMaster(...)", "create grid" );
 
   repository.switchToCreateGrid();
@@ -278,7 +298,6 @@ int dem::runners::Runner::runAsMaster(
 
   tuneOrNotTotune(useAutotuning, sharedMemoryPropertiesFileName);
 
-
   int i=0;
 
   //////////////////PLOT STEP ZERO//////////////////////////////////////////////////////
@@ -293,6 +312,7 @@ int dem::runners::Runner::runAsMaster(
     repository.getState().setTimeStep(i);
 
     repository.switchToPlotData();
+
     repository.iterate();
 
     logInfo("runAsMaster(...)", "i=" << 0
@@ -316,13 +336,14 @@ int dem::runners::Runner::runAsMaster(
 
   for (i=i+0; i<iterations; i++)
   {
+    printf("entered\n");
     timestamp = repository.getState().getTime();
     repository.getState().setTimeStep(i);
-
+    printf("entered\n");
     bool plotThisTraversal = switchrepo(repository, i, gridType, plot, elapsed, realSnapshot);
-
+    printf("entered\n");
     repository.iterate();
-
+    printf("entered\n");
     elapsed = repository.getState().getTime() - timestamp;
 
     logInfo("runAsMaster(...)", "i=" << i

@@ -116,7 +116,8 @@ class dem::mappings::CreateGrid {
       NoGrid,
       RegularGrid,
       AdaptiveGrid,
-      ReluctantAdaptiveGrid
+      ReluctantAdaptiveGrid,
+	  FlopAdaptiveGrid
     };
 
     static void setScenario(
