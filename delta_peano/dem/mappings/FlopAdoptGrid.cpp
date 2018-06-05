@@ -99,23 +99,25 @@ void dem::mappings::FlopAdoptGrid::touchVertexFirstTime(
 ) {
   logTraceInWith6Arguments( "touchVertexFirstTime(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
-  for (int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
+  if(fineGridVertex.getNumberOfParticles() > 10000)
   {
-    fineGridVertex.setNumberOfParticlesInUnrefinedVertex(fineGridVertex.getNumberOfParticles() * dem::mappings::FlopAdoptGrid::_refinementCoefficient);
-    if(fineGridVertex.getRefinementControl()==Vertex::Records::Unrefined)
-    {
-      if(fineGridVertex.getParticle(i).getDiameter() < fineGridH(0)/3.0 && _state.getNumberOfParticleComparisons() > 10000)
-      {
-        fineGridVertex.refine();
-      }
-    }
-  }
+	for (int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
+	{
+	  fineGridVertex.setNumberOfParticlesInUnrefinedVertex(fineGridVertex.getNumberOfParticles() * dem::mappings::FlopAdoptGrid::_refinementCoefficient);
+	  if(fineGridVertex.getRefinementControl()==Vertex::Records::Unrefined)
+	  {
+		if(fineGridVertex.getParticle(i).getDiameter() < fineGridH(0)/3.0 )
+		{
+		  fineGridVertex.refine();
+		}
+	  }
+	}
 
-  if(fineGridVertex.getNumberOfParticlesInUnrefinedVertex() > 0.0 && _state.getNumberOfParticleComparisons() < 8000)
-  {
-    fineGridVertex.setNumberOfParticlesInUnrefinedVertex(fineGridVertex.getNumberOfParticlesInUnrefinedVertex() * dem::mappings::FlopAdoptGrid::_coarsenCoefficient);
+	if(fineGridVertex.getNumberOfParticlesInUnrefinedVertex() > 0.0)
+	{
+	  fineGridVertex.setNumberOfParticlesInUnrefinedVertex(fineGridVertex.getNumberOfParticlesInUnrefinedVertex() * dem::mappings::FlopAdoptGrid::_coarsenCoefficient);
+	}
   }
-
   logTraceOutWith1Argument( "touchVertexFirstTime(...)", fineGridVertex );
 }
 
