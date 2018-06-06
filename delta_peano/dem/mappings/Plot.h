@@ -53,6 +53,11 @@ class dem::mappings::Plot {
      */
     static tarch::logging::Log  _log;
 
+    void drawParticle(
+    	dem::Vertex&								fineGridVertex,
+    	const peano::grid::VertexEnumerator&     coarseGridVerticesEnumerator,
+    	int 										particleVertexLink[2]);
+
     static int  _snapshotCounter;
     //static bool _trackParticle;
     //static std::vector<int> _trackParticleID;

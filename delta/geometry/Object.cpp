@@ -17,6 +17,7 @@ delta::geometry::Object::Object(
     delta::geometry::material::MaterialType 	material,
     bool                          			isObstacle,
     bool                          			isFriction,
+	bool                          			isConvex,
 	iREAL 									epsilon,
 	std::array<iREAL, 3> 					linear,
 	std::array<iREAL, 3> 					angular)
@@ -51,6 +52,7 @@ std::array<iREAL, 3>         			centre,
 delta::geometry::material::MaterialType 	material,
 bool                          			isObstacle,
 bool                          			isFriction,
+bool                          			isConvex,
 iREAL 									epsilon,
 std::array<iREAL, 3> 					linear,
 std::array<iREAL, 3> 					angular)
@@ -58,6 +60,8 @@ std::array<iREAL, 3> 					angular)
   this->_component = component;
   this->_globalParticleID = particleID;
   this->_localParticleID = 0;
+
+  this->_isConvex = isConvex;
 
   this->_centre[0] = centre[0];
   this->_centre[1] = centre[1];
@@ -131,6 +135,7 @@ std::array<iREAL, 3>         			centre,
 delta::geometry::material::MaterialType 	material,
 bool                          			isObstacle,
 bool                          			isFriction,
+bool                          			isConvex,
 iREAL 									epsilon,
 std::array<iREAL, 3> 					linear,
 std::array<iREAL, 3> 					angular)
@@ -151,6 +156,7 @@ std::array<iREAL, 3> 					angular)
   this->_material 		= material;
   this->_isObstacle 		= isObstacle;
   this->_isFriction 		= isFriction;
+  this->_isFriction 		= isConvex;
 
   this->_epsilon 		= epsilon;
 

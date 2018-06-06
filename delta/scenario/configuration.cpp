@@ -31,13 +31,14 @@
    delta::geometry::material::MaterialType material = delta::geometry::material::MaterialType::WOOD;
    bool isObstacle = false;
    bool isFriction = false;
+   bool isConvex = true;
 
    iREAL xmin = 1; iREAL xmax = 0;
    for(unsigned i=0; i<grid.size(); i++)
    {
      std::array<iREAL, 3> p = {grid[i][0], grid[i][1], grid[i][2]};
 
-     delta::geometry::Object particles(isSphereOrNone ? "sphere": "granulate", index+i, p, material, isObstacle, isFriction, epsilon, {0, 0, 0}, {0,0,0});
+     delta::geometry::Object particles(isSphereOrNone ? "sphere": "granulate", index+i, p, material, isObstacle, isFriction, isConvex, epsilon, {0, 0, 0}, {0,0,0});
      insitu.push_back(particles);
 
      if(p[0] < xmin) xmin = p[0];
@@ -65,8 +66,9 @@
   {
     delta::world::configuration::uniSphereRadius(totalMass, insitu);
   } else {
-    //delta::world::configuration::uniMeshGeometry(totalMass, noPointsPerParticle, insitu);
-    delta::world::configuration::uniCubeGeometry(totalMass, noPointsPerParticle, insitu);
+    delta::world::configuration::uniMeshGeometry(totalMass, noPointsPerParticle, insitu);
+
+    //delta::world::configuration::uniCubeGeometry(totalMass, noPointsPerParticle, insitu);
   }
 
   //////////////////////////////////////////////////////
@@ -124,13 +126,14 @@ void delta::world::configuration::nonUniformlyDistributedTotalMass(
    delta::geometry::material::MaterialType material = delta::geometry::material::MaterialType::WOOD;
    bool isObstacle = false;
    bool isFriction = false;
+   bool isConvex = true;
 
    iREAL xmin = 1; iREAL xmax = 0;
    for(unsigned i=0; i<grid.size(); i++)
    {
      std::array<iREAL, 3> p = {grid[i][0], grid[i][1], grid[i][2]};
 
-     delta::geometry::Object particles(isSphereOrNone ? "sphere": "granulate", index+1, p, material, isObstacle, isFriction, epsilon, {0,0,0}, {0,0,0});
+     delta::geometry::Object particles(isSphereOrNone ? "sphere": "granulate", index+1, p, material, isObstacle, isFriction, isConvex, epsilon, {0,0,0}, {0,0,0});
      insitu.push_back(particles);
 
      if(p[0] < xmin) xmin = p[0];
@@ -527,7 +530,7 @@ void delta::world::configuration::nonUniformlyDistributedTotalMass(
     {
       auto material = delta::geometry::material::MaterialType::GRAPHITE;
 
-      delta::geometry::Object obj("FB", 0, tmp[i], material, false, false, epsilon, {0,0,0}, {0,0,0});
+      delta::geometry::Object obj("FB", 0, tmp[i], material, false, false, true, epsilon, {0,0,0}, {0,0,0});
 /*
 	  iREAL pos[3] = {tmp[i][0], tmp[i][1], tmp[i][2]};
 	  delta::geometry::mesh::Mesh *geometry = delta::geometry::hardcoded::generateBrickFB(pos, 0.1);
@@ -603,7 +606,7 @@ void delta::world::configuration::nonUniformlyDistributedTotalMass(
     auto material = delta::geometry::material::MaterialType::GRAPHITE;
 
     delta::geometry::mesh::Mesh *geometry = delta::geometry::hardcoded::generateBrickFB(position, scalePercentage);
-    delta::geometry::Object obj("FB", i, geometry, particleGrid[i], material, false, false, epsilon, {0,0,0}, {0,0,0});
+    delta::geometry::Object obj("FB", i, geometry, particleGrid[i], material, false, false, true, epsilon, {0,0,0}, {0,0,0});
     obj.setRad(scalePercentage);
     objects.push_back(obj);
   }

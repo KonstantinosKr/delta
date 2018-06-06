@@ -49,6 +49,7 @@ class delta::geometry::Object
 	    delta::geometry::material::MaterialType 	material,
 	    bool                          			isObstacle,
 	    bool                          			isFriction,
+		bool                          			isConvex,
 		iREAL 									epsilon,
 		std::array<iREAL, 3> linear,
 		std::array<iREAL, 3> angular
@@ -62,6 +63,7 @@ class delta::geometry::Object
 	delta::geometry::material::MaterialType 	material,
 	bool                          			isObstacle,
 	bool                          			isFriction,
+	bool                          			isConvex,
 	iREAL 									epsilon,
 	std::array<iREAL, 3> 					linear,
 	std::array<iREAL, 3> 					angular);
@@ -74,6 +76,7 @@ class delta::geometry::Object
 	delta::geometry::material::MaterialType 	material,
 	bool                          			isObstacle,
 	bool                          			isFriction,
+	bool                          			isConvex,
 	iREAL 									epsilon,
 	std::array<iREAL, 3> 					linear,
 	std::array<iREAL, 3> 					angular);
@@ -560,6 +563,7 @@ class delta::geometry::Object
 
     bool                  	_isObstacle;//
     bool                  	_isFriction;//
+    bool                  	_isConvex;//
 
     std::array<iREAL, 3> 	_centre; //
     std::array<iREAL, 3> 	_centreOfMass;

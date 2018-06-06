@@ -38,6 +38,306 @@ int                  dem::mappings::Plot::_snapshotCounter( 0 );
 int                  dem::mappings::Plot::_mini;
 int                  dem::mappings::Plot::_maxi;
 
+void dem::mappings::Plot::drawParticle(
+	dem::Vertex&								fineGridVertex,
+	const peano::grid::VertexEnumerator&     coarseGridVerticesEnumerator,
+	int 										particleVertexLink[2])
+{
+  for(int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
+  {
+    _particleCounter++;
+    records::Particle&  particle = fineGridVertex.getParticle(i);
+
+    particleVertexLink[1] = _vertexWriter->plotVertex( particle.getCentre() );
+
+    if(!particle.getIsObstacle())
+    {	//do not plot any epsilon on obstacles
+		//it will only accept diameter not radius to plot the sphere thus multiply epsilon by 2
+      tarch::la::Vector<3,iREAL> v = {particle._persistentRecords._velocity(0), particle._persistentRecords._velocity(1), particle._persistentRecords._velocity(2)};
+      _velocitiesAndNormals->plotVertex(particleVertexLink[1],v);
+
+      _particleVelocity->plotVertex(particleVertexLink[1],std::sqrt(
+          particle._persistentRecords._velocity(0)*particle._persistentRecords._velocity(0)+
+          particle._persistentRecords._velocity(1)*particle._persistentRecords._velocity(1)+
+          particle._persistentRecords._velocity(2)*particle._persistentRecords._velocity(2)));
+
+      v = {particle._persistentRecords._angular(0), particle._persistentRecords._angular(1), particle._persistentRecords._angular(2)};
+      _particleAngular->plotVertex(particleVertexLink[1],v);
+
+      _particleDiameter->plotVertex(particleVertexLink[1], particle.getDiameter());
+      _particleEpsilon->plotVertex(particleVertexLink[1], particle.getDiameter()+(particle.getEpsilon()*2));
+      _particleInfluence->plotVertex(particleVertexLink[1], particle.getHaloDiameter());
+    } else {
+      _velocitiesAndNormals->plotVertex(particleVertexLink[1],0);
+      _particleVelocity->plotVertex(particleVertexLink[1],0);
+      _particleAngular->plotVertex(particleVertexLink[1],0);
+      _particleDiameter->plotVertex(particleVertexLink[1], 0);
+      _particleEpsilon->plotVertex(particleVertexLink[1], 0);
+      _particleInfluence->plotVertex(particleVertexLink[1], 0);
+    }
+
+    _frictionNormals->plotVertex(particleVertexLink[1],0);
+    _vertexColoring->plotVertex(particleVertexLink[1], particle.getGlobalParticleId());
+
+    int lineFromParticleToHostVertex = _cellWriter->plotLine(particleVertexLink);
+    _type->plotCell(lineFromParticleToHostVertex,1); //link
+    _level->plotCell(lineFromParticleToHostVertex,coarseGridVerticesEnumerator.getLevel()+1);
+    _faceVertexAssociation->plotCell(lineFromParticleToHostVertex,_vertexCounter);
+
+    int particleCentre = _cellWriter->plotPoint(particleVertexLink[1]);
+    _type->plotCell(particleCentre,0); //particle center
+    _level->plotCell(particleCentre,coarseGridVerticesEnumerator.getLevel()+1);
+    _faceVertexAssociation->plotCell(particleCentre,_vertexCounter);
+
+    iREAL* x = fineGridVertex.getXCoordinates(i);
+    iREAL* y = fineGridVertex.getYCoordinates(i);
+    iREAL* z = fineGridVertex.getZCoordinates(i);
+
+    std::vector<iREAL> xCoordinatesWider, yCoordinatesWider, zCoordinatesWider;
+
+    for(int k=0; k<particle.getNumberOfTriangles()*3; k++)
+    {
+      xCoordinatesWider.push_back(x[k]);
+      yCoordinatesWider.push_back(y[k]);
+      zCoordinatesWider.push_back(z[k]);
+    }
+
+//    if(particle.isConvex())
+    //////////////////DRAW EPSILON
+    iREAL center[3] = {particle.getCentre(0), particle.getCentre(1), particle.getCentre(2)};
+
+    iREAL scaleDifference = 0;
+    if(particle.getNumberOfTriangles()> 1)
+    {
+      iREAL xx[3], xxx[3];
+      xx[0] = x[0];
+      xx[1] = y[0];
+      xx[2] = z[0];
+
+      xxx[0] = x[0] + particle.getEpsilon();
+      xxx[1] = y[0] + particle.getEpsilon();
+      xxx[2] = z[0] + particle.getEpsilon();
+
+      scaleDifference = std::sqrt(((xx[0]-xxx[0])*(xx[0]-xxx[0]))+((xx[1]-xxx[1])*(xx[1]-xxx[1]))+((xx[2]-xxx[2])*(xx[2]-xxx[2])));
+
+      iREAL normal = std::sqrt((xx[0]*xx[0])+(xx[1]*xx[1])+(xx[2]*xx[2]));
+
+      //printf("diff:%f normal:%f\n", scaleDifference, normal);
+      scaleDifference = (normal+scaleDifference)/normal;
+    }
+
+    iREAL scale = scaleDifference;
+    //printf("%f\n", scale);
+    //iREAL scale = (particle.getDiameter()+particle.getEpsilon()) / particle.getDiameter();
+    delta::geometry::operators::mesh::scaleXYZ(xCoordinatesWider, yCoordinatesWider, zCoordinatesWider, scale, center);
+
+    for (int j=0; j<particle.getNumberOfTriangles(); j++)
+    {
+      int vertexIndex[3];
+      tarch::la::Vector<3,iREAL> p;
+
+      p = {xCoordinatesWider[j*3+0], yCoordinatesWider[j*3+0], zCoordinatesWider[j*3+0]};
+      vertexIndex[0] = _vertexWriter->plotVertex(p);
+
+      p = {xCoordinatesWider[j*3+1], yCoordinatesWider[j*3+1], zCoordinatesWider[j*3+1]};
+      vertexIndex[1] = _vertexWriter->plotVertex(p);
+
+      p = {xCoordinatesWider[j*3+2], yCoordinatesWider[j*3+2], zCoordinatesWider[j*3+2]};
+      vertexIndex[2] = _vertexWriter->plotVertex(p);
+
+      _velocitiesAndNormals->plotVertex(vertexIndex[0], 0);
+      _velocitiesAndNormals->plotVertex(vertexIndex[1], 0);
+      _velocitiesAndNormals->plotVertex(vertexIndex[2], 0);
+
+      _frictionNormals->plotVertex(vertexIndex[0], 0);
+      _frictionNormals->plotVertex(vertexIndex[1], 0);
+      _frictionNormals->plotVertex(vertexIndex[2], 0);
+
+      _particleVelocity->plotVertex(vertexIndex[0], 0);
+      _particleVelocity->plotVertex(vertexIndex[1], 0);
+      _particleVelocity->plotVertex(vertexIndex[2], 0);
+
+      _particleAngular->plotVertex(vertexIndex[0], 0);
+      _particleAngular->plotVertex(vertexIndex[1], 0);
+      _particleAngular->plotVertex(vertexIndex[2], 0);
+
+      _particleDiameter->plotVertex(vertexIndex[0], 0);
+      _particleDiameter->plotVertex(vertexIndex[1], 0);
+      _particleDiameter->plotVertex(vertexIndex[2], 0);
+
+      _particleEpsilon->plotVertex(vertexIndex[0], 0);
+      _particleEpsilon->plotVertex(vertexIndex[1], 0);
+      _particleEpsilon->plotVertex(vertexIndex[2], 0);
+
+      _particleInfluence->plotVertex(vertexIndex[0], 0);
+      _particleInfluence->plotVertex(vertexIndex[1], 0);
+      _particleInfluence->plotVertex(vertexIndex[2], 0);
+
+      _vertexColoring->plotVertex(vertexIndex[0], 0);
+      _vertexColoring->plotVertex(vertexIndex[1], 0);
+      _vertexColoring->plotVertex(vertexIndex[2], 0);
+
+      int faceIndex = _cellWriter->plotTriangle(vertexIndex);
+
+      _type->plotCell(faceIndex,2); //triangle
+      _level->plotCell(faceIndex,coarseGridVerticesEnumerator.getLevel()+1);
+      _faceVertexAssociation->plotCell(faceIndex,_vertexCounter);
+
+      tarch::la::Vector<3,iREAL> A;
+      tarch::la::Vector<3,iREAL> B;
+      tarch::la::Vector<3,iREAL> C;
+      tarch::la::Vector<3,iREAL> np;
+
+      A = {xCoordinatesWider[j*3+0], yCoordinatesWider[j*3+0], zCoordinatesWider[j*3+0]};
+      B = {xCoordinatesWider[j*3+1], yCoordinatesWider[j*3+1], zCoordinatesWider[j*3+1]};
+      C = {xCoordinatesWider[j*3+2], yCoordinatesWider[j*3+2], zCoordinatesWider[j*3+2]};
+
+      //A + (B − A) x a+(C−A)·b
+      np[0] = A[0] + (B[0]-A[0]) * 1.0/3.0 + (C[0] - A[0]) * 1.0/3.0;
+      np[1] = A[1] + (B[1]-A[1]) * 1.0/3.0 + (C[1] - A[1]) * 1.0/3.0;
+      np[2] = A[2] + (B[2]-A[2]) * 1.0/3.0 + (C[2] - A[2]) * 1.0/3.0;
+
+      int vertexPIndex = _vertexWriter->plotVertex(np);
+      int dataPointIndex = _cellWriter->plotPoint(vertexPIndex);
+      _type->plotCell(dataPointIndex,6); //mesh direction
+      _level->plotCell(dataPointIndex,coarseGridVerticesEnumerator.getLevel()+1);
+      _faceVertexAssociation->plotCell(dataPointIndex,_vertexCounter);
+
+      iREAL V[3], W[3], N[3];
+      V[0] = B[0] - A[0];
+      V[1] = B[1] - A[1];
+      V[2] = B[2] - A[2];
+
+      W[0] = C[0] - B[0];
+      W[1] = C[1] - B[1];
+      W[2] = C[2] - B[2];
+
+      N[0] = (V[1]*W[2])-(V[2]*W[1]);
+      N[1] = (V[2]*W[0])-(V[0]*W[2]);
+      N[2] = (V[0]*W[1])-(V[1]*W[0]);
+
+      iREAL mag = std::sqrt((N[0]*N[0])+(N[1]*N[1])+(N[2]*N[2]));
+
+      np = N[0]/mag, N[1]/mag, N[2]/mag;
+
+      _velocitiesAndNormals->plotVertex(vertexPIndex, np);
+      _frictionNormals->plotVertex(vertexPIndex, 0);
+      _particleVelocity->plotVertex(vertexPIndex, 0);
+      _particleAngular->plotVertex(vertexPIndex, 0);
+      _particleDiameter->plotVertex(vertexPIndex, 0);
+      _particleEpsilon->plotVertex(vertexPIndex, 0);
+      _particleInfluence->plotVertex(vertexPIndex, 0);
+      _vertexColoring->plotVertex(vertexPIndex, 0);
+    }    //////////////////DRAW EPSILON
+
+
+
+    //DRAW ORIGINAL GEOMETRY
+    for (int j=0; j<particle.getNumberOfTriangles(); j++)
+    {
+      int vertexIndex[3];
+      tarch::la::Vector<3,iREAL> p;
+
+      p = {x[j*3+0], y[j*3+0], z[j*3+0]};
+      vertexIndex[0] = _vertexWriter->plotVertex(p);
+
+      p = {x[j*3+1], y[j*3+1], z[j*3+1]};
+      vertexIndex[1] = _vertexWriter->plotVertex(p);
+
+      p = {x[j*3+2], y[j*3+2], z[j*3+2]};
+      vertexIndex[2] = _vertexWriter->plotVertex(p);
+
+      _velocitiesAndNormals->plotVertex(vertexIndex[0], 0);
+      _velocitiesAndNormals->plotVertex(vertexIndex[1], 0);
+      _velocitiesAndNormals->plotVertex(vertexIndex[2], 0);
+
+      _frictionNormals->plotVertex(vertexIndex[0], 0);
+      _frictionNormals->plotVertex(vertexIndex[1], 0);
+      _frictionNormals->plotVertex(vertexIndex[2], 0);
+
+      _particleVelocity->plotVertex(vertexIndex[0], 0);
+      _particleVelocity->plotVertex(vertexIndex[1], 0);
+      _particleVelocity->plotVertex(vertexIndex[2], 0);
+
+      _particleAngular->plotVertex(vertexIndex[0], 0);
+      _particleAngular->plotVertex(vertexIndex[1], 0);
+      _particleAngular->plotVertex(vertexIndex[2], 0);
+
+      _particleDiameter->plotVertex(vertexIndex[0], 0);
+      _particleDiameter->plotVertex(vertexIndex[1], 0);
+      _particleDiameter->plotVertex(vertexIndex[2], 0);
+
+      _particleEpsilon->plotVertex(vertexIndex[0], 0);
+      _particleEpsilon->plotVertex(vertexIndex[1], 0);
+      _particleEpsilon->plotVertex(vertexIndex[2], 0);
+
+      _particleInfluence->plotVertex(vertexIndex[0], 0);
+      _particleInfluence->plotVertex(vertexIndex[1], 0);
+      _particleInfluence->plotVertex(vertexIndex[2], 0);
+
+      _vertexColoring->plotVertex(vertexIndex[0], 0);
+      _vertexColoring->plotVertex(vertexIndex[1], 0);
+      _vertexColoring->plotVertex(vertexIndex[2], 0);
+
+      int faceIndex = _cellWriter->plotTriangle(vertexIndex);
+
+      _type->plotCell(faceIndex,2); //triangle
+      _level->plotCell(faceIndex,coarseGridVerticesEnumerator.getLevel()+1);
+      _faceVertexAssociation->plotCell(faceIndex,_vertexCounter);
+
+      tarch::la::Vector<3,iREAL> A;
+      tarch::la::Vector<3,iREAL> B;
+      tarch::la::Vector<3,iREAL> C;
+      tarch::la::Vector<3,iREAL> np;
+
+      A = {x[j*3+0], y[j*3+0], z[j*3+0]};
+      B = {x[j*3+1], y[j*3+1], z[j*3+1]};
+      C = {x[j*3+2], y[j*3+2], z[j*3+2]};
+
+      //A + (B − A) x a+(C−A)·b
+      np[0] = A[0] + (B[0]-A[0]) * 1.0/3.0 + (C[0] - A[0]) * 1.0/3.0;
+      np[1] = A[1] + (B[1]-A[1]) * 1.0/3.0 + (C[1] - A[1]) * 1.0/3.0;
+      np[2] = A[2] + (B[2]-A[2]) * 1.0/3.0 + (C[2] - A[2]) * 1.0/3.0;
+
+      int vertexPIndex = _vertexWriter->plotVertex(np);
+      int dataPointIndex = _cellWriter->plotPoint(vertexPIndex);
+      _type->plotCell(dataPointIndex,6);//triangle face direction
+      _level->plotCell(dataPointIndex,coarseGridVerticesEnumerator.getLevel()+1);
+      _faceVertexAssociation->plotCell(dataPointIndex,_vertexCounter);
+
+      iREAL V[3], W[3], N[3];
+      V[0] = B[0] - A[0];
+      V[1] = B[1] - A[1];
+      V[2] = B[2] - A[2];
+
+      W[0] = C[0] - B[0];
+      W[1] = C[1] - B[1];
+      W[2] = C[2] - B[2];
+
+      N[0] = (V[1]*W[2])-(V[2]*W[1]);
+      N[1] = (V[2]*W[0])-(V[0]*W[2]);
+      N[2] = (V[0]*W[1])-(V[1]*W[0]);
+
+      iREAL mag = std::sqrt((N[0]*N[0])+(N[1]*N[1])+(N[2]*N[2]));
+
+      np = N[0]/mag, N[1]/mag, N[2]/mag;
+
+      _velocitiesAndNormals->plotVertex(vertexPIndex, np);
+      _frictionNormals->plotVertex(vertexPIndex, 0);
+      _particleVelocity->plotVertex(vertexPIndex, 0);
+      _particleAngular->plotVertex(vertexPIndex, 0);
+      _particleDiameter->plotVertex(vertexPIndex, 0);
+      _particleEpsilon->plotVertex(vertexPIndex, 0);
+      _particleInfluence->plotVertex(vertexPIndex, 0);
+      _vertexColoring->plotVertex(vertexPIndex, 0);
+    }    //DRAW ORIGINAL GEOMETRY
+
+    /*if(_trackParticle && _trackID == particle.getGlobalParticleId())
+    {
+    }*/
+  }
+}
+
 dem::mappings::Plot::Plot() {
   logTraceIn( "Plot()" );
   // @todo Insert your code here
@@ -435,279 +735,7 @@ void dem::mappings::Plot::touchVertexLastTime(
     _vertexColoring->plotVertex(particleVertexLink[0],0);
 
     logDebug( "touchVertexLastTime(...)", "vertex holds " << fineGridVertex.getNumberOfParticles() << " particles" );
-
-    for(int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
-    {
-      _particleCounter++;
-      records::Particle&  particle = fineGridVertex.getParticle(i);
-      //printf("particle plot: %i\n", particle.getGlobalParticleId());
-
-      particleVertexLink[1] = _vertexWriter->plotVertex( particle.getCentre() );
-
-      if(!particle.getIsObstacle())
-      {//do not plot any epsilon on obstacles
-        //it will only accept diameter not radius to plot the sphere thus multiply epsilon by 2
-        tarch::la::Vector<3,iREAL> v = {particle._persistentRecords._velocity(0), particle._persistentRecords._velocity(1), particle._persistentRecords._velocity(2)};
-        _velocitiesAndNormals->plotVertex(particleVertexLink[1],v);
-
-        _particleVelocity->plotVertex(particleVertexLink[1],std::sqrt(
-            particle._persistentRecords._velocity(0)*particle._persistentRecords._velocity(0)+
-            particle._persistentRecords._velocity(1)*particle._persistentRecords._velocity(1)+
-            particle._persistentRecords._velocity(2)*particle._persistentRecords._velocity(2)));
-
-        v = {particle._persistentRecords._angular(0), particle._persistentRecords._angular(1), particle._persistentRecords._angular(2)};
-        _particleAngular->plotVertex(particleVertexLink[1],v);
-
-        _particleDiameter->plotVertex(particleVertexLink[1], particle.getDiameter());
-        _particleEpsilon->plotVertex(particleVertexLink[1], particle.getDiameter()+(particle.getEpsilon()*2));
-        _particleInfluence->plotVertex(particleVertexLink[1], particle.getHaloDiameter());
-      } else {
-        _velocitiesAndNormals->plotVertex(particleVertexLink[1],0);
-        _particleVelocity->plotVertex(particleVertexLink[1],0);
-        _particleAngular->plotVertex(particleVertexLink[1],0);
-        _particleDiameter->plotVertex(particleVertexLink[1], 0);
-        _particleEpsilon->plotVertex(particleVertexLink[1], 0);
-        _particleInfluence->plotVertex(particleVertexLink[1], 0);
-      }
-
-      _frictionNormals->plotVertex(particleVertexLink[1],0);
-      _vertexColoring->plotVertex(particleVertexLink[1], particle.getGlobalParticleId());
-
-      int lineFromParticleToHostVertex = _cellWriter->plotLine(particleVertexLink);
-      _type->plotCell(lineFromParticleToHostVertex,1); //link
-      _level->plotCell(lineFromParticleToHostVertex,coarseGridVerticesEnumerator.getLevel()+1);
-      _faceVertexAssociation->plotCell(lineFromParticleToHostVertex,_vertexCounter);
-
-      int particleCentre = _cellWriter->plotPoint(particleVertexLink[1]);
-      _type->plotCell(particleCentre,0); //particle center
-      _level->plotCell(particleCentre,coarseGridVerticesEnumerator.getLevel()+1);
-      _faceVertexAssociation->plotCell(particleCentre,_vertexCounter);
-
-      iREAL* x = fineGridVertex.getXCoordinates(i);
-      iREAL* y = fineGridVertex.getYCoordinates(i);
-      iREAL* z = fineGridVertex.getZCoordinates(i);
-
-      std::vector<iREAL> xCoordinatesWider, yCoordinatesWider, zCoordinatesWider;
-
-      for(int k=0; k<particle.getNumberOfTriangles()*3; k++)
-      {
-        xCoordinatesWider.push_back(x[k]);
-        yCoordinatesWider.push_back(y[k]);
-        zCoordinatesWider.push_back(z[k]);
-      }
-
-      iREAL center[3] = {particle.getCentre(0), particle.getCentre(1), particle.getCentre(2)};
-
-      iREAL scale = (particle.getDiameter()+particle.getEpsilon())/ particle.getDiameter();
-      delta::geometry::operators::mesh::scaleXYZ(
-    	  xCoordinatesWider, yCoordinatesWider, zCoordinatesWider, scale, center);
-
-      //delta::geometry::properties::explode(xCoordinatesWider, yCoordinatesWider, zCoordinatesWider, 5);
-/*
-      for (int j=0; j<particle.getNumberOfTriangles(); j++)
-      {
-        int vertexIndex[3];
-        tarch::la::Vector<3,iREAL> p;
-
-        p = {xCoordinatesWider[j*3+0], yCoordinatesWider[j*3+0], zCoordinatesWider[j*3+0]};
-        vertexIndex[0] = _vertexWriter->plotVertex(p);
-
-        p = {xCoordinatesWider[j*3+1], yCoordinatesWider[j*3+1], zCoordinatesWider[j*3+1]};
-        vertexIndex[1] = _vertexWriter->plotVertex(p);
-
-        p = {xCoordinatesWider[j*3+2], yCoordinatesWider[j*3+2], zCoordinatesWider[j*3+2]};
-        vertexIndex[2] = _vertexWriter->plotVertex(p);
-
-        _velocitiesAndNormals->plotVertex(vertexIndex[0], 0);
-        _velocitiesAndNormals->plotVertex(vertexIndex[1], 0);
-        _velocitiesAndNormals->plotVertex(vertexIndex[2], 0);
-
-        _frictionNormals->plotVertex(vertexIndex[0], 0);
-        _frictionNormals->plotVertex(vertexIndex[1], 0);
-        _frictionNormals->plotVertex(vertexIndex[2], 0);
-
-        _particleVelocity->plotVertex(vertexIndex[0], 0);
-        _particleVelocity->plotVertex(vertexIndex[1], 0);
-        _particleVelocity->plotVertex(vertexIndex[2], 0);
-
-        _particleAngular->plotVertex(vertexIndex[0], 0);
-        _particleAngular->plotVertex(vertexIndex[1], 0);
-        _particleAngular->plotVertex(vertexIndex[2], 0);
-
-        _particleDiameter->plotVertex(vertexIndex[0], 0);
-        _particleDiameter->plotVertex(vertexIndex[1], 0);
-        _particleDiameter->plotVertex(vertexIndex[2], 0);
-
-        _particleEpsilon->plotVertex(vertexIndex[0], 0);
-        _particleEpsilon->plotVertex(vertexIndex[1], 0);
-        _particleEpsilon->plotVertex(vertexIndex[2], 0);
-
-        _particleInfluence->plotVertex(vertexIndex[0], 0);
-        _particleInfluence->plotVertex(vertexIndex[1], 0);
-        _particleInfluence->plotVertex(vertexIndex[2], 0);
-
-        _vertexColoring->plotVertex(vertexIndex[0], 0);
-        _vertexColoring->plotVertex(vertexIndex[1], 0);
-        _vertexColoring->plotVertex(vertexIndex[2], 0);
-
-        int faceIndex = _cellWriter->plotTriangle(vertexIndex);
-
-        _type->plotCell(faceIndex,2); //triangle
-        _level->plotCell(faceIndex,coarseGridVerticesEnumerator.getLevel()+1);
-        _faceVertexAssociation->plotCell(faceIndex,_vertexCounter);
-
-        tarch::la::Vector<3,iREAL> A;
-        tarch::la::Vector<3,iREAL> B;
-        tarch::la::Vector<3,iREAL> C;
-        tarch::la::Vector<3,iREAL> np;
-
-        A = {xCoordinatesWider[j*3+0], yCoordinatesWider[j*3+0], zCoordinatesWider[j*3+0]};
-        B = {xCoordinatesWider[j*3+1], yCoordinatesWider[j*3+1], zCoordinatesWider[j*3+1]};
-        C = {xCoordinatesWider[j*3+2], yCoordinatesWider[j*3+2], zCoordinatesWider[j*3+2]};
-
-        //A + (B − A) x a+(C−A)·b
-        np[0] = A[0] + (B[0]-A[0]) * 1.0/3.0 + (C[0] - A[0]) * 1.0/3.0;
-        np[1] = A[1] + (B[1]-A[1]) * 1.0/3.0 + (C[1] - A[1]) * 1.0/3.0;
-        np[2] = A[2] + (B[2]-A[2]) * 1.0/3.0 + (C[2] - A[2]) * 1.0/3.0;
-
-        int vertexPIndex = _vertexWriter->plotVertex(np);
-        int dataPointIndex = _cellWriter->plotPoint(vertexPIndex);
-        _type->plotCell(dataPointIndex,6); //mesh direction
-        _level->plotCell(dataPointIndex,coarseGridVerticesEnumerator.getLevel()+1);
-        _faceVertexAssociation->plotCell(dataPointIndex,_vertexCounter);
-
-        iREAL V[3], W[3], N[3];
-        V[0] = B[0] - A[0];
-        V[1] = B[1] - A[1];
-        V[2] = B[2] - A[2];
-
-        W[0] = C[0] - B[0];
-        W[1] = C[1] - B[1];
-        W[2] = C[2] - B[2];
-
-        N[0] = (V[1]*W[2])-(V[2]*W[1]);
-        N[1] = (V[2]*W[0])-(V[0]*W[2]);
-        N[2] = (V[0]*W[1])-(V[1]*W[0]);
-
-        iREAL mag = std::sqrt((N[0]*N[0])+(N[1]*N[1])+(N[2]*N[2]));
-
-        np = N[0]/mag, N[1]/mag, N[2]/mag;
-
-        _velocitiesAndNormals->plotVertex(vertexPIndex, np);
-        _frictionNormals->plotVertex(vertexPIndex, 0);
-        _particleVelocity->plotVertex(vertexPIndex, 0);
-        _particleAngular->plotVertex(vertexPIndex, 0);
-        _particleDiameter->plotVertex(vertexPIndex, 0);
-        _particleEpsilon->plotVertex(vertexPIndex, 0);
-        _particleInfluence->plotVertex(vertexPIndex, 0);
-        _vertexColoring->plotVertex(vertexPIndex, 0);
-      }*/
-
-
-      //original mesh
-      for (int j=0; j<particle.getNumberOfTriangles(); j++)
-      {
-        int vertexIndex[3];
-        tarch::la::Vector<3,iREAL> p;
-
-        p = {x[j*3+0], y[j*3+0], z[j*3+0]};
-        vertexIndex[0] = _vertexWriter->plotVertex(p);
-
-        p = {x[j*3+1], y[j*3+1], z[j*3+1]};
-        vertexIndex[1] = _vertexWriter->plotVertex(p);
-
-        p = {x[j*3+2], y[j*3+2], z[j*3+2]};
-        vertexIndex[2] = _vertexWriter->plotVertex(p);
-
-        _velocitiesAndNormals->plotVertex(vertexIndex[0], 0);
-        _velocitiesAndNormals->plotVertex(vertexIndex[1], 0);
-        _velocitiesAndNormals->plotVertex(vertexIndex[2], 0);
-
-        _frictionNormals->plotVertex(vertexIndex[0], 0);
-        _frictionNormals->plotVertex(vertexIndex[1], 0);
-        _frictionNormals->plotVertex(vertexIndex[2], 0);
-
-        _particleVelocity->plotVertex(vertexIndex[0], 0);
-        _particleVelocity->plotVertex(vertexIndex[1], 0);
-        _particleVelocity->plotVertex(vertexIndex[2], 0);
-
-        _particleAngular->plotVertex(vertexIndex[0], 0);
-        _particleAngular->plotVertex(vertexIndex[1], 0);
-        _particleAngular->plotVertex(vertexIndex[2], 0);
-
-        _particleDiameter->plotVertex(vertexIndex[0], 0);
-        _particleDiameter->plotVertex(vertexIndex[1], 0);
-        _particleDiameter->plotVertex(vertexIndex[2], 0);
-
-        _particleEpsilon->plotVertex(vertexIndex[0], 0);
-        _particleEpsilon->plotVertex(vertexIndex[1], 0);
-        _particleEpsilon->plotVertex(vertexIndex[2], 0);
-
-        _particleInfluence->plotVertex(vertexIndex[0], 0);
-        _particleInfluence->plotVertex(vertexIndex[1], 0);
-        _particleInfluence->plotVertex(vertexIndex[2], 0);
-
-        _vertexColoring->plotVertex(vertexIndex[0], 0);
-        _vertexColoring->plotVertex(vertexIndex[1], 0);
-        _vertexColoring->plotVertex(vertexIndex[2], 0);
-
-        int faceIndex = _cellWriter->plotTriangle(vertexIndex);
-
-        _type->plotCell(faceIndex,2); //triangle
-        _level->plotCell(faceIndex,coarseGridVerticesEnumerator.getLevel()+1);
-        _faceVertexAssociation->plotCell(faceIndex,_vertexCounter);
-
-        tarch::la::Vector<3,iREAL> A;
-        tarch::la::Vector<3,iREAL> B;
-        tarch::la::Vector<3,iREAL> C;
-        tarch::la::Vector<3,iREAL> np;
-
-        A = {x[j*3+0], y[j*3+0], z[j*3+0]};
-        B = {x[j*3+1], y[j*3+1], z[j*3+1]};
-        C = {x[j*3+2], y[j*3+2], z[j*3+2]};
-
-        //A + (B − A) x a+(C−A)·b
-        np[0] = A[0] + (B[0]-A[0]) * 1.0/3.0 + (C[0] - A[0]) * 1.0/3.0;
-        np[1] = A[1] + (B[1]-A[1]) * 1.0/3.0 + (C[1] - A[1]) * 1.0/3.0;
-        np[2] = A[2] + (B[2]-A[2]) * 1.0/3.0 + (C[2] - A[2]) * 1.0/3.0;
-
-        int vertexPIndex = _vertexWriter->plotVertex(np);
-        int dataPointIndex = _cellWriter->plotPoint(vertexPIndex);
-        _type->plotCell(dataPointIndex,6);//triangle face direction
-        _level->plotCell(dataPointIndex,coarseGridVerticesEnumerator.getLevel()+1);
-        _faceVertexAssociation->plotCell(dataPointIndex,_vertexCounter);
-
-        iREAL V[3], W[3], N[3];
-        V[0] = B[0] - A[0];
-        V[1] = B[1] - A[1];
-        V[2] = B[2] - A[2];
-
-        W[0] = C[0] - B[0];
-        W[1] = C[1] - B[1];
-        W[2] = C[2] - B[2];
-
-        N[0] = (V[1]*W[2])-(V[2]*W[1]);
-        N[1] = (V[2]*W[0])-(V[0]*W[2]);
-        N[2] = (V[0]*W[1])-(V[1]*W[0]);
-
-        iREAL mag = std::sqrt((N[0]*N[0])+(N[1]*N[1])+(N[2]*N[2]));
-
-        np = N[0]/mag, N[1]/mag, N[2]/mag;
-
-        _velocitiesAndNormals->plotVertex(vertexPIndex, np);
-        _frictionNormals->plotVertex(vertexPIndex, 0);
-        _particleVelocity->plotVertex(vertexPIndex, 0);
-        _particleAngular->plotVertex(vertexPIndex, 0);
-        _particleDiameter->plotVertex(vertexPIndex, 0);
-        _particleEpsilon->plotVertex(vertexPIndex, 0);
-        _particleInfluence->plotVertex(vertexPIndex, 0);
-        _vertexColoring->plotVertex(vertexPIndex, 0);
-      }
-
-      /*if(_trackParticle && _trackID == particle.getGlobalParticleId())
-      {
-      }*/
-    }
+    drawParticle(fineGridVertex, coarseGridVerticesEnumerator, particleVertexLink);
   }
 
   for(int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
