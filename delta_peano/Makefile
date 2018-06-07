@@ -172,25 +172,25 @@ delta-gcc-release-mpi: header build
 
 delta-icc-asserts: CC=icpc -std=c++14
 delta-icc-asserts: DIM=-DDim3
-delta-icc-asserts: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS)
+delta-icc-asserts: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) $(INCLUDE_LIBS)
 delta-icc-asserts: CFLAGS=$(ICCDEBUG)
-delta-icc-asserts: LFLAGS=
+delta-icc-asserts: LFLAGS= $(LINK_LIBS)
 delta-icc-asserts: EXECUTABLE=delta-icc-asserts
 delta-icc-asserts: header build
 
 delta-icc-serial: CC=icpc -std=c++14
 delta-icc-serial: DIM=-DDim3
-delta-icc-serial: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS)
+delta-icc-serial: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) $(INCLUDE_LIBS)
 delta-icc-serial: CFLAGS=$(ICCRUN)
-delta-icc-serial: LFLAGS=
+delta-icc-serial: LFLAGS= $(LINK_LIBS)
 delta-icc-serial: EXECUTABLE=delta-icc-serial
 delta-icc-serial: header build
 
 delta-icc-omp: CC=g++ -std=c++14
 delta-icc-omp: DIM=-DDim3
-delta-icc-omp: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) -DOMPTriangle
+delta-icc-omp: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) $(INCLUDE_LIBS) -DOMPTriangle
 delta-icc-omp: CFLAGS=$(GCCRUN) $(GCC_OMP_SHAREDMEMORY)
-delta-icc-omp: LFLAGS=$(LINK_OMP)
+delta-icc-omp: LFLAGS=$(LINK_OMP) $(LINK_LIBS)
 delta-icc-omp: EXECUTABLE=delta-icc-omp
 delta-icc-omp: header build
 
