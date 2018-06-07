@@ -277,7 +277,7 @@ def jobList():
 
                                 executable   = projectPath + execName
 
-                                cores = 1
+                                cores = str(1)
                                 backtasks = 0
                                 tbbthread = 0
 
@@ -300,7 +300,7 @@ def jobList():
                                             "-cm" + parameterDict["collision-model"] + \
                                             "-n" + nodes + \
                                             "-t" + tasks+ \
-                                            "-c" + cores+ \
+                                            "-c" + cores
                                 if "serial" in execName:
                                     if parameterDict["collision-model"] != "sphere":
                                         jobName = jobName + "-msh" + str(parameterDict["mesh-density"])
@@ -354,7 +354,7 @@ def generateScripts():
                                 executable   = projectPath + execName
 
 
-                                cores = 1
+                                cores = str(1)
                                 backtasks = 0
                                 tbbthread = 0
 
@@ -377,7 +377,7 @@ def generateScripts():
                                             "-cm" + parameterDict["collision-model"] + \
                                             "-n" + nodes + \
                                             "-t" + tasks+ \
-                                            "-c" + cores+ \
+                                            "-c" + cores
                                 if "serial" in execName:
                                     if parameterDict["collision-model"] != "sphere":
                                         jobName = jobName + "-msh" + str(parameterDict["mesh-density"])
