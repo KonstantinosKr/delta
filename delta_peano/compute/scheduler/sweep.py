@@ -277,42 +277,41 @@ def jobList():
 
                                 executable   = projectPath + execName
 
-                                tbbthread = parameterDict["tbb-core-count"] #get core count from parameters
-                                if parameterDict["enable-tbb"] == "true" and changeJobScriptCores == True:
-                                    cores = tbbthread
+                                cores = 1
+                                backtasks = 0
+                                tbbthread = 0
 
-                                if  parameterDict["enable-p-to-p"] == "true":
-                                    backtasks = parameterDict["background-count"]
-                                else:
-                                    backtasks = str(0)
+                                if "serial" not in execName:
+                                    tbbthread = parameterDict["tbb-core-count"] #get core count from parameters
+                                    if parameterDict["enable-tbb"] == "true" and changeJobScriptCores == True:
+                                        cores = tbbthread
 
-                                if cores == "omp":
-                                    cores = ompthread
+                                    if  parameterDict["enable-p-to-p"] == "true":
+                                        backtasks = parameterDict["background-count"]
+                                    else:
+                                        backtasks = str(0)
+
+                                    if cores == "omp":
+                                        cores = ompthread
 
                                 jobName = ""
-                                if parameterDict["collision-model"] == "sphere":
-                                    jobName        = "s" + parameterDict["scenarios"] + \
-                                                     "-g" + parameterDict["grid-type"] + \
-                                                     "-cm" + parameterDict["collision-model"] + \
-                                                     "-n" + nodes + \
-                                                     "-t" + tasks+ \
-                                                     "-c" + cores+ \
-                                                     "-tbb" + str(tbbthread)+ \
-                                                     "-omp" + str(ompthread) + \
-                                                     "-bck" + str(backtasks) + \
-                                                     "-tun" + parameterDict["autotuning"]
+                                jobName =   "s" + parameterDict["scenarios"] + \
+                                            "-g" + parameterDict["grid-type"] + \
+                                            "-cm" + parameterDict["collision-model"] + \
+                                            "-n" + nodes + \
+                                            "-t" + tasks+ \
+                                            "-c" + cores+ \
+                                if "serial" in execName:
+                                    if parameterDict["collision-model"] != "sphere":
+                                        jobName = jobName + "-msh" + str(parameterDict["mesh-density"])
                                 else:
-                                    jobName        = "s" + parameterDict["scenarios"] + \
-                                                     "-g" + parameterDict["grid-type"] + \
-                                                     "-cm" + parameterDict["collision-model"] + \
-                                                     "-n" + nodes + \
-                                                     "-t" + tasks+ \
-                                                     "-c" + cores+ \
-                                                     "-tbb" + str(tbbthread)+ \
-                                                     "-omp" + str(ompthread) + \
-                                                     "-bck" + str(backtasks) + \
-                                                     "-tun" + parameterDict["autotuning"] +\
-                                                     "-msh" + str(parameterDict["mesh-density"])
+                                    jobName = jobName + "-tbb" + str(tbbthread)+ \
+                                                "-omp" + str(ompthread) + \
+                                                "-bck" + str(backtasks) + \
+                                                "-tun" + parameterDict["autotuning"]
+                                    if parameterDict["collision-model"] != "sphere":
+                                        jobName = jobName + "-msh" + str(parameterDict["mesh-density"])
+
                                 jobNameList.append(jobName)
     return jobNameList
 
@@ -354,42 +353,41 @@ def generateScripts():
 
                                 executable   = projectPath + execName
 
-                                tbbthread = parameterDict["tbb-core-count"] #get core count from parameters
-                                if parameterDict["enable-tbb"] == "true" and changeJobScriptCores == True:
-                                    cores = tbbthread
 
-                                if  parameterDict["enable-p-to-p"] == "true":
-                                    backtasks = parameterDict["background-count"]
-                                else:
-                                    backtasks = str(0)
+                                cores = 1
+                                backtasks = 0
+                                tbbthread = 0
 
-                                if cores == "omp":
-                                    cores = ompthread
+                                if "serial" not in execName:
+                                    tbbthread = parameterDict["tbb-core-count"] #get core count from parameters
+                                    if parameterDict["enable-tbb"] == "true" and changeJobScriptCores == True:
+                                        cores = tbbthread
+
+                                    if  parameterDict["enable-p-to-p"] == "true":
+                                        backtasks = parameterDict["background-count"]
+                                    else:
+                                        backtasks = str(0)
+
+                                    if cores == "omp":
+                                        cores = ompthread
 
                                 jobName = ""
-                                if parameterDict["collision-model"] == "sphere":
-                                    jobName        = "s" + parameterDict["scenarios"] + \
-                                                     "-g" + parameterDict["grid-type"] + \
-                                                     "-cm" + parameterDict["collision-model"] + \
-                                                     "-n" + nodes + \
-                                                     "-t" + tasks+ \
-                                                     "-c" + cores+ \
-                                                     "-tbb" + str(tbbthread)+ \
-                                                     "-omp" + str(ompthread) + \
-                                                     "-bck" + str(backtasks) + \
-                                                     "-tun" + parameterDict["autotuning"]
+                                jobName =   "s" + parameterDict["scenarios"] + \
+                                            "-g" + parameterDict["grid-type"] + \
+                                            "-cm" + parameterDict["collision-model"] + \
+                                            "-n" + nodes + \
+                                            "-t" + tasks+ \
+                                            "-c" + cores+ \
+                                if "serial" in execName:
+                                    if parameterDict["collision-model"] != "sphere":
+                                        jobName = jobName + "-msh" + str(parameterDict["mesh-density"])
                                 else:
-                                    jobName        = "s" + parameterDict["scenarios"] + \
-                                                     "-g" + parameterDict["grid-type"] + \
-                                                     "-cm" + parameterDict["collision-model"] + \
-                                                     "-n" + nodes + \
-                                                     "-t" + tasks+ \
-                                                     "-c" + cores+ \
-                                                     "-tbb" + str(tbbthread)+ \
-                                                     "-omp" + str(ompthread) + \
-                                                     "-bck" + str(backtasks) + \
-                                                     "-tun" + parameterDict["autotuning"] +\
-                                                     "-msh" + str(parameterDict["mesh-density"])
+                                    jobName = jobName + "-tbb" + str(tbbthread)+ \
+                                                "-omp" + str(ompthread) + \
+                                                "-bck" + str(backtasks) + \
+                                                "-tun" + parameterDict["autotuning"]
+                                    if parameterDict["collision-model"] != "sphere":
+                                        jobName = jobName + "-msh" + str(parameterDict["mesh-density"])
 
                                 jobFilePrefix  = scriptsFolderPath + "/" + jobName
                                 jobFilePath    = jobFilePrefix + ".job"
