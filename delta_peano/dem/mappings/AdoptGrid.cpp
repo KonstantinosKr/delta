@@ -294,10 +294,10 @@ void dem::mappings::AdoptGrid::destroyHangingVertex(
 ) {
   logTraceInWith6Arguments( "destroyHangingVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
-  tarch::multicore::Lock lock(_AdoptSemaphore);
-  liftAllParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator);
-  lock.free();
-  fineGridVertex.destroy();
+  //tarch::multicore::Lock lock(_AdoptSemaphore);
+  //liftAllParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator);
+  //lock.free();
+  //fineGridVertex.destroy();
 
   logTraceOutWith1Argument( "destroyHangingVertex(...)", fineGridVertex );
 }
@@ -345,12 +345,12 @@ void dem::mappings::AdoptGrid::destroyVertex(
 ) {
   logTraceInWith6Arguments( "destroyVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
-  tarch::multicore::Lock lock(_AdoptSemaphore);
-  liftAllParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator);
-  lock.free();
+  //tarch::multicore::Lock lock(_AdoptSemaphore);
+  //liftAllParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator);
+  //lock.free();
 
   //assertion( fineGridVertex.getNumberOfParticles()==0 );
-  fineGridVertex.destroy();
+  //fineGridVertex.destroy();
 
   logTraceOutWith1Argument( "destroyVertex(...)", fineGridVertex );
 }
