@@ -196,7 +196,7 @@ delta-icc-omp: header build
 
 delta-icc-release-tbb: CC=icpc -std=c++14
 delta-icc-release-tbb: DIM=-DDim3
-delta-icc-release-tbb: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) -DSharedTBB
+delta-icc-release-tbb: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) -DSharedTBB -g
 delta-icc-release-tbb: CFLAGS=$(ICCRUN) $(ICC_OMP_SHAREDMEMORY) $(INCLUDE_TBB) $(INCLUDE_LIBS)
 delta-icc-release-tbb: LFLAGS=$(LINK_TBB) $(LINK_OMP) $(LINK_LIBS)
 delta-icc-release-tbb: EXECUTABLE=delta-icc-release-tbb
