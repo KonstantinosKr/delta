@@ -544,28 +544,28 @@ class delta::geometry::Object
 
   private:
     std::string           	_component;
-    int                   	_globalParticleID; //
+    int                   	_globalParticleID;
     int                  	_localParticleID;
 
     iREAL                	_rad;
-    iREAL				 	_haloDiameter;//
+    iREAL				 	_haloDiameter;
     iREAL				 	_diameter;
     iREAL               		_mass;
-    iREAL 				 	_epsilon;//
+    iREAL 				 	_epsilon;
 
-	delta::geometry::mesh::Mesh* _mesh;//
+	delta::geometry::mesh::Mesh* _mesh;
 
-    std::array<iREAL, 3> 	_linearVelocity;//
-    std::array<iREAL, 3> 	_angularVelocity;//
+    std::array<iREAL, 3> 	_linearVelocity;
+    std::array<iREAL, 3> 	_angularVelocity;
     std::array<iREAL, 3> 	_refAngularVelocity;
 
-    delta::geometry::material::MaterialType _material; //
+    delta::geometry::material::MaterialType _material;
 
-    bool                  	_isObstacle;//
-    bool                  	_isFriction;//
-    bool                  	_isConvex;//
+    bool                  	_isObstacle;
+    bool                  	_isFriction;
+    bool                  	_isConvex;
 
-    std::array<iREAL, 3> 	_centre; //
+    std::array<iREAL, 3> 	_centre;
     std::array<iREAL, 3> 	_centreOfMass;
     std::array<iREAL, 3> 	_refCentreOfMass;
 

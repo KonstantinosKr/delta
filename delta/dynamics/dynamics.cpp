@@ -142,7 +142,6 @@ void delta::dynamics::updateAngular(
     iREAL *rotation,
     iREAL *inertia,
     iREAL *inverse,
-    iREAL mass,
     iREAL *torque,
     iREAL step)
 {

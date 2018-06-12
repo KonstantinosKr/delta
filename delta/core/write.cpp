@@ -51,7 +51,6 @@ void delta::core::writeGeometryToVTK(int step, std::array<iREAL, 6> boundary, st
   std::vector<int> meshEndPivots;
   for(int i=0; i<vectorGeometries.size(); i++)
   {
-
 	for(int j = 0; j < vectorGeometries[i].getMesh().getUniqueVertices().size(); j++)
 	{
 	  fprintf(fp,"%.5f %.5f %.5f\n",
@@ -59,8 +58,7 @@ void delta::core::writeGeometryToVTK(int step, std::array<iREAL, 6> boundary, st
 		  vectorGeometries[i].getMesh().getUniqueVertices()[j][1],
 		  vectorGeometries[i].getMesh().getUniqueVertices()[j][2]);
 	}
-	int meshEndPivot = vectorGeometries[i].getMesh().getUniqueVertices().size();
-	meshEndPivots.push_back(meshEndPivot);
+	meshEndPivots.push_back(vectorGeometries[i].getMesh().getUniqueVertices().size());
   }
 
   //BOUNDARY
@@ -87,7 +85,7 @@ void delta::core::writeGeometryToVTK(int step, std::array<iREAL, 6> boundary, st
 
   fprintf(fp,"\nCELLS %i %i\n", cellNumber, cellPointers);
 
-  int pivot = 0;
+  int pivot = 0; //position of start index
   for(int i=0; i<vectorGeometries.size(); i++)
   {
 	for(int j = 0; j < vectorGeometries[i].getMesh().getTriangleFaces().size(); j++)
@@ -98,9 +96,10 @@ void delta::core::writeGeometryToVTK(int step, std::array<iREAL, 6> boundary, st
 
 	  fprintf(fp,"3 %i %i %i\n", A, B, C);
 	}
-
-	pivot = meshEndPivots[i]+1;
+	pivot = meshEndPivots[i];
   }
+
+  int meshEndPivot = meshEndPivots[meshEndPivots.size()-1];
 
   //AB | 0->1
   //AD | 0->3
@@ -116,8 +115,6 @@ void delta::core::writeGeometryToVTK(int step, std::array<iREAL, 6> boundary, st
   //DF | 3->5
   //GH | 6->7
   //GF | 6->5
-
-  int meshEndPivot = meshEndPivots[meshEndPivots.size()-1];
 
   int lA = meshEndPivot + 0;
   int lB = meshEndPivot + 1;
@@ -148,6 +145,7 @@ void delta::core::writeGeometryToVTK(int step, std::array<iREAL, 6> boundary, st
 
   fprintf(fp,"\nCELL_TYPES %i\n", cellNumber);
 
+  //write triangle faces
   for(int i=0; i<vectorGeometries.size(); i++)
   {
 	for(int j = 0; j < vectorGeometries[i].getMesh().getTriangleFaces().size(); j++)
@@ -156,6 +154,7 @@ void delta::core::writeGeometryToVTK(int step, std::array<iREAL, 6> boundary, st
 	}
   }
 
+  //write line faces
   for(int j = 0; j < numberOfLines; j++)
   {
 	fprintf(fp, "3\n"); //lines

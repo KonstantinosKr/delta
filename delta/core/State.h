@@ -22,8 +22,8 @@
  SOFTWARE.
  */
 
-#ifndef DELTA_CORE_SYS_H_
-#define DELTA_CORE_SYS_H_
+#ifndef DELTA_CORE_STATE_H_
+#define DELTA_CORE_STATE_H_
 
 #include <time.h>
 #include <vector>
@@ -33,49 +33,41 @@
 
 namespace delta {
 	namespace core {
-		class Sys;
+		class State;
 	}
 }
 
-class delta::core::Sys{
-public:
+class delta::core::State {
+  public:
+	State();
+
+	State(int noOfParticles, int noOfObstacles, iREAL timeStepSize);
+
 	void initCheckpoint(int iteration);
 	void closeCheckpoint();
-	void saveScenario(int particles, int obstacles);
-	void saveIteration(iREAL timeStepSize, int currentIteration, int iteration);
 
-	void saveParticleProperties(
-		int id,
-		iREAL positionSpatial[3],
-		iREAL positionReferential[3],
-		iREAL linear[3],
-		iREAL angular[3],
-		iREAL inertia[9],
-		iREAL orientation[9],
-		iREAL mass);
+	void readState();
+	void writeState();
+	void saveParticleGeometry();
 
-	void saveParticleGeometry(
-		int id,
-		std::vector<iREAL> xCoordinatesSpatial,
-		std::vector<iREAL> yCoordinatesSpatial,
-		std::vector<iREAL> zCoordinatesSpatial,
-		std::vector<iREAL> xCoordinatesRef,
-		std::vector<iREAL> yCoordinatesRef,
-		std::vector<iREAL> zCoordinatesRef);
+	void update();
+	int getIteration();
+
+	void incNumberOfTriangleComparisons(int n);
+	void incNumberOfParticleComparisons(int n);
 
 private:
-	static int 		_noOfParticles;
-	static int 		_noOfObstacles;
-	static iREAL 	_timeStepSize;
-	static int 		_currentIteration;
-	static int		_totalIterations;
+	int 		_noOfParticles;
+	int 		_noOfObstacles;
+	iREAL 	_timeStepSize;
 
-	static std::vector<int> 	_id;
-	static std::ofstream 	_checkpointFile;
+	int _numberOfTriangleComparisons;
+	int _numberOfParticleComparisons;
+
+	//std::ofstream 	_checkpointFile;
+	int _iteration;
 };
 
-
-
-#endif /* DELTA_CORE_SYS_H_ */
+#endif /* DELTA_CORE_STATE_H_ */
 
 
