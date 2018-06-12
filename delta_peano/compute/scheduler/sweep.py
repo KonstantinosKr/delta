@@ -288,6 +288,8 @@ def jobList():
 
                                     if cores == "omp":
                                         cores = ompthread
+                                else:
+                                    backtasks = parameterDict["background-count"]
 
                                 jobName = ""
                                 jobName =   "s" + parameterDict["scenarios"] + \
@@ -360,6 +362,8 @@ def generateScripts():
 
                                     if cores == "omp":
                                         cores = ompthread
+                                else:
+                                    backtasks = parameterDict["background-count"]
 
                                 jobName = ""
                                 jobName =   "s" + parameterDict["scenarios"] + \
