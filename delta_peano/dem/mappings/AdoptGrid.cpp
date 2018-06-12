@@ -85,8 +85,7 @@ void dem::mappings::liftAllParticles(
   const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator
 ) {
 
-  int i=0;
-  while (i<fineGridVertex.getNumberOfParticles())
+  for(int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
   {
     tarch::la::Vector<DIMENSIONS,int> destinationVertex;
     for (int d=0; d<DIMENSIONS; d++)
@@ -94,9 +93,7 @@ void dem::mappings::liftAllParticles(
       destinationVertex(d) = fineGridVertex.getParticle(i).getCentre(d) < coarseGridVerticesEnumerator.getCellCenter()(d) ? 0 : 1;
     }
     coarseGridVertices[ coarseGridVerticesEnumerator(destinationVertex) ].appendParticle( fineGridVertex.getParticle(i) );
-    //printf("lifted particle:%i\n", fineGridVertex.getParticle(i).getGlobalParticleId());
-
-    i++;
+    printf("lifted particle:%i\n", fineGridVertex.getParticle(i).getGlobalParticleId());
   }
 }
 
@@ -183,7 +180,6 @@ void dem::mappings::AdoptGrid::touchVertexFirstTime(
   {
     fineGridVertex.setNumberOfParticlesInUnrefinedVertex(fineGridVertex.getNumberOfParticlesInUnrefinedVertex() * dem::mappings::AdoptGrid::_coarsenCoefficient);
   }
-
 
   /*
   for (int i=0; i<fineGridVertex.getNumberOfParticles(); i++)
@@ -294,10 +290,16 @@ void dem::mappings::AdoptGrid::destroyHangingVertex(
 ) {
   logTraceInWith6Arguments( "destroyHangingVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
+<<<<<<< Updated upstream
   //tarch::multicore::Lock lock(_AdoptSemaphore);
   //liftAllParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator);
   //lock.free();
   //fineGridVertex.destroy();
+=======
+  tarch::multicore::Lock lock(_AdoptSemaphore);
+  liftAllParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator);
+  lock.free();
+>>>>>>> Stashed changes
 
   logTraceOutWith1Argument( "destroyHangingVertex(...)", fineGridVertex );
 }
@@ -313,8 +315,6 @@ void dem::mappings::AdoptGrid::createInnerVertex(
 ) {
   logTraceInWith6Arguments( "createInnerVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
-  fineGridVertex.init();
-
   logTraceOutWith1Argument( "createInnerVertex(...)", fineGridVertex );
 }
 
@@ -328,8 +328,6 @@ void dem::mappings::AdoptGrid::createBoundaryVertex(
       const tarch::la::Vector<DIMENSIONS,int>&                             fineGridPositionOfVertex
 ) {
   logTraceInWith6Arguments( "createBoundaryVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
-
-  fineGridVertex.init();
 
   logTraceOutWith1Argument( "createBoundaryVertex(...)", fineGridVertex );
 }
@@ -349,8 +347,12 @@ void dem::mappings::AdoptGrid::destroyVertex(
   //liftAllParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator);
   //lock.free();
 
+<<<<<<< Updated upstream
   //assertion( fineGridVertex.getNumberOfParticles()==0 );
   //fineGridVertex.destroy();
+=======
+  assertion( fineGridVertex.getNumberOfParticles()==0 );
+>>>>>>> Stashed changes
 
   logTraceOutWith1Argument( "destroyVertex(...)", fineGridVertex );
 }

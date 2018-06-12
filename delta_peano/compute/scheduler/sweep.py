@@ -286,11 +286,6 @@ def jobList():
                                     if parameterDict["enable-tbb"] == "true" and changeJobScriptCores == True:
                                         cores = tbbthread
 
-                                    if  parameterDict["enable-p-to-p"] == "true":
-                                        backtasks = parameterDict["background-count"]
-                                    else:
-                                        backtasks = str(0)
-
                                     if cores == "omp":
                                         cores = ompthread
 
@@ -362,11 +357,6 @@ def generateScripts():
                                     tbbthread = parameterDict["tbb-core-count"] #get core count from parameters
                                     if parameterDict["enable-tbb"] == "true" and changeJobScriptCores == True:
                                         cores = tbbthread
-
-                                    if  parameterDict["enable-p-to-p"] == "true":
-                                        backtasks = parameterDict["background-count"]
-                                    else:
-                                        backtasks = str(0)
 
                                     if cores == "omp":
                                         cores = ompthread

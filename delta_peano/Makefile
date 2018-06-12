@@ -181,7 +181,7 @@ delta-icc-asserts: header build
 delta-icc-serial: CC=icpc -std=c++14
 delta-icc-serial: DIM=-DDim3
 delta-icc-serial: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) $(INCLUDE_LIBS)
-delta-icc-serial: CFLAGS=$(ICCRUN)
+delta-icc-serial: CFLAGS=$(ICCDEBUG) -g
 delta-icc-serial: LFLAGS= $(LINK_LIBS)
 delta-icc-serial: EXECUTABLE=delta-icc-serial
 delta-icc-serial: header build
