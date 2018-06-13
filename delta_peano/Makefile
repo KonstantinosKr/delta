@@ -186,10 +186,10 @@ delta-icc-serial: LFLAGS= $(LINK_LIBS)
 delta-icc-serial: EXECUTABLE=delta-icc-serial
 delta-icc-serial: header build
 
-delta-icc-omp: CC=g++ -std=c++14
+delta-icc-omp: CC=icpc -std=c++14
 delta-icc-omp: DIM=-DDim3
 delta-icc-omp: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) $(INCLUDE_LIBS) -DOMPTriangle
-delta-icc-omp: CFLAGS=$(GCCRUN) $(GCC_OMP_SHAREDMEMORY)
+delta-icc-omp: CFLAGS=$(ICCRUN) $(ICC_OMP_SHAREDMEMORY)
 delta-icc-omp: LFLAGS=$(LINK_OMP) $(LINK_LIBS) 
 delta-icc-omp: EXECUTABLE=delta-icc-omp
 delta-icc-omp: header build

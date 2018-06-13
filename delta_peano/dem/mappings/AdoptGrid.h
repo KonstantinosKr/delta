@@ -81,6 +81,7 @@ class dem::mappings::AdoptGrid {
     static tarch::multicore::BooleanSemaphore        _AdoptSemaphore;
 
   public:
+    static bool _loneMapRun;
     static iREAL _refinementCoefficient;
     static iREAL _coarsenCoefficient;
   public:

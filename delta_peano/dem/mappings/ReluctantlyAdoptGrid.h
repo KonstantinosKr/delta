@@ -61,6 +61,7 @@ class dem::mappings::ReluctantlyAdoptGrid {
         dem::Vertex&  vertexA);
 
   public:
+    static bool _loneMapRun;
     static iREAL _coarsenCoefficientReluctant;
     static iREAL _refinementCoefficientReluctant;
 

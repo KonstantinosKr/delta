@@ -39,6 +39,7 @@ peano::MappingSpecification   dem::mappings::AdoptGrid::descendSpecification(int
 
 tarch::logging::Log dem::mappings::AdoptGrid::_log( "dem::mappings::AdoptGrid" );
 tarch::multicore::BooleanSemaphore  		dem::mappings::AdoptGrid::_AdoptSemaphore;
+bool										dem::mappings::AdoptGrid::_loneMapRun;
 iREAL 									dem::mappings::AdoptGrid::_refinementCoefficient;
 iREAL 									dem::mappings::AdoptGrid::_coarsenCoefficient;
 
@@ -274,7 +275,10 @@ void dem::mappings::AdoptGrid::createHangingVertex(
 ) {
   logTraceInWith6Arguments( "createHangingVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
-  fineGridVertex.init();
+  if(_loneMapRun)
+  {
+	fineGridVertex.init();
+  }
 
   logTraceOutWith1Argument( "createHangingVertex(...)", fineGridVertex );
 }
@@ -290,11 +294,13 @@ void dem::mappings::AdoptGrid::destroyHangingVertex(
 ) {
   logTraceInWith6Arguments( "destroyHangingVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
-
-  //tarch::multicore::Lock lock(_AdoptSemaphore);
-  //liftAllParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator);
-  //lock.free();
-  //fineGridVertex.destroy();
+  if(_loneMapRun)
+  {
+	tarch::multicore::Lock lock(_AdoptSemaphore);
+	liftAllParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator);
+	lock.free();
+	fineGridVertex.destroy();
+  }
 
   logTraceOutWith1Argument( "destroyHangingVertex(...)", fineGridVertex );
 }
@@ -338,9 +344,13 @@ void dem::mappings::AdoptGrid::destroyVertex(
 ) {
   logTraceInWith6Arguments( "destroyVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
-  //tarch::multicore::Lock lock(_AdoptSemaphore);
-  //liftAllParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator);
-  //lock.free();
+  if(_loneMapRun)
+  {
+	tarch::multicore::Lock lock(_AdoptSemaphore);
+	liftAllParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator);
+	lock.free();
+	fineGridVertex.destroy();
+  }
 
   logTraceOutWith1Argument( "destroyVertex(...)", fineGridVertex );
 }

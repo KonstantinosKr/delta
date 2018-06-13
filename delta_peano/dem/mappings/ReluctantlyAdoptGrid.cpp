@@ -55,6 +55,7 @@ tarch::logging::Log                   dem::mappings::ReluctantlyAdoptGrid::_log(
 tarch::multicore::BooleanSemaphore    dem::mappings::ReluctantlyAdoptGrid::_ReluctantSemaphore;
 dem::State                            dem::mappings::ReluctantlyAdoptGrid::_backgroundTaskState;
 
+bool  dem::mappings::ReluctantlyAdoptGrid::_loneMapRun;
 iREAL dem::mappings::ReluctantlyAdoptGrid::_coarsenCoefficientReluctant;
 iREAL dem::mappings::ReluctantlyAdoptGrid::_refinementCoefficientReluctant;
 
@@ -407,7 +408,10 @@ void dem::mappings::ReluctantlyAdoptGrid::createHangingVertex(
 ) {
   logTraceInWith6Arguments( "createHangingVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
-  fineGridVertex.init();
+  if(_loneMapRun)
+  {
+	fineGridVertex.init();
+  }
 
   logTraceOutWith1Argument( "createHangingVertex(...)", fineGridVertex );
 }
@@ -423,12 +427,14 @@ void dem::mappings::ReluctantlyAdoptGrid::destroyHangingVertex(
 ) {
   logTraceInWith6Arguments( "destroyHangingVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
-  tarch::multicore::Lock lock(_ReluctantSemaphore);
-  liftAllParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator);
-  lock.free();
+  if(_loneMapRun)
+  {
+	tarch::multicore::Lock lock(_ReluctantSemaphore);
+	liftAllParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator);
+	lock.free();
 
-  fineGridVertex.destroy();
-
+	fineGridVertex.destroy();
+  }
   logTraceOutWith1Argument( "destroyHangingVertex(...)", fineGridVertex );
 }
 
@@ -443,7 +449,10 @@ void dem::mappings::ReluctantlyAdoptGrid::createInnerVertex(
 ) {
   logTraceInWith6Arguments( "createInnerVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
-  fineGridVertex.init();
+  if(_loneMapRun)
+  {
+	fineGridVertex.init();
+  }
 
   logTraceOutWith1Argument( "createInnerVertex(...)", fineGridVertex );
 }
@@ -459,7 +468,10 @@ void dem::mappings::ReluctantlyAdoptGrid::createBoundaryVertex(
 ) {
   logTraceInWith6Arguments( "createBoundaryVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
-  fineGridVertex.init();
+  if(_loneMapRun)
+  {
+	fineGridVertex.init();
+  }
 
   logTraceOutWith1Argument( "createBoundaryVertex(...)", fineGridVertex );
 }
@@ -475,12 +487,14 @@ void dem::mappings::ReluctantlyAdoptGrid::destroyVertex(
 ) {
   logTraceInWith6Arguments( "destroyVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
-  tarch::multicore::Lock lock(_ReluctantSemaphore);
-  liftAllParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator);
-  lock.free();
+  if(_loneMapRun)
+  {
+	tarch::multicore::Lock lock(_ReluctantSemaphore);
+	liftAllParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator);
+	lock.free();
 
-  fineGridVertex.destroy();
-
+	fineGridVertex.destroy();
+  }
   logTraceOutWith1Argument( "destroyVertex(...)", fineGridVertex );
 }
 

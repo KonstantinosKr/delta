@@ -221,7 +221,14 @@ void shutDistributedMemory()
   #endif
 }
 
-int dem::runners::Runner::run(int numberOfTimeSteps, Plot plot, dem::mappings::CreateGrid::GridType gridType, int tbbThreads, double stepSize, double realSnapshot, int useAutotuning)
+int dem::runners::Runner::run(
+	int numberOfTimeSteps,
+	Plot plot,
+	dem::mappings::CreateGrid::GridType gridType,
+	int tbbThreads,
+	double stepSize,
+	double realSnapshot,
+	int useAutotuning)
 {
   peano::geometry::Hexahedron geometry(tarch::la::Vector<DIMENSIONS,double>(1.0), tarch::la::Vector<DIMENSIONS,double>(0.0));
   dem::repositories::Repository* repository = dem::repositories::RepositoryFactory::getInstance().createWithSTDStackImplementation(geometry,
@@ -262,9 +269,11 @@ int dem::runners::Runner::runAsMaster(
 {
   peano::utils::UserInterface::writeHeader();
 
+  dem::mappings::AdoptGrid::_loneMapRun = true;
   dem::mappings::AdoptGrid::_refinementCoefficient = 1.8;
   dem::mappings::AdoptGrid::_coarsenCoefficient = 0.5;
 
+  dem::mappings::ReluctantlyAdoptGrid::_loneMapRun = true;
   dem::mappings::ReluctantlyAdoptGrid::_coarsenCoefficientReluctant = 1.8;
   dem::mappings::ReluctantlyAdoptGrid::_refinementCoefficientReluctant = 0.5;
 
@@ -332,6 +341,9 @@ int dem::runners::Runner::runAsMaster(
     elapsed = repository.getState().getTime() - timestamp;
     repository.getState().finishedTimeStep(initialStepSize);
   }
+
+  dem::mappings::AdoptGrid::_loneMapRun = false;
+  dem::mappings::ReluctantlyAdoptGrid::_loneMapRun = false;
 
   for (i=i+0; i<iterations; i++)
   {
