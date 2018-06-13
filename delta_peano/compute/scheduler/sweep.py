@@ -267,6 +267,7 @@ def jobList():
         for tasks in taskCounts:
             for parsedCores in coreCounts:
                 cores = parsedCores
+                print(cores)
                 if parsedCores=="auto":
                     cores=str(int(int(cpus) / int(tasks)))
                 for ompthread in ompthreadCounts:
@@ -277,20 +278,20 @@ def jobList():
 
                                 executable   = projectPath + execName
 
-                                cores = str(1)
-                                backtasks = 0
-                                tbbthread = 0
+                                tbbthread = str(off)
+                                backtasks = str(off)
 
-                                if cores == "omp":
+                                if "omp" in str(cores):
                                     cores = ompthread
+                                    print(cores)
                                 elif "serial" not in execName:
-                                    tbbthread = parameterDict["tbb-core-count"] #get core count from parameters
+                                    tbbthread = parameterDict["tbb-core-count"]
                                     if parameterDict["enable-tbb"] == "true" and changeJobScriptCores == True:
                                         cores = tbbthread
-
                                     backtasks = parameterDict["background-count"]
+                                elif serial in execName:
+                                    cores = str(1)
 
-                                jobName = ""
                                 jobName =   "s" + parameterDict["scenarios"] + \
                                             "-g" + parameterDict["grid-type"] + \
                                             "-cm" + parameterDict["collision-model"] + \
@@ -349,19 +350,20 @@ def generateScripts():
 
                                 executable   = projectPath + execName
 
-                                cores = str(1)
-                                backtasks = 0
-                                tbbthread = 0
+                                tbbthread = str(off)
+                                backtasks = str(off)
 
-                                if cores == "omp":
+                                if "omp" in str(cores):
                                     cores = ompthread
+                                    print(cores)
                                 elif "serial" not in execName:
-                                    tbbthread = parameterDict["tbb-core-count"] #get core count from parameters
+                                    tbbthread = parameterDict["tbb-core-count"]
                                     if parameterDict["enable-tbb"] == "true" and changeJobScriptCores == True:
                                         cores = tbbthread
                                     backtasks = parameterDict["background-count"]
+                                elif serial in execName:
+                                    cores = str(1)
 
-                                jobName = ""
                                 jobName =   "s" + parameterDict["scenarios"] + \
                                             "-g" + parameterDict["grid-type"] + \
                                             "-cm" + parameterDict["collision-model"] + \
