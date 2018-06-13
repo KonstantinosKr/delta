@@ -542,9 +542,13 @@ int main(int argc, char** argv)
   }
   //hybrid on triangle pairs fail rate histogram
   //hybrid on batches fail rate histogram
-  else if (collisionModel=="hybrid-stat")
+  else if (collisionModel=="hybrid-on-triangle-pairs-stat")
   {
-    dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::HybridStat;
+    dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::HybridTriangleStat;
+  }
+  else if (collisionModel=="hybrid-on-batches-stat")
+  {
+    dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::HybridBatchStat;
   }
   else if (collisionModel=="gjk") {
     dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::GJK;

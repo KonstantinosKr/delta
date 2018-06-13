@@ -464,21 +464,21 @@ void dem::mappings::Collision::collisionDetection(
     case CollisionModel::PenaltyTune:
 
       delta::contact::detection::penaltyStat(
-		  xCoordinatesA,
-		  yCoordinatesA,
-		  zCoordinatesA,
-		  numberOfTrianglesB,
-		  particleA.getEpsilon(),
-		  particleA.getFriction(),
-		  particleA.getGlobalParticleId(),
+							  xCoordinatesA,
+							  yCoordinatesA,
+							  zCoordinatesA,
+							  numberOfTrianglesB,
+							  particleA.getEpsilon(),
+							  particleA.getFriction(),
+							  particleA.getGlobalParticleId(),
 
-		  xCoordinatesB,
-		  yCoordinatesB,
-		  zCoordinatesB,
-		  numberOfTrianglesB,
-		  particleB.getEpsilon(),
-		  particleB.getFriction(),
-		  particleB.getGlobalParticleId());
+							  xCoordinatesB,
+							  yCoordinatesB,
+							  zCoordinatesB,
+							  numberOfTrianglesB,
+							  particleB.getEpsilon(),
+							  particleB.getFriction(),
+							  particleB.getGlobalParticleId());
 
       break;
     case CollisionModel::HybridOnBatches:
@@ -523,9 +523,30 @@ void dem::mappings::Collision::collisionDetection(
 							_collisionSemaphore);
 
       break;
-    case CollisionModel::HybridStat:
+    case CollisionModel::HybridTriangleStat:
 
       newContactPoints = delta::contact::detection::hybridTriangleStat(
+							xCoordinatesA,
+							yCoordinatesA,
+							zCoordinatesA,
+							numberOfTrianglesA,
+							particleA.getEpsilon(),
+							particleA.getFriction(),
+							particleA.getGlobalParticleId(),
+
+							xCoordinatesB,
+							yCoordinatesB,
+							zCoordinatesB,
+							numberOfTrianglesB,
+							particleB.getEpsilon(),
+							particleB.getFriction(),
+							particleB.getGlobalParticleId());
+
+      break;
+
+    case CollisionModel::HybridBatchStat:
+
+      newContactPoints = delta::contact::detection::hybridBatchStat(
 							xCoordinatesA,
 							yCoordinatesA,
 							zCoordinatesA,
