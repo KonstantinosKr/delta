@@ -441,7 +441,7 @@ extern void delta::contact::detection::penalty(
   zPB = zCoordinatesOfTriangleB[0]+(ED[2] * x[2])+(FD[2] * x[3]);
 }
  
-//statistics
+//iteration histogram
 void delta::contact::detection::penalty(
   const iREAL   xCoordinatesOfTriangleA[],
   const iREAL   yCoordinatesOfTriangleA[],

@@ -522,10 +522,12 @@ int main(int argc, char** argv)
     dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::Penalty;
     if(collisionModel=="sphere-penalty") {dem::mappings::Collision::_enableOverlapCheck = true;}
   }
-  else if (collisionModel=="penaltyStat") {
+  //penalty iterations histogram
+  //penalty fail rate - maybe no need for this one
+  else if (collisionModel=="penalty-stat") {
     dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::PenaltyStat;
   }
-  else if (collisionModel=="penaltyTune") {
+  else if (collisionModel=="penalty-tune") {
     dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::PenaltyTune;
   }
   else if((collisionModel=="hybrid-on-triangle-pairs") || (collisionModel=="sphere-hybrid-on-triangle-pairs"))
@@ -538,14 +540,14 @@ int main(int argc, char** argv)
     dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::HybridOnBatches;
     if(collisionModel=="sphere-hybrid-on-batches") {dem::mappings::Collision::_enableOverlapCheck = true;}
   }
-  else if ((collisionModel=="hybridStat") || (collisionModel=="sphere-hybridStat"))
+  //hybrid on triangle pairs fail rate histogram
+  //hybrid on batches fail rate histogram
+  else if (collisionModel=="hybrid-stat")
   {
     dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::HybridStat;
-    if(collisionModel=="sphere-hybridStat") {dem::mappings::Collision::_enableOverlapCheck = true;}
   }
   else if (collisionModel=="gjk") {
     dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::GJK;
-    if(collisionModel=="sphere-hybridStat") {dem::mappings::Collision::_enableOverlapCheck = true;}
   }
   else if (collisionModel=="none") {
       dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::none;
