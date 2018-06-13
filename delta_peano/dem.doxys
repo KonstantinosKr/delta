@@ -53,7 +53,7 @@
   setenv CC Intel
   module load gcc/4.9.1
   
-  setenv TBB_INC "-I/opt/intel/tbb/include/"
+  setenv TBB_INC "-I/ddn/apps/Cluster-Apps/intel/xe_2017.2/tbb/include/"
   setenv TBB_SHLIB "-L/ddn/apps/Cluster-Apps/intel/xe_2017.2/tbb/lib/intel64/gcc4.7/ -ltbb"
   
   setenv LD_LIBRARY_PATH /ddn/home/rfmw74/libraries/assimp/lib/:$LD_LIBRARY_PATH
