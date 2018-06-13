@@ -233,7 +233,6 @@ void dem::mappings::ReluctantlyAdoptGrid::touchVertexFirstTime(
                                       &currentParticle._persistentRecords._orientation(0),
                                       &currentParticle._persistentRecords._inertia(0),
                                       &currentParticle._persistentRecords._inverse(0),
-                                      currentParticle.getMass(), //why mass is passed here, remove if not used
                                       torque, timeStepSize);
     }
   }

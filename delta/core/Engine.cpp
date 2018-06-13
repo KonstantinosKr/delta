@@ -179,7 +179,7 @@ void delta::core::Engine::contactDetection()
 	  }
 
 	  std::vector<delta::contact::contactpoint> newContactPoints;
-
+/*
 	  switch (_collisionModel) {
 		case CollisionModel::Sphere:
 		if(
@@ -324,7 +324,7 @@ void delta::core::Engine::contactDetection()
 		break;
 		case CollisionModel::none:
 		break;
-	  }
+	  }*/
 
 	  if(!newContactPoints.empty()) {
 		delta::core::Engine::addCollision(newContactPoints, particleA, particleB, _collisionModel == CollisionModel::Sphere);

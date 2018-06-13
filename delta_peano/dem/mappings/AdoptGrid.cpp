@@ -290,16 +290,11 @@ void dem::mappings::AdoptGrid::destroyHangingVertex(
 ) {
   logTraceInWith6Arguments( "destroyHangingVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
-<<<<<<< Updated upstream
+
   //tarch::multicore::Lock lock(_AdoptSemaphore);
   //liftAllParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator);
   //lock.free();
   //fineGridVertex.destroy();
-=======
-  tarch::multicore::Lock lock(_AdoptSemaphore);
-  liftAllParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator);
-  lock.free();
->>>>>>> Stashed changes
 
   logTraceOutWith1Argument( "destroyHangingVertex(...)", fineGridVertex );
 }
@@ -346,13 +341,6 @@ void dem::mappings::AdoptGrid::destroyVertex(
   //tarch::multicore::Lock lock(_AdoptSemaphore);
   //liftAllParticles(fineGridVertex,coarseGridVertices,coarseGridVerticesEnumerator);
   //lock.free();
-
-<<<<<<< Updated upstream
-  //assertion( fineGridVertex.getNumberOfParticles()==0 );
-  //fineGridVertex.destroy();
-=======
-  assertion( fineGridVertex.getNumberOfParticles()==0 );
->>>>>>> Stashed changes
 
   logTraceOutWith1Argument( "destroyVertex(...)", fineGridVertex );
 }

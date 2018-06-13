@@ -1,4 +1,3 @@
-#include <delta/core/sys.h>
 #include "dem/runners/Runner.h"
 
 #include "dem/repositories/Repository.h"

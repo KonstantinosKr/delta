@@ -8,8 +8,6 @@
 #ifndef DEM_MAPPINGS_MoveParticles_H_
 #define DEM_MAPPINGS_MoveParticles_H_
 
-
-#include "../../delta/core/sys.h"
 #include "tarch/logging/Log.h"
 #include "tarch/la/Vector.h"
 
