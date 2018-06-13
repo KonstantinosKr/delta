@@ -281,13 +281,12 @@ def jobList():
                                 backtasks = 0
                                 tbbthread = 0
 
-                                if "serial" not in execName:
+                                if cores == "omp":
+                                    cores = ompthread
+                                elif "serial" not in execName:
                                     tbbthread = parameterDict["tbb-core-count"] #get core count from parameters
                                     if parameterDict["enable-tbb"] == "true" and changeJobScriptCores == True:
                                         cores = tbbthread
-
-                                    if cores == "omp":
-                                        cores = ompthread
 
                                     backtasks = parameterDict["background-count"]
 
@@ -350,19 +349,16 @@ def generateScripts():
 
                                 executable   = projectPath + execName
 
-
                                 cores = str(1)
                                 backtasks = 0
                                 tbbthread = 0
 
-                                if "serial" not in execName:
+                                if cores == "omp":
+                                    cores = ompthread
+                                elif "serial" not in execName:
                                     tbbthread = parameterDict["tbb-core-count"] #get core count from parameters
                                     if parameterDict["enable-tbb"] == "true" and changeJobScriptCores == True:
                                         cores = tbbthread
-
-                                    if cores == "omp":
-                                        cores = ompthread
-
                                     backtasks = parameterDict["background-count"]
 
                                 jobName = ""
