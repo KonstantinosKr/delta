@@ -918,7 +918,7 @@ void dem::mappings::Collision::beginIteration(
   if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::PenaltyStat)
   delta::contact::detection::cleanPenaltyStatistics();
 
-  if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::HybridStat)
+  if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::HybridBatchStat)
   delta::contact::detection::cleanHybridStatistics();
 
   tarch::multicore::jobs::startToProcessBackgroundJobs();
@@ -957,7 +957,7 @@ void dem::mappings::Collision::endIteration(
 	  }
 	}
 
-	if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::HybridStat)
+	if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::HybridBatchStat)
 	{
 	  logInfo( "endIteration(State)", std::endl
 								 << "Penalty Fails: " << delta::contact::detection::getPenaltyFails() << " PenaltyFail avg: " << (iREAL)delta::contact::detection::getPenaltyFails()/(iREAL)delta::contact::detection::getBatchSize() << std::endl
