@@ -94,7 +94,7 @@ void dem::mappings::liftAllParticles(
       destinationVertex(d) = fineGridVertex.getParticle(i).getCentre(d) < coarseGridVerticesEnumerator.getCellCenter()(d) ? 0 : 1;
     }
     coarseGridVertices[ coarseGridVerticesEnumerator(destinationVertex) ].appendParticle( fineGridVertex.getParticle(i) );
-    printf("lifted particle:%i\n", fineGridVertex.getParticle(i).getGlobalParticleId());
+    //printf("lifted particle:%i\n", fineGridVertex.getParticle(i).getGlobalParticleId());
   }
 }
 
@@ -316,6 +316,8 @@ void dem::mappings::AdoptGrid::createInnerVertex(
 ) {
   logTraceInWith6Arguments( "createInnerVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
 
+  fineGridVertex.init();
+
   logTraceOutWith1Argument( "createInnerVertex(...)", fineGridVertex );
 }
 
@@ -329,6 +331,8 @@ void dem::mappings::AdoptGrid::createBoundaryVertex(
       const tarch::la::Vector<DIMENSIONS,int>&                             fineGridPositionOfVertex
 ) {
   logTraceInWith6Arguments( "createBoundaryVertex(...)", fineGridVertex, fineGridX, fineGridH, coarseGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfVertex );
+
+  fineGridVertex.init();
 
   logTraceOutWith1Argument( "createBoundaryVertex(...)", fineGridVertex );
 }

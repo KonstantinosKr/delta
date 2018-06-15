@@ -277,6 +277,7 @@ int dem::runners::Runner::runAsMaster(
   dem::mappings::ReluctantlyAdoptGrid::_coarsenCoefficientReluctant = 1.8;
   dem::mappings::ReluctantlyAdoptGrid::_refinementCoefficientReluctant = 0.5;
 
+  //dem::mappings::FlopAdoptGrid::_loneMapRun = true;
   //dem::mappings::FlopAdoptGrid::_coarsenCoefficient = 1.8;
   //dem::mappings::FlopAdoptGrid::_refinementCoefficient = 0.5;
 
