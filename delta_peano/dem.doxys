@@ -41,6 +41,8 @@
   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/intel/tbb/lib/
   export TBB_INC=-I/opt/intel/tbb/include/
   export TBB_SHLIB="-L/opt/intel/tbb/lib/ -ltbb"
+  export TBB_INC=-I/opt/intel/compilers_and_libraries_2018.3.185/mac/tbb/include/
+  export TBB_SHLIB="-L/opt/intel/compilers_and_libraries_2018.3.185/mac/tbb/lib/ -ltbb"
   export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:/opt/intel/compilers_and_libraries/linux/lib/intel64/
   export PATH=/opt/intel/bin/:$PATH
 
