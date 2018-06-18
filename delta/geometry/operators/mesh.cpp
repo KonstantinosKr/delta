@@ -13,7 +13,9 @@ void delta::geometry::operators::mesh::moveMeshFromPositionToOrigin(
     std::vector<iREAL> &zCoordinates,
     iREAL center[3])
 {
-  #pragma omp parallel for
+  #ifdef OMPProcess
+	#pragma omp parallel for
+  #endif
   for(unsigned i=0;i<xCoordinates.size();i++)
   {
     xCoordinates[i] = xCoordinates[i]-center[0];
@@ -28,7 +30,9 @@ void delta::geometry::operators::mesh::moveMeshFromOriginToPosition(
     std::vector<iREAL> &zCoordinates,
     iREAL center[3])
 {
-  #pragma omp parallel for
+  #ifdef OMPProcess
+	#pragma omp parallel for
+  #endif
   for(unsigned i=0;i<xCoordinates.size();i++)
   {
     xCoordinates[i] = (xCoordinates[i])+center[0];
@@ -46,7 +50,9 @@ void delta::geometry::operators::mesh::scaleXYZ(
 {
   delta::geometry::operators::mesh::moveMeshFromPositionToOrigin(xCoordinates, yCoordinates, zCoordinates, position);
 
-  #pragma omp parallel for
+  #ifdef OMPProcess
+	#pragma omp parallel for
+  #endif
   for(unsigned i=0;i<xCoordinates.size();i++)
   {
       xCoordinates[i] = xCoordinates[i]*scale;
@@ -64,7 +70,9 @@ void delta::geometry::operators::mesh::rotateX(
 {
   const iREAL pi = std::acos(-1);
 
-  #pragma omp parallel for
+  #ifdef OMPProcess
+	#pragma omp parallel for
+  #endif
   for (unsigned i=0;i<xCoordinates.size(); i++)
   {
       iREAL x = xCoordinates[i];
@@ -90,8 +98,9 @@ void delta::geometry::operators::mesh::rotateY(
     iREAL alphaY)
 {
   const iREAL pi = std::acos(-1);
-
-  #pragma omp parallel for
+  #ifdef OMPProcess
+	#pragma omp parallel for
+  #endif
   for (unsigned i=0;i<xCoordinates.size(); i++) {
       iREAL x = xCoordinates[i];
       iREAL y = yCoordinates[i];
@@ -117,7 +126,9 @@ void delta::geometry::operators::mesh::rotateZ(
 {
   const iREAL pi = std::acos(-1);
 
-  #pragma omp parallel for
+  #ifdef OMPProcess
+	#pragma omp parallel for
+  #endif
   for (unsigned i=0;i<xCoordinates.size(); i++) {
       iREAL x = xCoordinates[i];
       iREAL y = yCoordinates[i];
