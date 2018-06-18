@@ -111,10 +111,13 @@ namespace delta {
 		const int       particleB
 		);
 #endif
-
-	  #pragma omp declare simd
-	  #pragma omp declare simd linear(xCoordinatesOfTriangleA:3) linear(yCoordinatesOfTriangleA:3) linear(zCoordinatesOfTriangleA:3) linear(xCoordinatesOfTriangleB:3) linear(yCoordinatesOfTriangleB:3) linear(zCoordinatesOfTriangleB:3) nomask notinbranch
-	  extern void penalty(
+        
+      
+      #ifdef OMPProcess
+	    #pragma omp declare simd
+	    #pragma omp declare simd linear(xCoordinatesOfTriangleA:3) linear(yCoordinatesOfTriangleA:3) linear(zCoordinatesOfTriangleA:3) linear(xCoordinatesOfTriangleB:3) linear(yCoordinatesOfTriangleB:3) linear(zCoordinatesOfTriangleB:3) nomask notinbranch
+      #endif
+      extern void penalty(
 		const iREAL   *xCoordinatesOfTriangleA,
 		const iREAL   *yCoordinatesOfTriangleA,
 		const iREAL   *zCoordinatesOfTriangleA,
