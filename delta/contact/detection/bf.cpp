@@ -89,7 +89,9 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::bf(
 	for(std::vector<int>::size_type iA=0; iA<r.size(); iA+=3)
 #else
   #ifdef OMPTriangle
-	#pragma omp parallel for shared(result) firstprivate(numberOfTrianglesA, numberOfTrianglesB, epsilonA, epsilonB, frictionA, frictionB, particleA, particleB, xCoordinatesOfPointsOfGeometryA, yCoordinatesOfPointsOfGeometryA, zCoordinatesOfPointsOfGeometryA, xCoordinatesOfPointsOfGeometryB, yCoordinatesOfPointsOfGeometryB, zCoordinatesOfPointsOfGeometryB)
+	#ifdef OMPProcess
+	  #pragma omp parallel for shared(result) firstprivate(numberOfTrianglesA, numberOfTrianglesB, epsilonA, epsilonB, frictionA, frictionB, particleA, particleB, xCoordinatesOfPointsOfGeometryA, yCoordinatesOfPointsOfGeometryA, zCoordinatesOfPointsOfGeometryA, xCoordinatesOfPointsOfGeometryB, yCoordinatesOfPointsOfGeometryB, zCoordinatesOfPointsOfGeometryB)
+	#endif
   #endif
   for(int iA=0; iA<numberOfTrianglesA; iA+=3)
 #endif
@@ -97,7 +99,9 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::bf(
     __attribute__ ((aligned(byteAlignment))) contactpoint *nearestContactPoint = nullptr;
     __attribute__ ((aligned(byteAlignment))) iREAL dd = epsilonA+epsilonB;
 
-    #pragma omp simd
+	#ifdef OMPProcess
+	  #pragma omp simd
+	#endif
     for(int iB=0; iB<numberOfTrianglesB; iB+=3)
     {
       __attribute__ ((aligned(byteAlignment))) iREAL epsilonMargin = (epsilonA+epsilonB);

@@ -89,10 +89,10 @@ namespace delta {
 	   *
 	   * @param xPA Output parameter. x coordinate on triangle A.
 	   */
-      #ifdef OMPProcess
-      #pragma omp declare simd
-      #endif
-      void bf(
+	  #ifdef OMPProcess
+		#pragma omp declare simd
+	  #endif
+	  void bf(
 		const iREAL   *xCoordinatesOfTriangleA,
 		const iREAL   *yCoordinatesOfTriangleA,
 		const iREAL   *zCoordinatesOfTriangleA,

@@ -709,7 +709,9 @@ delta::geometry::mesh::Mesh *delta::geometry::primitive::cube::generateHullCube(
 
   const iREAL pi = std::acos(-1);
 
-  #pragma omp parallel for
+  #ifdef OMPProcess
+	#pragma omp parallel for
+  #endif
   for (unsigned i=0;i<xCoordinates.size(); i++) {
     iREAL xc = xCoordinates[i];
     iREAL yc = yCoordinates[i];
@@ -726,7 +728,9 @@ delta::geometry::mesh::Mesh *delta::geometry::primitive::cube::generateHullCube(
     zCoordinates[i] =   M[6] * xc + M[7] * yc + M[8] * zc;
   }
 
-  #pragma omp parallel for
+  #ifdef OMPProcess
+	#pragma omp parallel for
+  #endif
   for (unsigned i=0;i<xCoordinates.size(); i++) {
     iREAL xc = xCoordinates[i];
     iREAL yc = yCoordinates[i];
@@ -743,7 +747,9 @@ delta::geometry::mesh::Mesh *delta::geometry::primitive::cube::generateHullCube(
     zCoordinates[i] =   M[6] * xc + M[7] * yc + M[8] * zc;
   }
 
-  #pragma omp parallel for
+  #ifdef OMPProcess
+	#pragma omp parallel for
+  #endif
   for (unsigned i=0;i<xCoordinates.size(); i++) {
     iREAL xc = xCoordinates[i];
     iREAL yc = yCoordinates[i];
@@ -760,7 +766,9 @@ delta::geometry::mesh::Mesh *delta::geometry::primitive::cube::generateHullCube(
     zCoordinates[i] =   M[6] * xc + M[7] * yc + M[8] * zc;
   }
 
-  #pragma omp parallel for
+  #ifdef OMPProcess
+	#pragma omp parallel for
+  #endif
   for (unsigned i=0;i<xCoordinates.size(); i++) {
     xCoordinates[i] += center[0];
     yCoordinates[i] += center[1];

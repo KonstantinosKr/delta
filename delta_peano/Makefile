@@ -18,8 +18,8 @@ LINK_LIBS=$(ASSIMP_LIB)
 
 ##############################################################################################
 
-GCC_OMP_SHAREDMEMORY=-fopenmp
-ICC_OMP_SHAREDMEMORY=-qopenmp -qopt-threads-per-core=1
+GCC_OMP_SHAREDMEMORY=-fopenmp -DOMPProcess
+ICC_OMP_SHAREDMEMORY=-qopenmp -qopt-threads-per-core=1 -DOMPProcess
 
 ##############################################################################################
 

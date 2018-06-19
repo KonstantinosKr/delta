@@ -5,6 +5,7 @@
  *      Author: konstantinos
  */
 
+#include "delta/geometry/mesh/Mesh.h"
 #include "delta/metrics/pairwise.h"
 #include "delta/core/algo.h"
 #include <vector>
