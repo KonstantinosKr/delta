@@ -9,6 +9,7 @@
 #define DELTA_CONTACT_DETECTION_POINT_H_
 
 #include "delta/contact/contactpoint.h"
+#include <vector>
 
 namespace delta {
   namespace contact {
