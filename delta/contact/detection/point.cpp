@@ -259,7 +259,8 @@ iREAL   			epsilonB)
 	yPB = Q[1];
 	zPB = Q[2];
 
-	contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, particleA, xPB, yPB, zPB, epsilonB, particleB, false);
+	contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, particleA, TP1, TP2, TP3. xPB, yPB, zPB, epsilonB, particleB, false);
+	//contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, particleA, xPB, yPB, zPB, epsilonB, particleB, false);
 
 	if(newContactPoint.getDistance() <= (epsilonA+epsilonB))
 	{

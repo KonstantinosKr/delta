@@ -38,6 +38,9 @@ delta::contact::contactpoint::contactpoint(
   const iREAL&  epsilonA,
   const int 		masterID,
 
+  iREAL TP1[3],
+  iREAL TP2[3],
+  iREAL TP3[3],
   const iREAL&  xQB,
   const iREAL&  yQB,
   const iREAL&  zQB,
