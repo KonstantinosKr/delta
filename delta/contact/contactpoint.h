@@ -74,23 +74,23 @@ struct delta::contact::contactpoint {
     const bool&    	type
   );
 
-contactpoint(
-  const iREAL&  xPA,
-  const iREAL&  yPA,
-  const iREAL&  zPA,
-  const iREAL&  epsilonA,
-  const int 		masterID,
+  contactpoint(
+	const iREAL&  	xPA,
+	const iREAL&  	yPA,
+	const iREAL&  	zPA,
+	const iREAL&  	epsilonA,
+	const int		masterID,
 
-  iREAL TP1[3],
-  iREAL TP2[3],
-  iREAL TP3[3],
-  const iREAL&  xQB,
-  const iREAL&  yQB,
-  const iREAL&  zQB,
-  const iREAL&  epsilonB,
-  const int 		slaveID,
-  const bool&	type
-)
+	iREAL 			TP1[3],
+	iREAL 			TP2[3],
+	iREAL 			TP3[3],
+	const iREAL&  	xQB,
+	const iREAL&  	yQB,
+	const iREAL& 	zQB,
+	const iREAL&  	epsilonB,
+	const int 		slaveID,
+	const bool&		type
+  );
 
   /**
    * Get distance from contact point to next triangle.

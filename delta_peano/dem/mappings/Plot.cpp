@@ -199,7 +199,7 @@ void dem::mappings::Plot::drawParticle(
 
       int vertexPIndex = _vertexWriter->plotVertex(np);
       int dataPointIndex = _cellWriter->plotPoint(vertexPIndex);
-      _type->plotCell(dataPointIndex,6); //mesh direction
+      _type->plotCell(dataPointIndex,6); //mesh direction/normal
       _level->plotCell(dataPointIndex,coarseGridVerticesEnumerator.getLevel()+1);
       _faceVertexAssociation->plotCell(dataPointIndex,_vertexCounter);
 

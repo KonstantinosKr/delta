@@ -77,6 +77,46 @@ delta::contact::contactpoint::contactpoint(
 #if defined(OMPProcess) || defined(OMPTriangle)
 #pragma omp declare simd notinbranch
 #endif
+delta::contact::contactpoint::contactpoint(
+  const iREAL&  xPA,
+  const iREAL&  yPA,
+  const iREAL&  zPA,
+  const iREAL&  epsilonA,
+  const int 		masterID,
+
+  const iREAL&  xQB,
+  const iREAL&  yQB,
+  const iREAL&  zQB,
+  const iREAL&  epsilonB,
+  const int 		slaveID,
+  const bool&	type
+) {
+  x[0] = (xPA+xQB)/2.0;
+  x[1] = (yPA+yQB)/2.0;
+  x[2] = (zPA+zQB)/2.0;
+
+  P[0] = xPA;
+  P[1] = yPA;
+  P[2] = zPA;
+
+  Q[0] = xQB;
+  Q[1] = yQB;
+  Q[2] = zQB;
+
+  epsilonTotal = epsilonA+epsilonB;
+
+  depth = (epsilonTotal - getDistance());
+
+  normal[0] = ((xPA-xQB)/getDistance());
+  normal[1] = ((yPA-yQB)/getDistance());
+  normal[2] = ((zPA-zQB)/getDistance());
+
+  friction = type;
+
+  master = masterID;
+  slave = slaveID;
+}
+
 iREAL delta::contact::contactpoint::getDistance() const {
   return std::sqrt(((Q[0]-P[0])*(Q[0]-P[0]))+((Q[1]-P[1])*(Q[1]-P[1]))+((Q[2]-P[2])*(Q[2]-P[2])));
 }

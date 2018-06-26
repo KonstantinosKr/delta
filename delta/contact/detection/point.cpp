@@ -226,7 +226,6 @@ iREAL   			epsilonB)
   for(int i=0; i<numberOfTrianglesOfGeometryB*3; i+=3)
   {
 	iREAL P[3], Q[3];
-	iREAL xPA, yPA, zPA, xPB, yPB, zPB;
 
 	iREAL TP1[3], TP2[3], TP3[3];
 	TP1[0] = xCoordinatesOfPointsOfGeometryB[i];
@@ -251,6 +250,8 @@ iREAL   			epsilonB)
 	iREAL ynormal = (Q[1] - P[1])/(distance);
 	iREAL znormal = (Q[2] - P[2])/(distance);
 
+	iREAL xPA, yPA, zPA, xPB, yPB, zPB;
+
 	xPA = P[0] + (xnormal);
 	yPA = P[1] + (ynormal);
 	zPA = P[2] + (znormal);
@@ -259,7 +260,7 @@ iREAL   			epsilonB)
 	yPB = Q[1];
 	zPB = Q[2];
 
-	contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, particleA, TP1, TP2, TP3. xPB, yPB, zPB, epsilonB, particleB, false);
+	contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, particleA, TP1, TP2, TP3, xPB, yPB, zPB, epsilonB, particleB, false);
 	//contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, particleA, xPB, yPB, zPB, epsilonB, particleB, false);
 
 	if(newContactPoint.getDistance() <= (epsilonA+epsilonB))
