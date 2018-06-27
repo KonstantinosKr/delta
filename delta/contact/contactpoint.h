@@ -43,11 +43,11 @@ struct delta::contact::contactpoint {
   iREAL 	depth;
   iREAL 	P[3];
   iREAL 	Q[3];
-  bool 	friction;
+  bool 	    friction;
   iREAL 	epsilonTotal;
-  int 	master;
-  int 	slave;
-
+  int 	    master;
+  int 	    slave;
+  int       penetration;
   contactpoint();
   contactpoint(const contactpoint& copy);
 

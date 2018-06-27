@@ -246,25 +246,9 @@ iREAL   			epsilonB)
 
 	iREAL distance = delta::contact::detection::pt(TP1, TP2, TP3, P, Q);
 
-	iREAL xnormal = (Q[0] - P[0])/(distance);
-	iREAL ynormal = (Q[1] - P[1])/(distance);
-	iREAL znormal = (Q[2] - P[2])/(distance);
-
-	iREAL xPA, yPA, zPA, xPB, yPB, zPB;
-
-	xPA = P[0] + (xnormal);
-	yPA = P[1] + (ynormal);
-	zPA = P[2] + (znormal);
-
-	xPB = Q[0];
-	yPB = Q[1];
-	zPB = Q[2];
-
-	contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, particleA, TP1, TP2, TP3, xPB, yPB, zPB, epsilonB, particleB, false);
-	//contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, particleA, xPB, yPB, zPB, epsilonB, particleB, false);
-
-	if(newContactPoint.getDistance() <= (epsilonA+epsilonB))
+	if(distance <= (epsilonA+epsilonB))
 	{
+	  contactpoint newContactPoint(P[0], P[1], P[2], epsilonA, particleA, TP1, TP2, TP3, Q[0], Q[1], Q[2], epsilonB, particleB, false);
 	  result.push_back( newContactPoint );
 	}
   }

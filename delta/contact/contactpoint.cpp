@@ -1,5 +1,5 @@
 #include <delta/contact/contactpoint.h>
-
+#include <delta/core/algo.h>
 delta::contact::contactpoint::contactpoint(){}
 
 delta::contact::contactpoint::contactpoint(const contactpoint& copy) {
@@ -26,6 +26,7 @@ delta::contact::contactpoint::contactpoint(const contactpoint& copy) {
 
   master = copy.master;
   slave = copy.slave;
+  penetration = copy.penetration;
 }
 
 #if defined(OMPProcess) || defined(OMPTriangle)
@@ -64,10 +65,44 @@ delta::contact::contactpoint::contactpoint(
 
   depth = (epsilonTotal - getDistance());
 
-  normal[0] = ((xPA-xQB)/getDistance());
-  normal[1] = ((yPA-yQB)/getDistance());
-  normal[2] = ((zPA-zQB)/getDistance());
+  //face vector of triangle
+  iREAL V[3], W[3], N[3];
+  V[0] = TP2[0] - TP1[0];
+  V[1] = TP2[1] - TP1[1];
+  V[2] = TP2[2] - TP1[2];
+                              
+  W[0] = TP3[0] - TP2[0];
+  W[1] = TP3[1] - TP2[1];
+  W[2] = TP3[2] - TP2[2];
+                                                   
+  N[0] = (V[1]*W[2])-(V[2]*W[1]);
+  N[1] = (V[2]*W[0])-(V[0]*W[2]);
+  N[2] = (V[0]*W[1])-(V[1]*W[0]);
+                                                                        
+  iREAL mag = std::sqrt((N[0]*N[0])+(N[1]*N[1])+(N[2]*N[2]));
+                                                                               
+  iREAL np[3];
+  np[0] = N[0]/mag;
+  np[1] = N[1]/mag;
+  np[2] = N[2]/mag;
 
+  normal[0] = ((P[0]-Q[0])/getDistance());
+  normal[1] = ((P[1]-Q[1])/getDistance());
+  normal[2] = ((P[2]-Q[2])/getDistance());
+
+  //direction is less than 0 then vectors point opposite direction (contact inside of body)
+  //direction is more than 0 then vecotrs point same direction (contact outside of body)
+  iREAL direction = DOT(np, normal);
+  if(direction < 0.0) 
+  {
+    penetration = -1;
+    printf("direction:%f\n", direction);
+  } 
+  else
+  {
+    penetration = 1;
+  }
+  
   friction = type;
 
   master = masterID;
@@ -115,6 +150,7 @@ delta::contact::contactpoint::contactpoint(
 
   master = masterID;
   slave = slaveID;
+  penetration = 1;
 }
 
 iREAL delta::contact::contactpoint::getDistance() const {
