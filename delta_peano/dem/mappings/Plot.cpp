@@ -218,7 +218,7 @@ void dem::mappings::Plot::drawParticle(
 
       iREAL mag = std::sqrt((N[0]*N[0])+(N[1]*N[1])+(N[2]*N[2]));
 
-      np = N[0]/mag, N[1]/mag, N[2]/mag;
+      np = N[0]/mag, N[1]/mag, N[2]/mag; //normal direction
 
       _velocitiesAndNormals->plotVertex(vertexPIndex, np);
       _frictionNormals->plotVertex(vertexPIndex, 0);
