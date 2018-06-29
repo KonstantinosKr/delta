@@ -485,7 +485,7 @@ void delta::core::Engine::updatePosition()
   }
 }
 
-std::vector<delta::core::data::ParticleRecord> delta::core::Engine::getParticleRecords()
+std::vector<delta::core::data::ParticleRecord>& delta::core::Engine::getParticleRecords()
 {
   return _data.getAll();
 }

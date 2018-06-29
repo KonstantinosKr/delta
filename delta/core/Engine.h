@@ -80,7 +80,7 @@ class delta::core::Engine
 	void contactDetection();
 	void deriveForces();
 	void updatePosition();
-	std::vector<delta::core::data::ParticleRecord> getParticleRecords();
+	std::vector<delta::core::data::ParticleRecord>& getParticleRecords();
 
 
   private:
