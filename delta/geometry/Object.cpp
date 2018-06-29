@@ -347,24 +347,6 @@ void delta::geometry::Object::setInertia(iREAL inertia[9])
   _inertia[8] = inertia[8];
 }
 
-void delta::geometry::Object::setOrientation(iREAL orientation[9])
-{
-  _orientation[0] = orientation[0];
-  _orientation[1] = orientation[1];
-  _orientation[2] = orientation[2];
-  _orientation[3] = orientation[3];
-  _orientation[4] = orientation[4];
-  _orientation[5] = orientation[5];
-  _orientation[6] = orientation[6];
-  _orientation[7] = orientation[7];
-  _orientation[8] = orientation[8];
-}
-
-std::array<iREAL, 9>	delta::geometry::Object::getOrientation()
-{
-  return _orientation;
-}
-
 std::array<iREAL, 9> delta::geometry::Object::getInverse()
 {
   return _inverse;
@@ -388,18 +370,6 @@ std::array<iREAL, 3> delta::geometry::Object::getCentreOfMass()
   return _centreOfMass;
 }
 
-void delta::geometry::Object::setRefCentreOfMass(iREAL refCentreOfMass[3])
-{
-  _refCentreOfMass[0] = refCentreOfMass[0];
-  _refCentreOfMass[1] = refCentreOfMass[1];
-  _refCentreOfMass[2] = refCentreOfMass[2];
-}
-
-std::array<iREAL, 3> delta::geometry::Object::getRefCentreOfMass()
-{
-  return _refCentreOfMass;
-}
-
 void delta::geometry::Object::setCentreOfMass(iREAL centreOfMass[3])
 {
   _centreOfMass[0] = centreOfMass[0];
@@ -421,13 +391,6 @@ void delta::geometry::Object::setAngularVelocity(std::array<iREAL, 3>  angularVe
   this->_angularVelocity[2] = angularVelocity[2];
 }
 
-void delta::geometry::Object::setRefAngularVelocity(std::array<iREAL, 3>  refAngularVelocity)
-{
-  this->_refAngularVelocity[0] = refAngularVelocity[0];
-  this->_refAngularVelocity[1] = refAngularVelocity[1];
-  this->_refAngularVelocity[2] = refAngularVelocity[2];
-}
-
 std::array<iREAL, 3> delta::geometry::Object::getLinearVelocity()
 {
   return _linearVelocity;
@@ -436,11 +399,6 @@ std::array<iREAL, 3> delta::geometry::Object::getLinearVelocity()
 std::array<iREAL, 3> delta::geometry::Object::getAngularVelocity()
 {
   return _angularVelocity;
-}
-
-std::array<iREAL, 3> delta::geometry::Object::getRefAngularVelocity()
-{
-  return _refAngularVelocity;
 }
 
 iREAL delta::geometry::Object::computeVolume()
@@ -488,6 +446,11 @@ void delta::geometry::Object::computeInverseInertia(
   delta::geometry::operators::physics::computeInverseInertia(inertia, inverse, isObject);
 
   this->setInverse(inverse);
+}
+
+bool delta::geometry::Object::getIsConvex()
+{
+  return _isConvex;
 }
 
 delta::geometry::Object::~Object() {

@@ -12,6 +12,11 @@
 #include <delta/geometry/hardcoded/cube.h>
 #include <delta/geometry/hardcoded/granulate.h>
 
+
+#include <delta/geometry/material.h>
+#include "delta/geometry/structures/Mesh.h"
+
+
 void delta::world::scenarios::hopper(
 	std::vector<delta::geometry::Object> &coarse,
 	std::vector<delta::geometry::Object> &insitu,
@@ -105,7 +110,7 @@ void delta::world::scenarios::turbine(
 	int 										meshDensity,
 	iREAL 									epsilon)
 {
-  delta::geometry::mesh::Mesh *meshA = delta::core::readPartGeometry("input/turbine.stl");
+  delta::geometry::mesh::Mesh *meshA = delta::core::io::readPartGeometry("input/turbine.stl");
 
   std::array<iREAL, 3> 					centre 	= {0.5, 0.5, 0.43};
   std::array<iREAL, 3> 					linear 	= {0.0, 0.0, 0.0};
@@ -118,7 +123,7 @@ void delta::world::scenarios::turbine(
 
   coarseObjects.push_back(turbineA);
 
-  delta::geometry::mesh::Mesh *meshB = delta::core::readPartGeometry("input/turbine.stl");
+  delta::geometry::mesh::Mesh *meshB = delta::core::io::readPartGeometry("input/turbine.stl");
 
   centre 	= {0.5, 0.5, 0.57};
   linear 	= {0.0, 0.0, 0.0};

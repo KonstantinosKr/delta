@@ -40,7 +40,7 @@ delta::geometry::mesh::Mesh *delta::geometry::primitive::granulate::loadParticle
 
   char fileinput[100] = "input/rock.vtk";
 
-  delta::geometry::mesh::Mesh *mesh =  delta::core::readVTKGeometry(fileinput);
+  delta::geometry::mesh::Mesh *mesh =  delta::core::io::readVTKGeometry(fileinput);
 
   iREAL diagonal = mesh->computeDiagonal();
   mesh->scaleXYZ(h/1.0/diagonal);

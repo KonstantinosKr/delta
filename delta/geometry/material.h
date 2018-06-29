@@ -5,8 +5,9 @@
  *      Author: konstantinos
  */
 
-#ifndef DELTA_GEOMETRY_MATERIAL_H_
-#define DELTA_GEOMETRY_MATERIAL_H_
+
+#ifndef GEOMETRY_MATERIAL_H_
+#define GEOMETRY_MATERIAL_H_
 
 #include <map>
 

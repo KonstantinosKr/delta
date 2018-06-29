@@ -5,6 +5,9 @@
 #include <iomanip>
 #include <limits>
 
+#ifndef _DELTA_FORCES_H_
+#define _DELTA_FORCES_H_
+
 #define NNMUL(A, B, C)\
 {\
  (C) [0] = (A)[0]*(B)[0]+(A)[3]*(B)[1]+(A)[6]*(B)[2];\
@@ -193,3 +196,6 @@ namespace delta {
 	}
   }
 }
+
+
+#endif

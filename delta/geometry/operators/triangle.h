@@ -22,8 +22,8 @@
  SOFTWARE.
  */
 
-#ifndef DELTA_geometry_TRIANGLE_H_
-#define DELTA_geometry_TRIANGLE_H_
+#ifndef GEOMETRY_OPERATORS_TRIANGLE_H_
+#define GEOMETRY_OPERATORS_TRIANGLE_H_
 
 #include <stdlib.h>
 #include <assert.h>
@@ -34,7 +34,7 @@
 #include <delta/geometry/Object.h>
 #include <delta/geometry/hardcoded/surface.h>
 #include <delta/geometry/operators/physics.h>
-#include <delta/geometry/mesh/Mesh.h>
+#include "delta/geometry/structures/Mesh.h"
 
 namespace delta {
   namespace geometry {

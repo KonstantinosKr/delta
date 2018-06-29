@@ -413,7 +413,7 @@ int POINTS_COMPARE (iREAL *a, iREAL *b);
 #define PLANE(pln, pnt) (DOT (pln, pnt) + (pln) [3])
 
 /* p = 4-plane and line segment (a, b) intersection; call only for intersecting entities */
-inline static void PLANESEG (iREAL *plane, iREAL *a, iREAL *b, iREAL *p)
+/*inline static void PLANESEG (iREAL *plane, iREAL *a, iREAL *b, iREAL *p)
 {
   iREAL l [3], s;
   
@@ -424,7 +424,7 @@ inline static void PLANESEG (iREAL *plane, iREAL *a, iREAL *b, iREAL *p)
   p [0] = a [0] - l [0] * s;
   p [1] = a [1] - l [1] * s;
   p [2] = a [2] - l [2] * s;
-}
+}*/
 
 #define PLANECOPY(a, b)\
 {\

@@ -22,14 +22,14 @@
  SOFTWARE.
  */
 
-#ifndef OBJECT_H
-#define OBJECT_H
+#ifndef GEOMETRY_OBJECT_H
+#define GEOMETRY_OBJECT_H
 
 #include <vector>
 #include <array>
 #include <string>
-#include <delta/geometry/mesh/Mesh.h>
 #include <delta/geometry/material.h>
+#include "delta/geometry/structures/Mesh.h"
 
 namespace delta {
   namespace geometry {
@@ -177,18 +177,6 @@ class delta::geometry::Object
     		iREAL centreOfMass[3]);
 
 	/*
-	 *  Set Referential Center of Mass
-	 *
-	 *  Set referential center of mass of geometry.
-	 *	This modifies local data.
-	 *
-	 *  @param refcenterOfMass
-	 *  @returns void
-	 */
-    void 	setRefCentreOfMass(
-    		iREAL refCentreOfMass[3]);
-
-	/*
 	 *  Set Linear Velocity
 	 *
 	 *  Set linear velocity of body.
@@ -211,18 +199,6 @@ class delta::geometry::Object
 	 */
     void 	setAngularVelocity(
     		std::array<iREAL, 3>  angularVelocity);
-
-	/*
-	 *  Set Referential Angular Velocity
-	 *
-	 *  Set referential angular velocity of body.
-	 *	This modifies local data.
-	 *
-	 *  @param refAngularVelocity
-	 *  @returns void
-	 */
-    void 	setRefAngularVelocity(
-    		std::array<iREAL, 3>  refAngularVelocity);
 
 	/*
 	 *  Set Mesh
@@ -251,17 +227,6 @@ class delta::geometry::Object
     		  std::vector<iREAL> xCoordinates,
 			  std::vector<iREAL> yCoordinates,
 			  std::vector<iREAL> zCoordinates);
-
-	/*
-	 *  Set Mesh
-	 *
-	 *  Set mesh of body.
-	 *	This modifies local data.
-	 *
-	 *  @param mesh
-	 *  @returns void
-	 */
-    void 	setOrientation(iREAL orientation[9]);
 
 	/*
 	 *  Get Component Id
@@ -424,16 +389,6 @@ class delta::geometry::Object
     std::array<iREAL, 3> 	getCentreOfMass();
 
 	/*
-	 *  Get Referential Center of Mass
-	 *
-	 *  Gets referential center of mass of object
-	 *
-	 *  @param none
-	 *  @returns vertex
-	 */
-    std::array<iREAL, 3> 	getRefCentreOfMass();
-
-	/*
 	 *  Get Linear Velocity
 	 *
 	 *  Gets linear velocity of object
@@ -452,27 +407,6 @@ class delta::geometry::Object
 	 *  @returns velocity
 	 */
     std::array<iREAL, 3> 	getAngularVelocity();
-
-
-	/*
-	 *  Get Referential Angular Velocity
-	 *
-	 *  Gets referential angular velocity of object
-	 *
-	 *  @param none
-	 *  @returns velocity
-	 */
-    std::array<iREAL, 3> 	getRefAngularVelocity();
-
-	/*
-	 *  Get Orientation Matrix
-	 *
-	 *  Gets orientation of object
-	 *
-	 *  @param none
-	 *  @returns orientation
-	 */
-    std::array<iREAL, 9> 	getOrientation();
 
 	/*
 	 *  Get Material
@@ -540,7 +474,17 @@ class delta::geometry::Object
 	iREAL computeMass(
 			delta::geometry::material::MaterialType material);
 
+	bool getIsConvex();
+
+	void initialise();
+
     virtual ~Object();
+
+    std::array<iREAL, 3> 	_linearVelocity;
+    std::array<iREAL, 3> 	_angularVelocity;
+
+    std::array<iREAL, 3> 	_centre;
+    std::array<iREAL, 3> 	_centreOfMass;
 
   private:
     std::string           	_component;
@@ -555,23 +499,14 @@ class delta::geometry::Object
 
 	delta::geometry::mesh::Mesh* _mesh;
 
-    std::array<iREAL, 3> 	_linearVelocity;
-    std::array<iREAL, 3> 	_angularVelocity;
-    std::array<iREAL, 3> 	_refAngularVelocity;
-
     delta::geometry::material::MaterialType _material;
 
     bool                  	_isObstacle;
     bool                  	_isFriction;
     bool                  	_isConvex;
 
-    std::array<iREAL, 3> 	_centre;
-    std::array<iREAL, 3> 	_centreOfMass;
-    std::array<iREAL, 3> 	_refCentreOfMass;
-
     std::array<iREAL, 9> 	_inertia;
     std::array<iREAL, 9> 	_inverse;
-    std::array<iREAL, 9> 	_orientation;
 
     //dimensions
     iREAL                	_wx;

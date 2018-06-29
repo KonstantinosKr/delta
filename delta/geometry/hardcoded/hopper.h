@@ -22,17 +22,15 @@
  SOFTWARE.
  */
 
-#ifndef DELTA_geometry_HOPPER_H_
-#define DELTA_geometry_HOPPER_H_
+#ifndef GEOMETRY_HARDCODED_HOPPER_H_
+#define GEOMETRY_HARDCODED_HOPPER_H_
 
 #include <vector>
 #include <cmath>
 #include <stdlib.h>
 #include <assert.h>
-#include <delta/geometry/mesh/Mesh.h>
-#include <delta/geometry/operators/hull/hull.h>
-#include <delta/geometry/operators/hull/alg.h>
 #include <delta/geometry/operators/triangle.h>
+#include "delta/geometry/structures/Mesh.h"
 
 namespace delta {
   namespace geometry {

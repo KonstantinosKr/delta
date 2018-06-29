@@ -22,6 +22,9 @@
  SOFTWARE.
  */
 
+#ifndef DELTA_DYNAMICS_DYNAMICS_H_
+#define DELTA_DYNAMICS_DYNAMICS_H_
+
 namespace delta {
   namespace dynamics {
 
@@ -92,3 +95,4 @@ namespace delta {
         iREAL* refposition);
   }
 }
+#endif

@@ -5,14 +5,12 @@
  *      Author: konstantinos
  */
 
-#ifndef WORLD_SCENARIOS_H_
-#define WORLD_SCENARIOS_H_
+#ifndef SCENARIO_SCENARIOS_H_
+#define SCENARIO_SCENARIOS_H_
 
-#include<vector>
-#include<array>
-#include<delta/geometry/Object.h>
-#include<delta/geometry/mesh/Mesh.h>
-#include<delta/geometry/material.h>
+#include <vector>
+#include <array>
+#include <delta/geometry/Object.h>
 
 namespace delta {
   namespace world {

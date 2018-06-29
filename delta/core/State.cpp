@@ -34,6 +34,7 @@ delta::core::State::State(int noOfParticles, int noOfObstacles, iREAL timeStepSi
   _noOfParticles = noOfParticles;
   _noOfObstacles = noOfObstacles;
   _timeStepSize = timeStepSize;
+
   //_checkpointFile = "output.out";
 
   _iteration = 0;
@@ -41,7 +42,7 @@ delta::core::State::State(int noOfParticles, int noOfObstacles, iREAL timeStepSi
 
 void delta::core::State::update()
 {
-
+  _iteration ++;
 }
 
 int delta::core::State::getIteration()

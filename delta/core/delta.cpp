@@ -23,7 +23,7 @@
  */
 
 #include <delta/core/delta.h>
-#include <delta/core/write.h>
+#include <delta/core/io/write.h>
 
 delta::core::Delta::Delta()
 {

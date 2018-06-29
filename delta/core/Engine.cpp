@@ -15,21 +15,19 @@ delta::core::Engine::Engine()
 delta::core::Engine::Engine(
 	bool overlapCheck,
 	bool plot,
-	CollisionModel collisionModel)
+	iREAL dt,
+	bool gravity,
+	CollisionModel collisionModel,
+	delta::core::data::Structure data)
 {
   _overlapCheck = overlapCheck;
-  //_state = delta::core::State::State();
+  _state = delta::core::State::State();
   _plot = plot;
   _collisionModel = collisionModel;
-}
+  _dt = dt;
+  _gravity = gravity;
+  _data = data;
 
-delta::core::Engine::~Engine()
-{
-
-}
-
-void delta::core::Engine::iterate()
-{
   std::array<iREAL, 6> boundary;
   boundary[0] = 0.0;
   boundary[1] = 0.0;
@@ -39,31 +37,44 @@ void delta::core::Engine::iterate()
   boundary[4] = 1.0;
   boundary[5] = 1.0;
 
+  _boundary = boundary;
 
+  _state = delta::core::State(data.getNumberOfParticles(), data.getNumberOfObstacles(), dt);
+}
+
+delta::core::Engine::~Engine()
+{
+
+}
+
+void delta::core::Engine::iterate()
+{
   if(_plot)
   {
-	//delta::core::writeGeometryToVTK(_state.getIteration(), boundary, _data.getAll());
+	delta::core::io::writeGeometryToVTK(_state.getIteration(), _boundary, _data.getAll());
   }
 
-   delta::core::Engine::contactDetection();
-   //delta::core::Engine::deriveForces(dt);
-   //delta::core::Engine::updatePosition(dt, _gravity);
+  //delta::core::Engine::contactDetection();
+  //delta::core::Engine::deriveForces();
+  delta::core::Engine::updatePosition();
+
+  _state.update();
 }
 
 void delta::core::Engine::addCollision(
-	std::vector<delta::contact::contactpoint> & newContactPoints,
-	delta::geometry::Object&                    particleA,
-	delta::geometry::Object&                    particleB,
+	std::vector<delta::contact::contactpoint>& 	newContactPoints,
+	delta::core::data::ParticleRecord&           particleA,
+	delta::core::data::ParticleRecord&           particleB,
 	bool sphere
 ) {
-
+/*
   //////////////START initial insertion of collision vectors into _collisionsOfNextTraversal<id, collision> map for next move update of particle A and B
-  if( _collisionsOfNextTraversal.count(particleA.getGlobalParticleId())==0 ) {
-	_collisionsOfNextTraversal.insert(std::pair<int,std::vector<Collisions>>(particleA.getGlobalParticleId(), std::vector<Collisions>()));
+  if( _collisionsOfNextTraversal.count(particleA.getGlobalParticleID())==0 ) {
+	_collisionsOfNextTraversal.insert(std::pair<int,std::vector<Collisions>>(particleA.getGlobalParticleID(), std::vector<Collisions>()));
   }
 
-  if( _collisionsOfNextTraversal.count(particleB.getGlobalParticleId())==0 ) {
-	_collisionsOfNextTraversal.insert(std::pair<int,std::vector<Collisions>>(particleB.getGlobalParticleId(), std::vector<Collisions>()));
+  if( _collisionsOfNextTraversal.count(particleB.getGlobalParticleID())==0 ) {
+	_collisionsOfNextTraversal.insert(std::pair<int,std::vector<Collisions>>(particleB.getGlobalParticleID(), std::vector<Collisions>()));
   }
   ///////////////END
 
@@ -73,19 +84,19 @@ void delta::core::Engine::addCollision(
   //////////////END
 
   /////////////////START if already exist | find and assign reference collision list to dataA or dataB particle
-  for (std::vector<Collisions>::iterator p=_collisionsOfNextTraversal[particleA.getGlobalParticleId()].begin();
-	 p!=_collisionsOfNextTraversal[particleA.getGlobalParticleId()].end();  p++)
+  for (std::vector<Collisions>::iterator p=_collisionsOfNextTraversal[particleA.getGlobalParticleID()].begin();
+	 p!=_collisionsOfNextTraversal[particleA.getGlobalParticleID()].end();  p++)
   {
-	if(p->_copyOfPartnerParticle.getGlobalParticleId()==particleB.getGlobalParticleId())
+	if(p->_copyOfPartnerParticle.getGlobalParticleID()==particleB.getGlobalParticleID())
 	{
 	  dataSetA = &(*p);
 	}
   }
 
-  for(std::vector<Collisions>::iterator p=_collisionsOfNextTraversal[particleB.getGlobalParticleId()].begin();
-	 p!=_collisionsOfNextTraversal[particleB.getGlobalParticleId()].end(); p++)
+  for(std::vector<Collisions>::iterator p=_collisionsOfNextTraversal[particleB.getGlobalParticleID()].begin();
+	 p!=_collisionsOfNextTraversal[particleB.getGlobalParticleID()].end(); p++)
   {
-	if(p->_copyOfPartnerParticle.getGlobalParticleId()==particleA.getGlobalParticleId())
+	if(p->_copyOfPartnerParticle.getGlobalParticleID()==particleA.getGlobalParticleID())
 	{
 	  dataSetB = &(*p);
 	}
@@ -102,13 +113,13 @@ void delta::core::Engine::addCollision(
   if(dataSetA==nullptr)
   {
 	//START push_back collisions object into corresponding both A and B particle index collision list
-	_collisionsOfNextTraversal[particleA.getGlobalParticleId()].push_back( Collisions() );
-	_collisionsOfNextTraversal[particleB.getGlobalParticleId()].push_back( Collisions() );
+	_collisionsOfNextTraversal[particleA.getGlobalParticleID()].push_back( Collisions() );
+	_collisionsOfNextTraversal[particleB.getGlobalParticleID()].push_back( Collisions() );
 	//END push_back
 
 	//START reference of vector to data A and B ready to used
-	dataSetA = &(_collisionsOfNextTraversal[particleA.getGlobalParticleId()].back());
-	dataSetB = &(_collisionsOfNextTraversal[particleB.getGlobalParticleId()].back());
+	dataSetA = &(_collisionsOfNextTraversal[particleA.getGlobalParticleID()].back());
+	dataSetB = &(_collisionsOfNextTraversal[particleB.getGlobalParticleID()].back());
 	//END
 
 	//START add copy of master and slave particles to sets (dual contact reference)
@@ -117,7 +128,7 @@ void delta::core::Engine::addCollision(
 	//END
   }
   ////////END
-
+*/
   /*
    * Problem here was:
    * Although all normals were pointing to opposite direction for each particle due to how we loop particles
@@ -126,7 +137,7 @@ void delta::core::Engine::addCollision(
    * C. we always want to ensure that normal of particle point away from obstacle
    * D. we don't care about normal of obstacle.
    */
-
+/*
   dataSetA->_contactPoints.insert(dataSetA->_contactPoints.end(), newContactPoints.begin(), newContactPoints.end());
 
   for (std::vector<delta::contact::contactpoint>::iterator p = newContactPoints.begin(); p != newContactPoints.end(); p++)
@@ -138,6 +149,7 @@ void delta::core::Engine::addCollision(
   }
 
   dataSetB->_contactPoints.insert(dataSetB->_contactPoints.end(), newContactPoints.begin(), newContactPoints.end());
+  */
 }
 
 delta::core::State delta::core::Engine::getState()
@@ -152,34 +164,34 @@ int delta::core::Engine::getNumberOfCollisions()
 
 void delta::core::Engine::contactDetection()
 {
-  for(unsigned j=0; j<_data.getSize(); j++)
+  /*for(unsigned j=0; j<_data.getSize(); j++)
   {
-	delta::geometry::Object particleA = _data.getObject(j);
+	delta::core::data::ParticleRecord particleA = _data.getObject(j);
 
 	//printf("triangles %i\n", particleA.getNumberOfTriangles());
 
 	for(unsigned k=0; k<_data.getSize(); k++)
 	{
-	  delta::geometry::Object particleB = _data.getObject(k);
+	  delta::core::data::ParticleRecord particleB = _data.getObject(k);
 
 	  if(_overlapCheck)
 	  {
 		bool overlap = delta::contact::detection::isSphereOverlayInContact(
-		particleA.getCentre()[0],
-		particleA.getCentre()[1],
-		particleA.getCentre()[2],
+		particleA->_centre[0],
+		particleA._centre[1],
+		particleA._centre[2],
 		particleA.getHaloDiameter(),
 
-		particleB.getCentre()[0],
-		particleB.getCentre()[1],
-		particleB.getCentre()[2],
+		particleB._centre[0],
+		particleB._centre[1],
+		particleB._centre[2],
 		particleB.getHaloDiameter());
 
 		if (!overlap) continue;
 	  }
 
 	  std::vector<delta::contact::contactpoint> newContactPoints;
-/*
+
 	  switch (_collisionModel) {
 		case CollisionModel::Sphere:
 		if(
@@ -187,144 +199,144 @@ void delta::core::Engine::contactDetection()
 		  !particleB.getIsObstacle()
 		) {
 		  newContactPoints = delta::contact::detection::sphereWithBarrierBA(
-					particleB.getCentre()[0],
-					particleB.getCentre()[1],
-					particleB.getCentre()[2],
+					particleB._centre[0],
+					particleB._centre[1],
+					particleB._centre[2],
 					particleB.getDiameter(),
 					particleB.getEpsilon(),
 					particleB.getIsFriction(),
-					particleB.getGlobalParticleId(),
+					particleB.getGlobalParticleID(),
 
-					particleA.getMesh().getXCoordinates(),
-					particleA.getMesh().getYCoordinates(),
-					particleA.getMesh().getZCoordinates(),
+					particleA._xCoordinates.data(),
+					particleA._yCoordinates.data(),
+					particleA._zCoordinates.data(),
 					particleA.getNumberOfTriangles(),
 					particleA.getEpsilon(),
 					particleA.getIsFriction(),
-					particleA.getGlobalParticleId());
+					particleA.getGlobalParticleID());
 		} else if (
 		  !particleA.getIsObstacle() &&
 		   particleB.getIsObstacle()
 		) {
 		  newContactPoints = delta::contact::detection::sphereWithBarrierAB(
-					particleA.getCentre()[0],
-					particleA.getCentre()[1],
-					particleA.getCentre()[2],
+					particleA._centre[0],
+					particleA._centre[1],
+					particleA._centre[2],
 					particleA.getDiameter(),
 					particleA.getEpsilon(),
 					particleA.getIsFriction(),
-					particleA.getGlobalParticleId(),
+					particleA.getGlobalParticleID(),
 
-					particleB.getMesh().getXCoordinates(),
-					particleB.getMesh().getYCoordinates(),
-					particleB.getMesh().getZCoordinates(),
+					particleB._xCoordinates.data(),
+					particleB._yCoordinates.data(),
+					particleB._zCoordinates.data(),
 					particleB.getNumberOfTriangles(),
 					particleB.getEpsilon(),
 					particleB.getIsFriction(),
-					particleB.getGlobalParticleId());
+					particleB.getGlobalParticleID());
 		}
 		else {
 		  newContactPoints = delta::contact::detection::sphere(
-					particleA.getCentre()[0],
-					particleA.getCentre()[1],
-					particleA.getCentre()[2],
+					particleA._centre[0],
+					particleA._centre[1],
+					particleA._centre[2],
 					particleA.getDiameter(),
 					particleA.getEpsilon(),
 					particleA.getIsFriction(),
-					particleA.getGlobalParticleId(),
+					particleA.getGlobalParticleID(),
 
-					particleB.getCentre()[0],
-					particleB.getCentre()[1],
-					particleB.getCentre()[2],
+					particleB._centre[0],
+					particleB._centre[1],
+					particleB._centre[2],
 					particleB.getDiameter(),
 					particleB.getEpsilon(),
 					particleB.getIsFriction(),
-					particleB.getGlobalParticleId());
+					particleB.getGlobalParticleID());
 		}
 		break;
 		case CollisionModel::BruteForce:
 
 		newContactPoints = delta::contact::detection::bf(
-					particleA.getMesh().getXCoordinates(),
-					particleA.getMesh().getYCoordinates(),
-					particleA.getMesh().getZCoordinates(),
+					particleA._xCoordinates.data(),
+					particleA._yCoordinates.data(),
+					particleA._zCoordinates.data(),
 					particleA.getNumberOfTriangles(),
 					particleA.getEpsilon(),
 					particleA.getIsFriction(),
-					particleA.getGlobalParticleId(),
+					particleA.getGlobalParticleID(),
 
-					particleB.getMesh().getXCoordinates(),
-					particleB.getMesh().getYCoordinates(),
-					particleB.getMesh().getZCoordinates(),
+					particleB._xCoordinates.data(),
+					particleB._yCoordinates.data(),
+					particleB._zCoordinates.data(),
 					particleB.getNumberOfTriangles(),
 					particleB.getEpsilon(),
 					particleB.getIsFriction(),
-					particleB.getGlobalParticleId());
+					particleB.getGlobalParticleID());
 
 		break;
 		case CollisionModel::Penalty:
 
 		newContactPoints = delta::contact::detection::penalty(
-					particleA.getMesh().getXCoordinates(),
-					particleA.getMesh().getYCoordinates(),
-					particleA.getMesh().getZCoordinates(),
+					particleA._xCoordinates.data(),
+					particleA._yCoordinates.data(),
+					particleA._zCoordinates.data(),
 					particleA.getNumberOfTriangles(),
 					particleA.getEpsilon(),
 					particleA.getIsFriction(),
-					particleA.getGlobalParticleId(),
+					particleA.getGlobalParticleID(),
 
-					particleB.getMesh().getXCoordinates(),
-					particleB.getMesh().getYCoordinates(),
-					particleB.getMesh().getZCoordinates(),
+					particleB._xCoordinates.data(),
+					particleB._yCoordinates.data(),
+					particleB._zCoordinates.data(),
 					particleB.getNumberOfTriangles(),
 					particleB.getEpsilon(),
 					particleB.getIsFriction(),
-					particleB.getGlobalParticleId());
+					particleB.getGlobalParticleID());
 
 		break;
 		case CollisionModel::HybridOnBatches:
 
 		newContactPoints = delta::contact::detection::hybridWithPerBatchFallBack(
-					particleA.getMesh().getXCoordinates(),
-					particleA.getMesh().getYCoordinates(),
-					particleA.getMesh().getZCoordinates(),
+					particleA._xCoordinates.data(),
+					particleA._yCoordinates.data(),
+					particleA._zCoordinates.data(),
 					particleA.getNumberOfTriangles(),
 					particleA.getEpsilon(),
 					particleA.getIsFriction(),
-					particleA.getGlobalParticleId(),
+					particleA.getGlobalParticleID(),
 
-					particleB.getMesh().getXCoordinates(),
-					particleB.getMesh().getYCoordinates(),
-					particleB.getMesh().getZCoordinates(),
+					particleB._xCoordinates.data(),
+					particleB._yCoordinates.data(),
+					particleB._zCoordinates.data(),
 					particleB.getNumberOfTriangles(),
 					particleB.getEpsilon(),
 					particleB.getIsFriction(),
-					particleB.getGlobalParticleId());
+					particleB.getGlobalParticleID());
 
 		break;
 		case CollisionModel::HybridOnTrianglePairs:
 
 		newContactPoints = delta::contact::detection::hybridWithPerTriangleFallBack(
-					particleA.getMesh().getXCoordinates(),
-					particleA.getMesh().getYCoordinates(),
-					particleA.getMesh().getZCoordinates(),
+					particleA._xCoordinates.data(),
+					particleA._yCoordinates.data(),
+					particleA._zCoordinates.data(),
 					particleA.getNumberOfTriangles(),
 					particleA.getEpsilon(),
 					particleA.getIsFriction(),
-					particleA.getGlobalParticleId(),
+					particleA.getGlobalParticleID(),
 
-					particleB.getMesh().getXCoordinates(),
-					particleB.getMesh().getYCoordinates(),
-					particleB.getMesh().getZCoordinates(),
+					particleB._xCoordinates.data(),
+					particleB._yCoordinates.data(),
+					particleB._zCoordinates.data(),
 					particleB.getNumberOfTriangles(),
 					particleB.getEpsilon(),
 					particleB.getIsFriction(),
-					particleB.getGlobalParticleId());
+					particleB.getGlobalParticleID());
 
 		break;
 		case CollisionModel::none:
 		break;
-	  }*/
+	  }
 
 	  if(!newContactPoints.empty()) {
 		delta::core::Engine::addCollision(newContactPoints, particleA, particleB, _collisionModel == CollisionModel::Sphere);
@@ -333,51 +345,51 @@ void delta::core::Engine::contactDetection()
 	  _state.incNumberOfTriangleComparisons(particleA.getNumberOfTriangles() * particleB.getNumberOfTriangles());
 	  _state.incNumberOfParticleComparisons(1);
 	}
-  }
+  }*/
 }
 
-void delta::core::Engine::deriveForces(iREAL dt)
+void delta::core::Engine::deriveForces()
 {
-
-  for(int i=0; i<_data.getSize(); i++)
+  for(int i=0; i<_data.getNumberOfParticles(); i++)
   {
-	delta::geometry::Object  particle = _data.getObject(i);
+	delta::core::data::ParticleRecord& particle = _data.getParticle(i);
 
 	//if value doesn't exist in map - no collision - skip particle
-	if(_activeCollisions.count(particle.getGlobalParticleId())==0) {continue;}
+	if(_activeCollisions.count(particle.getGlobalParticleID())==0) {continue;}
 
 	iREAL force[3]  = {0.0,0.0,0.0};
 	iREAL torque[3] = {0.0,0.0,0.0};
 
 	//collisions with partner particles
-	for(std::vector<Collisions>::iterator p = _activeCollisions[particle.getGlobalParticleId()].begin();
-						p != _activeCollisions[particle.getGlobalParticleId()].end();
+	for(std::vector<Collisions>::iterator p = _activeCollisions[particle.getGlobalParticleID()].begin();
+						p != _activeCollisions[particle.getGlobalParticleID()].end();
 						p++)
 	{
 	  iREAL rforce[3]  = {0.0,0.0,0.0};
 	  iREAL rtorque[3] = {0.0,0.0,0.0};
-/*
-	  delta::contact::forces::getContactsForces(p->_contactPoints,
-					 &(particle.getCentreOfMass()),
-					 &(particle.getRefCentreOfMass()),
-					 &(particle.getAngularVelocity()),
-					 &(particle.getRefAngularVelocity()),
-					 &(particle.getLinearVelocity()),
+
+	  delta::contact::forces::getContactsForces(
+					 p->_contactPoints,
+					 particle._centreOfMass.data(),
+					 particle._refCentreOfMass.data(),
+					 particle._angularVelocity.data(),
+					 particle._refAngularVelocity.data(),
+					 particle._linearVelocity.data(),
 					 particle.getMass(),
-					 &(particle.getInverse()),
-					 &(particle.getOrientation()),
-					 particle.getMaterial(),
-					 &(p->_copyOfPartnerParticle.getCentreOfMass()),
-					 &(p->_copyOfPartnerParticle.getRefCentreOfMass()),
-					 &(p->_copyOfPartnerParticle.getAngularVelocity()),
-					 &(p->_copyOfPartnerParticle.getRefAngularVelocity()),
-					 &(p->_copyOfPartnerParticle.getLinearVelocity()),
+					 particle.getInverse().data(),
+					 particle._orientation.data(),
+					 int(particle.getMaterial()),
+					 p->_copyOfPartnerParticle._centreOfMass.data(),
+					 p->_copyOfPartnerParticle._refCentreOfMass.data(),
+					 p->_copyOfPartnerParticle._angularVelocity.data(),
+					 p->_copyOfPartnerParticle._refAngularVelocity.data(),
+					 p->_copyOfPartnerParticle._linearVelocity.data(),
 					 p->_copyOfPartnerParticle.getMass(),
-					 &(p->_copyOfPartnerParticle.getInverse()),
-					 &(p->_copyOfPartnerParticle.getOrientation()),
-					 p->_copyOfPartnerParticle.getMaterial(),
+					 p->_copyOfPartnerParticle.getInverse().data(),
+					 p->_copyOfPartnerParticle._orientation.data(),
+					 int(p->_copyOfPartnerParticle.getMaterial()),
 					 rforce, rtorque,
-					 (_collisionModel == CollisionModel::Sphere));*/
+					 (_collisionModel == CollisionModel::Sphere));
 
 	  force[0] += rforce[0];
 	  force[1] += rforce[1];
@@ -390,57 +402,56 @@ void delta::core::Engine::deriveForces(iREAL dt)
 
 	if(!particle.getIsObstacle())
 	{
-	  particle.getLinearVelocity()[0] += dt * (force[0] / particle.getMass());
-	  particle.getLinearVelocity()[1] += dt * (force[1] / particle.getMass());
-	  particle.getLinearVelocity()[2] += dt * (force[2] / particle.getMass());
-/*
-	  delta::dynamics::updateAngular(particle.getRefAngularVelocity(),
-									particle.getOrientation(),
-									particle.getInertia(),
-									particle.getInverse(),
-									particle.getMass(),
-									torque, dt);*/
+	  particle._linearVelocity[0] += _dt * (force[0] / particle.getMass());
+	  particle._linearVelocity[1] += _dt * (force[1] / particle.getMass());
+	  particle._linearVelocity[2] += _dt * (force[2] / particle.getMass());
+
+	  delta::dynamics::updateAngular(particle._refAngularVelocity.data(),
+									particle._orientation.data(),
+									particle.getInertia().data(),
+									particle.getInverse().data(),
+									torque, _dt);
 	}
   }
-
 }
 
-void delta::core::Engine::updatePosition(iREAL dt, bool gravity)
+void delta::core::Engine::updatePosition()
 {
-	for(unsigned i=0; i<_data.getSize(); i++)
+  for(unsigned i=0; i<_data.getNumberOfParticles(); i++)
+  {
+	delta::core::data::ParticleRecord& particle = _data.getParticle(i);
+
+	if(particle.getIsObstacle()) continue;
+
+	particle._linearVelocity[1] += _dt*(int(_gravity)*-9.8); //pass as gravity gxgygz vector
+
+	particle._centre[0] += _dt*particle._linearVelocity[0];
+	particle._centre[1] += _dt*particle._linearVelocity[1];
+	particle._centre[2] += _dt*particle._linearVelocity[2];
+
+	particle._centreOfMass[0] += _dt*particle._linearVelocity[0];
+	particle._centreOfMass[1] += _dt*particle._linearVelocity[1];
+	particle._centreOfMass[2] += _dt*particle._linearVelocity[2];
+
+	//printf("dt:%f , %f %f %f\n", dt, particle._centreOfMass[0], particle._centreOfMass[1], particle._centreOfMass[2]);
+
+	delta::dynamics::updateRotationMatrix(particle._angularVelocity.data(),
+										  particle._refAngularVelocity.data(),
+										  particle._orientation.data(), _dt);
+
+	#pragma omp parallel for
+	for(int j=0; j<particle.getNumberOfTriangles()*3; j++)
 	{
-	  delta::geometry::Object  particle = _data.getObject(i);
 
-	  if(particle.getIsObstacle()) continue;
-/*
-	  particle._linearVelocity(1) += dt*(int(gravity)*-9.8); //pass as gravity gxgygz vector
-
-	  particle._centre(0) += dt*particle._linearVelocity(0);
-	  particle._centre(1) += dt*particle._linearVelocity(1);
-	  particle._centre(2) += dt*particle._linearVelocity(2);
-
-	  particle._centreOfMass(0) += dt*particle._linearVelocity(0);
-	  particle._centreOfMass(1) += dt*particle._linearVelocity(1);
-	  particle._centreOfMass(2) += dt*particle._linearVelocity(2);
-*/
-	  //delta::dynamics::updateRotationMatrix(&particle.getAngularVelocity(0),
-		//									&particle.getRefAngularVelocity(0),
-		//									&particle._orientation(0), dt);
-
-	  iREAL* x = particle.getMesh().getXCoordinates();
-	  iREAL* y = particle.getMesh().getYCoordinates();
-	  iREAL* z = particle.getMesh().getZCoordinates();
-
-	  //iREAL* refx = particle.getMesh().getXRefCoordinates();
-	  //iREAL* refy = particle.getMesh().getYRefCoordinates(i);
-	  //iREAL* refz = particle.getMesh().getZRefCoordinates(i);
-
-	  /*for(int j=0; j<particle.getNumberOfTriangles()*3; j++)
-	  {
-		delta::dynamics::updateVertices(&x[j], &y[j], &z[j], &refx[j], &refy[j], &refz[j],
-										&particle._orientation(0),
-										&particle._centreOfMass(0),
-										&particle._refCentreOfMass(0));
-	  }*/
+	  delta::dynamics::updateVertices(&particle._xCoordinates.data()[j],
+									  &particle._yCoordinates.data()[j],
+									  &particle._zCoordinates.data()[j],
+									  &particle._refxCoordinates.data()[j],
+									  &particle._refxCoordinates.data()[j],
+									  &particle._refxCoordinates.data()[j],
+									  particle._orientation.data(),
+									  particle._centreOfMass.data(),
+									  particle._refCentreOfMass.data());
 	}
+  }
 }

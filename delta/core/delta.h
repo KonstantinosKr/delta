@@ -25,6 +25,14 @@
 #ifndef DELTA_CORE_DELTA_H_
 #define DELTA_CORE_DELTA_H_
 
+#include <map>
+#include <vector>
+#include <vector>
+#include <iostream>
+#include <delta/core/io/read.h>
+#include <delta/geometry/Object.h>
+#include "delta/geometry/structures/Triangle.h"
+#include <delta/geometry/material.h>
 
 /*
 #if GCC_VERSION >= 4.2
@@ -44,16 +52,6 @@
 #if !defined(iREAL)
 #define iREAL double
 #endif
-
-
-#include <map>
-#include <vector>
-#include <vector>
-#include <iostream>
-#include <delta/core/read.h>
-#include <delta/geometry/Object.h>
-#include <delta/geometry/mesh/Triangle.h>
-#include <delta/geometry/material.h>
 
 namespace delta {
 	namespace core {

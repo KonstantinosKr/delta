@@ -5,9 +5,8 @@
  *      Author: konstantinos
  */
 
-#ifndef CONFIGURATION_H
-#define CONFIGURATION_H
-
+#ifndef SCENARIO_CONFIGURATION_H
+#define SCENARIO_CONFIGURATION_H
 
 #include <vector>
 #include <array>

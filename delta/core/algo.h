@@ -22,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef __macros__
-#define __macros__
+#ifndef __macros_ALGO_
+#define __macros_ALGO_
 
 #include "math.h"
 

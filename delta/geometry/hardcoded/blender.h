@@ -22,8 +22,8 @@
  SOFTWARE.
  */
 
-#ifndef DELTA_geometry_BLENDER_H_
-#define DELTA_geometry_BLENDER_H_
+#ifndef GEOMETRY_HARDCODED_BLENDER_H_
+#define GEOMETRY_HARDCODED_BLENDER_H_
 
 #include <vector>
 #include <stdlib.h>

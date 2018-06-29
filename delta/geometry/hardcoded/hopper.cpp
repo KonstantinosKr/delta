@@ -23,6 +23,7 @@
  */
 
 #include <delta/geometry/hardcoded/hopper.h>
+#include <delta/geometry/operators/hull/hull.h>
 
 void delta::geometry::hardcoded::generateInnerHopper(
 		iREAL  center[3],

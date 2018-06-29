@@ -22,8 +22,8 @@
  SOFTWARE.
  */
 
-#ifndef DELTA_geometry_GRAPHITE_H_
-#define DELTA_geometry_GRAPHITE_H_
+#ifndef GEOMETRY_HARDCODED_GRAPHITE_H_
+#define GEOMETRY_HARDCODED_GRAPHITE_H_
 
 #include <cmath>
 #include <stdlib.h>
@@ -35,8 +35,8 @@
 #include <iomanip>
 #include <string.h>
 #include <vector>
-#include <delta/core/read.h>
-#include <delta/geometry/mesh/Mesh.h>
+#include <delta/core/io/read.h>
+#include "delta/geometry/structures/Mesh.h"
 
 namespace delta {
   namespace geometry {

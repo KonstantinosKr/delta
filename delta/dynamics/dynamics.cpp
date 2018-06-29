@@ -106,11 +106,11 @@ void expmap (iREAL Omega1, iREAL Omega2, iREAL Omega3,
      iREAL *refAngular,
      iREAL *rotation,
      iREAL step)
- {
-	iREAL DL[9], rot0[9];
- 	expmap (step*refAngular[0], step*refAngular[1], step*refAngular[2], DL[0], DL[1], DL[2], DL[3], DL[4], DL[5], DL[6], DL[7], DL[8]);
+{
+  iREAL DL[9], rot0[9];
+  expmap (step*refAngular[0], step*refAngular[1], step*refAngular[2], DL[0], DL[1], DL[2], DL[3], DL[4], DL[5], DL[6], DL[7], DL[8]);
 
- 	rot0[0] = rotation[0];
+  rot0[0] = rotation[0];
   rot0[1] = rotation[1];
   rot0[2] = rotation[2];
   rot0[3] = rotation[3];
@@ -120,22 +120,22 @@ void expmap (iREAL Omega1, iREAL Omega2, iREAL Omega3,
   rot0[7] = rotation[7];
   rot0[8] = rotation[8];
 
- 	//NNMUL (rot0, DL, rotation);
- 	rotation[0] = rot0[0]*DL[0]+rot0[3]*DL[1]+rot0[6]*DL[2];
- 	rotation[1] = rot0[1]*DL[0]+rot0[4]*DL[1]+rot0[7]*DL[2];
- 	rotation[2] = rot0[2]*DL[0]+rot0[5]*DL[1]+rot0[8]*DL[2];
- 	rotation[3] = rot0[0]*DL[3]+rot0[3]*DL[4]+rot0[6]*DL[5];
- 	rotation[4] = rot0[1]*DL[3]+rot0[4]*DL[4]+rot0[7]*DL[5];
- 	rotation[5] = rot0[2]*DL[3]+rot0[5]*DL[4]+rot0[8]*DL[5];
- 	rotation[6] = rot0[0]*DL[6]+rot0[3]*DL[7]+rot0[6]*DL[8];
- 	rotation[7] = rot0[1]*DL[6]+rot0[4]*DL[7]+rot0[7]*DL[8];
- 	rotation[8] = rot0[2]*DL[6]+rot0[5]*DL[7]+rot0[8]*DL[8];
+  //NNMUL (rot0, DL, rotation);
+  rotation[0] = rot0[0]*DL[0]+rot0[3]*DL[1]+rot0[6]*DL[2];
+  rotation[1] = rot0[1]*DL[0]+rot0[4]*DL[1]+rot0[7]*DL[2];
+  rotation[2] = rot0[2]*DL[0]+rot0[5]*DL[1]+rot0[8]*DL[2];
+  rotation[3] = rot0[0]*DL[3]+rot0[3]*DL[4]+rot0[6]*DL[5];
+  rotation[4] = rot0[1]*DL[3]+rot0[4]*DL[4]+rot0[7]*DL[5];
+  rotation[5] = rot0[2]*DL[3]+rot0[5]*DL[4]+rot0[8]*DL[5];
+  rotation[6] = rot0[0]*DL[6]+rot0[3]*DL[7]+rot0[6]*DL[8];
+  rotation[7] = rot0[1]*DL[6]+rot0[4]*DL[7]+rot0[7]*DL[8];
+  rotation[8] = rot0[2]*DL[6]+rot0[5]*DL[7]+rot0[8]*DL[8];
 
- 	//NVMUL (rotation, refAngular, angular);
- 	angular[0] = rotation[0]*refAngular[0]+rotation[3]*refAngular[1]+rotation[6]*refAngular[2];
- 	angular[1] = rotation[1]*refAngular[0]+rotation[4]*refAngular[1]+rotation[7]*refAngular[2];
- 	angular[2] = rotation[2]*refAngular[0]+rotation[5]*refAngular[1]+rotation[8]*refAngular[2];
- }
+  //NVMUL (rotation, refAngular, angular);
+  angular[0] = rotation[0]*refAngular[0]+rotation[3]*refAngular[1]+rotation[6]*refAngular[2];
+  angular[1] = rotation[1]*refAngular[0]+rotation[4]*refAngular[1]+rotation[7]*refAngular[2];
+  angular[2] = rotation[2]*refAngular[0]+rotation[5]*refAngular[1]+rotation[8]*refAngular[2];
+}
 
 void delta::dynamics::updateAngular(
     iREAL *refAngular,

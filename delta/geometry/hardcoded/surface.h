@@ -22,16 +22,13 @@
  SOFTWARE.
  */
 
-#ifndef DELTA_geometry_SURFACE_H_
-#define DELTA_geometry_SURFACE_H_
-
+#ifndef GEOMETRY_HARDCODED_SURFACE_H_
+#define GEOMETRY_HARDCODED_SURFACE_H_
 
 #include <vector>
 #include <array>
 #include <stdlib.h>
 #include <assert.h>
-#include <delta/geometry/operators/hull/hull.h>
-#include <delta/geometry/operators/hull/alg.h>
 
 namespace delta {
   namespace geometry {

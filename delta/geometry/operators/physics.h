@@ -5,13 +5,12 @@
  *      Author: konstantinos
  */
 
+#ifndef GEOMETRY_OPERATORS_PHYSICS_H_
+#define GEOMETRY_OPERATORS_PHYSICS_H_
+
 #include <delta/geometry/material.h>
 #include <delta/core/algo.h>
-
 #include <vector>
-
-#ifndef GEOMETRY_OPERATORS_H_
-#define GEOMETRY_OPERATORS_H_
 
 namespace delta {
   namespace geometry {
