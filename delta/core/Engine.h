@@ -34,7 +34,6 @@ namespace delta {
 class delta::core::Engine
 {
   public:
-	delta::core::data::Structure _data;
 
 	struct Collisions {
 	  delta::core::data::ParticleRecord             _copyOfPartnerParticle;
@@ -63,6 +62,13 @@ class delta::core::Engine
 		CollisionModel collisionModel,
 		delta::core::data::Structure data);
 
+	Engine(
+		bool overlapCheck,
+		bool plot,
+		iREAL dt,
+		bool gravity,
+		delta::core::data::Structure data);
+
 	virtual ~Engine();
 
 	void iterate();
@@ -74,6 +80,7 @@ class delta::core::Engine
 	void contactDetection();
 	void deriveForces();
 	void updatePosition();
+	std::vector<delta::core::data::ParticleRecord> getParticleRecords();
 
 
   private:
@@ -83,6 +90,7 @@ class delta::core::Engine
 	std::array<iREAL, 6> _boundary;
 	iREAL _dt;
 	iREAL _gravity;
+	delta::core::data::Structure _data;
 
 	/**
 	 * Hold all the collissions that are tied to a particular particle

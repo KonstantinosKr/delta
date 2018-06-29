@@ -17,6 +17,35 @@ delta::core::Engine::Engine(
 	bool plot,
 	iREAL dt,
 	bool gravity,
+	delta::core::data::Structure data)
+{
+  _overlapCheck = overlapCheck;
+  _state = delta::core::State::State();
+  _plot = plot;
+  _collisionModel = delta::core::Engine::CollisionModel::none;
+  _dt = dt;
+  _gravity = gravity;
+  _data = data;
+
+  std::array<iREAL, 6> boundary;
+  boundary[0] = 0.0;
+  boundary[1] = 0.0;
+  boundary[2] = 0.0;
+
+  boundary[3] = 1.0;
+  boundary[4] = 1.0;
+  boundary[5] = 1.0;
+
+  _boundary = boundary;
+
+  _state = delta::core::State(data.getNumberOfParticles(), data.getNumberOfObstacles(), dt);
+}
+
+delta::core::Engine::Engine(
+	bool overlapCheck,
+	bool plot,
+	iREAL dt,
+	bool gravity,
 	CollisionModel collisionModel,
 	delta::core::data::Structure data)
 {
@@ -454,4 +483,9 @@ void delta::core::Engine::updatePosition()
 									  particle._refCentreOfMass.data());
 	}
   }
+}
+
+std::vector<delta::core::data::ParticleRecord> delta::core::Engine::getParticleRecords()
+{
+  return _data.getAll();
 }
