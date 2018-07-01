@@ -29,7 +29,7 @@ namespace delta {
 class delta::core::data::ParticleRecord
 {
   public:
-	ParticleRecord(delta::geometry::Object object);
+	ParticleRecord(delta::geometry::Object& object);
 
 
 	int getGlobalParticleID();
