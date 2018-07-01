@@ -52,6 +52,21 @@ namespace delta {
 			std::vector<iREAL> &yCoordinates,
 			std::vector<iREAL> &zCoordinates,
 			iREAL alphaZ);
+
+
+
+		void moveMeshFromPositionToOrigin(
+		    std::vector<iREAL> &points,
+		    iREAL center[3]);
+
+		void moveMeshFromOriginToPosition(
+		    std::vector<iREAL> &points,
+		    iREAL center[3]);
+
+		void scaleXYZ(
+		    std::vector<iREAL> &points,
+		    iREAL scale,
+		    iREAL position[3]);
 	  }
 	} /* namespace operators */
   } /* namespace geometry */

@@ -17,7 +17,7 @@ delta::core::Engine::Engine(
 	bool plot,
 	iREAL dt,
 	bool gravity,
-	delta::core::data::Structure data)
+	std::vector<delta::geometry::Object>& data)
 {
   _overlapCheck = overlapCheck;
   _state = delta::core::State::State();
@@ -25,7 +25,7 @@ delta::core::Engine::Engine(
   _collisionModel = delta::core::Engine::CollisionModel::none;
   _dt = dt;
   _gravity = gravity;
-  _data = data;
+  _data = delta::core::data::Structure(data);
 
   std::array<iREAL, 6> boundary;
   boundary[0] = 0.0;
@@ -38,7 +38,7 @@ delta::core::Engine::Engine(
 
   _boundary = boundary;
 
-  _state = delta::core::State(data.getNumberOfParticles(), data.getNumberOfObstacles(), dt);
+  _state = delta::core::State(_data.getNumberOfParticles(), _data.getNumberOfObstacles(), dt);
 }
 
 delta::core::Engine::Engine(
@@ -47,7 +47,7 @@ delta::core::Engine::Engine(
 	iREAL dt,
 	bool gravity,
 	CollisionModel collisionModel,
-	delta::core::data::Structure data)
+	std::vector<delta::geometry::Object>& data)
 {
   _overlapCheck = overlapCheck;
   _state = delta::core::State::State();
@@ -55,7 +55,7 @@ delta::core::Engine::Engine(
   _collisionModel = collisionModel;
   _dt = dt;
   _gravity = gravity;
-  _data = data;
+  _data = delta::core::data::Structure(data);
 
   std::array<iREAL, 6> boundary;
   boundary[0] = 0.0;
@@ -68,7 +68,7 @@ delta::core::Engine::Engine(
 
   _boundary = boundary;
 
-  _state = delta::core::State(data.getNumberOfParticles(), data.getNumberOfObstacles(), dt);
+  _state = delta::core::State(_data.getNumberOfParticles(), _data.getNumberOfObstacles(), dt);
 }
 
 delta::core::Engine::~Engine()
@@ -462,8 +462,6 @@ void delta::core::Engine::updatePosition()
 	particle._centreOfMass[1] += _dt*particle._linearVelocity[1];
 	particle._centreOfMass[2] += _dt*particle._linearVelocity[2];
 
-	//printf("dt:%f , %f %f %f\n", dt, particle._centreOfMass[0], particle._centreOfMass[1], particle._centreOfMass[2]);
-
 	delta::dynamics::updateRotationMatrix(particle._angularVelocity.data(),
 										  particle._refAngularVelocity.data(),
 										  particle._orientation.data(), _dt);
@@ -471,13 +469,12 @@ void delta::core::Engine::updatePosition()
 	#pragma omp parallel for
 	for(int j=0; j<particle.getNumberOfTriangles()*3; j++)
 	{
-
 	  delta::dynamics::updateVertices(&particle._xCoordinates.data()[j],
 									  &particle._yCoordinates.data()[j],
 									  &particle._zCoordinates.data()[j],
 									  &particle._refxCoordinates.data()[j],
-									  &particle._refxCoordinates.data()[j],
-									  &particle._refxCoordinates.data()[j],
+									  &particle._refyCoordinates.data()[j],
+									  &particle._refzCoordinates.data()[j],
 									  particle._orientation.data(),
 									  particle._centreOfMass.data(),
 									  particle._refCentreOfMass.data());

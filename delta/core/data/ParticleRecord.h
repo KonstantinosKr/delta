@@ -31,7 +31,6 @@ class delta::core::data::ParticleRecord
   public:
 	ParticleRecord(delta::geometry::Object& object);
 
-
 	int getGlobalParticleID();
 	int getLocalParticleID();
 	iREAL getHaloDiameter();

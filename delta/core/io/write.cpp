@@ -7,7 +7,7 @@
 
 #include <delta/core/io/write.h>
 
-void delta::core::io::writeGeometryToVTK(int step, std::array<iREAL, 6> boundary, std::vector<delta::geometry::Object>& vectorGeometries)
+void delta::core::io::writeGeometryToVTK(std::array<iREAL, 6> boundary, std::vector<delta::geometry::Object>& vectorGeometries)
 {
   //domain boundary
   iREAL lo[3], hi[3];
@@ -20,7 +20,7 @@ void delta::core::io::writeGeometryToVTK(int step, std::array<iREAL, 6> boundary
   hi[2] = boundary[5]; // upper corner
 
   char iter[100];
-  sprintf(iter, "%u.vtk", step);
+  sprintf(iter, "%u.vtk", 0);
   char filename[100] = "geometry_"; //care or buffer overflow
   strcat(filename, iter);
 
@@ -168,15 +168,6 @@ void delta::core::io::writeGeometryToVTK(
 	std::array<iREAL, 6> boundary,
 	std::vector<delta::core::data::ParticleRecord>& geometries)
 {
-
-  std::vector<delta::geometry::mesh::Mesh> vectorGeometries;
-
-  for(int i=0; i<geometries.size(); i++)
-  {
-	delta::geometry::mesh::Mesh mesh(geometries[i]._xCoordinates, geometries[i]._yCoordinates, geometries[i]._zCoordinates);
-	vectorGeometries.push_back(mesh);
-  }
-
   //domain boundary
   iREAL lo[3], hi[3];
   lo[0] = boundary[0]; // lower corner
@@ -201,13 +192,11 @@ void delta::core::io::writeGeometryToVTK(
 
   int numVertices = 0;
   int numberOfFaces = 0;
-  for(int i=0; i<vectorGeometries.size(); i++)
+  for(int i=0; i<geometries.size(); i++)
   {
-	numVertices += vectorGeometries[i].getUniqueVertices().size();
-	numberOfFaces += vectorGeometries[i].getTriangleFaces().size();
+	numVertices += geometries[i].getNumberOfTriangles()*3.0;
+	numberOfFaces += geometries[i].getNumberOfTriangles();
   }
-  printf("unique vertices %i\n", numVertices);
-  printf("faces %i\n", numberOfFaces);
 
   int numberOfBoundaries = 1;
   numVertices += 8*numberOfBoundaries;
@@ -218,17 +207,23 @@ void delta::core::io::writeGeometryToVTK(
 			 "DATASET UNSTRUCTURED_GRID\n"
 			 "POINTS %i double\n", numVertices);
 
-  std::vector<int> meshEndPivots;
-  for(int i=0; i<vectorGeometries.size(); i++)
+  std::vector<int> meshStartPivotPoint;
+  for(int i=0; i<geometries.size(); i++)
   {
-	for(int j = 0; j < vectorGeometries[i].getUniqueVertices().size(); j++)
+	for(int j = 0; j < geometries[i].getNumberOfTriangles()*3; j++)
 	{
 	  fprintf(fp,"%.5f %.5f %.5f\n",
-		  vectorGeometries[i].getUniqueVertices()[j][0],
-		  vectorGeometries[i].getUniqueVertices()[j][1],
-		  vectorGeometries[i].getUniqueVertices()[j][2]);
+		  geometries[i]._xCoordinates[j],
+		  geometries[i]._yCoordinates[j],
+		  geometries[i]._zCoordinates[j]);
 	}
-	meshEndPivots.push_back(vectorGeometries[i].getUniqueVertices().size());
+	if(i == 0)
+	{
+	  meshStartPivotPoint.push_back(0);
+	}
+	else{
+	  meshStartPivotPoint.push_back(meshStartPivotPoint[i-1] + geometries[i].getNumberOfTriangles()*3.0);
+	}
   }
 
   //BOUNDARY
@@ -255,21 +250,21 @@ void delta::core::io::writeGeometryToVTK(
 
   fprintf(fp,"\nCELLS %i %i\n", cellNumber, cellPointers);
 
-  int pivot = 0; //position of start index
-  for(int i=0; i<vectorGeometries.size(); i++)
+  int lastMeshSize = 0;
+  for(int i=0; i<geometries.size(); i++)
   {
-	for(int j = 0; j < vectorGeometries[i].getTriangleFaces().size(); j++)
+	for(int j = 0; j < geometries[i].getNumberOfTriangles()*3.0; j=j+3)
 	{
-	  unsigned int A = pivot + vectorGeometries[i].getTriangleFaces()[j][0];
-	  unsigned int B = pivot + vectorGeometries[i].getTriangleFaces()[j][1];
-	  unsigned int C = pivot + vectorGeometries[i].getTriangleFaces()[j][2];
+	  unsigned int A = meshStartPivotPoint[i] + j;
+	  unsigned int B = meshStartPivotPoint[i] + j+1;
+	  unsigned int C = meshStartPivotPoint[i] + j+2;
 
 	  fprintf(fp,"3 %i %i %i\n", A, B, C);
 	}
-	pivot = meshEndPivots[i];
+	lastMeshSize = geometries[i].getNumberOfTriangles()*3.0;
   }
 
-  int meshEndPivot = meshEndPivots[meshEndPivots.size()-1];
+  int allMeshEndPivotPoint = meshStartPivotPoint[meshStartPivotPoint.size()-1] + lastMeshSize;
 
   //AB | 0->1
   //AD | 0->3
@@ -286,14 +281,14 @@ void delta::core::io::writeGeometryToVTK(
   //GH | 6->7
   //GF | 6->5
 
-  int lA = meshEndPivot + 0;
-  int lB = meshEndPivot + 1;
-  int lE = meshEndPivot + 2;
-  int lF = meshEndPivot + 3;
-  int lH = meshEndPivot + 4;
-  int lG = meshEndPivot + 5;
-  int lD = meshEndPivot + 6;
-  int lC = meshEndPivot + 7;
+  int lA = allMeshEndPivotPoint + 0;
+  int lB = allMeshEndPivotPoint + 1;
+  int lE = allMeshEndPivotPoint + 2;
+  int lF = allMeshEndPivotPoint + 3;
+  int lH = allMeshEndPivotPoint + 4;
+  int lG = allMeshEndPivotPoint + 5;
+  int lD = allMeshEndPivotPoint + 6;
+  int lC = allMeshEndPivotPoint + 7;
 
   fprintf(fp, "2 %i %i\n", lA, lB);
   fprintf(fp, "2 %i %i\n", lA, lF);
@@ -312,13 +307,12 @@ void delta::core::io::writeGeometryToVTK(
   fprintf(fp, "2 %i %i\n", lH, lC);
   fprintf(fp, "2 %i %i\n", lH, lG);
 
-
   fprintf(fp,"\nCELL_TYPES %i\n", cellNumber);
 
   //write triangle faces
-  for(int i=0; i<vectorGeometries.size(); i++)
+  for(int i=0; i<geometries.size(); i++)
   {
-	for(int j = 0; j < vectorGeometries[i].getTriangleFaces().size(); j++)
+	for(int j = 0; j < geometries[i].getNumberOfTriangles(); j++)
 	{
 	  fprintf(fp,"5\n"); //triangle
 	}

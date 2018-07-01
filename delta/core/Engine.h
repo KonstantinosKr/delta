@@ -60,14 +60,14 @@ class delta::core::Engine
 		iREAL dt,
 		bool gravity,
 		CollisionModel collisionModel,
-		delta::core::data::Structure data);
+		std::vector<delta::geometry::Object>& objects);
 
 	Engine(
 		bool overlapCheck,
 		bool plot,
 		iREAL dt,
 		bool gravity,
-		delta::core::data::Structure data);
+		std::vector<delta::geometry::Object>& objects);
 
 	virtual ~Engine();
 

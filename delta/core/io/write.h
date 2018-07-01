@@ -18,7 +18,7 @@
 namespace delta {
   namespace core {
 	namespace io {
-	  void writeGeometryToVTK(int step, std::array<iREAL, 6> boundary, std::vector<delta::geometry::Object>& vectorGeometries);
+	  void writeGeometryToVTK(std::array<iREAL, 6> boundary, std::vector<delta::geometry::Object>& vectorGeometries);
 	  void writeGeometryToVTK(int step, std::array<iREAL, 6> boundary, std::vector<delta::core::data::ParticleRecord>& vectorGeometries);
 	  void writeScenarioSpecification(std::string fileName);
 	}

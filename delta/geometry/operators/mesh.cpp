@@ -145,3 +145,48 @@ void delta::geometry::operators::mesh::rotateZ(
       zCoordinates[i] =   M[6] * x + M[7] * y + M[8] * z;
   }
 }
+
+
+void delta::geometry::operators::mesh::moveMeshFromPositionToOrigin(
+    std::vector<iREAL> &points,
+    iREAL center[3])
+{
+  #ifdef OMPProcess
+	#pragma omp parallel for
+  #endif
+  for(unsigned i=0;i<points.size();i++)
+  {
+    points[i] = points[i]-center[0];
+  }
+}
+
+void delta::geometry::operators::mesh::moveMeshFromOriginToPosition(
+    std::vector<iREAL> &points,
+    iREAL center[3])
+{
+  #ifdef OMPProcess
+	#pragma omp parallel for
+  #endif
+  for(unsigned i=0;i<points.size();i++)
+  {
+    points[i] = (points[i])+center[0];
+  }
+}
+
+void delta::geometry::operators::mesh::scaleXYZ(
+    std::vector<iREAL> &points,
+    iREAL scale,
+    iREAL position[3])
+{
+  delta::geometry::operators::mesh::moveMeshFromPositionToOrigin(points, position);
+
+  #ifdef OMPProcess
+	#pragma omp parallel for
+  #endif
+  for(unsigned i=0;i<points.size();i++)
+  {
+      points[i] = points[i]*scale;
+  }
+  delta::geometry::operators::mesh::moveMeshFromOriginToPosition(points, position);
+}
+

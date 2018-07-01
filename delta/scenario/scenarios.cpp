@@ -130,9 +130,10 @@ void delta::world::scenarios::turbine(
   angular 	= {1.0, 0.0, 0.0};
 
   meshB->scaleXYZ(0.1);
-  delta::geometry::Object turbineB("turbine", 0, meshB, centre,
+  delta::geometry::Object turbineB("turbine", 1, meshB, centre,
 								  delta::geometry::material::MaterialType::WOOD,
 								  false, false, true, epsilon, linear, angular);
+
   coarseObjects.push_back(turbineB);
 }
 
