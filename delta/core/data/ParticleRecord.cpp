@@ -11,10 +11,7 @@ delta::core::data::ParticleRecord::ParticleRecord(delta::geometry::Object& objec
 {
   this->_linearVelocity = object.getLinearVelocity();
   this->_angularVelocity = object.getAngularVelocity();
-
-  this->_refAngularVelocity[0] = 0.0;
-  this->_refAngularVelocity[1] = 0.0;
-  this->_refAngularVelocity[2] = 0.0;
+  this->_refAngularVelocity = object.getAngularVelocity();
 
   this->_centre = object.getCentre();
   this->_centreOfMass = object.getCentreOfMass();
