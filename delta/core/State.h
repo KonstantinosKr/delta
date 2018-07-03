@@ -33,7 +33,7 @@
 #include <iomanip>
 #include <iostream>
 
-typedef std::chrono::high_resolution_clock Time;
+typedef std::chrono::steady_clock Time;
 typedef std::chrono::duration<float> fsec;
 
 namespace delta {
@@ -64,14 +64,14 @@ class delta::core::State {
 
 	void incNumberOfTriangleComparisons(int n);
 	void incNumberOfParticleComparisons(int n);
-	std::chrono::system_clock::time_point getStartTime();
+	std::chrono::steady_clock::time_point getStartTime();
 
   private:
 	int 		_noOfParticles;
 	int 		_noOfObstacles;
 	iREAL 	_dt;
 
-	std::chrono::system_clock::time_point _start;
+	std::chrono::steady_clock::time_point _start;
 
 	//physical simulation
 	int _numberOfTriangleComparisons;

@@ -36,7 +36,7 @@
 #include <vector>
 #include <string>
 
-typedef std::chrono::high_resolution_clock Time;
+typedef std::chrono::steady_clock Time;
 typedef std::chrono::duration<float> fsec;
 
 namespace delta {
@@ -59,7 +59,7 @@ class delta::core::io::Log {
 	virtual ~Log();
   private:
 	std::string _logIdentifier;
-	std::chrono::system_clock::time_point _start;
+	std::chrono::steady_clock::time_point _start;
   protected:
 	iREAL getCurrentTime();
 };

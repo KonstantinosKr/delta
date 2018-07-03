@@ -36,9 +36,9 @@ void printManual()
 	  << " max-step-size       adaptive max step" << std::endl
 	  << " triangles-per-particle    triangles used to represent one particle" << std::endl
 	  << " [core-count]        only required in TBB shared memory" << std::endl
-    << " [run-grid-parallel] only required in TBB shared memory" << std::endl
-    << " [run-particles-parallel] only required in TBB shared memory" << std::endl
-    << " [run-comparisons-in-background] only required in TBB shared memory. Either off or a positive number" << std::endl
+	  << " [run-grid-parallel] only required in TBB shared memory" << std::endl
+	  << " [run-particles-parallel] only required in TBB shared memory" << std::endl
+	  << " [run-comparisons-in-background] only required in TBB shared memory. Either off or a positive number" << std::endl
 	  << std::endl << std::endl << std::endl << std::endl
 
 	  << " OPTIONS: "  << std::endl << std::endl
@@ -82,9 +82,9 @@ void printManual()
 	  << "  frictionSlide" << std::endl
 	  << "  frictionRoll" << std::endl << std::endl
 
-    << " Iterations (int)" << std::endl
-    << " =========" << std::endl
-    << " 0 - infinity" << std::endl << std::endl
+	  << " Iterations (int)" << std::endl
+	  << " =========" << std::endl
+	  << " 0 - infinity" << std::endl << std::endl
 
 	  << " Grid types (string)" << std::endl
 	  << " ==========" << std::endl
@@ -93,9 +93,9 @@ void printManual()
 	  << "  adaptive-grid" << std::endl
 	  << "  reluctant-grid" << std::endl << std::endl
 
-    << " Step-size (iREAL)" << std::endl
-    << " =========" << std::endl
-    << " -infinity - infinity" << std::endl << std::endl
+	  << " Step-size (iREAL)" << std::endl
+	  << " =========" << std::endl
+	  << " -infinity - infinity" << std::endl << std::endl
 
 	  << " Plot variants (string)" << std::endl
 	  << " =============" << std::endl
@@ -106,29 +106,29 @@ void printManual()
 	  << "  every-checkpoint" << std::endl
 	  << "  range" << std::endl << std::endl
 
-    << " snapshot-frequency (iREAL)" << std::endl
-    << " =========" << std::endl
-    << " 0.0 - infinity" << std::endl << std::endl
+	  << " snapshot-frequency (iREAL)" << std::endl
+	  << " =========" << std::endl
+	  << " 0.0 - infinity" << std::endl << std::endl
 
-    << " Collision-model (string)" << std::endl
-    << " =========" << std::endl
-    << " sphere" << std::endl
-    << " bf" << std::endl
-    << " penalty" << std::endl
-    << " penaltyStat" << std::endl
-    << " hybrid-on-triangle-pairs" << std::endl
-    << " hybrid-on-batches" << std::endl
-    << " hybridStat" << std::endl
-    << " gjk" << std::endl
-    << " none" << std::endl << std::endl
+	  << " Collision-model (string)" << std::endl
+	  << " =========" << std::endl
+	  << " sphere" << std::endl
+	  << " bf" << std::endl
+	  << " penalty" << std::endl
+	  << " penaltyStat" << std::endl
+	  << " hybrid-on-triangle-pairs" << std::endl
+	  << " hybrid-on-batches" << std::endl
+	  << " hybridStat" << std::endl
+	  << " gjk" << std::endl
+	  << " none" << std::endl << std::endl
 
-    << " Mesh-density [if mesh is used] (int)" << std::endl
-    << " =========" << std::endl
-    << " 0 - infinity" << std::endl << std::endl
+	  << " Mesh-density [if mesh is used] (int)" << std::endl
+	  << " =========" << std::endl
+	  << " 0 - infinity" << std::endl << std::endl
 
-    << " tbb-core-count (int)" << std::endl
-    << " =========" << std::endl
-    << " 0 - infinity" << std::endl << std::endl
+	  << " tbb-core-count (int)" << std::endl
+	  << " =========" << std::endl
+	  << " 0 - infinity" << std::endl << std::endl
 
 	  << " Usage: ./dem-xxx grid_h_max(iREAL) scenario(string) iterations(int) grid-type(string) step-size(int) plot(string) snapshot-frequency(iREAL in seconds) collision-model(string) mesh-density-per-particle(int) [tbb-core-count](int)" << std::endl
 	  << " eg: ./delta-icc-release-tbb 0.1 [grid] hopperUniform [scenario] 10 [steps] regular-grid [grid] 0.0001 [step-size] never [plot] 1 [snap] sphere [collision] 10 [mesh] 3 [cores] true [grid-para] true [particle-para] auto [tbb number] false [autotune]" << std::endl
