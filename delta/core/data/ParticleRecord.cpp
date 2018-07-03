@@ -30,30 +30,7 @@ delta::core::data::ParticleRecord::ParticleRecord(delta::geometry::Object& objec
   this->_material = object.getMaterial();
 
   object.computeInertia(_material, this->_mass, _centreOfMass.data(), this->_inertia.data());
-
-/*  printf("%f %f %f\n%f %f %f\n%f %f %f\n",
-	  this->_inertia[0],
-		  this->_inertia[1],
-		  this->_inertia[2],
-		  this->_inertia[3],
-		  this->_inertia[4],
-		  this->_inertia[5],
-		  this->_inertia[6],
-		  this->_inertia[7],
-		  this->_inertia[8]);*/
-
   object.computeInverseInertia(this->_inertia.data(), this->_inverse.data(), object.getIsObstacle());
-/*
-  printf("%f %f %f\n%f %f %f\n%f %f %f\n",
-	  this->_inverse[0],
-		  this->_inverse[1],
-		  this->_inverse[2],
-		  this->_inverse[3],
-		  this->_inverse[4],
-		  this->_inverse[5],
-		  this->_inverse[6],
-		  this->_inverse[7],
-		  this->_inverse[8]);*/
 
   this->_xCoordinates = object.getMesh().getXCoordinatesAsVector();
   this->_yCoordinates = object.getMesh().getYCoordinatesAsVector();

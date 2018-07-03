@@ -173,12 +173,12 @@ int main(int argc, char** argv)
   const iREAL       		gridHMax            	= atof(argv[1]);
   const std::string  	scenario            	= argv[2];
   const int          	iterations         	= atoi(argv[3]);
-  const std::string  	gridTypeIdentifier  	= argv[4];
+  const std::string  	gridTypeID  			= argv[4];
   const iREAL       		stepSize         	= atof(argv[5]);
-  const std::string  	plotIdentifier      	= argv[6];
+  const std::string  	plotID      			= argv[6];
   const iREAL			realSnapshot		    = atof(argv[7]);
   const std::string  	collisionModel     	= argv[8];
-  const int			    meshMultiplier      	= atof(argv[9]);
+  const int			    meshDensity      	= atof(argv[9]);
   bool					autotune 			= false;
 
   #ifdef SharedMemoryParallelisation
@@ -255,7 +255,7 @@ int main(int argc, char** argv)
 
   dem::mappings::CreateGrid::GridType gridType;
 
-  if (gridTypeIdentifier=="no-grid") {
+  if (gridTypeID=="no-grid") {
     gridType = dem::mappings::CreateGrid::NoGrid;
     if(argc != NumberOfArguments)
     {
@@ -263,7 +263,7 @@ int main(int argc, char** argv)
       return -1;
     }
   }
-  else if (gridTypeIdentifier=="regular-grid") {
+  else if (gridTypeID=="regular-grid") {
     if(argc != NumberOfArguments)
     {
       printManual();
@@ -271,7 +271,7 @@ int main(int argc, char** argv)
     }
     gridType = dem::mappings::CreateGrid::RegularGrid;
   }
-  else if (gridTypeIdentifier=="adaptive-grid") {
+  else if (gridTypeID=="adaptive-grid") {
     gridType = dem::mappings::CreateGrid::AdaptiveGrid;
     if(argc != NumberOfArguments)
     {
@@ -279,7 +279,7 @@ int main(int argc, char** argv)
       return -1;
     }
   }
-  else if (gridTypeIdentifier=="reluctant-grid") {
+  else if (gridTypeID=="reluctant-grid") {
     gridType = dem::mappings::CreateGrid::ReluctantAdaptiveGrid;
     if(argc != NumberOfArguments)
     {
@@ -287,7 +287,7 @@ int main(int argc, char** argv)
       return -1;
     }
   }
-  else if (gridTypeIdentifier=="flop-grid") {
+  else if (gridTypeID=="flop-grid") {
     gridType = dem::mappings::CreateGrid::FlopAdaptiveGrid;
     if(argc != NumberOfArguments)
     {
@@ -295,7 +295,7 @@ int main(int argc, char** argv)
       return -1;
     }
   }
-  else if (gridTypeIdentifier == "range")
+  else if (gridTypeID == "range")
   {
 	  if(argc != NumberOfArguments+2)
 	  {
@@ -303,7 +303,7 @@ int main(int argc, char** argv)
 		  return -1;
 	  }
   } else {
-    std::cerr << gridTypeIdentifier << " is not a valid grid type. Please run without arguments to see list of valid grid types" << std::endl;
+    std::cerr << gridTypeID << " is not a valid grid type. Please run without arguments to see list of valid grid types" << std::endl;
     programExitCode = 2;
   }
 
@@ -475,35 +475,35 @@ int main(int argc, char** argv)
     programExitCode = 2;
   }
 
-  dem::mappings::CreateGrid::setScenario(scenarioArray, gridHMax, gridType, meshMultiplier);
+  dem::mappings::CreateGrid::setScenario(scenarioArray, gridHMax, gridType, meshDensity);
 
   dem::runners::Runner::Plot plot;
   //int trackID = -1;
-  if (plotIdentifier=="never") {
+  if (plotID=="never") {
     plot = dem::runners::Runner::Never;
   }
-  else if(plotIdentifier=="every-iteration") {
+  else if(plotID=="every-iteration") {
     plot = dem::runners::Runner::EveryIteration;
   }
-  else if(plotIdentifier=="upon-change") {
+  else if(plotID=="upon-change") {
     plot = dem::runners::Runner::UponChange;
   }
-  else if(plotIdentifier=="every-batch") {
+  else if(plotID=="every-batch") {
     plot = dem::runners::Runner::EveryBatch;
   }
-  else if(plotIdentifier=="adaptive") {
+  else if(plotID=="adaptive") {
     plot = dem::runners::Runner::Adaptive;
   }
-  else if(plotIdentifier=="range") {
+  else if(plotID=="range") {
   	plot = dem::runners::Runner::Range;
   }
-  else if(plotIdentifier=="track") {
+  else if(plotID=="track") {
     plot = dem::runners::Runner::Track;
     //dem::mappings::Plot::_trackID = trackID;
     //dem::mappings::Plot::_trackParticleID.push_back(0);
     //dem::mappings::Plot::_trackParticleID.push_back(1);
   }else {
-    std::cerr << "invalid plot option: " << plotIdentifier << "Please run without arguments to see list of valid plot variants" << std::endl;
+    std::cerr << "invalid plot option: " << plotID << "Please run without arguments to see list of valid plot variants" << std::endl;
     programExitCode = 2;
   }
 
@@ -560,9 +560,9 @@ int main(int argc, char** argv)
     programExitCode = 2;
   }
 
-  logInfo( "main(...)", "scenario:" << (scenario)            << ", steps:" 			<< (iterations) 			<< ", grid:"           	<< (gridType)
-                    << ", step-size:" << (stepSize)          << ", plot:"     		<< (plotIdentifier)      << ", realSnapshot:"    << (realSnapshot)
-                    << ", model:"    << (collisionModel)     << ", triangleNumber:"  	<< (meshMultiplier));
+  logInfo( "main(...)", "scenario:" << (scenario)            << ", steps:" 			<< (iterations) 		<< ", grid:"    			<< (gridType)
+                    << ", step-size:" << (stepSize)          << ", plot:"     		<< (plotID)      	<< ", realSnapshot:"    	<< (realSnapshot)
+                    << ", model:"    << (collisionModel)     << ", triangleNumber:"  	<< (meshDensity));
 
   // Configure the output
   tarch::logging::CommandLineLogger::getInstance().clearFilterList();

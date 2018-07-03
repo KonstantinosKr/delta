@@ -22,68 +22,44 @@
  SOFTWARE.
  */
 
-#ifndef DELTA_CORE_STATE_H_
-#define DELTA_CORE_STATE_H_
+#ifndef DELTA_WORLD_WORLD_H_
+#define DELTA_WORLD_WORLD_H_
 
-#include <time.h>
-#include <vector>
-#include <fstream>
+#include <delta/world/scenario/scenarios.h>
+#include <delta/core/data/Meta.h>
 #include <string>
-#include <chrono>
-#include <iomanip>
-#include <iostream>
-
-typedef std::chrono::high_resolution_clock Time;
-typedef std::chrono::duration<float> fsec;
+#include <array>
 
 namespace delta {
-	namespace core {
-		class State;
-	}
-}
+  namespace world {
 
-class delta::core::State {
+	class World;
+
+  } /* namespace world */
+} /* namespace delta */
+
+class delta::world::World {
+
   public:
-	State();
+	World(std::string scenario, delta::core::data::Meta::CollisionModel collisionModelID, iREAL meshDensity);
 
-	State(int 		noOfParticles,
-		  int 		noOfObstacles,
-		  iREAL 		dt);
+	iREAL 					getEpsilon();
+	bool 					hasGravity();
+	bool 					getIsSphere();
+	std::array<iREAL, 6> 	getBoundary();
+	int 						getNumberOfTriangles();
+	int 						getMeshDensity();
+	std::vector<delta::geometry::Object> getObjects();
 
-	void initCheckpoint(int iteration);
-	void closeCheckpoint();
-
-	void readState();
-	void writeState();
-	void saveParticleGeometry();
-
-	void update();
-	int getCurrentStepIteration();
-	int getCollisions();
-	iREAL getStepSize();
-
-	void incNumberOfTriangleComparisons(int n);
-	void incNumberOfParticleComparisons(int n);
-	std::chrono::steady_clock::time_point getStartTime();
-
+	virtual ~World();
   private:
-	int 		_noOfParticles;
-	int 		_noOfObstacles;
-	iREAL 	_dt;
-
-	std::chrono::steady_clock::time_point _start;
-
-	//physical simulation
-	int _numberOfTriangleComparisons;
-	int _numberOfParticleComparisons;
-	int _numberOfCollisions = 0;
-
-	//engine
-	int _iteration;
-
-	//std::ofstream 	_checkpointFile;
+	std::array<iREAL, 6> _boundary;
+	int _triangles;
+	iREAL _gravity;
+	iREAL _epsilon;
+	iREAL _meshDensity;
+	bool _isSphere;
+	std::vector<delta::geometry::Object> _particles;
 };
 
-#endif /* DELTA_CORE_STATE_H_ */
-
-
+#endif /* DELTA_WORLD_WORLD_H_ */

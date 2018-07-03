@@ -5,28 +5,26 @@
  *      Author: konstantinos
  */
 
-#include <delta/scenario/scenarios.h>
-#include <delta/scenario/configuration.h>
+#include <delta/world/scenario/scenarios.h>
+#include <delta/world/scenario/configuration.h>
 #include <delta/geometry/hardcoded/graphite.h>
 #include <delta/geometry/hardcoded/hopper.h>
 #include <delta/geometry/hardcoded/cube.h>
 #include <delta/geometry/hardcoded/granulate.h>
 
-
 #include <delta/geometry/material.h>
 #include "delta/geometry/structures/Mesh.h"
 
-
 void delta::world::scenarios::hopper(
-	std::vector<delta::geometry::Object> &coarse,
-	std::vector<delta::geometry::Object> &insitu,
-	iREAL centre[3],
-	int xzcuts,
-	int ycuts,
-	bool uniform,
-	bool isSphere,
-	int meshDensity,
-	iREAL epsilon)
+	std::vector<delta::geometry::Object> &	coarse,
+	std::vector<delta::geometry::Object> &	insitu,
+	iREAL 									centre[3],
+	int 										xzcuts,
+	int 										ycuts,
+	bool 									uniform,
+	bool 									isSphere,
+	int 										meshDensity,
+	iREAL 									epsilon)
 {
   //////////////////////////////////////////////////////
   /// HOPPER FLOW SCENARIO /////////////////////////////

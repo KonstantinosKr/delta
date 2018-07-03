@@ -1,11 +1,29 @@
 /*
- * Engine.cpp
- *
- *  Created on: 11 Jun 2018
- *      Author: konstantinos
+ The MIT License (MIT)
+
+ Copyright (c) 2018 Konstantinos Krestenitis
+
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
  */
 
 #include "delta/core/Engine.h"
+#include <delta/world/World.h>
 
 delta::core::Engine::Engine()
 {
@@ -13,62 +31,37 @@ delta::core::Engine::Engine()
 }
 
 delta::core::Engine::Engine(
-	bool overlapCheck,
-	bool plot,
-	iREAL dt,
-	bool gravity,
-	std::vector<delta::geometry::Object>& data)
+	delta::world::World					world,
+	delta::core::data::Meta::EngineMeta 	meta)
 {
+  bool overlapCheck = false;
   _overlapCheck = overlapCheck;
-  _state = delta::core::State::State();
-  _plot = plot;
-  _collisionModel = delta::core::Engine::CollisionModel::none;
-  _dt = dt;
-  _gravity = gravity;
-  _data = delta::core::data::Structure(data);
+  _collisionModel = meta.modelScheme;
 
-  std::array<iREAL, 6> boundary;
-  boundary[0] = 0.0;
-  boundary[1] = 0.0;
-  boundary[2] = 0.0;
+  _plot = meta.plotScheme;
+  _gravity = world.hasGravity();
+  _data = delta::core::data::Structure(world.getObjects());
+  _boundary = world.getBoundary();
 
-  boundary[3] = 1.0;
-  boundary[4] = 1.0;
-  boundary[5] = 1.0;
+  _state = delta::core::State(_data.getNumberOfParticles(), _data.getNumberOfObstacles(), meta.dt);
 
-  _boundary = boundary;
+  std::vector<std::string> parameters;
+  _logBook = new delta::core::io::LogTimeStamp("LOG", _state.getStartTime(), parameters);
+  _logWarningBook = new delta::core::io::LogWarning("WARNING", _state.getStartTime(), parameters);
+  _logErrorBook = new delta::core::io::LogError("ERROR", _state.getStartTime(), parameters);
 
-  _state = delta::core::State(_data.getNumberOfParticles(), _data.getNumberOfObstacles(), dt);
-}
-
-delta::core::Engine::Engine(
-	bool overlapCheck,
-	bool plot,
-	iREAL dt,
-	bool gravity,
-	CollisionModel collisionModel,
-	std::vector<delta::geometry::Object>& data)
-{
-  _overlapCheck = overlapCheck;
-  _state = delta::core::State::State();
-  _plot = plot;
-  _collisionModel = collisionModel;
-  _dt = dt;
-  _gravity = gravity;
-  _data = delta::core::data::Structure(data);
-
-  std::array<iREAL, 6> boundary;
-  boundary[0] = 0.0;
-  boundary[1] = 0.0;
-  boundary[2] = 0.0;
-
-  boundary[3] = 1.0;
-  boundary[4] = 1.0;
-  boundary[5] = 1.0;
-
-  _boundary = boundary;
-
-  _state = delta::core::State(_data.getNumberOfParticles(), _data.getNumberOfObstacles(), dt);
+  std::cout << "-----------------------------------------" << std::endl;
+  std::cout << "-Delta Library - Kostantinos Krestenitis-" << std::endl;
+  std::cout << "-----------------------------------------" << std::endl;
+  std::cout << "----------Simulation Scenario------------" << std::endl;
+  std::cout << "dt				: " 	<< _state.getStepSize() 		<< std::endl
+			<< "overlap			: " 	<< _overlapCheck				<< std::endl
+			<< "sphere 			: " 	<< world.getIsSphere() 		<< std::endl
+			<< "mesh   			: " 	<< world.getMeshDensity() 	<< std::endl
+			<< "epsilon			: " 	<< world.getEpsilon() 		<< std::endl
+			<< "particles		: " 	<< _data.getNumberOfParticles()	<< std::endl
+			<< "triangles		: " << world.getNumberOfTriangles() 	<< std::endl;
+  std::cout << "----------Simulation Run----------------" << std::endl;
 }
 
 delta::core::Engine::~Engine()
@@ -78,15 +71,16 @@ delta::core::Engine::~Engine()
 
 void delta::core::Engine::iterate()
 {
-  if(_plot)
+  if(_plot == delta::core::data::Meta::Plot::EveryIteration)
   {
-	delta::core::io::writeGeometryToVTK(_state.getIteration(), _boundary, _data.getAll());
+	delta::core::io::writeGeometryToVTK(_state.getCurrentStepIteration(), _boundary, _data.getAll());
   }
 
   //delta::core::Engine::contactDetection();
   //delta::core::Engine::deriveForces();
   delta::core::Engine::updatePosition();
 
+  _logBook->log(_state);
   _state.update();
 }
 
@@ -431,15 +425,15 @@ void delta::core::Engine::deriveForces()
 
 	if(!particle.getIsObstacle())
 	{
-	  particle._linearVelocity[0] += _dt * (force[0] / particle.getMass());
-	  particle._linearVelocity[1] += _dt * (force[1] / particle.getMass());
-	  particle._linearVelocity[2] += _dt * (force[2] / particle.getMass());
+	  particle._linearVelocity[0] += _state.getStepSize() * (force[0] / particle.getMass());
+	  particle._linearVelocity[1] += _state.getStepSize() * (force[1] / particle.getMass());
+	  particle._linearVelocity[2] += _state.getStepSize() * (force[2] / particle.getMass());
 
 	  delta::dynamics::updateAngular(particle._refAngularVelocity.data(),
 									particle._orientation.data(),
 									particle.getInertia().data(),
 									particle.getInverse().data(),
-									torque, _dt);
+									torque, _state.getStepSize());
 	}
   }
 }
@@ -452,19 +446,19 @@ void delta::core::Engine::updatePosition()
 
 	if(particle.getIsObstacle()) continue;
 
-	particle._linearVelocity[1] += _dt*(int(_gravity)*-9.8); //pass as gravity gxgygz vector
+	particle._linearVelocity[1] += _state.getStepSize()*(int(_gravity)*-9.8); //pass as gravity gxgygz vector
 
-	particle._centre[0] += _dt*particle._linearVelocity[0];
-	particle._centre[1] += _dt*particle._linearVelocity[1];
-	particle._centre[2] += _dt*particle._linearVelocity[2];
+	particle._centre[0] += _state.getStepSize()*particle._linearVelocity[0];
+	particle._centre[1] += _state.getStepSize()*particle._linearVelocity[1];
+	particle._centre[2] += _state.getStepSize()*particle._linearVelocity[2];
 
-	particle._centreOfMass[0] += _dt*particle._linearVelocity[0];
-	particle._centreOfMass[1] += _dt*particle._linearVelocity[1];
-	particle._centreOfMass[2] += _dt*particle._linearVelocity[2];
+	particle._centreOfMass[0] += _state.getStepSize()*particle._linearVelocity[0];
+	particle._centreOfMass[1] += _state.getStepSize()*particle._linearVelocity[1];
+	particle._centreOfMass[2] += _state.getStepSize()*particle._linearVelocity[2];
 
 	delta::dynamics::updateRotationMatrix(particle._angularVelocity.data(),
 										  particle._refAngularVelocity.data(),
-										  particle._orientation.data(), _dt);
+										  particle._orientation.data(), _state.getStepSize());
 
 	#pragma omp parallel for
 	for(int j=0; j<particle.getNumberOfTriangles()*3; j++)

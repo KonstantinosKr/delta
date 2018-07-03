@@ -22,68 +22,41 @@
  SOFTWARE.
  */
 
-#ifndef DELTA_CORE_STATE_H_
-#define DELTA_CORE_STATE_H_
+#ifndef WORLD_OPERATORS_H_
+#define WORLD_OPERATORS_H_
 
-#include <time.h>
+#include <delta/geometry/Object.h>
 #include <vector>
-#include <fstream>
-#include <string>
-#include <chrono>
-#include <iomanip>
-#include <iostream>
-
-typedef std::chrono::high_resolution_clock Time;
-typedef std::chrono::duration<float> fsec;
+#include <array>
+#include <limits>
 
 namespace delta {
-	namespace core {
-		class State;
-	}
-}
+namespace world {
+namespace operators {
 
-class delta::core::State {
-  public:
-	State();
+/*
+ *  Compute Boundary
+ *
+ *  compute boundaries of the computational domain
+ *
+ *  @param position				: position of the layout
+ *  @param width 				: width of the geometry
+ *  @param layers				: layers of decks
+ *  @param epsilon 				: epsilon margin
+ *  @param objects				: objects returned
+ *  @returns void
+ */
+void computeBoundary(
+	 std::vector<delta::geometry::Object>& coarseObjects,
+	 std::vector<delta::geometry::Object>& fineObjects,
+	 std::vector<delta::geometry::Object>& insitufineObjects,
+	 iREAL& minParticleDiam,
+	 iREAL& maxParticleDiam,
+	 iREAL* minComputeDomain,
+	 iREAL* maxComputeDomain);
 
-	State(int 		noOfParticles,
-		  int 		noOfObstacles,
-		  iREAL 		dt);
+} /* namespace operators */
+} /* namespace world */
+} /* namespace delta */
 
-	void initCheckpoint(int iteration);
-	void closeCheckpoint();
-
-	void readState();
-	void writeState();
-	void saveParticleGeometry();
-
-	void update();
-	int getCurrentStepIteration();
-	int getCollisions();
-	iREAL getStepSize();
-
-	void incNumberOfTriangleComparisons(int n);
-	void incNumberOfParticleComparisons(int n);
-	std::chrono::steady_clock::time_point getStartTime();
-
-  private:
-	int 		_noOfParticles;
-	int 		_noOfObstacles;
-	iREAL 	_dt;
-
-	std::chrono::steady_clock::time_point _start;
-
-	//physical simulation
-	int _numberOfTriangleComparisons;
-	int _numberOfParticleComparisons;
-	int _numberOfCollisions = 0;
-
-	//engine
-	int _iteration;
-
-	//std::ofstream 	_checkpointFile;
-};
-
-#endif /* DELTA_CORE_STATE_H_ */
-
-
+#endif /* WORLD_OPERATORS_H_ */

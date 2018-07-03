@@ -1,15 +1,27 @@
 /*
- * configuration.cpp
- *
- *  Created on: 2 Apr 2018
- *      Author: konstantinos
- */
+ The MIT License (MIT)
 
-#include <delta/world/arrayLayout.h>
-#include <delta/geometry/hardcoded/graphite.h>
-#include "delta/scenario/configuration.h"
-#include "delta/geometry/hardcoded/granulate.h"
-#include "delta/geometry/hardcoded/cube.h"
+ Copyright (c) 2018 Konstantinos Krestenitis
+
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
+ */
+#include <delta/world/scenario/configuration.h>
 
  void delta::world::configuration::uniformlyDistributedTotalMass(
 	  std::vector<delta::geometry::Object> &	insitu,
@@ -218,9 +230,9 @@ void delta::world::configuration::nonUniformlyDistributedTotalMass(
 }
 
  void delta::world::configuration::uniMeshGeometry(
-    iREAL totalMass,
-    int noPointsPerParticle,
-    std::vector<delta::geometry::Object> &objects)
+    iREAL 									totalMass,
+    int 										noPointsPerParticle,
+    std::vector<delta::geometry::Object> &	objects)
 {
   iREAL massPerParticle = totalMass/(iREAL)objects.size();
   delta::geometry::material::MaterialType material = objects[0].getMaterial();
@@ -272,9 +284,9 @@ void delta::world::configuration::nonUniformlyDistributedTotalMass(
 }
 
  void delta::world::configuration::uniCubeGeometry(
-    iREAL totalMass,
-    int noPointsPerParticle,
-    std::vector<delta::geometry::Object> &objects)
+    iREAL 									totalMass,
+    int 										noPointsPerParticle,
+    std::vector<delta::geometry::Object> &	objects)
 {
   iREAL massPerParticle = totalMass/(iREAL)objects.size();
 
@@ -307,9 +319,9 @@ void delta::world::configuration::nonUniformlyDistributedTotalMass(
 }
 
  void delta::world::configuration::nonUniSphereRadius(
-    iREAL totalMass,
-    iREAL subcellx,
-    std::vector<delta::geometry::Object> &objects)
+    iREAL 									totalMass,
+    iREAL 									subcellx,
+    std::vector<delta::geometry::Object> &	objects)
 {
   if((!objects.size()) > 0) return;
 
@@ -353,10 +365,10 @@ void delta::world::configuration::nonUniformlyDistributedTotalMass(
 }
 
  void delta::world::configuration::nonUniMeshGeometry(
-    iREAL totalMass,
-    iREAL subcellx,
-	int meshDensity,
-	std::vector<delta::geometry::Object> &objects)
+    iREAL 									totalMass,
+    iREAL 									subcellx,
+	int 										meshDensity,
+	std::vector<delta::geometry::Object> &	objects)
 {
   iREAL massPerParticle = totalMass/(iREAL)objects.size();
   delta::geometry::material::MaterialType material = objects[0].getMaterial();
@@ -420,10 +432,10 @@ void delta::world::configuration::nonUniformlyDistributedTotalMass(
 }
 
  void delta::world::configuration::nonUniCubeGeometry(
-  iREAL totalMass,
-  iREAL subcellx,
-  int meshDensity,
-  std::vector<delta::geometry::Object> &objects)
+  iREAL 									totalMass,
+  iREAL 									subcellx,
+  int 									meshDensity,
+  std::vector<delta::geometry::Object> &	objects)
 {
    iREAL massPerParticle = totalMass/(iREAL)objects.size();
    delta::geometry::material::MaterialType material = objects[0].getMaterial();
@@ -486,11 +498,11 @@ void delta::world::configuration::nonUniformlyDistributedTotalMass(
 }
 
  void delta::world::configuration::loadNuclearGeometry(
-    iREAL position[3],
-    iREAL width,
-    int layers,
-	iREAL epsilon,
-	std::vector<delta::geometry::Object>& objects)
+    iREAL 									position[3],
+    iREAL 									width,
+    int 										layers,
+	iREAL 									epsilon,
+	std::vector<delta::geometry::Object>& 	objects)
 {
 
   //_particleGrid, _componentGrid, _radArray, _minParticleDiam, _maxParticleDiam
@@ -547,13 +559,13 @@ void delta::world::configuration::nonUniformlyDistributedTotalMass(
 }
 
  void delta::world::configuration::makeBrickGrid(
-    iREAL position[3],
-    iREAL arrayXZlength,
-    int   xzElements,
-    iREAL arrayYlength,
-    int   yElements,
-	iREAL epsilon,
-    std::vector<delta::geometry::Object>& objects)
+    iREAL 									position[3],
+    iREAL 									arrayXZlength,
+    int   									xzElements,
+    iREAL 									arrayYlength,
+    int   									yElements,
+	iREAL 									epsilon,
+    std::vector<delta::geometry::Object>& 	objects)
 {
   std::vector<iREAL>  xCoordinates, yCoordinates, zCoordinates;
 

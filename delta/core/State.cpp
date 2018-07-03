@@ -1,7 +1,7 @@
 /*
  The MIT License (MIT)
 
- Copyright (c) 29 Sep 2016 Konstantinos Krestenitis
+ Copyright (c) 2018 Konstantinos Krestenitis
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -29,11 +29,20 @@ delta::core::State::State()
 
 }
 
-delta::core::State::State(int noOfParticles, int noOfObstacles, iREAL timeStepSize)
+delta::core::State::State(
+	int 		noOfParticles,
+	int 		noOfObstacles,
+	iREAL 	dt)
 {
+  _start = Time::now();
+
   _noOfParticles = noOfParticles;
   _noOfObstacles = noOfObstacles;
-  _timeStepSize = timeStepSize;
+  _dt = dt;
+
+  _numberOfTriangleComparisons = 0;
+  _numberOfParticleComparisons = 0;
+  _numberOfCollisions = 0;
 
   //_checkpointFile = "output.out";
 
@@ -45,9 +54,19 @@ void delta::core::State::update()
   _iteration ++;
 }
 
-int delta::core::State::getIteration()
+int delta::core::State::getCurrentStepIteration()
 {
   return _iteration;
+}
+
+int delta::core::State::getCollisions()
+{
+  return _numberOfCollisions;
+}
+
+iREAL delta::core::State::getStepSize()
+{
+  return _dt;
 }
 
 void delta::core::State::writeState()
@@ -75,6 +94,11 @@ void delta::core::State::incNumberOfParticleComparisons(int n)
 
 void delta::core::State::readState()
 {
+}
+
+std::chrono::steady_clock::time_point delta::core::State::getStartTime()
+{
+  return _start;
 }
 
 void delta::core::State::saveParticleGeometry()

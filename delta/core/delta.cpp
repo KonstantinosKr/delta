@@ -28,7 +28,6 @@
 
 delta::core::Delta::Delta()
 {
-  printf("init material\n");
   delta::geometry::material::materialInit();
 /*
   delta::geometry::mesh::Mesh *mesh = delta::core::io::readVTKGeometry("input/turbine.stl");

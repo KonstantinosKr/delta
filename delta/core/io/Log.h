@@ -22,68 +22,66 @@
  SOFTWARE.
  */
 
-#ifndef DELTA_CORE_STATE_H_
-#define DELTA_CORE_STATE_H_
+#ifndef DELTA_CORE_IO_LOG_H_
+#define DELTA_CORE_IO_LOG_H_
 
-#include <time.h>
-#include <vector>
-#include <fstream>
 #include <string>
 #include <chrono>
+#include <vector>
 #include <iomanip>
 #include <iostream>
+#include <delta/core/State.h>
+#include <iostream>
+#include <ctime>
+#include <vector>
+#include <string>
 
 typedef std::chrono::high_resolution_clock Time;
 typedef std::chrono::duration<float> fsec;
 
 namespace delta {
-	namespace core {
-		class State;
-	}
-}
+  namespace core {
+	namespace io {
 
-class delta::core::State {
+	  class Log;
+	  class LogTimeStamp;
+	  class LogWarning;
+	  class LogError;
+
+	} /* namespace io */
+  } /* namespace core */
+} /* namespace delta */
+
+
+class delta::core::io::Log {
   public:
-	State();
-
-	State(int 		noOfParticles,
-		  int 		noOfObstacles,
-		  iREAL 		dt);
-
-	void initCheckpoint(int iteration);
-	void closeCheckpoint();
-
-	void readState();
-	void writeState();
-	void saveParticleGeometry();
-
-	void update();
-	int getCurrentStepIteration();
-	int getCollisions();
-	iREAL getStepSize();
-
-	void incNumberOfTriangleComparisons(int n);
-	void incNumberOfParticleComparisons(int n);
-	std::chrono::steady_clock::time_point getStartTime();
-
+	explicit Log(std::string name, std::chrono::steady_clock::time_point start);
+	virtual ~Log();
   private:
-	int 		_noOfParticles;
-	int 		_noOfObstacles;
-	iREAL 	_dt;
-
+	std::string _logIdentifier;
 	std::chrono::steady_clock::time_point _start;
-
-	//physical simulation
-	int _numberOfTriangleComparisons;
-	int _numberOfParticleComparisons;
-	int _numberOfCollisions = 0;
-
-	//engine
-	int _iteration;
-
-	//std::ofstream 	_checkpointFile;
+  protected:
+	iREAL getCurrentTime();
 };
 
-#endif /* DELTA_CORE_STATE_H_ */
+class delta::core::io::LogTimeStamp : public delta::core::io::Log {
+  public:
+	LogTimeStamp(std::string name,  std::chrono::steady_clock::time_point start, std::vector<std::string> parameters);
+	void log(State &state);
+  private:
+	void termination();
+};
 
+class delta::core::io::LogWarning : public delta::core::io::Log {
+  public:
+	LogWarning(std::string name,  std::chrono::steady_clock::time_point start, std::vector<std::string> parameters);
+	void log();
+};
 
+class delta::core::io::LogError : public delta::core::io::Log {
+  public:
+	LogError(std::string name,  std::chrono::steady_clock::time_point start, std::vector<std::string> parameters);
+	void log();
+};
+
+#endif /* DELTA_CORE_IO_LOG_H_ */
