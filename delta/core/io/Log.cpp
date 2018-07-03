@@ -32,7 +32,7 @@ delta::core::io::Log::Log(std::string name, std::chrono::steady_clock::time_poin
 
 iREAL delta::core::io::Log::getCurrentTime()
 {
-  auto end = Time::now();
+  std::chrono::system_clock::time_point end = Time::now();
   fsec fs = end - _start;
   return fs.count();
 }

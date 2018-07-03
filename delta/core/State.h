@@ -64,14 +64,14 @@ class delta::core::State {
 
 	void incNumberOfTriangleComparisons(int n);
 	void incNumberOfParticleComparisons(int n);
-	std::chrono::steady_clock::time_point getStartTime();
+	std::chrono::system_clock::time_point getStartTime();
 
   private:
 	int 		_noOfParticles;
 	int 		_noOfObstacles;
 	iREAL 	_dt;
 
-	std::chrono::steady_clock::time_point _start;
+	std::chrono::system_clock::time_point _start;
 
 	//physical simulation
 	int _numberOfTriangleComparisons;

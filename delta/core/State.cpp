@@ -96,7 +96,7 @@ void delta::core::State::readState()
 {
 }
 
-std::chrono::steady_clock::time_point delta::core::State::getStartTime()
+std::chrono::system_clock::time_point delta::core::State::getStartTime()
 {
   return _start;
 }
