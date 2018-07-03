@@ -6,8 +6,6 @@
 #include <iostream>
 #include <cmath>
 #include <ctime>
-#include <delta/world/operators.h>
-#include <delta/scenario/scenarios.h>
 
 #define epsilon 0.001
 
@@ -60,10 +58,10 @@ int                                   	dem::mappings::CreateGrid::_numberOfTrian
 int                                   	dem::mappings::CreateGrid::_numberOfObstacles;
 
 void dem::mappings::CreateGrid::setScenario(
-    Scenario scenario[4],
-    iREAL maxH,
-    GridType gridType,
-    int noPointsPerGranulate)
+    Scenario 	scenario[4],
+    iREAL 		maxH,
+    GridType 	gridType,
+    int 			noPointsPerGranulate)
 {
 	_scenario[0]          = scenario[0];
 	_scenario[1]          = scenario[1];
@@ -79,10 +77,10 @@ void dem::mappings::CreateGrid::setScenario(
 }
 
 void dem::mappings::CreateGrid::deployEnviroment(
-    dem::Vertex& vertex,
-    iREAL cellSize,
-    iREAL centreAsArray[3],
-	bool isFine)
+    dem::Vertex& 	vertex,
+    iREAL 			cellSize,
+    iREAL 			centreAsArray[3],
+	bool 			isFine)
 {
   iREAL cellXLeftBoundary = centreAsArray[0] - cellSize/2, cellZLeftBoundary = centreAsArray[2] - cellSize/2;
   iREAL cellXRightBoundary= centreAsArray[0] + cellSize/2, cellZRightBoundary = centreAsArray[2] + cellSize/2;
