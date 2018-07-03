@@ -34,8 +34,7 @@ delta::core::Engine::Engine(
 	delta::world::World					world,
 	delta::core::data::Meta::EngineMeta 	meta)
 {
-  bool overlapCheck = false;
-  _overlapCheck = overlapCheck;
+  _overlapCheck = meta.overlapPreCheck;
   _collisionModel = meta.modelScheme;
 
   _plot = meta.plotScheme;
@@ -61,6 +60,37 @@ delta::core::Engine::Engine(
 			<< "epsilon			: " 	<< world.getEpsilon() 		<< std::endl
 			<< "particles		: " 	<< _data.getNumberOfParticles()	<< std::endl
 			<< "triangles		: " << world.getNumberOfTriangles() 	<< std::endl;
+  std::cout << "----------Simulation Run----------------" << std::endl;
+}
+
+delta::core::Engine::Engine(
+	std::vector<delta::geometry::Object> particles,
+	bool 								gravity,
+	std::array<iREAL, 6> 				boundary,
+	delta::core::data::Meta::EngineMeta 	meta)
+{
+  _overlapCheck = meta.overlapPreCheck;
+  _collisionModel = meta.modelScheme;
+
+  _plot = meta.plotScheme;
+  _gravity = gravity;
+  _data = delta::core::data::Structure(particles);
+  _boundary = boundary;
+
+  _state = delta::core::State(_data.getNumberOfParticles(), _data.getNumberOfObstacles(), meta.dt);
+
+  std::vector<std::string> parameters;
+  _logBook = new delta::core::io::LogTimeStamp("LOG", _state.getStartTime(), parameters);
+  _logWarningBook = new delta::core::io::LogWarning("WARNING", _state.getStartTime(), parameters);
+  _logErrorBook = new delta::core::io::LogError("ERROR", _state.getStartTime(), parameters);
+
+  std::cout << "-----------------------------------------" << std::endl;
+  std::cout << "-Delta Library - Kostantinos Krestenitis-" << std::endl;
+  std::cout << "-----------------------------------------" << std::endl;
+  std::cout << "----------Simulation Scenario------------" << std::endl;
+  std::cout << "dt				: " 	<< _state.getStepSize() 		<< std::endl
+			<< "overlap			: " 	<< _overlapCheck				<< std::endl
+			<< "particles		: " 	<< _data.getNumberOfParticles()	<< std::endl;
   std::cout << "----------Simulation Run----------------" << std::endl;
 }
 

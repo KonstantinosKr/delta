@@ -47,6 +47,7 @@ namespace delta {
 
 	    struct EngineMeta {
 	      CollisionModel		modelScheme;
+	      bool				overlapPreCheck;
 	      Plot				plotScheme;
 	      iREAL				dt;
 	    };

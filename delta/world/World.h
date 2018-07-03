@@ -41,7 +41,7 @@ namespace delta {
 class delta::world::World {
 
   public:
-	World(std::string scenario, delta::core::data::Meta::CollisionModel collisionModelID, iREAL meshDensity);
+	World(std::string scenario, bool gravity, delta::core::data::Meta::CollisionModel collisionModelID, iREAL meshDensity);
 
 	iREAL 					getEpsilon();
 	bool 					hasGravity();

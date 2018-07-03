@@ -45,6 +45,7 @@ delta::core::io::HumanInterface::HumanInterface(int argc, const char* argv[]) {
   _engineMeta.plotScheme = _plotScheme;
   _engineMeta.modelScheme = _collisionModel;
   _engineMeta.dt = _dt;
+  _engineMeta.overlapPreCheck = _dt;
 }
 
 void delta::core::io::HumanInterface::setPlotScheme(std::string plotID)
@@ -78,7 +79,7 @@ delta::core::data::Meta::Plot delta::core::io::HumanInterface::getPlotScheme()
 
 void delta::core::io::HumanInterface::setCollisionScheme(std::string collisionModelID)
 {
-  bool _overlapPreCheck = false;
+  _overlapPreCheck = false;
   if (collisionModelID=="sphere" || collisionModelID=="sphere-sphere") {
 	_collisionModel = delta::core::data::Meta::CollisionModel::Sphere;
     if(collisionModelID=="sphere-sphere") {_overlapPreCheck = true;}

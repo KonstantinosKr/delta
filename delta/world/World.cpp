@@ -27,11 +27,9 @@
 
 #define epsilon 1E-3
 
-delta::world::World::World(std::string scenario, delta::core::data::Meta::CollisionModel collisionModelID, iREAL meshDensity) {
+delta::world::World::World(std::string scenario, bool gravity, delta::core::data::Meta::CollisionModel collisionModelID, iREAL meshDensity) {
 
   _boundary = {0.0, 0.0, 0.0, 1.0, 1.0, 1.0};
-
-  bool gravity = false;
 
   _gravity = gravity;
   _epsilon = epsilon;

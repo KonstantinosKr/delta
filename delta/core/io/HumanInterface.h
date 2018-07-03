@@ -62,6 +62,7 @@ namespace delta {
 		  delta::core::data::Meta::CollisionModel _collisionModel;
 		  delta::core::data::Meta::EngineMeta _engineMeta;
 
+		  bool 			_overlapPreCheck;
 		  int 			_steps;
 		  int           	_meshDensity;
 		  iREAL      	_dt;
