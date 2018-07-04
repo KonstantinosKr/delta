@@ -96,7 +96,7 @@ delta::contact::contactpoint::contactpoint(
   if(direction < 0.0) 
   {
     penetration = -1;
-    printf("direction:%f\n", direction);
+    //printf("direction:%f\n", direction);
   } 
   else
   {
