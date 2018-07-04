@@ -336,7 +336,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::hybridWithP
 		#endif
       }
     }
-  #ifdef SharedTBB
+  #if defined(SharedTBB) && defined(peanoCall)
   }});
   #else
   }
