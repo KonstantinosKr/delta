@@ -1,5 +1,5 @@
 #include <delta/contact/contactpoint.h>
-#include <delta/core/algo.h>
+
 delta::contact::contactpoint::contactpoint(){}
 
 delta::contact::contactpoint::contactpoint(const contactpoint& copy) {

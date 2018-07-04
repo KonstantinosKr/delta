@@ -80,7 +80,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::bf(
   tarch::multicore::Lock lock(semaphore,false);
 #endif
 
-#ifdef SharedTBB
+#if defined(SharedTBB) && defined(peanoCall)
   // Take care: grain size has to be positive even if loop degenerates
   const int grainSize = numberOfTrianglesA;
   tbb::parallel_for(
@@ -135,7 +135,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::bf(
 
     if(nearestContactPoint != nullptr)
     {
-	#ifdef SharedTBB
+	#if defined(SharedTBB) && defined(peanoCall)
 	  lock.lock();
 		result.push_back(*nearestContactPoint);
 	  lock.free();
@@ -146,7 +146,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::bf(
 	  result.push_back(*nearestContactPoint);
 	#endif
     }
-  #ifdef SharedTBB
+  #if defined(SharedTBB) && defined(peanoCall)
   }});
   #else
   }

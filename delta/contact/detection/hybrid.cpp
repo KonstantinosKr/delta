@@ -107,7 +107,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::hybridWithP
   tarch::multicore::Lock lock(semaphore,false);
 #endif
 
-  #ifdef SharedTBB
+  #if defined(SharedTBB) && defined(peanoCall)
 	  // Take care: grain size has to be positive even if loop degenerates
 	  const int grainSize = numberOfTrianglesA;
 	  tbb::parallel_for(
@@ -170,7 +170,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::hybridWithP
     for (int iB=0; iB<numberOfTrianglesB; iB+=3) {
       if ( d[iB] <= minD && d[iB] < epsilonMargin) {
         delta::contact::contactpoint* nearestContactPoint = new contactpoint(xPA[iB], yPA[iB], zPA[iB], epsilonA, particleA, xPB[iB], yPB[iB], zPB[iB], epsilonB, particleB, frictionA && frictionB);
-	#ifdef SharedTBB
+	#if defined(SharedTBB) && defined(peanoCall)
 		lock.lock();
 		result.push_back(*nearestContactPoint);
 		lock.free();
@@ -182,7 +182,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::hybridWithP
 	#endif
       }
     }
-  #ifdef SharedTBB
+  #if defined(SharedTBB) && defined(peanoCall)
   }});
   #else
   }
@@ -249,7 +249,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::hybridWithP
   tarch::multicore::Lock lock(semaphore,false);
 #endif
 
-  #ifdef SharedTBB
+  #if defined(SharedTBB) && defined(peanoCall)
   // Take care: grain size has to be positive even if loop degenerates
   const int grainSize = numberOfTrianglesA;
   tbb::parallel_for(
@@ -324,7 +324,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::hybridWithP
     for (int iB=0; iB<numberOfTrianglesB; iB+=3) {
       if ( d[iB] <= minD && d[iB] < epsilonMargin) {
         delta::contact::contactpoint* nearestContactPoint = new contactpoint(xPA[iB], yPA[iB], zPA[iB], epsilonA, particleA, xPB[iB], yPB[iB], zPB[iB], epsilonB, particleB, frictionA && frictionB);
-		#ifdef SharedTBB
+		#if defined(SharedTBB) && defined(peanoCall)
 			lock.lock();
 			  result.push_back(*nearestContactPoint);
 			lock.free();
