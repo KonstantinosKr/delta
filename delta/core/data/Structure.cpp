@@ -27,6 +27,7 @@ namespace delta {
 		  {
 			_numberOfObjects ++;
 		  }
+		  _numberOfTriangles += record.getNumberOfTriangles();
 		}
 	  }
 
@@ -43,6 +44,11 @@ namespace delta {
 	  int Structure::getNumberOfObstacles()
 	  {
 		return _numberOfObjects;
+	  }
+
+	  int Structure::getNumberOfTriangles()
+	  {
+		return _numberOfTriangles;
 	  }
 
 	  delta::core::data::ParticleRecord& Structure::getParticle(int i)

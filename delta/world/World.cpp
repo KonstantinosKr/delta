@@ -44,6 +44,10 @@ delta::world::World::World(std::string scenario, bool gravity, delta::core::data
   {
     delta::world::scenarios::turbine(_particles, _isSphere, _meshDensity, epsilon);
   }
+  else if(scenario == "helicopter")
+  {
+	delta::world::scenarios::helicopter(_particles, epsilon);
+  }
 
   _triangles = 0;
 

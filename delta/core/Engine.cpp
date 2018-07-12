@@ -53,13 +53,13 @@ delta::core::Engine::Engine(
   std::cout << "-Delta Library - Kostantinos Krestenitis-" << std::endl;
   std::cout << "-----------------------------------------" << std::endl;
   std::cout << "----------Simulation Scenario------------" << std::endl;
-  std::cout << "dt				: " 	<< _state.getStepSize() 		<< std::endl
-			<< "overlap			: " 	<< _overlapCheck				<< std::endl
-			<< "sphere 			: " 	<< world.getIsSphere() 		<< std::endl
-			<< "mesh   			: " 	<< world.getMeshDensity() 	<< std::endl
-			<< "epsilon			: " 	<< world.getEpsilon() 		<< std::endl
-			<< "particles		: " 	<< _data.getNumberOfParticles()	<< std::endl
-			<< "triangles		: " << world.getNumberOfTriangles() 	<< std::endl;
+  std::cout << "Delta t			: " 	<< _state.getStepSize() 		<< std::endl
+			<< "Overlap			: " 	<< _overlapCheck				<< std::endl
+			<< "Sphere 			: " 	<< world.getIsSphere() 		<< std::endl
+			<< "Mesh   			: " 	<< world.getMeshDensity() 	<< std::endl
+			<< "Epsilon			: " 	<< world.getEpsilon() 		<< std::endl
+			<< "Particles		: " 	<< _data.getNumberOfParticles()	<< std::endl
+			<< "Triangles		: " 	<< _data.getNumberOfTriangles()	<< std::endl;
   std::cout << "----------Simulation Run----------------" << std::endl;
 }
 
@@ -88,9 +88,10 @@ delta::core::Engine::Engine(
   std::cout << "-Delta Library - Kostantinos Krestenitis-" << std::endl;
   std::cout << "-----------------------------------------" << std::endl;
   std::cout << "----------Simulation Scenario------------" << std::endl;
-  std::cout << "dt				: " 	<< _state.getStepSize() 		<< std::endl
-			<< "overlap			: " 	<< _overlapCheck				<< std::endl
-			<< "particles		: " 	<< _data.getNumberOfParticles()	<< std::endl;
+  std::cout << "Delta t			: " 	<< _state.getStepSize() 		<< std::endl
+			<< "Overlap			: " 	<< _overlapCheck				<< std::endl
+			<< "Particles		: " 	<< _data.getNumberOfParticles()	<< std::endl
+			<< "Triangles		: " 	<< _data.getNumberOfTriangles()	<< std::endl;
   std::cout << "----------Simulation Run----------------" << std::endl;
 }
 
@@ -217,20 +218,19 @@ int delta::core::Engine::getNumberOfCollisions()
 
 void delta::core::Engine::contactDetection()
 {
-  /*for(unsigned j=0; j<_data.getSize(); j++)
+  for(unsigned j=0; j<_data.getNumberOfParticles(); j++)
   {
-	delta::core::data::ParticleRecord particleA = _data.getObject(j);
+	delta::core::data::ParticleRecord& particleA = _data.getParticle(j);
 
 	//printf("triangles %i\n", particleA.getNumberOfTriangles());
 
-	for(unsigned k=0; k<_data.getSize(); k++)
+	for(unsigned k=j+1; k<_data.getNumberOfParticles(); k++)
 	{
-	  delta::core::data::ParticleRecord particleB = _data.getObject(k);
-
+	  delta::core::data::ParticleRecord& particleB = _data.getParticle(k);
 	  if(_overlapCheck)
 	  {
 		bool overlap = delta::contact::detection::isSphereOverlayInContact(
-		particleA->_centre[0],
+		particleA._centre[0],
 		particleA._centre[1],
 		particleA._centre[2],
 		particleA.getHaloDiameter(),
@@ -398,7 +398,7 @@ void delta::core::Engine::contactDetection()
 	  _state.incNumberOfTriangleComparisons(particleA.getNumberOfTriangles() * particleB.getNumberOfTriangles());
 	  _state.incNumberOfParticleComparisons(1);
 	}
-  }*/
+  }
 }
 
 void delta::core::Engine::deriveForces()

@@ -31,11 +31,13 @@ class delta::core::data::Structure {
 
 	int getNumberOfParticles();
 	int getNumberOfObstacles();
+	int getNumberOfTriangles();
 
 	int getSize();
 	virtual ~Structure();
   private:
 	int _numberOfObjects;
+	int _numberOfTriangles;
 	std::vector<delta::core::data::ParticleRecord>  particles;
 };
 

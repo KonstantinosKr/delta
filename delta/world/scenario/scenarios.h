@@ -44,6 +44,10 @@ namespace delta {
 		  int meshDensity,
 		  iREAL epsilon);
 
+	  void helicopter(
+	  	std::vector<delta::geometry::Object>& 	coarseObjects,
+	  	iREAL 									epsilon);
+
 	  void turbine(
 	  	std::vector<delta::geometry::Object>& 	coarseObjects,
 	  	bool 									isSphere,

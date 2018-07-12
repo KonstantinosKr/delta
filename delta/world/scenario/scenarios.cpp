@@ -102,6 +102,45 @@ void delta::world::scenarios::hopper(
   //////////////////////////////////////////////////////
 }
 
+
+void delta::world::scenarios::helicopter(
+	std::vector<delta::geometry::Object>& 	coarseObjects,
+	iREAL 									epsilon)
+{
+  delta::geometry::mesh::Mesh *rotorMesh = delta::core::io::readPartGeometry("input/Rotor.stl");
+  delta::geometry::mesh::Mesh *bodyMesh = delta::core::io::readPartGeometry("input/Body.stl");
+  delta::geometry::mesh::Mesh *tailRotorMesh = delta::core::io::readPartGeometry("input/TailRotor.stl");
+
+
+  std::array<iREAL, 3> centre 	= {0.5, 0.5, 0.43};
+  std::array<iREAL, 3> linear 	= {0.0, 0.0, 0.0};
+  std::array<iREAL, 3> angular 	= {-2.0, 0.0, 0.0};
+
+  delta::geometry::Object rotor("helicopter", 0, rotorMesh, centre,
+								  delta::geometry::material::MaterialType::WOOD,
+								  false, false, true, epsilon, linear, angular);
+
+  centre 	= {0.5, 0.5, 0.57};
+  linear 	= {0.0, 0.0, 0.0};
+  angular 	= {1.0, 0.0, 0.0};
+
+  delta::geometry::Object body("helicopter", 1, bodyMesh, centre,
+								  delta::geometry::material::MaterialType::WOOD,
+								  false, false, true, epsilon, linear, angular);
+
+  centre 	= {0.5, 0.5, 0.57};
+  linear 	= {0.0, 0.0, 0.0};
+  angular 	= {1.0, 0.0, 0.0};
+
+  delta::geometry::Object tailRotor("helicopter", 2, tailRotorMesh, centre,
+								  delta::geometry::material::MaterialType::WOOD,
+								  false, false, true, epsilon, linear, angular);
+
+  coarseObjects.push_back(rotor);
+  coarseObjects.push_back(body);
+  coarseObjects.push_back(tailRotor);
+}
+
 void delta::world::scenarios::turbine(
 	std::vector<delta::geometry::Object>& 	coarseObjects,
 	bool 									isSphere,

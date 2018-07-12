@@ -251,7 +251,7 @@ delta::geometry::mesh::Mesh* delta::core::io::readPartGeometry(std::string fileN
   bool n = scene->HasMeshes();
   int nn = scene->mNumMeshes;
 
-  printf("Importing %i Meshes.\n", nn);
+  //printf("Importing %i Meshes.\n", nn);
 
   std::vector<std::array<int, 3>> 	triangleFaces;
   std::vector<std::array<iREAL, 3>> 	uniqueVertices;
@@ -261,7 +261,7 @@ delta::geometry::mesh::Mesh* delta::core::io::readPartGeometry(std::string fileN
   std::vector<iREAL> g_vp;
   g_vp.reserve(3 * mesh->mNumVertices);
 
-  printf("Read %i vertices\n", mesh->mNumVertices);
+  //printf("Read %i vertices\n", mesh->mNumVertices);
 
   //vertices
   //#pragma omp parallel for
