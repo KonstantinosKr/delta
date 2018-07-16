@@ -223,6 +223,8 @@ iREAL   			epsilonB)
 {
   std::vector<delta::contact::contactpoint> result;
 
+  #pragma code_align(byteAlignment)
+  #pragma omp simd
   for(int i=0; i<numberOfTrianglesOfGeometryB*3; i+=3)
   {
 	iREAL P[3], Q[3];
