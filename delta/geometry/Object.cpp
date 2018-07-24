@@ -192,9 +192,9 @@ void delta::geometry::Object::setParticleID(int id)
 }
 
 void delta::geometry::Object::setMesh(
-    std::vector<iREAL> xCoordinates,
-    std::vector<iREAL> yCoordinates,
-    std::vector<iREAL> zCoordinates)
+	  std::vector<iREAL> xCoordinates,
+	  std::vector<iREAL> yCoordinates,
+	  std::vector<iREAL> zCoordinates)
 {
   _mesh = new delta::geometry::mesh::Mesh(xCoordinates, yCoordinates, zCoordinates);
 }
@@ -205,7 +205,7 @@ delta::geometry::mesh::Mesh delta::geometry::Object::getMesh()
 }
 
 void delta::geometry::Object::setMesh(
-    delta::geometry::mesh::Mesh& mesh)
+	  delta::geometry::mesh::Mesh& mesh)
 {
   _mesh = &mesh;
 
@@ -429,22 +429,19 @@ void delta::geometry::Object::computeInertia(
 }
 
 iREAL delta::geometry::Object::computeMass(
-    delta::geometry::material::MaterialType material)
+		delta::geometry::material::MaterialType material)
 {
   iREAL mass = this->getMesh().computeMass(material);
-
   this->setMass(mass);
-
   return mass;
 }
 
 void delta::geometry::Object::computeInverseInertia(
-    iREAL inertia[9],
-    iREAL inverse[9],
-    bool isObject)
+	  iREAL inertia[9],
+	  iREAL inverse[9],
+	  bool isObject)
 {
   delta::geometry::operators::physics::computeInverseInertia(inertia, inverse, isObject);
-
   this->setInverse(inverse);
 }
 

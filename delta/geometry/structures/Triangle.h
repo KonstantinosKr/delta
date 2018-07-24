@@ -198,9 +198,6 @@ class delta::geometry::mesh::Triangle {
 	 */
 	iREAL getMinZAxis();
 
-	virtual ~Triangle();
-  private:
-
 	/*
 	 *  Gets XYZ width
 	 *
@@ -221,6 +218,8 @@ class delta::geometry::mesh::Triangle {
 	 */
 	iREAL getXZWidth();
 
+	virtual ~Triangle();
+  private:
 	std::array<iREAL, 3> _A, _B, _C;
 
 };

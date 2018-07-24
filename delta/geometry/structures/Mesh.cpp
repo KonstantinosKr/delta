@@ -6,6 +6,7 @@
  */
 
 #include "delta/geometry/structures/Mesh.h"
+#include "delta/geometry/structures/Triangle.h"
 
 #include <vector>
 #include <map>
@@ -39,6 +40,9 @@ delta::geometry::mesh::Mesh::Mesh(
 	std::vector<iREAL>& yCoordinates,
 	std::vector<iREAL>& zCoordinates)
 {
+  _maxMeshSize = 0;
+  _minMeshSize = 1E99;
+
   //#pragma omp parallel for
   for(int i=0; i<xCoordinates.size(); i+=3)
   {
@@ -53,7 +57,33 @@ delta::geometry::mesh::Mesh::Mesh(
 	_xCoordinates.push_back(xCoordinates[i+2]);
 	_yCoordinates.push_back(yCoordinates[i+2]);
 	_zCoordinates.push_back(zCoordinates[i+2]);
+
+	delta::geometry::mesh::Triangle::Triangle Triangle(
+		xCoordinates[i],
+		yCoordinates[i],
+		zCoordinates[i],
+
+		xCoordinates[i+1],
+		yCoordinates[i+1],
+		zCoordinates[i+1],
+
+		xCoordinates[i+2],
+		yCoordinates[i+2],
+		zCoordinates[i+2]);
+
+	iREAL width = Triangle.getXYZWidth();
+
+	if(width > _maxMeshSize)
+	{
+	  _maxMeshSize = width;
+	}
+
+	if(width < _minMeshSize)
+	{
+	  _minMeshSize = width;
+	}
   }
+  _avgMeshSize = _avgMeshSize / xCoordinates.size();
 
   compressFromVectors();
 }
@@ -62,7 +92,6 @@ void delta::geometry::mesh::Mesh::compressFromVectors()
 {
   _uniqueVertices.clear();
   _triangleFaces.clear();
-
 
   //#pragma omp parallel for
   for(int i=0; i<_xCoordinates.size(); i+=3)
@@ -208,6 +237,10 @@ void delta::geometry::mesh::Mesh::flatten()
   _xCoordinates.clear();
   _yCoordinates.clear();
   _zCoordinates.clear();
+
+  _maxMeshSize = 0;
+  _minMeshSize = 1E99;
+
   //#pragma omp parallel for
   for(int i=0; i<_triangleFaces.size(); i++)
   {
@@ -231,7 +264,34 @@ void delta::geometry::mesh::Mesh::flatten()
 	_xCoordinates.push_back(C[0]);
 	_yCoordinates.push_back(C[1]);
 	_zCoordinates.push_back(C[2]);
+
+	delta::geometry::mesh::Triangle::Triangle Triangle(
+			_xCoordinates[i],
+			_yCoordinates[i],
+			_zCoordinates[i],
+
+			_xCoordinates[i+1],
+			_yCoordinates[i+1],
+			_zCoordinates[i+1],
+
+			_xCoordinates[i+2],
+			_yCoordinates[i+2],
+			_zCoordinates[i+2]);
+
+	iREAL width = Triangle.getXYZWidth();
+
+	if(width > _maxMeshSize)
+	{
+	  _maxMeshSize = width;
+	}
+
+	if(width < _minMeshSize)
+	{
+	  _minMeshSize = width;
+	}
+	_avgMeshSize += width;
   }
+  _avgMeshSize = _avgMeshSize / _triangleFaces.size();
 }
 
 void delta::geometry::mesh::Mesh::flatten(
@@ -239,6 +299,9 @@ void delta::geometry::mesh::Mesh::flatten(
 	std::vector<iREAL>& yCoordinates,
 	std::vector<iREAL>& zCoordinates)
 {
+  _maxMeshSize = 0;
+  _minMeshSize = 1E99;
+
   //#pragma omp parallel for
   for(int i=0; i<_triangleFaces.size(); i++)
   {
@@ -260,7 +323,33 @@ void delta::geometry::mesh::Mesh::flatten(
 	xCoordinates.push_back(C[0]);
 	yCoordinates.push_back(C[1]);
 	zCoordinates.push_back(C[2]);
+
+	delta::geometry::mesh::Triangle::Triangle Triangle(
+			xCoordinates[i],
+			yCoordinates[i],
+			zCoordinates[i],
+
+			xCoordinates[i+1],
+			yCoordinates[i+1],
+			zCoordinates[i+1],
+
+			xCoordinates[i+2],
+			yCoordinates[i+2],
+			zCoordinates[i+2]);
+
+	iREAL width = Triangle.getXYZWidth();
+
+	if(width > _maxMeshSize)
+	{
+	  _maxMeshSize = width;
+	}
+	if(width < _minMeshSize)
+	{
+	  _minMeshSize = width;
+	}
+	_avgMeshSize += width;
   }
+  _avgMeshSize = _avgMeshSize / _triangleFaces.size();
 }
 
 void delta::geometry::mesh::Mesh::replace (
@@ -894,6 +983,21 @@ std::vector<std::array<int, 3>> delta::geometry::mesh::Mesh::getTriangleFaces()
 std::vector<std::array<iREAL, 3>> delta::geometry::mesh::Mesh::getUniqueVertices()
 {
   return _uniqueVertices;
+}
+
+iREAL delta::geometry::mesh::Mesh::getMaxMeshSize()
+{
+  return _maxMeshSize;
+}
+
+iREAL delta::geometry::mesh::Mesh::getMinMeshSize()
+{
+  return _minMeshSize;
+}
+
+iREAL delta::geometry::mesh::Mesh::getAvgMeshSize()
+{
+  return _avgMeshSize;
 }
 
 void delta::geometry::mesh::Mesh::toString()

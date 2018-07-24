@@ -40,6 +40,10 @@ delta::core::data::ParticleRecord::ParticleRecord(delta::geometry::Object& objec
   this->_refyCoordinates = object.getMesh().getYCoordinatesAsVector();
   this->_refzCoordinates = object.getMesh().getZCoordinatesAsVector();
 
+  this->_maxMeshSize = object.getMesh().getMaxMeshSize();
+  this->_minMeshSize = object.getMesh().getMinMeshSize();
+  this->_avgMeshSize = object.getMesh().getAvgMeshSize();
+
   this->_globalParticleID = object.getGlobalParticleId();
   this->_localParticleID = object.getLocalParticleId();
 
@@ -54,7 +58,9 @@ delta::core::data::ParticleRecord::ParticleRecord(delta::geometry::Object& objec
 
   std::array<iREAL,3> minVertex = object.getMesh().getMinBoundaryVertex();
   std::array<iREAL,3> maxVertex = object.getMesh().getMaxBoundaryVertex();
-  _bbox = {minVertex[0], minVertex[1], minVertex[2], maxVertex[0], maxVertex[1], maxVertex[2]};
+  _bbox = {	minVertex[0], minVertex[1], minVertex[2],
+			maxVertex[0], maxVertex[1], maxVertex[2]};
+
   iREAL rad = object.getRad();
 
   _tree = delta::core::data::OctTree(rad, _bbox);
@@ -128,6 +134,21 @@ std::array<iREAL, 9> delta::core::data::ParticleRecord::getInverse()
 int delta::core::data::ParticleRecord::getNumberOfTriangles()
 {
   return _xCoordinates.size()/3;
+}
+
+iREAL delta::core::data::ParticleRecord::getMaxMeshSize()
+{
+  return _maxMeshSize;
+}
+
+iREAL delta::core::data::ParticleRecord::getMinMeshSize()
+{
+  return _minMeshSize;
+}
+
+iREAL delta::core::data::ParticleRecord::getAvgMeshSize()
+{
+  return _avgMeshSize;
 }
 
 std::vector<iREAL> delta::core::data::ParticleRecord::getClosestXCoordinatesTriangles(iREAL x[3])

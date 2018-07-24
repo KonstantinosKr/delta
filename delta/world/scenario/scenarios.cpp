@@ -141,10 +141,26 @@ void delta::world::scenarios::helicopter(
   coarseObjects.push_back(tailRotor);
 }
 
+
+void delta::world::scenarios::kaikoura(
+	std::vector<delta::geometry::Object>& 	coarseObjects,
+	iREAL 									epsilon)
+{
+  delta::geometry::mesh::Mesh *kaikoura = delta::core::io::readPartGeometry("input/KaikouraUlrichetal.stl");
+
+  std::array<iREAL, 3> centre 	= {0.5, 0.5, 0.5};
+  std::array<iREAL, 3> linear 	= {0.0, 0.0, 0.0};
+  std::array<iREAL, 3> angular 	= {0.0, 0.0, 0.0};
+
+  delta::geometry::Object kaikouraObject("kaikoura", 2, kaikoura, centre,
+								  delta::geometry::material::MaterialType::WOOD,
+								  false, false, true, epsilon, linear, angular);
+
+  coarseObjects.push_back(kaikouraObject);
+}
+
 void delta::world::scenarios::turbine(
 	std::vector<delta::geometry::Object>& 	coarseObjects,
-	bool 									isSphere,
-	int 										meshDensity,
 	iREAL 									epsilon)
 {
   delta::geometry::mesh::Mesh *meshA = delta::core::io::readPartGeometry("input/turbine.stl");

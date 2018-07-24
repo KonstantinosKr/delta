@@ -15,7 +15,35 @@ namespace delta {
 
 	  }
 
-	  Structure::Structure(std::vector<delta::geometry::Object> objects)
+	  Structure::Structure(
+		  std::vector<delta::geometry::Object> objects,
+		  iREAL maxMeshRefinement)
+	  {
+		std::array<iREAL,6> boundary = {0.0, 0.0, 0.0, 1.0, 1.0, 1.0};
+
+		_numberOfObjects = 0;
+		_numberOfTriangles = 0;
+
+		for(int i=0; i<objects.size(); i++)
+		{
+		  delta::core::data::ParticleRecord record(objects[i]);
+
+		  if(maxMeshRefinement > record.getAvgMeshSize())
+		  {
+			record.refineTree(maxMeshRefinement);
+		  }
+
+		  this->particles.push_back(record);
+		  if(record.getIsObstacle())
+		  {
+			_numberOfObjects ++;
+		  }
+		  _numberOfTriangles += record.getNumberOfTriangles();
+		}
+	  }
+
+	  Structure::Structure(
+	  		  std::vector<delta::geometry::Object> objects)
 	  {
 		std::array<iREAL,6> boundary = {0.0, 0.0, 0.0, 1.0, 1.0, 1.0};
 		_numberOfObjects = 0;
@@ -24,9 +52,9 @@ namespace delta {
 		{
 		  delta::core::data::ParticleRecord record(objects[i]);
 
-		  record.refineTree(0.001);
+		  printf("%f\n", record.getAvgMeshSize());
+		  record.refineTree(record.getAvgMeshSize());
 		  this->particles.push_back(record);
-
 		  if(record.getIsObstacle())
 		  {
 			_numberOfObjects ++;

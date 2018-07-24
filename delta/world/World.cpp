@@ -42,7 +42,11 @@ delta::world::World::World(std::string scenario, bool gravity, delta::core::data
   }
   else if(scenario == "turbine")
   {
-    delta::world::scenarios::turbine(_particles, _isSphere, _meshDensity, epsilon);
+    delta::world::scenarios::turbine(_particles, epsilon);
+  }
+  else if(scenario == "kaikoura")
+  {
+    delta::world::scenarios::kaikoura(_particles, epsilon);
   }
   else if(scenario == "helicopter")
   {

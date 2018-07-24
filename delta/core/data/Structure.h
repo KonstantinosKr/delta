@@ -25,7 +25,13 @@ class delta::core::data::Structure {
   public:
 	Structure();
 
-	Structure(std::vector<delta::geometry::Object> objects);
+	Structure(
+			std::vector<delta::geometry::Object> objects);
+
+	Structure(
+		std::vector<delta::geometry::Object> objects,
+		iREAL maxMeshRefinement);
+
 	delta::core::data::ParticleRecord& getParticle(int i);
 	std::vector<delta::core::data::ParticleRecord>& getAll();
 

@@ -60,6 +60,10 @@ class delta::core::data::ParticleRecord
 		  std::vector<iREAL> &yCoordinatesPartial,
 		  std::vector<iREAL> &zCoordinatesPartial);
 
+	iREAL getMaxMeshSize();
+	iREAL getMinMeshSize();
+	iREAL getAvgMeshSize();
+
 	virtual ~ParticleRecord();
 
 	std::array<iREAL, 3> 	_linearVelocity;
@@ -88,6 +92,9 @@ class delta::core::data::ParticleRecord
 	iREAL				 	_diameter;
 	iREAL               		_mass;
 	iREAL 				 	_epsilon;
+	iREAL					_maxMeshSize;
+	iREAL 					_minMeshSize;
+	iREAL 					_avgMeshSize;
 
 	delta::geometry::material::MaterialType _material;
 

@@ -46,14 +46,14 @@ class delta::geometry::Object
 	 * Mesh object with mesh unspecified
 	 */
 	Object(
-	  std::string                   			component,
-	  int                           			particleID,
-	  std::array<iREAL, 3>         			centre,
+	  std::string                   				component,
+	  int                           				particleID,
+	  std::array<iREAL, 3>         				centre,
 	  delta::geometry::material::MaterialType 	material,
-	  bool                          			isObstacle,
-	  bool                          			isFriction,
-	  bool                          			isConvex,
-	  iREAL 									epsilon,
+	  bool                          				isObstacle,
+	  bool                          				isFriction,
+	  bool                          				isConvex,
+	  iREAL 										epsilon,
 	  std::array<iREAL, 3> linear,
 	  std::array<iREAL, 3> angular
 	);
@@ -62,17 +62,17 @@ class delta::geometry::Object
 	 * Mesh object with mesh specified
 	 */
 	Object(
-	  std::string                   			component,
-	  int                           			particleID,
+	  std::string                   				component,
+	  int                           				particleID,
 	  delta::geometry::mesh::Mesh*				mesh,
 	  std::array<iREAL, 3>         				centre,
 	  delta::geometry::material::MaterialType 	material,
-	  bool                          			isObstacle,
-	  bool                          			isFriction,
-	  bool                          			isConvex,
-	  iREAL 									epsilon,
-	  std::array<iREAL, 3> 					linear,
-	  std::array<iREAL, 3> 					angular
+	  bool                          				isObstacle,
+	  bool                          				isFriction,
+	  bool                          				isConvex,
+	  iREAL 										epsilon,
+	  std::array<iREAL, 3> 						linear,
+	  std::array<iREAL, 3> 						angular
 	);
 
 	/*
@@ -101,7 +101,7 @@ class delta::geometry::Object
 	 *  @param id
 	 *  @returns void
 	 */
-    void 	setParticleID(int id);
+    void setParticleID(int id);
 
 	/*
 	 *  Set Center
@@ -112,8 +112,8 @@ class delta::geometry::Object
 	 *  @param center
 	 *  @returns void
 	 */
-    void 	setCentre(
-    		iREAL centre[3]);
+    void setCentre(
+    		  iREAL centre[3]);
 
 	/*
 	 *  Set Radius
@@ -124,8 +124,8 @@ class delta::geometry::Object
 	 *  @param rad
 	 *  @returns void
 	 */
-    void 	setRad(
-    		iREAL rad);
+    void setRad(
+    		  iREAL rad);
 
 	/*
 	 *  Set Mass
@@ -136,8 +136,8 @@ class delta::geometry::Object
 	 *  @param mass
 	 *  @returns void
 	 */
-    void 	setMass(
-    		iREAL mass);
+    void setMass(
+    		  iREAL mass);
 
 	/*
 	 *  Set Epsilon
@@ -148,8 +148,8 @@ class delta::geometry::Object
 	 *  @param epsilon
 	 *  @returns void
 	 */
-    void 	setEpsilon(
-    		iREAL epsilon);
+    void setEpsilon(
+    		  iREAL epsilon);
 
 	/*
 	 *  Set Inertia
@@ -160,8 +160,8 @@ class delta::geometry::Object
 	 *  @param inertia
 	 *  @returns void
 	 */
-    void 	setInertia(
-    		iREAL inertia[9]);
+    void setInertia(
+    		  iREAL inertia[9]);
 
 	/*
 	 *  Set Inverse Inertia
@@ -172,8 +172,8 @@ class delta::geometry::Object
 	 *  @param inverse
 	 *  @returns void
 	 */
-    void 	setInverse(
-    		iREAL inverse[9]);
+    void setInverse(
+    		  iREAL inverse[9]);
 
 	/*
 	 *  Set Center of Mass
@@ -184,8 +184,8 @@ class delta::geometry::Object
 	 *  @param centerOfMass
 	 *  @returns void
 	 */
-    void 	setCentreOfMass(
-    		iREAL centreOfMass[3]);
+    void setCentreOfMass(
+    		  iREAL	centreOfMass[3]);
 
 	/*
 	 *  Set Linear Velocity
@@ -196,8 +196,8 @@ class delta::geometry::Object
 	 *  @param linearVelocity
 	 *  @returns void
 	 */
-    void 	setLinearVelocity(
-    		std::array<iREAL, 3>  linearVelocity);
+    void setLinearVelocity(
+    		  std::array<iREAL, 3>  linearVelocity);
 
 	/*
 	 *  Set Angular Velocity
@@ -208,8 +208,8 @@ class delta::geometry::Object
 	 *  @param angularVelocity
 	 *  @returns void
 	 */
-    void 	setAngularVelocity(
-    		std::array<iREAL, 3>  angularVelocity);
+    void setAngularVelocity(
+    		  std::array<iREAL, 3>  angularVelocity);
 
 	/*
 	 *  Set Mesh
@@ -220,8 +220,8 @@ class delta::geometry::Object
 	 *  @param mesh
 	 *  @returns void
 	 */
-    void 	setMesh(
-    		delta::geometry::mesh::Mesh& mesh);
+    void setMesh(
+    		  delta::geometry::mesh::Mesh& mesh);
 
 	/*
 	 *  Set Mesh
@@ -234,10 +234,10 @@ class delta::geometry::Object
    	 *  @param zCoordinates
 	 *  @returns void
 	 */
-    void 	setMesh(
-    			  std::vector<iREAL> xCoordinates,
-			  std::vector<iREAL> yCoordinates,
-			  std::vector<iREAL> zCoordinates);
+    void setMesh(
+		  std::vector<iREAL> xCoordinates,
+		  std::vector<iREAL> yCoordinates,
+		  std::vector<iREAL> zCoordinates);
 
 	/*
 	 *  Get Component Id
@@ -257,7 +257,7 @@ class delta::geometry::Object
 	 *  @param none
 	 *  @returns iREAL
 	 */
-    iREAL 	getRad();
+    iREAL getRad();
 
 	/*
 	 *  Get Diameter
@@ -267,7 +267,7 @@ class delta::geometry::Object
 	 *  @param none
 	 *  @returns iREAL
 	 */
-	iREAL 	getDiameter();
+	iREAL getDiameter();
 
 	/*
 	 *  Get Mass
@@ -277,7 +277,7 @@ class delta::geometry::Object
 	 *  @param none
 	 *  @returns iREAL
 	 */
-    iREAL 	getMass();
+    iREAL getMass();
 
 	/*
 	 *  Get Epsilon
@@ -287,7 +287,7 @@ class delta::geometry::Object
 	 *  @param none
 	 *  @returns iREAL
 	 */
-    iREAL 	getEpsilon();
+    iREAL getEpsilon();
 
 	/*
 	 *  Get Halo Diameter
@@ -297,7 +297,7 @@ class delta::geometry::Object
 	 *  @param none
 	 *  @returns iREAL
 	 */
-	iREAL 	getHaloDiameter();
+	iREAL getHaloDiameter();
 
 	/*
 	 *  Get Number of Triangles
@@ -337,7 +337,7 @@ class delta::geometry::Object
 	 *  @param none
 	 *  @returns bool
 	 */
-    bool 	getIsObstacle();
+    bool getIsObstacle();
 
 	/*
 	 *  Get Is Friction
@@ -347,7 +347,7 @@ class delta::geometry::Object
 	 *  @param none
 	 *  @returns bool
 	 */
-    bool 	getIsFriction();
+    bool getIsFriction();
 
 	/*
 	 *  Get Volume
@@ -357,7 +357,7 @@ class delta::geometry::Object
 	 *  @param none
 	 *  @returns iREAL
 	 */
-    iREAL 	computeVolume();
+    iREAL computeVolume();
 
 	/*
 	 *  Get Center
@@ -367,7 +367,7 @@ class delta::geometry::Object
 	 *  @param none
 	 *  @returns vertex
 	 */
-    std::array<iREAL, 3> 	getCentre();
+    std::array<iREAL, 3> getCentre();
 
 	/*
 	 *  Get Inertia
@@ -377,7 +377,7 @@ class delta::geometry::Object
 	 *  @param none
 	 *  @returns inertia
 	 */
-    std::array<iREAL, 9> 	getInertia();
+    std::array<iREAL, 9> getInertia();
 
 	/*
 	 *  Get Inverse Inertia
@@ -387,7 +387,7 @@ class delta::geometry::Object
 	 *  @param none
 	 *  @returns inverse
 	 */
-    std::array<iREAL, 9> 	getInverse();
+    std::array<iREAL, 9> getInverse();
 
 	/*
 	 *  Get Center of Mass
@@ -397,7 +397,7 @@ class delta::geometry::Object
 	 *  @param none
 	 *  @returns vertex
 	 */
-    std::array<iREAL, 3> 	getCentreOfMass();
+    std::array<iREAL, 3> getCentreOfMass();
 
 	/*
 	 *  Get Linear Velocity
@@ -407,7 +407,7 @@ class delta::geometry::Object
 	 *  @param none
 	 *  @returns velocity
 	 */
-    std::array<iREAL, 3> 	getLinearVelocity();
+    std::array<iREAL, 3> getLinearVelocity();
 
 	/*
 	 *  Get Angular Velocity
@@ -417,7 +417,7 @@ class delta::geometry::Object
 	 *  @param none
 	 *  @returns velocity
 	 */
-    std::array<iREAL, 3> 	getAngularVelocity();
+    std::array<iREAL, 3> getAngularVelocity();
 
 	/*
 	 *  Get Material
@@ -427,7 +427,7 @@ class delta::geometry::Object
 	 *  @param none
 	 *  @returns material
 	 */
-    delta::geometry::material::MaterialType 	getMaterial();
+    delta::geometry::material::MaterialType getMaterial();
 
 	/*
 	 *  Get Mesh
@@ -437,7 +437,7 @@ class delta::geometry::Object
 	 *  @param none
 	 *  @returns mesh
 	 */
-    delta::geometry::mesh::Mesh 				getMesh();
+    delta::geometry::mesh::Mesh 	getMesh();
 
 	/*
 	 *  Compute Inertia
@@ -453,8 +453,7 @@ class delta::geometry::Object
 			delta::geometry::material::MaterialType material,
 			iREAL& mass,
 			iREAL center[3],
-			iREAL inertia[9]
-			);
+			iREAL inertia[9]);
 
 	/*
 	 *  Compute Inverse Inertia
@@ -469,8 +468,7 @@ class delta::geometry::Object
 	void computeInverseInertia(
 			iREAL inertia[9],
 			iREAL inverse[9],
-			bool isObject
-			);
+			bool isObject);
 
 	/*
 	 *  Compute Mass
@@ -486,8 +484,6 @@ class delta::geometry::Object
 			delta::geometry::material::MaterialType material);
 
 	bool getIsConvex();
-
-	void initialise();
 
     virtual ~Object();
 

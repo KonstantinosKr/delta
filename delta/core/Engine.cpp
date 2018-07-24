@@ -104,18 +104,6 @@ void delta::core::Engine::iterate()
 {
   delta::core::Engine::plot();
 
-  std::vector<iREAL> xCoordinatesPartial, yCoordinatesPartial, zCoordinatesPartial;
-
-  iREAL x[3] = {0.5, 0.5, 0.5};
-  iREAL epsilon = 0.1;
-  for(int i=0; i<_data.getNumberOfParticles(); i++){
-
-  _data.getParticle(i).getSubsetOfMesh(
-		x, epsilon,
-		xCoordinatesPartial,
-		yCoordinatesPartial,
-		zCoordinatesPartial);
-  }
   //delta::core::Engine::contactDetection();
   //delta::core::Engine::deriveForces();
   delta::core::Engine::updatePosition();
