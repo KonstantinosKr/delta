@@ -85,8 +85,7 @@ class delta::core::Engine
 	void deriveForces();
 	void updatePosition();
 	std::vector<delta::core::data::ParticleRecord>& getParticleRecords();
-
-
+	void plot();
   private:
 	delta::core::io::LogTimeStamp *	_logBook;
 	delta::core::io::LogWarning *	_logWarningBook;

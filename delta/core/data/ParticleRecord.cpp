@@ -51,6 +51,13 @@ delta::core::data::ParticleRecord::ParticleRecord(delta::geometry::Object& objec
   this->_isObstacle = object.getIsObstacle();
   this->	_isFriction = object.getIsFriction();
   this->_isConvex = object.getIsConvex();
+
+  std::array<iREAL,3> minVertex = object.getMesh().getMinBoundaryVertex();
+  std::array<iREAL,3> maxVertex = object.getMesh().getMaxBoundaryVertex();
+  _bbox = {minVertex[0], minVertex[1], minVertex[2], maxVertex[0], maxVertex[1], maxVertex[2]};
+  iREAL rad = object.getRad();
+
+  _tree = delta::core::data::OctTree(rad, _bbox);
 }
 
 int delta::core::data::ParticleRecord::getGlobalParticleID()
@@ -121,6 +128,99 @@ std::array<iREAL, 9> delta::core::data::ParticleRecord::getInverse()
 int delta::core::data::ParticleRecord::getNumberOfTriangles()
 {
   return _xCoordinates.size()/3;
+}
+
+std::vector<iREAL> delta::core::data::ParticleRecord::getClosestXCoordinatesTriangles(iREAL x[3])
+{
+  std::vector<iREAL> xCoordinates;
+  if(_tree.isInDomain(x))
+  {
+	std::array<iREAL, 6> boundary;
+	_tree.getBoundary(x, boundary);
+
+	for(int i=0; i<_xCoordinates.size(); i+=3)
+	{
+	  if(((_xCoordinates[i] > boundary[0]) && (_xCoordinates[i] < boundary[3])) ||
+		 ((_xCoordinates[i+1] > boundary[0]) && (_xCoordinates[i+1] < boundary[3])) ||
+		 ((_xCoordinates[i+2] > boundary[0]) && (_xCoordinates[i+2] < boundary[3])))
+	  {
+		xCoordinates.push_back(_xCoordinates[i]);
+		xCoordinates.push_back(_xCoordinates[i+1]);
+		xCoordinates.push_back(_xCoordinates[i+2]);
+	  }
+	}
+  }
+  return xCoordinates;
+}
+
+std::vector<iREAL> delta::core::data::ParticleRecord::getClosestYCoordinatesTriangles(iREAL x[3])
+{
+  std::vector<iREAL> xCoordinates;
+  if(_tree.isInDomain(x))
+  {
+	std::array<iREAL, 6> boundary;
+	_tree.getBoundary(x, boundary);
+
+	for(int i=0; i<_yCoordinates.size(); i+=3)
+	{
+	  if(((_yCoordinates[i] > boundary[1]) && (_yCoordinates[i] < boundary[4])) ||
+		 ((_yCoordinates[i+1] > boundary[1]) && (_yCoordinates[i+1] < boundary[4])) ||
+		 ((_yCoordinates[i+2] > boundary[1]) && (_yCoordinates[i+2] < boundary[4])))
+	  {
+		xCoordinates.push_back(_yCoordinates[i]);
+		xCoordinates.push_back(_yCoordinates[i+1]);
+		xCoordinates.push_back(_yCoordinates[i+2]);
+	  }
+	}
+  }
+  return xCoordinates;
+}
+
+std::vector<iREAL> delta::core::data::ParticleRecord::getClosestZCoordinatesTriangles(iREAL x[3])
+{
+  std::vector<iREAL> xCoordinates;
+  if(_tree.isInDomain(x))
+  {
+	std::array<iREAL, 6> boundary;
+	_tree.getBoundary(x, boundary);
+
+	for(int i=0; i<_zCoordinates.size(); i+=3)
+	{
+	  if(((_zCoordinates[i] > boundary[2]) && (_zCoordinates[i] < boundary[5])) ||
+		 ((_zCoordinates[i+1] > boundary[2]) && (_zCoordinates[i+1] < boundary[5])) ||
+		 ((_zCoordinates[i+2] > boundary[2]) && (_zCoordinates[i+2] < boundary[5])))
+	  {
+		xCoordinates.push_back(_zCoordinates[i]);
+		xCoordinates.push_back(_zCoordinates[i+1]);
+		xCoordinates.push_back(_zCoordinates[i+2]);
+	  }
+	}
+  }
+  return xCoordinates;
+}
+
+delta::core::data::OctTree& delta::core::data::ParticleRecord::getTree()
+{
+  return _tree;
+}
+
+void delta::core::data::ParticleRecord::refineTree(double maxMeshSize)
+{
+  return _tree.refine(maxMeshSize, _bbox, _xCoordinates, _yCoordinates, _zCoordinates);
+}
+
+void delta::core::data::ParticleRecord::getSubsetOfMesh(
+	  double x[3], double epsilon,
+	  std::vector<iREAL> &xCoordinatesPartial,
+	  std::vector<iREAL> &yCoordinatesPartial,
+	  std::vector<iREAL> &zCoordinatesPartial)
+{
+  _tree.getBBOXOverlappedMesh(
+	  x, epsilon,
+	  _xCoordinates,
+	  _yCoordinates,
+	  _zCoordinates,
+	  xCoordinatesPartial, yCoordinatesPartial, zCoordinatesPartial);
 }
 
 delta::core::data::ParticleRecord::~ParticleRecord() {

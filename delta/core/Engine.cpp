@@ -102,11 +102,20 @@ delta::core::Engine::~Engine()
 
 void delta::core::Engine::iterate()
 {
-  if(_plot == delta::core::data::Meta::Plot::EveryIteration)
-  {
-	delta::core::io::writeGeometryToVTK(_state.getCurrentStepIteration(), _boundary, _data.getAll());
-  }
+  delta::core::Engine::plot();
 
+  std::vector<iREAL> xCoordinatesPartial, yCoordinatesPartial, zCoordinatesPartial;
+
+  iREAL x[3] = {0.5, 0.5, 0.5};
+  iREAL epsilon = 0.1;
+  for(int i=0; i<_data.getNumberOfParticles(); i++){
+
+  _data.getParticle(i).getSubsetOfMesh(
+		x, epsilon,
+		xCoordinatesPartial,
+		yCoordinatesPartial,
+		zCoordinatesPartial);
+  }
   //delta::core::Engine::contactDetection();
   //delta::core::Engine::deriveForces();
   delta::core::Engine::updatePosition();
@@ -509,4 +518,13 @@ void delta::core::Engine::updatePosition()
 std::vector<delta::core::data::ParticleRecord>& delta::core::Engine::getParticleRecords()
 {
   return _data.getAll();
+}
+
+void delta::core::Engine::plot()
+{
+  if(_plot == delta::core::data::Meta::Plot::EveryIteration)
+  {
+	delta::core::io::writeGeometryToVTK(_state.getCurrentStepIteration(), _data.getAll());
+	delta::core::io::writeGridGeometryToVTK(_state.getCurrentStepIteration(), _data.getGeometryGrid());
+  }
 }

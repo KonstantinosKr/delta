@@ -24,9 +24,12 @@
 
 #include "delta/core/io/Log.h"
 
+std::chrono::steady_clock::time_point delta::core::io::Log::_start;
+
 delta::core::io::Log::Log(std::string name, std::chrono::steady_clock::time_point start)
 {
   _logIdentifier = name;
+  _start = start;
 }
 
 

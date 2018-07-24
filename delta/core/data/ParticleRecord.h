@@ -13,6 +13,7 @@
 #include <vector>
 #include <delta/geometry/material.h>
 #include <delta/geometry/Object.h>
+#include <delta/core/data/OctTree.h>
 
 namespace delta {
   namespace core {
@@ -45,6 +46,19 @@ class delta::core::data::ParticleRecord
 	std::array<iREAL, 9> getInertia();
 	std::array<iREAL, 9> getInverse();
 	int getNumberOfTriangles();
+
+	std::vector<iREAL> getClosestXCoordinatesTriangles(iREAL x[3]);
+	std::vector<iREAL> getClosestYCoordinatesTriangles(iREAL x[3]);
+	std::vector<iREAL> getClosestZCoordinatesTriangles(iREAL x[3]);
+
+	delta::core::data::OctTree& getTree();
+	void refineTree(double maxMeshSize);
+
+	void getSubsetOfMesh(
+		  double x[3], double epsilon,
+		  std::vector<iREAL> &xCoordinatesPartial,
+		  std::vector<iREAL> &yCoordinatesPartial,
+		  std::vector<iREAL> &zCoordinatesPartial);
 
 	virtual ~ParticleRecord();
 
@@ -83,6 +97,9 @@ class delta::core::data::ParticleRecord
 
 	std::array<iREAL, 9> 	_inertia;
 	std::array<iREAL, 9> 	_inverse;
+
+	delta::core::data::OctTree _tree;
+	std::array<iREAL,6> _bbox;
 };
 
 #endif /* DELTA_CORE_DATA_PARTICLERECORD_H_ */

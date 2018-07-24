@@ -268,9 +268,9 @@ void delta::geometry::mesh::Mesh::replace (
 	std::vector<iREAL>& yCoordinates,
 	std::vector<iREAL>& zCoordinates)
 {
-  _xCoordinates = xCoordinates;
-  _yCoordinates = yCoordinates;
-  _zCoordinates = zCoordinates;
+  _xCoordinates.clear();
+  _yCoordinates.clear();
+  _zCoordinates.clear();
 
   //#pragma omp parallel for
   for(int i=0; i<xCoordinates.size(); i+=3)

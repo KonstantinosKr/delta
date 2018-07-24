@@ -189,15 +189,13 @@ namespace delta {
 		 *  @returns void
 		 */
 		int octSect(
-			int level,
+			int targetLevelOfRefinement,
 			int index,
 			std::array<iREAL, 3> minpoint,
-			std::array<iREAL, 3> midpoint,
 			std::array<iREAL, 3> maxpoint,
 			std::vector<std::vector<iREAL>>&  xCoordinatesMultiLevel,
 			std::vector<std::vector<iREAL>>&  yCoordinatesMultiLevel,
-			std::vector<std::vector<iREAL>>&  zCoordinatesMultiLevel,
-			std::vector<std::array<iREAL, 3>>& centroid);
+			std::vector<std::vector<iREAL>>&  zCoordinatesMultiLevel);
 
 		/*
 		 *  Get Triangle Length
@@ -261,7 +259,7 @@ namespace delta {
   		 *  @param numberOfObstacles
 		 *  @returns void
 		 */
-		void decomposeMeshByOctsection(
+		void decomposeMeshByOctsectionIntoGroupsOfTriangleParticles(
 		    int octSectTimes,
 		    delta::geometry::mesh::Mesh mesh,
 		    delta::geometry::material::MaterialType material,
@@ -284,9 +282,9 @@ namespace delta {
 		 *  @param isFriction
   		 *  @param epsilon
 		 *  @param fineObjects : Coordinates of enclosed triangles
-		 *  @returns int
+		 *  @returns int number of triangles
 		 */
-		int decomposeMeshIntoParticles(
+		int decomposeMeshIntoTriangleParticles(
 		    delta::geometry::mesh::Mesh mesh,
 		    delta::geometry::material::MaterialType material,
 		    bool isObstacle,

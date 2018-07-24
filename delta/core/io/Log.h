@@ -59,7 +59,7 @@ class delta::core::io::Log {
 	virtual ~Log();
   private:
 	std::string _logIdentifier;
-	std::chrono::steady_clock::time_point _start;
+	static std::chrono::steady_clock::time_point _start;
   protected:
 	iREAL getCurrentTime();
 };

@@ -33,9 +33,13 @@ class delta::core::data::Structure {
 	int getNumberOfObstacles();
 	int getNumberOfTriangles();
 
+	std::vector<std::array<iREAL, 6>> getGeometryGrid();
+
 	int getSize();
 	virtual ~Structure();
+	delta::core::data::OctTree _tree;
   private:
+
 	int _numberOfObjects;
 	int _numberOfTriangles;
 	std::vector<delta::core::data::ParticleRecord>  particles;
