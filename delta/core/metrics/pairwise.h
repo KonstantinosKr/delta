@@ -9,7 +9,8 @@
 #define METRICS_PAIRWISE_H_
 
 #include <vector>
-#include <delta/geometry/structures/Mesh.h>
+
+#include "../../geometry/structure/Mesh.h"
 
 namespace delta {
   namespace metrics {

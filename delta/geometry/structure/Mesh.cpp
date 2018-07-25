@@ -5,8 +5,7 @@
  *      Author: konstantinos
  */
 
-#include "delta/geometry/structures/Mesh.h"
-#include "delta/geometry/structures/Triangle.h"
+#include "../structure/Mesh.h"
 
 #include <vector>
 #include <map>
@@ -20,6 +19,7 @@
 #include <iomanip>
 #include <functional>
 #include <unordered_set>
+#include "../structure/Triangle.h"
 
 delta::geometry::mesh::Mesh::Mesh()
 {

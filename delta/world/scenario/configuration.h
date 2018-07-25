@@ -31,7 +31,7 @@
 #include <string>
 
 #include <delta/geometry/material.h>
-#include <delta/geometry/Object.h>
+#include <delta/world/structure/Object.h>
 #include <delta/world/operators/arrayLayout.h>
 #include <delta/geometry/hardcoded/graphite.h>
 #include <delta/geometry/hardcoded/granulate.h>
@@ -51,8 +51,8 @@ namespace delta {
 		   *  @returns void
 		   */
 		 void uniSphereRadius(
-			iREAL totalMass,
-			std::vector<delta::geometry::Object>& objects);
+			iREAL 											totalMass,
+			std::vector<delta::world::structure::Object>& 	objects);
 
 		  /*
 		   *  Uniform Mesh
@@ -66,9 +66,9 @@ namespace delta {
 		   *  @returns void
 		   */
 		 void uniMeshGeometry(
-			iREAL 									totalMass,
-			int 										noPointsPerParticle,
-			std::vector<delta::geometry::Object> &	objects);
+			iREAL 											totalMass,
+			int 												noPointsPerParticle,
+			std::vector<delta::world::structure::Object>&	objects);
 
 		  /*
 		   *  Uniform Cube
@@ -82,9 +82,9 @@ namespace delta {
 		   *  @returns void
 		   */
 		 void uniCubeGeometry(
-		    iREAL 								totalMass,
-		    int 									noPointsPerParticle,
-		    std::vector<delta::geometry::Object> &objects);
+		    iREAL 											totalMass,
+		    int 												noPointsPerParticle,
+		    std::vector<delta::world::structure::Object>&		objects);
 
 		  /*
 		   *  NonUniform Sphere
@@ -98,9 +98,9 @@ namespace delta {
 		   *  @returns void
 		   */
 		 void nonUniSphereRadius(
-			iREAL 									totalMass,
-			iREAL 									subcellx,
-			std::vector<delta::geometry::Object>& 	objects);
+			iREAL 											totalMass,
+			iREAL 											subcellx,
+			std::vector<delta::world::structure::Object>& 	objects);
 
 		  /*
 		   *  NonUniform Mesh
@@ -114,10 +114,10 @@ namespace delta {
 		   *  @returns void
 		   */
 		 void nonUniMeshGeometry(
-		    iREAL 									totalMass,
-		    iREAL 									subcellx,
-			int 										meshDensity,
-			std::vector<delta::geometry::Object> &	objects);
+		    iREAL 											totalMass,
+		    iREAL 											subcellx,
+			int 												meshDensity,
+			std::vector<delta::world::structure::Object>&	objects);
 
 		  /*
 		   *  NonUniform Mesh
@@ -134,7 +134,7 @@ namespace delta {
 		  iREAL totalMass,
 		  iREAL subcellx,
 		  int meshDensity,
-		  std::vector<delta::geometry::Object> &objects);
+		  std::vector<delta::world::structure::Object>&	objects);
 
 		  /*
 		   *  NonUniform Distributed Total Mass
@@ -154,17 +154,17 @@ namespace delta {
 		   *  @returns objects
 		   */
 		 void uniformlyDistributedTotalMass(
-	      std::vector<delta::geometry::Object>&	insitu,
-		  iREAL 									position[3],
-		  int 									xzcuts,
-		  int 									ycuts,
-		  iREAL 									gridxyLength,
-		  iREAL 									totalMass,
-		  iREAL 									hopperWidth,
-		  int 									index,
-		  iREAL 									epsilon,
-		  bool 									isSphereOrNone,
-		  int 									meshDensity);
+	      std::vector<delta::world::structure::Object>&	insitu,
+		  iREAL 											position[3],
+		  int 											xzcuts,
+		  int 											ycuts,
+		  iREAL 											gridxyLength,
+		  iREAL 											totalMass,
+		  iREAL 											hopperWidth,
+		  int 											index,
+		  iREAL 											epsilon,
+		  bool 											isSphereOrNone,
+		  int 											meshDensity);
 
 		  /*
 		   *  NonUniform Distributed Total Mass
@@ -185,18 +185,18 @@ namespace delta {
 		   *  @returns objects
 		   */
 		 void nonUniformlyDistributedTotalMass(
-		  std::vector<delta::geometry::Object>&	insitu,
-		  iREAL 									position[3],
-		  int 									xzcuts,
-		  int 									ycuts,
-		  iREAL 									gridxyLength,
-		  iREAL 									totalMass,
-		  iREAL 									hopperWidth,
-		  int 									index,
-		  iREAL 									epsilon,
-		  iREAL 									isSphereOrNone,
-		  iREAL 									subcellx,
-		  int 									meshDensity);
+		  std::vector<delta::world::structure::Object>&	insitu,
+		  iREAL 											position[3],
+		  int 											xzcuts,
+		  int 											ycuts,
+		  iREAL 											gridxyLength,
+		  iREAL 											totalMass,
+		  iREAL 											hopperWidth,
+		  int 											index,
+		  iREAL 											epsilon,
+		  iREAL 											isSphereOrNone,
+		  iREAL 											subcellx,
+		  int 											meshDensity);
 
 		  /*
 		   *  Load Nuclear Geometry
@@ -211,11 +211,11 @@ namespace delta {
 		   *  @returns void
 		   */
 		 void loadNuclearGeometry(
-		  iREAL 									position[3],
-		  iREAL 									width,
-		  int 									layers,
-		  iREAL 									epsilon,
-		  std::vector<delta::geometry::Object>& 	objects);
+		  iREAL 											position[3],
+		  iREAL 											width,
+		  int 											layers,
+		  iREAL 											epsilon,
+		  std::vector<delta::world::structure::Object>& 	objects);
 
 		  /*
 		   *  Make Brick Grid
@@ -232,13 +232,13 @@ namespace delta {
 		   *  @returns void
 		   */
 		 void makeBrickGrid(
-		  iREAL 									position[3],
-		  iREAL							 		arrayXZlength,
-		  int   									xzElements,
-		  iREAL 									arrayYlength,
-		  int   									yElements,
-		  iREAL 									epsilon,
-		  std::vector<delta::geometry::Object>& 	objects);
+		  iREAL 											position[3],
+		  iREAL							 				arrayXZlength,
+		  int   											xzElements,
+		  iREAL 											arrayYlength,
+		  int   											yElements,
+		  iREAL 											epsilon,
+		  std::vector<delta::world::structure::Object>& 	objects);
 	}
   }
 }

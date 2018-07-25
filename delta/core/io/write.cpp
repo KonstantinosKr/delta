@@ -7,7 +7,8 @@
 
 #include <delta/core/io/write.h>
 
-void delta::core::io::writeGeometryToVTK(std::vector<delta::geometry::Object>& vectorGeometries, std::array<iREAL, 6> boundary)
+void delta::core::io::writeGeometryToVTK(
+	std::vector<delta::world::structure::Object>& vectorGeometries, std::array<iREAL, 6> boundary)
 {
   //domain boundary
   iREAL lo[3], hi[3];

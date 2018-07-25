@@ -49,26 +49,26 @@ class delta::world::World {
 
 	virtual ~World();
 
-	void 								createWorld();
-	bool 								hasGravity();
-	bool 								getIsSphere();
-	int 									getNumberOfTriangles();
-	int 									getGlobalPrescribedMeshDensity();
-	iREAL								getGlobalPrescribedEpsilon();
-	std::array<iREAL, 6> 				getBoundary();
-	std::vector<delta::geometry::Object> getObjects();
+	void 										createWorld();
+	bool 										hasGravity();
+	bool 										getIsSphere();
+	int 											getNumberOfTriangles();
+	int 											getGlobalPrescribedMeshDensity();
+	iREAL										getGlobalPrescribedEpsilon();
+	std::array<iREAL, 6> 						getBoundary();
+	std::vector<delta::world::structure::Object> getObjects();
 
   private:
-	int 										_triangles;
-	iREAL 									_gravity;
-	iREAL 									_globalPrescribedEpsilon;
-	iREAL 									_globalPrescribedMeshDensity;
-	bool 									_isSphere;
-	std::string								_scenario;
-	std::array<iREAL, 6> 					_boundary;
-	iREAL 									_minParticleDiam;
-	iREAL 									_maxParticleDiam;
-	std::vector<delta::geometry::Object> 	_particles;
+	int 												_triangles;
+	iREAL 											_gravity;
+	iREAL 											_globalPrescribedEpsilon;
+	iREAL 											_globalPrescribedMeshDensity;
+	bool 											_isSphere;
+	std::string										_scenario;
+	std::array<iREAL, 6> 							_boundary;
+	iREAL 											_minParticleDiam;
+	iREAL 											_maxParticleDiam;
+	std::vector<delta::world::structure::Object> 	_particles;
 };
 
 #endif /* DELTA_WORLD_WORLD_H_ */

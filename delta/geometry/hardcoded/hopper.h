@@ -30,7 +30,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <delta/geometry/operators/triangle.h>
-#include "delta/geometry/structures/Mesh.h"
+#include "../structure/Mesh.h"
 
 namespace delta {
   namespace geometry {

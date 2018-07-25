@@ -13,11 +13,11 @@ namespace delta {
 	  namespace object {
 
 		void computeBoundary(
-		   std::vector<delta::geometry::Object>& objects,
-		   iREAL& minParticleDiam,
-		   iREAL& maxParticleDiam,
-		   iREAL *minComputeDomain,
-		   iREAL *maxComputeDomain)
+		   std::vector<delta::world::structure::Object>& objects,
+		   iREAL& 										minParticleDiam,
+		   iREAL& 										maxParticleDiam,
+		   iREAL*										minComputeDomain,
+		   iREAL*										maxComputeDomain)
 		{
 		  //COMPUTE MIN/MAX XYZ DOMAIN
 		  iREAL minx = std::numeric_limits<iREAL>::max(), miny = std::numeric_limits<iREAL>::max(), minz = std::numeric_limits<iREAL>::max();

@@ -31,7 +31,7 @@
 #include "delta/core/delta.h"
 
 #include "delta/geometry/material.h"
-#include "delta/geometry/Object.h"
+#include "delta/world/structure/Object.h"
 
 #include "delta/world/scenario/configuration.h"
 #include <delta/world/operators/boundary.h>
@@ -154,17 +154,19 @@ class dem::mappings::CreateGrid {
     static int   		_numberOfObstacles;
     static int   		_numberOfTriangles;
 
-    static std::vector<delta::geometry::Object> _coarseObjects;
-    static std::vector<delta::geometry::Object> _fineObjects;
-    static std::vector<delta::geometry::Object> _insitufineObjects;
+    static std::vector<delta::world::structure::Object> _coarseObjects;
+    static std::vector<delta::world::structure::Object> _fineObjects;
+    static std::vector<delta::world::structure::Object> _insitufineObjects;
 
     void deployEnviroment(
-    		dem::Vertex& 	vertex,
-		iREAL 			cellSize,
-        iREAL 			centreAsArray[3],
-		bool 			isFine);
+		  dem::Vertex& 	vertex,
+		  iREAL 			cellSize,
+		  iREAL 			centreAsArray[3],
+		  bool 			isFine);
 
-    void deployObject(dem::Vertex& vertex, delta::geometry::Object Object);
+    void deployObject(
+    		  dem::Vertex& 						vertex,
+		  delta::world::structure::Object 	Object);
 
   public:
   /**

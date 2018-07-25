@@ -49,9 +49,9 @@ int 								     	dem::mappings::CreateGrid::_noPointsPerParticle;
 bool                                  	dem::mappings::CreateGrid::_isSphereContactModel;
 bool                                  	dem::mappings::CreateGrid::_gravity;
 
-std::vector<delta::geometry::Object>     dem::mappings::CreateGrid::_coarseObjects;
-std::vector<delta::geometry::Object>     dem::mappings::CreateGrid::_insitufineObjects;
-std::vector<delta::geometry::Object>     dem::mappings::CreateGrid::_fineObjects;
+std::vector<delta::world::structure::Object>     dem::mappings::CreateGrid::_coarseObjects;
+std::vector<delta::world::structure::Object>     dem::mappings::CreateGrid::_insitufineObjects;
+std::vector<delta::world::structure::Object>     dem::mappings::CreateGrid::_fineObjects;
 
 int                                   	dem::mappings::CreateGrid::_numberOfParticles;
 int                                   	dem::mappings::CreateGrid::_numberOfTriangles;
@@ -93,7 +93,7 @@ void dem::mappings::CreateGrid::deployEnviroment(
 	if((_numberOfParticles-_numberOfObstacles) <= _insitufineObjects.size())
 	for(unsigned i=0; i<_insitufineObjects.size(); i++)
 	{
-	  delta::geometry::Object object = _insitufineObjects[i];
+	  delta::world::structure::Object object = _insitufineObjects[i];
 	  if((object.getCentre()[0] >= cellXLeftBoundary 	&& object.getCentre()[0] <= cellXRightBoundary) &&
 		 (object.getCentre()[1] >= cellYDWBoundary 		&& object.getCentre()[1] <= cellYUPBoundary) &&
 		 (object.getCentre()[2] >= cellZLeftBoundary 	&& object.getCentre()[2] <= cellZRightBoundary))
@@ -110,7 +110,7 @@ void dem::mappings::CreateGrid::deployEnviroment(
 	//if((_numberOfParticles-_numberOfObstacles) <= _fineObjects.size())
 	for(unsigned i=0; i<_fineObjects.size(); i++)
 	{
-	  delta::geometry::Object obj = _fineObjects[i];
+	  delta::world::structure::Object obj = _fineObjects[i];
 
 	  iREAL position[3] = {centreAsArray[0], centreAsArray[1], centreAsArray[2]};
 	  obj.setCentre(position);
@@ -123,7 +123,7 @@ void dem::mappings::CreateGrid::deployEnviroment(
 	  //if(_numberOfParticles <= _coarseObjects.size())
 	  for(unsigned i=0; i<_coarseObjects.size(); i++)
 	  {
-		delta::geometry::Object object = _coarseObjects[i];
+		delta::world::structure::Object object = _coarseObjects[i];
 	    if((object.getCentre()[0] >= cellXLeftBoundary 	&& object.getCentre()[0] <= cellXRightBoundary) &&
 	       (object.getCentre()[1] >= cellYDWBoundary 		&& object.getCentre()[1] <= cellYUPBoundary) &&
 	       (object.getCentre()[2] >= cellZLeftBoundary 	&& object.getCentre()[2] <= cellZRightBoundary))
@@ -147,8 +147,8 @@ void dem::mappings::CreateGrid::deployEnviroment(
 }
 
 void dem::mappings::CreateGrid::deployObject(
-    dem::Vertex&  vertex,
-	delta::geometry::Object object)
+    dem::Vertex&  					vertex,
+	delta::world::structure::Object 	object)
 {
   int particleNumber = -1;
 

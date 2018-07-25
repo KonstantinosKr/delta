@@ -16,8 +16,8 @@ namespace delta {
 	  }
 
 	  Structure::Structure(
-		  std::vector<delta::geometry::Object> objects,
-		  iREAL maxMeshRefinement)
+		  std::vector<delta::world::structure::Object> 	objects,
+		  iREAL 											maxMeshRefinement)
 	  {
 		std::array<iREAL,6> boundary = {0.0, 0.0, 0.0, 1.0, 1.0, 1.0};
 
@@ -42,7 +42,7 @@ namespace delta {
 	  }
 
 	  Structure::Structure(
-	  		  std::vector<delta::geometry::Object> objects)
+	  		  std::vector<delta::world::structure::Object> objects)
 	  {
 		std::array<iREAL,6> boundary = {0.0, 0.0, 0.0, 1.0, 1.0, 1.0};
 		_numberOfObjects = 0;

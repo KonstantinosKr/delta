@@ -690,15 +690,15 @@ void delta::geometry::operators::triangle::getTrianglesInBoundingBox(
 }
 
 void delta::geometry::operators::triangle::decomposeMeshByOctsectionIntoGroupsOfTriangleParticles(
-    int octSectTimes,
-    delta::geometry::mesh::Mesh mesh,
-    delta::geometry::material::MaterialType material,
-    bool isFriction,
-    bool isObstacle,
-	iREAL epsilon,
-    std::vector<delta::geometry::Object> &fineObjects,
-	int &numberOfParticles,
-	int &numberOfObstacles)
+    int 												octSectTimes,
+    delta::geometry::mesh::Mesh 						mesh,
+    delta::geometry::material::MaterialType 			material,
+    bool 											isFriction,
+    bool 											isObstacle,
+	iREAL 											epsilon,
+    std::vector<delta::world::structure::Object>&		fineObjects,
+	int&												numberOfParticles,
+	int&												numberOfObstacles)
 {
   std::vector<std::array<iREAL, 3>> centroid;
 
@@ -750,7 +750,8 @@ void delta::geometry::operators::triangle::decomposeMeshByOctsectionIntoGroupsOf
         zCoordinates.push_back(zCoordinatesMultiLevel[i][j]);
       }
 
-      delta::geometry::Object obj("mesh", 0, centroid[0], material, isObstacle, isFriction, true, epsilon, {0,0,0}, {0,0,0});
+      delta::world::structure::Object obj(
+    	  "mesh", 0, centroid[0], material, isObstacle, isFriction, true, epsilon, {0,0,0}, {0,0,0});
 
       obj.setMesh(
           {xCoordinates[0], xCoordinates[1], xCoordinates[2]},
@@ -770,7 +771,8 @@ void delta::geometry::operators::triangle::decomposeMeshByOctsectionIntoGroupsOf
     ////////END LOOP
   } else {
     //delta::world::object::Object::Object obj("mesh", 0, centerOfMass, material, isObstacle, isFriction);
-	delta::geometry::Object obj("mesh", 0, centroid[0], material, isObstacle, isFriction, true, epsilon, {0,0,0}, {0,0,0});
+	delta::world::structure::Object obj(
+		"mesh", 0, centroid[0], material, isObstacle, isFriction, true, epsilon, {0,0,0}, {0,0,0});
 
     obj.setMesh(
         {xCoordinates[0], xCoordinates[1], xCoordinates[2]},
@@ -792,12 +794,12 @@ void delta::geometry::operators::triangle::decomposeMeshByOctsectionIntoGroupsOf
 }
 
 int delta::geometry::operators::triangle::decomposeMeshIntoTriangleParticles(
-    delta::geometry::mesh::Mesh mesh,
-    delta::geometry::material::MaterialType material,
-    bool isObstacle,
-    bool isFriction,
-	iREAL epsilon,
-    std::vector<delta::geometry::Object> &fineObjects
+    delta::geometry::mesh::Mesh 						mesh,
+    delta::geometry::material::MaterialType 			material,
+    bool 											isObstacle,
+    bool 											isFriction,
+	iREAL 											epsilon,
+    std::vector<delta::world::structure::Object>&		fineObjects
 )
 {
   iREAL mass;
@@ -840,7 +842,8 @@ int delta::geometry::operators::triangle::decomposeMeshIntoTriangleParticles(
 
     std::array<iREAL, 3> Oarray = {O[0], O[1], O[2]};
 
-    delta::geometry::Object obj("mesh", 0, Oarray, material, isObstacle, isFriction, true, epsilon, {0,0,0}, {0,0,0});
+    delta::world::structure::Object obj(
+    	"mesh", 0, Oarray, material, isObstacle, isFriction, true, epsilon, {0,0,0}, {0,0,0});
 
     obj.setMesh(
         {subxCoordinates[0], subxCoordinates[1], subxCoordinates[2]},

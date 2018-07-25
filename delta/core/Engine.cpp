@@ -64,10 +64,10 @@ delta::core::Engine::Engine(
 }
 
 delta::core::Engine::Engine(
-	std::vector<delta::geometry::Object> particles,
-	bool 								gravity,
-	std::array<iREAL, 6> 				boundary,
-	delta::core::data::Meta::EngineMeta 	meta)
+	std::vector<delta::world::structure::Object> particles,
+	bool 										gravity,
+	std::array<iREAL, 6> 						boundary,
+	delta::core::data::Meta::EngineMeta 			meta)
 {
   _overlapCheck = meta.overlapPreCheck;
   _collisionModel = meta.modelScheme;

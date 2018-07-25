@@ -144,7 +144,7 @@ int delta::world::World::getNumberOfTriangles()
   return _triangles;
 }
 
-std::vector<delta::geometry::Object> delta::world::World::getObjects()
+std::vector<delta::world::structure::Object> delta::world::World::getObjects()
 {
   return _particles;
 }

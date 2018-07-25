@@ -7,7 +7,7 @@
 
 #include "delta/core/data/ParticleRecord.h"
 
-delta::core::data::ParticleRecord::ParticleRecord(delta::geometry::Object& object)
+delta::core::data::ParticleRecord::ParticleRecord(delta::world::structure::Object& object)
 {
   this->_linearVelocity = object.getLinearVelocity();
   this->_angularVelocity = object.getAngularVelocity();

@@ -8,10 +8,10 @@
 #ifndef DELTA_GEOMETRY_OPERATORS_OBJECT_H_
 #define DELTA_GEOMETRY_OPERATORS_OBJECT_H_
 
-#include <delta/geometry/Object.h>
 #include <vector>
 #include <array>
 #include <limits>
+#include "../structure/Object.h"
 
 namespace delta {
   namespace geometry {
@@ -31,11 +31,11 @@ namespace delta {
 		 *  @returns void
 		 */
 		void computeBoundary(
-			 std::vector<delta::geometry::Object>& objects,
-			 iREAL& minParticleDiam,
-			 iREAL& maxParticleDiam,
-			 iREAL* minComputeDomain,
-			 iREAL* maxComputeDomain);
+			 std::vector<delta::world::structure::Object>& 	objects,
+			 iREAL& 											minParticleDiam,
+			 iREAL& 											maxParticleDiam,
+			 iREAL* 											minComputeDomain,
+			 iREAL* 											maxComputeDomain);
 	  } /* namespace Object */
 	} /* namespace operators */
   } /* namespace geometry */

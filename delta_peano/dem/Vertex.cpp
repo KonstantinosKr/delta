@@ -51,7 +51,7 @@ void dem::Vertex::destroy() const {
 }
 
 int dem::Vertex::createParticle(
-	delta::geometry::Object Object,
+	delta::world::structure::Object Object,
     int particleId)
 {
   ParticleHeap::getInstance().getData( _vertexData.getParticles() ).push_back( records::Particle() );
@@ -171,7 +171,7 @@ int dem::Vertex::createParticle(
 }
 
 int dem::Vertex::createSubParticle(
-	delta::geometry::Object Object,
+	delta::world::structure::Object Object,
     int particleId)
 {
   std::vector<iREAL> xCoordinates = Object.getMesh().getXCoordinatesAsVector();
@@ -316,7 +316,7 @@ int dem::Vertex::createSubParticle(
 }
 
 int dem::Vertex::createSphereParticle(
-	delta::geometry::Object Object,
+	delta::world::structure::Object Object,
 	int particleId)
 {
   const tarch::la::Vector<DIMENSIONS,iREAL>& center = {Object.getCentre()[0], Object.getCentre()[1], Object.getCentre()[2]};

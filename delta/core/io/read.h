@@ -18,7 +18,8 @@
 #include <stdlib.h>
 #include <fstream>
 #include "math.h"
-#include "delta/geometry/structures/Mesh.h"
+
+#include "../../geometry/structure/Mesh.h"
 
 namespace delta {
 	namespace core {

@@ -10,7 +10,8 @@
 #include <assimp/Exporter.hpp>      // C++ importer interface
 #include <assimp/scene.h>           // Output data structure
 #include <assimp/postprocess.h>     // Post processing flags
-#include <delta/geometry/structures/Mesh.h>
+
+#include "../../geometry/structure/Mesh.h"
 
 std::vector<std::string> splitString(
   std::string input,

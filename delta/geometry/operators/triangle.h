@@ -25,16 +25,16 @@
 #ifndef GEOMETRY_OPERATORS_TRIANGLE_H_
 #define GEOMETRY_OPERATORS_TRIANGLE_H_
 
+#include <delta/geometry/material.h>
+#include <delta/geometry/hardcoded/surface.h>
+#include <delta/geometry/operators/physics.h>
 #include <stdlib.h>
 #include <assert.h>
 #include <cmath>
 #include <vector>
 #include <array>
-#include <delta/geometry/material.h>
-#include <delta/geometry/Object.h>
-#include <delta/geometry/hardcoded/surface.h>
-#include <delta/geometry/operators/physics.h>
-#include "delta/geometry/structures/Mesh.h"
+#include "../../world/structure/Object.h"
+#include "../structure/Mesh.h"
 
 namespace delta {
   namespace geometry {
@@ -260,15 +260,15 @@ namespace delta {
 		 *  @returns void
 		 */
 		void decomposeMeshByOctsectionIntoGroupsOfTriangleParticles(
-		    int octSectTimes,
-		    delta::geometry::mesh::Mesh mesh,
-		    delta::geometry::material::MaterialType material,
-		    bool isFriction,
-		    bool isObstacle,
-			iREAL epsilon,
-		    std::vector<delta::geometry::Object> &fineObjects,
-			int &numberOfParticles,
-			int &numberOfObstacles);
+		    int 												octSectTimes,
+		    delta::geometry::mesh::Mesh 						mesh,
+		    delta::geometry::material::MaterialType 			material,
+		    bool 											isFriction,
+		    bool 											isObstacle,
+			iREAL 											epsilon,
+		    std::vector<delta::world::structure::Object>&		fineObjects,
+			int&												numberOfParticles,
+			int&												numberOfObstacles);
 
 		/*
 		 *  Get Triangles in Bounding Box
@@ -285,12 +285,12 @@ namespace delta {
 		 *  @returns int number of triangles
 		 */
 		int decomposeMeshIntoTriangleParticles(
-		    delta::geometry::mesh::Mesh mesh,
-		    delta::geometry::material::MaterialType material,
-		    bool isObstacle,
-		    bool isFriction,
-			iREAL epsilon,
-		    std::vector<delta::geometry::Object> &fineObjects);
+		    delta::geometry::mesh::Mesh 						mesh,
+		    delta::geometry::material::MaterialType 			material,
+		    bool 											isObstacle,
+		    bool 											isFriction,
+			iREAL 											epsilon,
+		    std::vector<delta::world::structure::Object>&		fineObjects);
 	  }
     }
   }

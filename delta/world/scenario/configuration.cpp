@@ -24,17 +24,17 @@
 #include <delta/world/scenario/configuration.h>
 
  void delta::world::configuration::uniformlyDistributedTotalMass(
-	  std::vector<delta::geometry::Object> &	insitu,
-	  iREAL 									position[3],
-	  int 									xzcuts,
-	  int 									ycuts,
-	  iREAL 									gridxyLength,
-      iREAL 									totalMass,
-	  iREAL 									hopperWidth,
-      int 									index,
-	  iREAL 									epsilon,
-      bool 									isSphereOrNone,
-      int 									noPointsPerParticle
+	  std::vector<delta::world::structure::Object>&		insitu,
+	  iREAL 												position[3],
+	  int 												xzcuts,
+	  int 												ycuts,
+	  iREAL 												gridxyLength,
+      iREAL 												totalMass,
+	  iREAL 												hopperWidth,
+      int 												index,
+	  iREAL 												epsilon,
+      bool 												isSphereOrNone,
+      int 												noPointsPerParticle
       )
 {
    //create xzy cuts above hopper, position starts at left lower inner corner
@@ -50,7 +50,9 @@
    {
      std::array<iREAL, 3> p = {grid[i][0], grid[i][1], grid[i][2]};
 
-     delta::geometry::Object particles(isSphereOrNone ? "sphere": "granulate", index+i, p, material, isObstacle, isFriction, isConvex, epsilon, {0, 0, 0}, {0,0,0});
+     delta::world::structure::Object particles(
+    		 isSphereOrNone ? "sphere": "granulate",
+    		 index+i, p, material, isObstacle, isFriction, isConvex, epsilon, {0, 0, 0}, {0,0,0});
      insitu.push_back(particles);
 
      if(p[0] < xmin) xmin = p[0];
@@ -119,18 +121,18 @@
 }
 
 void delta::world::configuration::nonUniformlyDistributedTotalMass(
-    std::vector<delta::geometry::Object> &	insitu,
-    iREAL 									position[3],
-    int 										xzcuts,
-	int 										ycuts,
-	iREAL 									gridxyLength,
-	iREAL		 							totalMass,
-	iREAL 									hopperWidth,
-	int 										index,
-	iREAL 									epsilon,
-	iREAL 									isSphereOrNone,
-	iREAL 									subcellx,
-	int 										noPointsPerParticle)
+    std::vector<delta::world::structure::Object>&		insitu,
+    iREAL 											position[3],
+    int 												xzcuts,
+	int 												ycuts,
+	iREAL 											gridxyLength,
+	iREAL		 									totalMass,
+	iREAL 											hopperWidth,
+	int 												index,
+	iREAL 											epsilon,
+	iREAL 											isSphereOrNone,
+	iREAL 											subcellx,
+	int 												noPointsPerParticle)
 {
    //create xzy cuts above hopper, position starts at left lower inner corner
    std::vector<std::array<iREAL, 3>> grid = delta::world::layout::makeGridLayout(position, xzcuts, ycuts, gridxyLength);
@@ -145,7 +147,9 @@ void delta::world::configuration::nonUniformlyDistributedTotalMass(
    {
      std::array<iREAL, 3> p = {grid[i][0], grid[i][1], grid[i][2]};
 
-     delta::geometry::Object particles(isSphereOrNone ? "sphere": "granulate", index+1, p, material, isObstacle, isFriction, isConvex, epsilon, {0,0,0}, {0,0,0});
+     delta::world::structure::Object particles(
+    		 isSphereOrNone ? "sphere": "granulate",
+    		 index+1, p, material, isObstacle, isFriction, isConvex, epsilon, {0,0,0}, {0,0,0});
      insitu.push_back(particles);
 
      if(p[0] < xmin) xmin = p[0];
@@ -212,8 +216,8 @@ void delta::world::configuration::nonUniformlyDistributedTotalMass(
 }
 
  void delta::world::configuration::uniSphereRadius(
-    iREAL totalMass,
-    std::vector<delta::geometry::Object> &objects)
+    iREAL 											totalMass,
+    std::vector<delta::world::structure::Object>&		objects)
 {
   if((!objects.size()) > 0) return;
 
@@ -230,9 +234,9 @@ void delta::world::configuration::nonUniformlyDistributedTotalMass(
 }
 
  void delta::world::configuration::uniMeshGeometry(
-    iREAL 									totalMass,
-    int 										noPointsPerParticle,
-    std::vector<delta::geometry::Object> &	objects)
+    iREAL 											totalMass,
+    int 												noPointsPerParticle,
+    std::vector<delta::world::structure::Object>&		objects)
 {
   iREAL massPerParticle = totalMass/(iREAL)objects.size();
   delta::geometry::material::MaterialType material = objects[0].getMaterial();
@@ -284,9 +288,9 @@ void delta::world::configuration::nonUniformlyDistributedTotalMass(
 }
 
  void delta::world::configuration::uniCubeGeometry(
-    iREAL 									totalMass,
-    int 										noPointsPerParticle,
-    std::vector<delta::geometry::Object> &	objects)
+    iREAL 											totalMass,
+    int 												noPointsPerParticle,
+    std::vector<delta::world::structure::Object>&		objects)
 {
   iREAL massPerParticle = totalMass/(iREAL)objects.size();
 
@@ -319,9 +323,9 @@ void delta::world::configuration::nonUniformlyDistributedTotalMass(
 }
 
  void delta::world::configuration::nonUniSphereRadius(
-    iREAL 									totalMass,
-    iREAL 									subcellx,
-    std::vector<delta::geometry::Object> &	objects)
+    iREAL 											totalMass,
+    iREAL 											subcellx,
+    std::vector<delta::world::structure::Object>&		objects)
 {
   if((!objects.size()) > 0) return;
 
@@ -365,10 +369,10 @@ void delta::world::configuration::nonUniformlyDistributedTotalMass(
 }
 
  void delta::world::configuration::nonUniMeshGeometry(
-    iREAL 									totalMass,
-    iREAL 									subcellx,
-	int 										meshDensity,
-	std::vector<delta::geometry::Object> &	objects)
+    iREAL 											totalMass,
+    iREAL 											subcellx,
+	int 												meshDensity,
+	std::vector<delta::world::structure::Object>&	objects)
 {
   iREAL massPerParticle = totalMass/(iREAL)objects.size();
   delta::geometry::material::MaterialType material = objects[0].getMaterial();
@@ -432,10 +436,10 @@ void delta::world::configuration::nonUniformlyDistributedTotalMass(
 }
 
  void delta::world::configuration::nonUniCubeGeometry(
-  iREAL 									totalMass,
-  iREAL 									subcellx,
-  int 									meshDensity,
-  std::vector<delta::geometry::Object> &	objects)
+  iREAL 											totalMass,
+  iREAL 											subcellx,
+  int 											meshDensity,
+  std::vector<delta::world::structure::Object>&	objects)
 {
    iREAL massPerParticle = totalMass/(iREAL)objects.size();
    delta::geometry::material::MaterialType material = objects[0].getMaterial();
@@ -498,11 +502,11 @@ void delta::world::configuration::nonUniformlyDistributedTotalMass(
 }
 
  void delta::world::configuration::loadNuclearGeometry(
-    iREAL 									position[3],
-    iREAL 									width,
-    int 										layers,
-	iREAL 									epsilon,
-	std::vector<delta::geometry::Object>& 	objects)
+    iREAL 												position[3],
+    iREAL 												width,
+    int 													layers,
+	iREAL 												epsilon,
+	std::vector<delta::world::structure::Object>& 		objects)
 {
 
   //_particleGrid, _componentGrid, _radArray, _minParticleDiam, _maxParticleDiam
@@ -542,7 +546,8 @@ void delta::world::configuration::nonUniformlyDistributedTotalMass(
     {
       auto material = delta::geometry::material::MaterialType::GRAPHITE;
 
-      delta::geometry::Object obj("FB", 0, tmp[i], material, false, false, true, epsilon, {0,0,0}, {0,0,0});
+      delta::world::structure::Object obj(
+    	  "FB", 0, tmp[i], material, false, false, true, epsilon, {0,0,0}, {0,0,0});
 /*
 	  iREAL pos[3] = {tmp[i][0], tmp[i][1], tmp[i][2]};
 	  delta::geometry::mesh::Mesh *geometry = delta::geometry::hardcoded::generateBrickFB(pos, 0.1);
@@ -559,13 +564,13 @@ void delta::world::configuration::nonUniformlyDistributedTotalMass(
 }
 
  void delta::world::configuration::makeBrickGrid(
-    iREAL 									position[3],
-    iREAL 									arrayXZlength,
-    int   									xzElements,
-    iREAL 									arrayYlength,
-    int   									yElements,
-	iREAL 									epsilon,
-    std::vector<delta::geometry::Object>& 	objects)
+    iREAL 												position[3],
+    iREAL 												arrayXZlength,
+    int   												xzElements,
+    iREAL 												arrayYlength,
+    int   												yElements,
+	iREAL 												epsilon,
+    std::vector<delta::world::structure::Object>& 		objects)
 {
   std::vector<iREAL>  xCoordinates, yCoordinates, zCoordinates;
 
@@ -618,7 +623,8 @@ void delta::world::configuration::nonUniformlyDistributedTotalMass(
     auto material = delta::geometry::material::MaterialType::GRAPHITE;
 
     delta::geometry::mesh::Mesh *geometry = delta::geometry::hardcoded::generateBrickFB(position, scalePercentage);
-    delta::geometry::Object obj("FB", i, geometry, particleGrid[i], material, false, false, true, epsilon, {0,0,0}, {0,0,0});
+    delta::world::structure::Object obj(
+    	"FB", i, geometry, particleGrid[i], material, false, false, true, epsilon, {0,0,0}, {0,0,0});
     obj.setRad(scalePercentage);
     objects.push_back(obj);
   }

@@ -29,15 +29,17 @@
 #include <array>
 #include <string>
 #include <delta/geometry/material.h>
-#include "delta/geometry/structures/Mesh.h"
+#include "../../geometry/structure/Mesh.h"
 
 namespace delta {
-  namespace geometry {
-	class Object;
+  namespace world {
+	namespace structure {
+	  class Object;
+	}
   }
 }
 
-class delta::geometry::Object
+class delta::world::structure::Object
 {
   public:
 	Object();

@@ -30,9 +30,9 @@
 #include <vector>
 #include <iostream>
 #include <delta/core/io/read.h>
-#include <delta/geometry/Object.h>
-#include "delta/geometry/structures/Triangle.h"
 #include <delta/geometry/material.h>
+#include "../geometry/structure/Triangle.h"
+#include "../world/structure/Object.h"
 
 /*
 #if GCC_VERSION >= 4.2

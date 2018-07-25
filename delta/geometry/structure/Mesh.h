@@ -8,11 +8,11 @@
 #ifndef GEOMETRY_STRUCTURES_MESH_H_
 #define GEOMETRY_STRUCTURES_MESH_H_
 
+#include <delta/core/algo.h>
 #include <delta/geometry/material.h>
-#include <delta/geometry/structures/Triangle.h>
 #include <delta/geometry/operators/physics.h>
 #include <delta/geometry/operators/mesh.h>
-#include <delta/core/algo.h>
+#include <delta/geometry/structure/Triangle.h>
 
 namespace delta {
   namespace geometry {

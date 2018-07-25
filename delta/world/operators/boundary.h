@@ -25,11 +25,11 @@
 #ifndef WORLD_OPERATORS_H_
 #define WORLD_OPERATORS_H_
 
-#include <delta/geometry/Object.h>
 #include <vector>
 #include <array>
 #include <limits>
 #include <array>
+#include "../structure/Object.h"
 
 namespace delta {
 namespace world {
@@ -48,20 +48,20 @@ namespace operators {
  *  @returns void
  */
 void computeBoundary(
-	 std::vector<delta::geometry::Object>& 	coarseObjects,
-	 std::vector<delta::geometry::Object>& 	fineObjects,
-	 std::vector<delta::geometry::Object>& 	objects,
-	 iREAL& 									minParticleDiam,
-	 iREAL& 									maxParticleDiam,
-	 std::array<iREAL, 3>& 					minComputeDomain,
-	 std::array<iREAL, 3>& 					maxComputeDomain);
+	 std::vector<delta::world::structure::Object>& 	coarseObjects,
+	 std::vector<delta::world::structure::Object>& 	fineObjects,
+	 std::vector<delta::world::structure::Object>& 	objects,
+	 iREAL& 											minParticleDiam,
+	 iREAL& 											maxParticleDiam,
+	 std::array<iREAL, 3>& 							minComputeDomain,
+	 std::array<iREAL, 3>& 							maxComputeDomain);
 
 void computeBoundary(
-	 std::vector<delta::geometry::Object>& 	objects,
-	 iREAL& 									minParticleDiam,
-	 iREAL& 									maxParticleDiam,
-	 std::array<iREAL, 3> 					minComputeDomain,
-	 std::array<iREAL, 3> 					maxComputeDomain);
+	 std::vector<delta::world::structure::Object>& 	objects,
+	 iREAL& 											minParticleDiam,
+	 iREAL& 											maxParticleDiam,
+	 std::array<iREAL, 3> 							minComputeDomain,
+	 std::array<iREAL, 3> 							maxComputeDomain);
 
 } /* namespace operators */
 } /* namespace world */

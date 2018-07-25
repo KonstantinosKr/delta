@@ -8,9 +8,9 @@
 #ifndef DELTA_CORE_DATA_STRUCTURE_H_
 #define DELTA_CORE_DATA_STRUCTURE_H_
 
-#include "delta/geometry/Object.h"
 #include <delta/core/data/ParticleRecord.h>
 #include <vector>
+#include "../../world/structure/Object.h"
 
 namespace delta {
   namespace core {
@@ -26,11 +26,11 @@ class delta::core::data::Structure {
 	Structure();
 
 	Structure(
-		std::vector<delta::geometry::Object> objects);
+		std::vector<delta::world::structure::Object> objects);
 
 	Structure(
-		std::vector<delta::geometry::Object> 		objects,
-		iREAL maxMeshRefinement);
+		std::vector<delta::world::structure::Object> objects,
+		iREAL 										maxMeshRefinement);
 
 	delta::core::data::ParticleRecord& 				getParticle(int i);
 	std::vector<delta::core::data::ParticleRecord>& 	getAll();

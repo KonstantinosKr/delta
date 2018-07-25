@@ -12,8 +12,8 @@
 #include <string>
 #include <vector>
 #include <delta/geometry/material.h>
-#include <delta/geometry/Object.h>
 #include <delta/core/data/OctTree.h>
+#include "../../world/structure/Object.h"
 
 namespace delta {
   namespace core {
@@ -30,7 +30,7 @@ namespace delta {
 class delta::core::data::ParticleRecord
 {
   public:
-	ParticleRecord(delta::geometry::Object& object);
+	ParticleRecord(delta::world::structure::Object& object);
 
 	int getGlobalParticleID();
 	int getLocalParticleID();

@@ -20,7 +20,7 @@
 
 #include "dem/mappings/Collision.h"
 #include "delta/geometry/material.h"
-#include "delta/geometry/Object.h"
+#include "delta/world/structure/Object.h"
 
 namespace dem { 
   class Vertex;
@@ -91,15 +91,15 @@ class dem::Vertex: public peano::grid::Vertex< dem::records::Vertex > {
      *                    which particle a triangle belongs to
      */
     int createParticle(
-    		delta::geometry::Object Object,
+    		delta::world::structure::Object Object,
 		int particleId);
 
     int createSubParticle(
-    		delta::geometry::Object Object,
+    		delta::world::structure::Object Object,
         int particleId);
 
     int createSphereParticle(
-    		delta::geometry::Object Object,
+    		delta::world::structure::Object Object,
 		int particleId);
 
     int getNumberOfParticles() const;

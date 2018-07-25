@@ -25,13 +25,13 @@
 #include <delta/world/operators/boundary.h>
 
 void delta::world::operators::computeBoundary(
-	 std::vector<delta::geometry::Object>& 	coarseObjects,
-	 std::vector<delta::geometry::Object>& 	fineObjects,
-	 std::vector<delta::geometry::Object>& 	objects,
-	 iREAL& 									minParticleDiam,
-	 iREAL& 									maxParticleDiam,
-	 std::array<iREAL, 3>& 					minComputeDomain,
-	 std::array<iREAL, 3>& 					maxComputeDomain)
+	 std::vector<delta::world::structure::Object>& 	coarseObjects,
+	 std::vector<delta::world::structure::Object>& 	fineObjects,
+	 std::vector<delta::world::structure::Object>& 	objects,
+	 iREAL& 											minParticleDiam,
+	 iREAL& 											maxParticleDiam,
+	 std::array<iREAL, 3>& 							minComputeDomain,
+	 std::array<iREAL, 3>& 							maxComputeDomain)
 {
   //COMPUTE MIN/MAX XYZ DOMAIN
   iREAL minx = std::numeric_limits<iREAL>::max(),
@@ -124,11 +124,11 @@ void delta::world::operators::computeBoundary(
 }
 
 void delta::world::operators::computeBoundary(
-	 std::vector<delta::geometry::Object>& 	objects,
-	 iREAL& 									minParticleDiam,
-	 iREAL& 									maxParticleDiam,
-	 std::array<iREAL, 3> 					minComputeDomain,
-	 std::array<iREAL, 3> 					maxComputeDomain)
+	 std::vector<delta::world::structure::Object>& 	objects,
+	 iREAL& 											minParticleDiam,
+	 iREAL& 											maxParticleDiam,
+	 std::array<iREAL, 3> 							minComputeDomain,
+	 std::array<iREAL, 3> 							maxComputeDomain)
 {
   //COMPUTE MIN/MAX XYZ DOMAIN
   iREAL minx = std::numeric_limits<iREAL>::max(), miny = std::numeric_limits<iREAL>::max(), minz = std::numeric_limits<iREAL>::max();

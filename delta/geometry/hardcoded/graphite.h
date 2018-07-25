@@ -36,7 +36,7 @@
 #include <string.h>
 #include <vector>
 #include <delta/core/io/read.h>
-#include "delta/geometry/structures/Mesh.h"
+#include "../structure/Mesh.h"
 
 namespace delta {
   namespace geometry {
