@@ -125,12 +125,12 @@ class dem::mappings::CreateGrid {
     };
 
     static void setScenario(
-        Scenario scenario[4],
-        iREAL maxH,
-        GridType gridType,
-        int noPointsPerGranulate);
+				  Scenario 	scenario[4],
+				  iREAL 		maxH,
+				  GridType 	gridType,
+				  int 		noPointsPerGranulate);
 
-    static bool     		_isSphere;
+    static bool     		_isSphereContactModel;
     static GridType 		_gridType;
   private:
     /**

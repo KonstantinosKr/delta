@@ -46,7 +46,7 @@ iREAL                                	dem::mappings::CreateGrid::_maxGlobalParti
 
 iREAL								 	dem::mappings::CreateGrid::_globalEpsilon;
 int 								     	dem::mappings::CreateGrid::_noPointsPerParticle;
-bool                                  	dem::mappings::CreateGrid::_isSphere;
+bool                                  	dem::mappings::CreateGrid::_isSphereContactModel;
 bool                                  	dem::mappings::CreateGrid::_gravity;
 
 std::vector<delta::geometry::Object>     dem::mappings::CreateGrid::_coarseObjects;
@@ -218,15 +218,15 @@ void dem::mappings::CreateGrid::beginIteration(
   _numberOfTriangles = 0;
   _numberOfObstacles = 0;
 
-  _isSphere = (dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere ||
-               dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::none);
+  _isSphereContactModel = (	dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere ||
+							dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::none);
 
   iREAL centre[3] = {0.5, 0.5, 0.5};
 
   if(_scenario[1] == nuclear)
   {
 	delta::world::scenarios::nuclear(
-		1, _isSphere, centre, _noPointsPerParticle, _globalEpsilon, _coarseObjects, _fineObjects);
+		1, _isSphereContactModel, centre, _noPointsPerParticle, _globalEpsilon, _coarseObjects, _fineObjects);
   } else if(_scenario[1] == hopper)
   {
 	iREAL xzcuts = 0; iREAL ycuts = 0;
@@ -254,8 +254,9 @@ void dem::mappings::CreateGrid::beginIteration(
 	bool uni = false;
 	if(_scenario[2] == uniform) uni = true;
 
-	delta::world::scenarios::hopper(_coarseObjects, _insitufineObjects,
-		centre, xzcuts, ycuts, uni, _isSphere, _noPointsPerParticle, _globalEpsilon);
+	delta::world::scenarios::hopper(
+		_coarseObjects, _insitufineObjects,
+		centre, xzcuts, ycuts, uni, _isSphereContactModel, _noPointsPerParticle, _globalEpsilon);
   } else if(_scenario[0] == turbine)
   {
 	delta::world::scenarios::turbine(_coarseObjects, _globalEpsilon);
@@ -274,17 +275,17 @@ void dem::mappings::CreateGrid::beginIteration(
 	  sc = 3;
 	}
 	delta::world::scenarios::friction(
-		sc,  _isSphere, centre, _noPointsPerParticle, _globalEpsilon, _coarseObjects);
+		sc, _isSphereContactModel, centre, _noPointsPerParticle, _globalEpsilon, _coarseObjects);
   } else if(_scenario[0] == ParticleRotation)
   {
 	delta::world::scenarios::rotateParticle(
-		_coarseObjects, _isSphere, _noPointsPerParticle, _globalEpsilon);
+		_coarseObjects, _isSphereContactModel, _noPointsPerParticle, _globalEpsilon);
 	_gravity = false;
   }
   else if(_scenario[0] == TwoParticlesCrash)
   {
   delta::world::scenarios::twoParticlesCrash(
-	  _coarseObjects, _isSphere, _noPointsPerParticle, _globalEpsilon);
+	  _coarseObjects, _isSphereContactModel, _noPointsPerParticle, _globalEpsilon);
   _gravity = false;
   }
   else if(_scenario[0] == blackHoleWithCubes ||
@@ -299,7 +300,7 @@ void dem::mappings::CreateGrid::beginIteration(
 	  scn = 1;
 	}
 	delta::world::scenarios::freeFall(
-		scn, _isSphere, centre, _noPointsPerParticle, _globalEpsilon, _coarseObjects);
+		scn, _isSphereContactModel, centre, _noPointsPerParticle, _globalEpsilon, _coarseObjects);
   }
   else if(_scenario[0] == nonescenario)
   {
