@@ -29,9 +29,9 @@ delta::geometry::Object::Object(
   this->_centre[1] = centre[1];
   this->_centre[2] = centre[2];
 
-  this->_material = material;
-  this->_isObstacle = isObstacle;
-  this->_isFriction = isFriction;
+  this->_material 	= material;
+  this->_isObstacle 	= isObstacle;
+  this->_isFriction	= isFriction;
 
   this->_linearVelocity[0] = linear[0];
   this->_linearVelocity[1] = linear[1];
@@ -42,6 +42,19 @@ delta::geometry::Object::Object(
   this->_angularVelocity[2] = angular[2];
 
   this->_epsilon = epsilon;
+  this->_haloDiameter 		= 	(_diameter+epsilon*2) * 1.1;
+  this->_diameter			=	_rad/2;
+  this->_rad					= 	_diameter/2;
+
+  this->_localParticleID 	= 0;
+  this->_isConvex 			= isConvex;
+
+  this-> _mesh			= 	nullptr;
+  this->_mass			=	0;
+
+  _wx = 0;
+  _wy = 0;
+  _wz = 0;
 }
 
 delta::geometry::Object::Object(
@@ -67,9 +80,9 @@ std::array<iREAL, 3> 					angular)
   this->_centre[1] = centre[1];
   this->_centre[2] = centre[2];
 
-  this->_material = material;
-  this->_isObstacle = isObstacle;
-  this->_isFriction = isFriction;
+  this->_material 	= material;
+  this->_isObstacle 	= isObstacle;
+  this->_isFriction 	= isFriction;
 
   this->_epsilon = epsilon;
 
@@ -115,10 +128,13 @@ std::array<iREAL, 3> 					angular)
   _centreOfMass[1] = centerOfMass[1];
   _centreOfMass[2] = centerOfMass[2];
 
-  this->_diameter		=	mesh->getDiameter();
+  this->_diameter		=	mesh->computeDiameter();
   this->_rad				= 	_diameter/2;
   this->_haloDiameter 	= 	(_diameter+epsilon*2) * 1.1;
   this->_mass			=	mass;
+
+  this->_minBoundBox 	=	mesh->getBoundaryMinVertex();
+  this->_maxBoundBox 	=	mesh->getBoundaryMinVertex();
 
   //dimensions
   _wx = 0;
@@ -145,9 +161,9 @@ std::array<iREAL, 3> 					angular)
   this->_globalParticleID 	= particleID;
   this->_localParticleID 	= 0;
 
-  this->_centre[0] = centre[0];
-  this->_centre[1] = centre[1];
-  this->_centre[2] = centre[2];
+  this->_centre[0] 	= centre[0];
+  this->_centre[1] 	= centre[1];
+  this->_centre[2] 	= centre[2];
 
   this->_centreOfMass[0] = _centre[0];
   this->_centreOfMass[1] = _centre[1];
@@ -171,14 +187,16 @@ std::array<iREAL, 3> 					angular)
   this->_haloDiameter 	= 	(_diameter+epsilon*2) * 1.1;
   this->_diameter		=	rad*2;
   this->_mass			=	0;
-
+  this->_isConvex 		= 	isConvex;
   this-> _mesh			= 	nullptr;
+
+  this->_minBoundBox 	=	{centre[0] - _rad, centre[1] - _rad, centre[2] - _rad};
+  this->_maxBoundBox 	=	{centre[0] + _rad, centre[1] + _rad, centre[2] + _rad};
 
   //dimensions
   _wx = 0;
   _wy = 0;
   _wz = 0;
-
 }
 
 std::string delta::geometry::Object::getComponent()
@@ -299,6 +317,9 @@ iREAL delta::geometry::Object::getRad()
 
 void delta::geometry::Object::setRad(iREAL rad)
 {
+  this->_minBoundBox 	=	{_centre[0] - _rad, _centre[1] - _rad, _centre[2] - _rad};
+  this->_maxBoundBox 	=	{_centre[0] + _rad, _centre[1] + _rad, _centre[2] + _rad};
+
   _rad = rad;
   this->_haloDiameter 	= 	(_diameter+_epsilon*2) * 1.1;
   this->_diameter		=	rad*2;
@@ -406,12 +427,9 @@ iREAL delta::geometry::Object::computeVolume()
   std::vector<iREAL> xCoordinates;
   std::vector<iREAL> yCoordinates;
   std::vector<iREAL> zCoordinates;
-
   this->getMesh().flatten(xCoordinates, yCoordinates, zCoordinates);
 
-  iREAL vol = this->getMesh().computeVolume();
-
-  return vol;
+  return this->getMesh().computeVolume();
 }
 
 /*
@@ -439,7 +457,7 @@ iREAL delta::geometry::Object::computeMass(
 void delta::geometry::Object::computeInverseInertia(
 	  iREAL inertia[9],
 	  iREAL inverse[9],
-	  bool isObject)
+	  bool 	isObject)
 {
   delta::geometry::operators::physics::computeInverseInertia(inertia, inverse, isObject);
   this->setInverse(inverse);
@@ -448,6 +466,16 @@ void delta::geometry::Object::computeInverseInertia(
 bool delta::geometry::Object::getIsConvex()
 {
   return _isConvex;
+}
+
+std::array<iREAL, 3> delta::geometry::Object::getMinBoundaryVertex()
+{
+  return _minBoundBox;
+}
+
+std::array<iREAL, 3> delta::geometry::Object::getMaxBoundaryVertex()
+{
+  return _maxBoundBox;
 }
 
 delta::geometry::Object::~Object() {

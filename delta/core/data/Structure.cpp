@@ -27,13 +27,12 @@ namespace delta {
 		for(int i=0; i<objects.size(); i++)
 		{
 		  delta::core::data::ParticleRecord record(objects[i]);
-
 		  if(maxMeshRefinement > record.getAvgMeshSize())
 		  {
 			record.refineTree(maxMeshRefinement);
 		  }
 
-		  this->particles.push_back(record);
+		  this->_particles.push_back(record);
 		  if(record.getIsObstacle())
 		  {
 			_numberOfObjects ++;
@@ -51,10 +50,10 @@ namespace delta {
 		for(int i=0; i<objects.size(); i++)
 		{
 		  delta::core::data::ParticleRecord record(objects[i]);
-
-		  printf("%f\n", record.getAvgMeshSize());
 		  record.refineTree(record.getAvgMeshSize());
-		  this->particles.push_back(record);
+		  printf("entered\n");
+
+		  this->_particles.push_back(record);
 		  if(record.getIsObstacle())
 		  {
 			_numberOfObjects ++;
@@ -70,7 +69,7 @@ namespace delta {
 
 	  int Structure::getNumberOfParticles()
 	  {
-		return this->particles.size();
+		return this->_particles.size();
 	  }
 
 	  int Structure::getNumberOfObstacles()
@@ -85,22 +84,22 @@ namespace delta {
 
 	  delta::core::data::ParticleRecord& Structure::getParticle(int i)
 	  {
-		return this->particles[i];
+		return this->_particles[i];
 	  }
 
 	  std::vector<std::array<iREAL, 6>> Structure::getGeometryGrid()
 	  {
 		std::vector<std::array<iREAL, 6>> grid;
-		for(int i=0;i<particles.size();i++)
+		for(int i=0; i<_particles.size(); i++)
 		{
-		  particles[i].getTree().getBoundary(grid);
+		  _particles[i].getTree().getBoundary(grid);
 		}
 		return grid;
 	  }
 
 	  std::vector<delta::core::data::ParticleRecord>& Structure::getAll()
 	  {
-		return this->particles;
+		return this->_particles;
 	  }
 	}
   } /* namespace core */

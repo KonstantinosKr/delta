@@ -58,11 +58,7 @@ namespace delta {
 class delta::core::Engine
 {
   public:
-
-	CollisionModel	_collisionModel;
-
 	Engine();
-
 	Engine(
 		delta::world::World					world,
 		delta::core::data::Meta::EngineMeta 	meta);
@@ -76,16 +72,15 @@ class delta::core::Engine
 	virtual ~Engine();
 
 	void iterate();
-
 	delta::core::State getState();
-
 	int getNumberOfCollisions();
-
 	void contactDetection();
 	void deriveForces();
 	void updatePosition();
 	std::vector<delta::core::data::ParticleRecord>& getParticleRecords();
 	void plot();
+	CollisionModel	_collisionModel;
+
   private:
 	delta::core::io::LogTimeStamp *	_logBook;
 	delta::core::io::LogWarning *	_logWarningBook;
@@ -106,9 +101,9 @@ class delta::core::Engine
 	std::map<int, std::vector<Collisions> >   _collisionsOfNextTraversal;
 
 	void addCollision(
-		std::vector<delta::contact::contactpoint> & newContactPoints,
-		delta::core::data::ParticleRecord&                    particleA,
-		delta::core::data::ParticleRecord&                    particleB,
+		std::vector<delta::contact::contactpoint>& 	newContactPoints,
+		delta::core::data::ParticleRecord&        	particleA,
+		delta::core::data::ParticleRecord&        	particleB,
 		bool sphere
 	);
 };

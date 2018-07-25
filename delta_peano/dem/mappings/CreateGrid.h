@@ -25,7 +25,6 @@
 #include "dem/State.h"
 #include "dem/mappings/AdoptGrid.h"
 
-
 #include <array>
 #include <vector>
 
@@ -131,39 +130,39 @@ class dem::mappings::CreateGrid {
         GridType gridType,
         int noPointsPerGranulate);
 
-    static bool     	_isSphere;
-    static GridType 	_gridType;
+    static bool     		_isSphere;
+    static GridType 		_gridType;
   private:
     /**
      * Logging device for the trace macros.
      */
     static tarch::logging::Log  _log;
 
-    static Scenario _scenario[4];
-    static iREAL   	_maxH;
-    static bool 		_gravity;
+    static Scenario 		_scenario[4];
+    static iREAL   		_maxGridRefinedH;
+    static bool 			_gravity;
 
-    static iREAL   _minComputeDomain[3];
-    static iREAL   _maxComputeDomain[3];
-    static iREAL   _minParticleDiam;
-    static iREAL   _maxParticleDiam;
+    static std::array<iREAL, 3>   	_minGlobalComputeDomain;
+    static std::array<iREAL, 3>   	_maxGlobalComputeDomain;
+    static iREAL   					_minGlobalParticleDiam;
+    static iREAL   					_maxGlobalParticleDiam;
 
-    static int     _noPointsPerParticle;
-    static iREAL   _epsilon;
+    static int     		_noPointsPerParticle;
+    static iREAL   		_globalEpsilon;
 
-    static int   _numberOfParticles;
-    static int   _numberOfObstacles;
-    static int   _numberOfTriangles;
+    static int   		_numberOfParticles;
+    static int   		_numberOfObstacles;
+    static int   		_numberOfTriangles;
 
     static std::vector<delta::geometry::Object> _coarseObjects;
     static std::vector<delta::geometry::Object> _fineObjects;
     static std::vector<delta::geometry::Object> _insitufineObjects;
 
     void deployEnviroment(
-    		dem::Vertex& vertex,
-		iREAL cellSize,
-        iREAL centreAsArray[3],
-		bool isFine);
+    		dem::Vertex& 	vertex,
+		iREAL 			cellSize,
+        iREAL 			centreAsArray[3],
+		bool 			isFine);
 
     void deployObject(dem::Vertex& vertex, delta::geometry::Object Object);
 

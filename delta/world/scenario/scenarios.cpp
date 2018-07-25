@@ -16,8 +16,8 @@
 #include "delta/geometry/structures/Mesh.h"
 
 void delta::world::scenarios::hopper(
-	std::vector<delta::geometry::Object> &	coarse,
-	std::vector<delta::geometry::Object> &	insitu,
+	std::vector<delta::geometry::Object>&	coarse,
+	std::vector<delta::geometry::Object>&	insitu,
 	iREAL 									centre[3],
 	int 										xzcuts,
 	int 										ycuts,
@@ -102,7 +102,6 @@ void delta::world::scenarios::hopper(
   //////////////////////////////////////////////////////
 }
 
-
 void delta::world::scenarios::helicopter(
 	std::vector<delta::geometry::Object>& 	coarseObjects,
 	iREAL 									epsilon)
@@ -141,7 +140,6 @@ void delta::world::scenarios::helicopter(
   coarseObjects.push_back(tailRotor);
 }
 
-
 void delta::world::scenarios::kaikoura(
 	std::vector<delta::geometry::Object>& 	coarseObjects,
 	iREAL 									epsilon)
@@ -152,6 +150,7 @@ void delta::world::scenarios::kaikoura(
   std::array<iREAL, 3> linear 	= {0.0, 0.0, 0.0};
   std::array<iREAL, 3> angular 	= {0.0, 0.0, 0.0};
 
+  kaikoura->scaleXYZ(1/kaikoura->computeXYZWidth());
   delta::geometry::Object kaikouraObject("kaikoura", 2, kaikoura, centre,
 								  delta::geometry::material::MaterialType::WOOD,
 								  false, false, true, epsilon, linear, angular);
@@ -270,8 +269,6 @@ void delta::world::scenarios::twoParticlesCrash(
 
 	coarseObjects.push_back(objectA);
 	coarseObjects.push_back(objectB);
-
-	printf("%i triangles\n", objectB.getNumberOfTriangles());
   }
 }
 

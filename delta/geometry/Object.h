@@ -483,6 +483,9 @@ class delta::geometry::Object
 	iREAL computeMass(
 			delta::geometry::material::MaterialType material);
 
+	std::array<iREAL, 3> getMinBoundaryVertex();
+	std::array<iREAL, 3> getMaxBoundaryVertex();
+
 	bool getIsConvex();
 
     virtual ~Object();
@@ -504,9 +507,13 @@ class delta::geometry::Object
     iREAL               		_mass;
     iREAL 				 	_epsilon;
 
-	delta::geometry::mesh::Mesh* _mesh;
+    //dimensions
+    iREAL                	_wx;
+    iREAL                	_wy;
+    iREAL                	_wz;
 
-    delta::geometry::material::MaterialType _material;
+	delta::geometry::mesh::Mesh* 			_mesh;
+    delta::geometry::material::MaterialType 	_material;
 
     bool                  	_isObstacle;
     bool                  	_isFriction;
@@ -515,10 +522,8 @@ class delta::geometry::Object
     std::array<iREAL, 9> 	_inertia;
     std::array<iREAL, 9> 	_inverse;
 
-    //dimensions
-    iREAL                	_wx;
-    iREAL                	_wy;
-    iREAL                	_wz;
+    std::array<iREAL, 3> 	_minBoundBox;
+    std::array<iREAL, 3> 	_maxBoundBox;
 };
 
 #endif

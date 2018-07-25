@@ -17,16 +17,12 @@ std::vector<std::string> splitString(
   std::string delimiter)
 {
  std::vector<std::string> output;
- char *pch;
-
  char *str = strdup(input.c_str());
-
- pch = strtok (str, delimiter.c_str());
+ char *pch = strtok (str, delimiter.c_str());
 
  while (pch != NULL)
  {
 	output.push_back(pch);
-
 	pch = strtok (NULL,  delimiter.c_str());
  }
 
@@ -56,8 +52,8 @@ void delta::core::io::parseModelGridSchematics(
 
 	  if(std::stoi(vstring[0]) == 46)
 	  {
-		  //std::cout << std::stoi(vstring[0]) << "\n";
-		  componentGrid.push_back(componentSeq);
+		//std::cout << std::stoi(vstring[0]) << "\n";
+		componentGrid.push_back(componentSeq);
 	  }
 	}
 	myfile.close();
@@ -301,6 +297,5 @@ delta::geometry::mesh::Mesh* delta::core::io::readPartGeometry(std::string fileN
 	  triangleFaces.push_back(triangle);
 	}
   }
-
   return new delta::geometry::mesh::Mesh(triangleFaces, uniqueVertices);
 }

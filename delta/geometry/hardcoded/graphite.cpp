@@ -8,7 +8,7 @@ delta::geometry::mesh::Mesh *delta::geometry::hardcoded::generateBrickFB(
   delta::geometry::mesh::Mesh *mesh = delta::core::io::readVTKGeometry(fileinput);
 
   iREAL centerOfGeometry[3];
-  mesh->getCenterOfGeometry(centerOfGeometry);
+  mesh->computeCenterOfGeometry(centerOfGeometry);
   mesh->moveMeshFromPositionToOrigin(centerOfGeometry);
   mesh->rotateX(-0.25);
   mesh->scaleXYZ(h);
@@ -25,7 +25,7 @@ delta::geometry::mesh::Mesh *delta::geometry::hardcoded::generateBrickFB()
   iREAL center[] = {0,0,0};
   iREAL centerOfGeometry[3];
 
-  mesh->getCenterOfGeometry(centerOfGeometry);
+  mesh->computeCenterOfGeometry(centerOfGeometry);
   mesh->moveMeshFromPositionToOrigin(centerOfGeometry);
   mesh->rotateX(-0.25);
   mesh->moveMeshFromOriginToPosition(center);
@@ -42,7 +42,7 @@ delta::geometry::mesh::Mesh *delta::geometry::hardcoded::generateBrickFB(
 
   iREAL centerOfGeometry[3];
 
-  mesh->getCenterOfGeometry(centerOfGeometry);
+  mesh->computeCenterOfGeometry(centerOfGeometry);
   mesh->moveMeshFromPositionToOrigin(centerOfGeometry);
   mesh->rotateX(-0.25);
   mesh->moveMeshFromOriginToPosition(center);
@@ -60,7 +60,7 @@ delta::geometry::mesh::Mesh *delta::geometry::hardcoded::generateKeyXK(
 
   iREAL centerOfGeometry[3];
 
-  mesh->getCenterOfGeometry(centerOfGeometry);
+  mesh->computeCenterOfGeometry(centerOfGeometry);
   mesh->moveMeshFromPositionToOrigin(centerOfGeometry);
   mesh->scaleXYZ(h);
   mesh->moveMeshFromOriginToPosition(center);
@@ -77,7 +77,7 @@ delta::geometry::mesh::Mesh *delta::geometry::hardcoded::generateKeyYK(
   delta::geometry::mesh::Mesh *mesh = delta::core::io::readVTKGeometry(fileinput);
 
   iREAL centerOfGeometry[3];
-  mesh->getCenterOfGeometry(centerOfGeometry);
+  mesh->computeCenterOfGeometry(centerOfGeometry);
   mesh->moveMeshFromPositionToOrigin(centerOfGeometry);
   mesh->scaleXYZ(h);
   mesh->moveMeshFromOriginToPosition(center);

@@ -112,7 +112,7 @@ int dem::Vertex::createParticle(
   newParticle._persistentRecords._friction		= Object.getIsFriction();
   newParticle._persistentRecords._haloDiameter 	= (newParticle.getDiameter()+Object.getEpsilon()*2) * 1.1;
   newParticle._persistentRecords._epsilon		= Object.getEpsilon();
-  newParticle._persistentRecords._hMin 			= Object.getMesh().getHMin();
+  newParticle._persistentRecords._hMin 			= Object.getMesh().computeHMin();
 
   std::vector<iREAL> xCoordinates = Object.getMesh().getXCoordinatesAsVector();
   std::vector<iREAL> yCoordinates = Object.getMesh().getYCoordinatesAsVector();
@@ -255,7 +255,7 @@ int dem::Vertex::createSubParticle(
   newParticle._persistentRecords._friction        	= Object.getIsFriction();
   newParticle._persistentRecords._haloDiameter 		= (newParticle.getDiameter()+Object.getEpsilon()*2) * 1.1;
   newParticle._persistentRecords._epsilon        	 	= Object.getEpsilon();
-  newParticle._persistentRecords._hMin            	= Object.getMesh().getHMin();;
+  newParticle._persistentRecords._hMin            	= Object.getMesh().computeHMin();;
 
   newParticle._persistentRecords._numberOfTriangles 	= xCoordinates.size()/DIMENSIONS;
   newParticle._persistentRecords._isObstacle        	= Object.getIsObstacle();

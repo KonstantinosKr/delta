@@ -47,7 +47,7 @@ iREAL delta::contact::detection::getBatchError() {
   return _batchError;
 }
 
-#ifdef peanoCall
+#if defined(SharedTBB) && defined(peanoCall)
 std::vector<delta::contact::contactpoint> delta::contact::detection::hybridWithPerTriangleFallBack(
   const iREAL*    xCoordinatesOfPointsOfGeometryA,
   const iREAL*    yCoordinatesOfPointsOfGeometryA,
@@ -103,7 +103,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::hybridWithP
   int numberOfTrianglesA = numberOfPointsOfGeometryA * 3;
   int numberOfTrianglesB = numberOfPointsOfGeometryB * 3;
 
-#ifdef peanoCall
+#if defined(SharedTBB) && defined(peanoCall)
   tarch::multicore::Lock lock(semaphore,false);
 #endif
 
@@ -191,7 +191,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::hybridWithP
   return result;
 }
 
-#ifdef peanoCall
+#if defined(SharedTBB) && defined(peanoCall)
 std::vector<delta::contact::contactpoint> delta::contact::detection::hybridWithPerBatchFallBack(
   const iREAL*    xCoordinatesOfPointsOfGeometryA,
   const iREAL*    yCoordinatesOfPointsOfGeometryA,
@@ -245,7 +245,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::hybridWithP
   int numberOfTrianglesA = numberOfPointsOfGeometryA * 3;
   int numberOfTrianglesB = numberOfPointsOfGeometryB * 3;
 
-#ifdef peanoCall
+#if defined(SharedTBB) && defined(peanoCall)
   tarch::multicore::Lock lock(semaphore,false);
 #endif
 

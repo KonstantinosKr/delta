@@ -401,8 +401,8 @@ int delta::geometry::operators::triangle::octSectParticle(
     std::vector<std::vector<iREAL>>&  zCoordinatesMultiLevel,
 	std::vector<std::array<iREAL, 3>>& centroid)
 {
-  std::array<iREAL, 3> minpoint = delta::geometry::mesh::Mesh(xCoordinatesMultiLevel[0], yCoordinatesMultiLevel[0], zCoordinatesMultiLevel[0]).getMinBoundaryVertex();
-  std::array<iREAL, 3> maxpoint = delta::geometry::mesh::Mesh(xCoordinatesMultiLevel[0], yCoordinatesMultiLevel[0], zCoordinatesMultiLevel[0]).getMaxBoundaryVertex();
+  std::array<iREAL, 3> minpoint = delta::geometry::mesh::Mesh(xCoordinatesMultiLevel[0], yCoordinatesMultiLevel[0], zCoordinatesMultiLevel[0]).computeBoundaryMinVertex();
+  std::array<iREAL, 3> maxpoint = delta::geometry::mesh::Mesh(xCoordinatesMultiLevel[0], yCoordinatesMultiLevel[0], zCoordinatesMultiLevel[0]).computeBoundaryMaxVertex();
 
   iREAL xw = maxpoint[0]-minpoint[0]; iREAL yw = maxpoint[1]-minpoint[1]; iREAL zw = maxpoint[2]-minpoint[2];
 

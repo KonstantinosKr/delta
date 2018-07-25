@@ -24,7 +24,7 @@
 
 #include <delta/contact/detection/bf.h>
 
-#ifdef peanoCall
+#if defined(SharedTBB) && defined(peanoCall)
 std::vector<delta::contact::contactpoint> delta::contact::detection::bf(
     const iREAL*    xCoordinatesOfPointsOfGeometryA,
     const iREAL*    yCoordinatesOfPointsOfGeometryA,
@@ -76,7 +76,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::bf(
   int numberOfTrianglesA = numberOfPointsOfGeometryA * 3;
   int numberOfTrianglesB = numberOfPointsOfGeometryB * 3;
 
-#ifdef peanoCall
+#if defined(SharedTBB) && defined(peanoCall)
   tarch::multicore::Lock lock(semaphore,false);
 #endif
 

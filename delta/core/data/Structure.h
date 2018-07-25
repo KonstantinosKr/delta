@@ -26,29 +26,29 @@ class delta::core::data::Structure {
 	Structure();
 
 	Structure(
-			std::vector<delta::geometry::Object> objects);
+		std::vector<delta::geometry::Object> objects);
 
 	Structure(
-		std::vector<delta::geometry::Object> objects,
+		std::vector<delta::geometry::Object> 		objects,
 		iREAL maxMeshRefinement);
 
-	delta::core::data::ParticleRecord& getParticle(int i);
-	std::vector<delta::core::data::ParticleRecord>& getAll();
+	delta::core::data::ParticleRecord& 				getParticle(int i);
+	std::vector<delta::core::data::ParticleRecord>& 	getAll();
 
 	int getNumberOfParticles();
 	int getNumberOfObstacles();
 	int getNumberOfTriangles();
 
-	std::vector<std::array<iREAL, 6>> getGeometryGrid();
+	std::vector<std::array<iREAL, 6>> 				getGeometryGrid();
+	int 												getSize();
 
-	int getSize();
 	virtual ~Structure();
-	delta::core::data::OctTree _tree;
-  private:
+	delta::core::data::OctTree 						_tree;
 
-	int _numberOfObjects;
-	int _numberOfTriangles;
-	std::vector<delta::core::data::ParticleRecord>  particles;
+  private:
+	int 												_numberOfObjects;
+	int 												_numberOfTriangles;
+	std::vector<delta::core::data::ParticleRecord>  	_particles;
 };
 
 #endif /* DELTA_CORE_STRUCTURE_H_ */

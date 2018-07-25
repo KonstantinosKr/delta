@@ -509,8 +509,8 @@ void delta::world::configuration::nonUniformlyDistributedTotalMass(
 
   //measurements
   delta::geometry::mesh::Mesh *mesh = delta::geometry::hardcoded::generateBrickFB();
-  iREAL w = mesh->getXZWidth();
-  iREAL h = mesh->getYw();
+  iREAL w = mesh->computeXZWidth();
+  iREAL h = mesh->computeYw();
 
   //read nuclear graphite schematics
   //std::vector<std::vector<std::string>> compoGrid;
@@ -572,8 +572,8 @@ void delta::world::configuration::nonUniformlyDistributedTotalMass(
   //////////////////////////MESH///////////////////////////////////////////////////////////////////////////////////
   //measurements
   delta::geometry::mesh::Mesh *mesh = delta::geometry::hardcoded::generateBrickFB();
-  iREAL width = mesh->getXZWidth();
-  iREAL height = mesh->getYw();
+  iREAL width = mesh->computeXZWidth();
+  iREAL height = mesh->computeYw();
   xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

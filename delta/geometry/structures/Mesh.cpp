@@ -32,6 +32,7 @@ delta::geometry::mesh::Mesh::Mesh(
 {
   _triangleFaces = triangleFaces;
   _uniqueVertices = uniqueVertices;
+
   delta::geometry::mesh::Mesh::flatten();
 }
 
@@ -42,6 +43,9 @@ delta::geometry::mesh::Mesh::Mesh(
 {
   _maxMeshSize = 0;
   _minMeshSize = 1E99;
+
+  iREAL min = 1E99;
+  iREAL max = 0;
 
   //#pragma omp parallel for
   for(int i=0; i<xCoordinates.size(); i+=3)
@@ -58,31 +62,39 @@ delta::geometry::mesh::Mesh::Mesh(
 	_yCoordinates.push_back(yCoordinates[i+2]);
 	_zCoordinates.push_back(zCoordinates[i+2]);
 
-	delta::geometry::mesh::Triangle::Triangle Triangle(
-		xCoordinates[i],
-		yCoordinates[i],
-		zCoordinates[i],
+	///////////////////////////////////////////////////
 
-		xCoordinates[i+1],
-		yCoordinates[i+1],
-		zCoordinates[i+1],
+	//#pragma omp parallel for
+	iREAL A[3], B[3], C[3];
+	A[0] = xCoordinates[i];
+	A[1] = yCoordinates[i];
+	A[2] = zCoordinates[i];
 
-		xCoordinates[i+2],
-		yCoordinates[i+2],
-		zCoordinates[i+2]);
+	B[0] = xCoordinates[i+1];
+	B[1] = yCoordinates[i+1];
+	B[2] = zCoordinates[i+1];
 
-	iREAL width = Triangle.getXYZWidth();
+	C[0] = xCoordinates[i+2];
+	C[1] = yCoordinates[i+2];
+	C[2] = zCoordinates[i+2];
 
-	if(width > _maxMeshSize)
-	{
-	  _maxMeshSize = width;
-	}
+	iREAL AB = sqrt((A[0]-B[0])*(A[0]-B[0])+(A[1]-B[1])*(A[1]-B[1])+(A[2]-B[2])*(A[2]-B[2]));
+	iREAL BC = sqrt((B[0]-C[0])*(B[0]-C[0])+(B[1]-C[1])*(B[1]-C[1])+(B[2]-C[2])*(B[2]-C[2]));
+	iREAL CA = sqrt((C[0]-A[0])*(C[0]-A[0])+(C[1]-A[1])*(C[1]-A[1])+(C[2]-A[2])*(C[2]-A[2]));
 
-	if(width < _minMeshSize)
-	{
-	  _minMeshSize = width;
-	}
+	iREAL hmin = std::min(std::min(AB, BC), CA);
+	iREAL hmax = std::max(std::max(AB, BC), CA);
+
+	if (hmin < min) min = hmin;
+	if (hmax > max) max = hmax;
+
+	_avgMeshSize += hmax - hmin;
   }
+
+  if(min == 1E99) min = 0.0;
+
+  _minMeshSize = min;
+  _maxMeshSize = max;
   _avgMeshSize = _avgMeshSize / xCoordinates.size();
 
   compressFromVectors();
@@ -241,6 +253,9 @@ void delta::geometry::mesh::Mesh::flatten()
   _maxMeshSize = 0;
   _minMeshSize = 1E99;
 
+  iREAL min = 1E99;
+  iREAL max = 0;
+
   //#pragma omp parallel for
   for(int i=0; i<_triangleFaces.size(); i++)
   {
@@ -265,33 +280,24 @@ void delta::geometry::mesh::Mesh::flatten()
 	_yCoordinates.push_back(C[1]);
 	_zCoordinates.push_back(C[2]);
 
-	delta::geometry::mesh::Triangle::Triangle Triangle(
-			_xCoordinates[i],
-			_yCoordinates[i],
-			_zCoordinates[i],
+	iREAL AB = sqrt((A[0]-B[0])*(A[0]-B[0])+(A[1]-B[1])*(A[1]-B[1])+(A[2]-B[2])*(A[2]-B[2]));
+	iREAL BC = sqrt((B[0]-C[0])*(B[0]-C[0])+(B[1]-C[1])*(B[1]-C[1])+(B[2]-C[2])*(B[2]-C[2]));
+	iREAL CA = sqrt((C[0]-A[0])*(C[0]-A[0])+(C[1]-A[1])*(C[1]-A[1])+(C[2]-A[2])*(C[2]-A[2]));
 
-			_xCoordinates[i+1],
-			_yCoordinates[i+1],
-			_zCoordinates[i+1],
+	iREAL hmin = std::min(std::min(AB, BC), CA);
+	iREAL hmax = std::max(std::max(AB, BC), CA);
 
-			_xCoordinates[i+2],
-			_yCoordinates[i+2],
-			_zCoordinates[i+2]);
+	if (hmin < min) min = hmin;
+	if (hmax > max) max = hmax;
 
-	iREAL width = Triangle.getXYZWidth();
-
-	if(width > _maxMeshSize)
-	{
-	  _maxMeshSize = width;
-	}
-
-	if(width < _minMeshSize)
-	{
-	  _minMeshSize = width;
-	}
-	_avgMeshSize += width;
+	_avgMeshSize += hmax - hmin;
   }
-  _avgMeshSize = _avgMeshSize / _triangleFaces.size();
+
+  if(min == 1E99) min = 0.0;
+
+  _minMeshSize = min;
+  _maxMeshSize = max;
+  _avgMeshSize = _avgMeshSize / _xCoordinates.size();
 }
 
 void delta::geometry::mesh::Mesh::flatten(
@@ -301,6 +307,9 @@ void delta::geometry::mesh::Mesh::flatten(
 {
   _maxMeshSize = 0;
   _minMeshSize = 1E99;
+
+  iREAL min = 1E99;
+  iREAL max = 0;
 
   //#pragma omp parallel for
   for(int i=0; i<_triangleFaces.size(); i++)
@@ -324,32 +333,24 @@ void delta::geometry::mesh::Mesh::flatten(
 	yCoordinates.push_back(C[1]);
 	zCoordinates.push_back(C[2]);
 
-	delta::geometry::mesh::Triangle::Triangle Triangle(
-			xCoordinates[i],
-			yCoordinates[i],
-			zCoordinates[i],
+	iREAL AB = sqrt((A[0]-B[0])*(A[0]-B[0])+(A[1]-B[1])*(A[1]-B[1])+(A[2]-B[2])*(A[2]-B[2]));
+	iREAL BC = sqrt((B[0]-C[0])*(B[0]-C[0])+(B[1]-C[1])*(B[1]-C[1])+(B[2]-C[2])*(B[2]-C[2]));
+	iREAL CA = sqrt((C[0]-A[0])*(C[0]-A[0])+(C[1]-A[1])*(C[1]-A[1])+(C[2]-A[2])*(C[2]-A[2]));
 
-			xCoordinates[i+1],
-			yCoordinates[i+1],
-			zCoordinates[i+1],
+	iREAL hmin = std::min(std::min(AB, BC), CA);
+	iREAL hmax = std::max(std::max(AB, BC), CA);
 
-			xCoordinates[i+2],
-			yCoordinates[i+2],
-			zCoordinates[i+2]);
+	if (hmin < min) min = hmin;
+	if (hmax > max) max = hmax;
 
-	iREAL width = Triangle.getXYZWidth();
-
-	if(width > _maxMeshSize)
-	{
-	  _maxMeshSize = width;
-	}
-	if(width < _minMeshSize)
-	{
-	  _minMeshSize = width;
-	}
-	_avgMeshSize += width;
+	_avgMeshSize += hmax - hmin;
   }
-  _avgMeshSize = _avgMeshSize / _triangleFaces.size();
+
+  if(min == 1E99) min = 0.0;
+
+  _minMeshSize = min;
+  _maxMeshSize = max;
+  _avgMeshSize = _avgMeshSize / _xCoordinates.size();
 }
 
 void delta::geometry::mesh::Mesh::replace (
@@ -412,98 +413,49 @@ iREAL* delta::geometry::mesh::Mesh::getZCoordinates()
 
 void delta::geometry::mesh::Mesh::moveMeshToPosition(iREAL center[3])
 {
-  std::vector<iREAL> xCoordinates;
-  std::vector<iREAL> yCoordinates;
-  std::vector<iREAL> zCoordinates;
-
-  this->flatten(xCoordinates, yCoordinates, zCoordinates);
   iREAL currentPosition[3] = {0,0,0};
-  getCenterOfGeometry(currentPosition);
-  delta::geometry::operators::mesh::moveMeshFromPositionToOrigin(xCoordinates, yCoordinates, zCoordinates, currentPosition);
-  delta::geometry::operators::mesh::moveMeshFromOriginToPosition(xCoordinates, yCoordinates, zCoordinates, center);
-  this->replace(xCoordinates, yCoordinates, zCoordinates);
+  computeCenterOfGeometry(currentPosition);
+  delta::geometry::operators::mesh::moveMeshFromPositionToOrigin(_xCoordinates, _yCoordinates, _zCoordinates, currentPosition);
+  delta::geometry::operators::mesh::moveMeshFromOriginToPosition(_xCoordinates, _yCoordinates, _zCoordinates, center);
 }
 
 void delta::geometry::mesh::Mesh::moveMeshFromPositionToOrigin(iREAL center[3])
 {
-  std::vector<iREAL> xCoordinates;
-  std::vector<iREAL> yCoordinates;
-  std::vector<iREAL> zCoordinates;
-
-  this->flatten(xCoordinates, yCoordinates, zCoordinates);
-
-  delta::geometry::operators::mesh::moveMeshFromPositionToOrigin(xCoordinates, yCoordinates, zCoordinates, center);
-
-  this->replace(xCoordinates, yCoordinates, zCoordinates);
+  delta::geometry::operators::mesh::moveMeshFromPositionToOrigin(
+	  _xCoordinates, _yCoordinates, _zCoordinates, center);
 }
 
 void delta::geometry::mesh::Mesh::moveMeshFromOriginToPosition(iREAL center[3])
 {
-  std::vector<iREAL> xCoordinates;
-  std::vector<iREAL> yCoordinates;
-  std::vector<iREAL> zCoordinates;
-
-  this->flatten(xCoordinates, yCoordinates, zCoordinates);
-
-  delta::geometry::operators::mesh::moveMeshFromOriginToPosition(xCoordinates, yCoordinates, zCoordinates, center);
-
-  this->replace(xCoordinates, yCoordinates, zCoordinates);
+  delta::geometry::operators::mesh::moveMeshFromOriginToPosition(
+	  _xCoordinates, _yCoordinates, _zCoordinates, center);
 }
 
 void delta::geometry::mesh::Mesh::scaleXYZ(
     iREAL scale)
 {
-  std::vector<iREAL> xCoordinates;
-  std::vector<iREAL> yCoordinates;
-  std::vector<iREAL> zCoordinates;
-
-  this->flatten(xCoordinates, yCoordinates, zCoordinates);
-
   iREAL currentPosition[3] = {0,0,0};
-  getCenterOfGeometry(currentPosition);
-  delta::geometry::operators::mesh::moveMeshFromPositionToOrigin(xCoordinates, yCoordinates, zCoordinates, currentPosition);
-  delta::geometry::operators::mesh::scaleXYZ(xCoordinates, yCoordinates, zCoordinates, scale, currentPosition);
-
-  this->replace(xCoordinates, yCoordinates, zCoordinates);
+  computeCenterOfGeometry(currentPosition);
+  delta::geometry::operators::mesh::moveMeshFromPositionToOrigin(_xCoordinates, _yCoordinates, _zCoordinates, currentPosition);
+  delta::geometry::operators::mesh::scaleXYZ(_xCoordinates, _yCoordinates, _zCoordinates, scale, currentPosition);
 }
 
 void delta::geometry::mesh::Mesh::rotateX(iREAL alphaX)
 {
-  std::vector<iREAL> xCoordinates;
-  std::vector<iREAL> yCoordinates;
-  std::vector<iREAL> zCoordinates;
-
-  this->flatten(xCoordinates, yCoordinates, zCoordinates);
-
-  delta::geometry::operators::mesh::rotateX(xCoordinates, yCoordinates, zCoordinates, alphaX);
-
-  this->replace(xCoordinates, yCoordinates, zCoordinates);
+  delta::geometry::operators::mesh::rotateX(
+	  _xCoordinates, _yCoordinates, _zCoordinates, alphaX);
 }
 
 void delta::geometry::mesh::Mesh::rotateY(iREAL alphaY)
 {
-  std::vector<iREAL> xCoordinates;
-  std::vector<iREAL> yCoordinates;
-  std::vector<iREAL> zCoordinates;
-
-  this->flatten(xCoordinates, yCoordinates, zCoordinates);
-
-  delta::geometry::operators::mesh::rotateY(xCoordinates, yCoordinates, zCoordinates, alphaY);
-
-  this->replace(xCoordinates, yCoordinates, zCoordinates);
+  delta::geometry::operators::mesh::rotateY(
+	  _xCoordinates, _yCoordinates, _zCoordinates, alphaY);
 }
 
 void delta::geometry::mesh::Mesh::rotateZ(iREAL alphaZ)
 {
-  std::vector<iREAL> xCoordinates;
-  std::vector<iREAL> yCoordinates;
-  std::vector<iREAL> zCoordinates;
-
-  this->flatten(xCoordinates, yCoordinates, zCoordinates);
-
-  delta::geometry::operators::mesh::rotateZ(xCoordinates, yCoordinates, zCoordinates, alphaZ);
-
-  this->replace(xCoordinates, yCoordinates, zCoordinates);
+  delta::geometry::operators::mesh::rotateZ(
+	  _xCoordinates, _yCoordinates, _zCoordinates, alphaZ);
 }
 
 iREAL delta::geometry::mesh::Mesh::computeDistanceAB(
@@ -513,76 +465,63 @@ iREAL delta::geometry::mesh::Mesh::computeDistanceAB(
   return std::sqrt(((B[0]-A[0])*(B[0]-A[0]))+((B[1]-A[1])*(B[1]-A[1]))+((B[2]-A[2])*(B[2]-A[2])));
 }
 
-iREAL delta::geometry::mesh::Mesh::getDiameter()
+iREAL delta::geometry::mesh::Mesh::computeDiameter()
 {
-  iREAL width = delta::geometry::mesh::Mesh::getXYZWidth();
-
-  return width;
+  return delta::geometry::mesh::Mesh::computeXYZWidth();
 }
 
-iREAL delta::geometry::mesh::Mesh::getXYZWidth()
+iREAL delta::geometry::mesh::Mesh::computeXYZWidth()
 {
-  iREAL xw = delta::geometry::mesh::Mesh::getXw();
-  iREAL yw = delta::geometry::mesh::Mesh::getYw();
-  iREAL zw = delta::geometry::mesh::Mesh::getZw();
+  iREAL xw = delta::geometry::mesh::Mesh::computeXw();
+  iREAL yw = delta::geometry::mesh::Mesh::computeYw();
+  iREAL zw = delta::geometry::mesh::Mesh::computeZw();
 
   iREAL tmp = xw > yw ? xw : yw;
-  iREAL width = tmp>zw ? tmp : zw;
 
-  return width;
+  return tmp>zw ? tmp : zw;
 }
 
-iREAL delta::geometry::mesh::Mesh::getXZWidth()
+iREAL delta::geometry::mesh::Mesh::computeXZWidth()
 {
-  iREAL xw = delta::geometry::mesh::Mesh::getXw();
-  iREAL zw = delta::geometry::mesh::Mesh::getZw();
-  iREAL width = xw>zw ? xw : zw;
+  iREAL xw = delta::geometry::mesh::Mesh::computeXw();
+  iREAL zw = delta::geometry::mesh::Mesh::computeZw();
 
-  return width;
+  return xw>zw ? xw : zw;
 }
 
-iREAL delta::geometry::mesh::Mesh::getXw()
+iREAL delta::geometry::mesh::Mesh::computeXw()
 {
-  std::array<iREAL, 3> min = delta::geometry::mesh::Mesh::getMinBoundaryVertex();
-  std::array<iREAL, 3> max = delta::geometry::mesh::Mesh::getMaxBoundaryVertex();
+  std::array<iREAL, 3> min = delta::geometry::mesh::Mesh::computeBoundaryMinVertex();
+  std::array<iREAL, 3> max = delta::geometry::mesh::Mesh::computeBoundaryMaxVertex();
 
   return std::abs(min[0] - max[0]);
 }
 
-iREAL delta::geometry::mesh::Mesh::getYw()
+iREAL delta::geometry::mesh::Mesh::computeYw()
 {
-  std::array<iREAL, 3> min = delta::geometry::mesh::Mesh::getMinBoundaryVertex();
-  std::array<iREAL, 3> max = delta::geometry::mesh::Mesh::getMaxBoundaryVertex();
+  std::array<iREAL, 3> min = delta::geometry::mesh::Mesh::computeBoundaryMinVertex();
+  std::array<iREAL, 3> max = delta::geometry::mesh::Mesh::computeBoundaryMaxVertex();
 
   return std::abs(min[1] - max[1]);
 }
 
-iREAL delta::geometry::mesh::Mesh::getZw()
+iREAL delta::geometry::mesh::Mesh::computeZw()
 {
-  std::array<iREAL, 3> min = delta::geometry::mesh::Mesh::getMinBoundaryVertex();
-  std::array<iREAL, 3> max = delta::geometry::mesh::Mesh::getMaxBoundaryVertex();
+  std::array<iREAL, 3> min = delta::geometry::mesh::Mesh::computeBoundaryMinVertex();
+  std::array<iREAL, 3> max = delta::geometry::mesh::Mesh::computeBoundaryMaxVertex();
 
   return std::abs(min[2] - max[2]);
 }
 
-std::array<iREAL, 3> delta::geometry::mesh::Mesh::getMinBoundaryVertex()
+std::array<iREAL, 3> delta::geometry::mesh::Mesh::computeBoundaryMinVertex()
 {
-  std::array<iREAL, 3> vertex;
-
-  vertex[0] = getMinXAxis();
-  vertex[1] = getMinYAxis();
-  vertex[2] = getMinZAxis();
-
+  std::array<iREAL, 3> vertex = {computeMinXAxis(), computeMinYAxis(), computeMinZAxis()};
   return vertex;
 }
 
-std::array<iREAL, 3> delta::geometry::mesh::Mesh::getMaxBoundaryVertex()
+std::array<iREAL, 3> delta::geometry::mesh::Mesh::computeBoundaryMaxVertex()
 {
-  std::array<iREAL, 3> vertex;
-
-  vertex[0] = getMaxXAxis();
-  vertex[1] = getMaxYAxis();
-  vertex[2] = getMaxZAxis();
+  std::array<iREAL, 3> vertex = {computeMaxXAxis(), computeMaxYAxis(), computeMaxZAxis()};
 
   return vertex;
 }
@@ -591,134 +530,92 @@ iREAL delta::geometry::mesh::Mesh::computeDiagonal()
 {
   std::array<iREAL, 3> minPoint, maxPoint;
 
-  minPoint = getMinBoundaryVertex();
-  maxPoint = getMaxBoundaryVertex();
+  minPoint = computeBoundaryMinVertex();
+  maxPoint = computeBoundaryMaxVertex();
 
   return computeDistanceAB(minPoint,maxPoint);
 }
 
-iREAL delta::geometry::mesh::Mesh::getMaxXAxis()
+iREAL delta::geometry::mesh::Mesh::computeMaxXAxis()
 {
-  std::vector<iREAL> xCoordinates;
-  std::vector<iREAL> yCoordinates;
-  std::vector<iREAL> zCoordinates;
-
-  this->flatten(xCoordinates, yCoordinates, zCoordinates);
-
   iREAL max = std::numeric_limits<iREAL>::min();
 
-  for(unsigned i=0;i<xCoordinates.size();i++)
+  for(unsigned i=0;i<_xCoordinates.size();i++)
   {
-	if (max < xCoordinates[i]) max = xCoordinates[i];
+	if (max < _xCoordinates[i]) max = _xCoordinates[i];
   }
   return max;
 }
 
-iREAL delta::geometry::mesh::Mesh::getMaxYAxis()
+iREAL delta::geometry::mesh::Mesh::computeMaxYAxis()
 {
-  std::vector<iREAL> xCoordinates;
-  std::vector<iREAL> yCoordinates;
-  std::vector<iREAL> zCoordinates;
-
-  this->flatten(xCoordinates, yCoordinates, zCoordinates);
-
   iREAL max = std::numeric_limits<iREAL>::min();
 
-  for(unsigned i=0;i<yCoordinates.size();i++)
+  for(unsigned i=0;i<_yCoordinates.size();i++)
   {
-	if (max < yCoordinates[i]) max = yCoordinates[i];
+	if (max < _yCoordinates[i]) max = _yCoordinates[i];
   }
   return max;
 }
 
-iREAL delta::geometry::mesh::Mesh::getMaxZAxis()
+iREAL delta::geometry::mesh::Mesh::computeMaxZAxis()
 {
-  std::vector<iREAL> xCoordinates;
-  std::vector<iREAL> yCoordinates;
-  std::vector<iREAL> zCoordinates;
-
-  this->flatten(xCoordinates, yCoordinates, zCoordinates);
-
   iREAL max = std::numeric_limits<iREAL>::min();
 
-  for(unsigned i=0;i<zCoordinates.size();i++)
+  for(unsigned i=0; i<_zCoordinates.size(); i++)
   {
-	if (max < zCoordinates[i]) max = zCoordinates[i];
+	if (max < _zCoordinates[i]) max = _zCoordinates[i];
   }
   return max;
 }
 
-iREAL delta::geometry::mesh::Mesh::getMinXAxis()
+iREAL delta::geometry::mesh::Mesh::computeMinXAxis()
 {
-  std::vector<iREAL> xCoordinates;
-  std::vector<iREAL> yCoordinates;
-  std::vector<iREAL> zCoordinates;
-
-  this->flatten(xCoordinates, yCoordinates, zCoordinates);
-
   iREAL min = std::numeric_limits<iREAL>::max();
 
-  for(unsigned i=0;i<xCoordinates.size();i++)
+  for(unsigned i=0;i<_xCoordinates.size();i++)
   {
-	if (min > xCoordinates[i]) min = xCoordinates[i];
+	if (min > _xCoordinates[i]) min = _xCoordinates[i];
   }
   return min;
 }
 
-iREAL delta::geometry::mesh::Mesh::getMinYAxis()
+iREAL delta::geometry::mesh::Mesh::computeMinYAxis()
 {
-  std::vector<iREAL> xCoordinates;
-  std::vector<iREAL> yCoordinates;
-  std::vector<iREAL> zCoordinates;
-
-  this->flatten(xCoordinates, yCoordinates, zCoordinates);
-
   iREAL min = std::numeric_limits<iREAL>::max();
 
-  for(unsigned i=0;i<yCoordinates.size();i++)
+  for(unsigned i=0; i<_yCoordinates.size(); i++)
   {
-	if (min > yCoordinates[i]) min = yCoordinates[i];
+	if (min > _yCoordinates[i]) min = _yCoordinates[i];
   }
   return min;
 }
 
-iREAL delta::geometry::mesh::Mesh::getMinZAxis()
+iREAL delta::geometry::mesh::Mesh::computeMinZAxis()
 {
-  std::vector<iREAL> xCoordinates;
-  std::vector<iREAL> yCoordinates;
-  std::vector<iREAL> zCoordinates;
-
-  this->flatten(xCoordinates, yCoordinates, zCoordinates);
-
   iREAL min = std::numeric_limits<iREAL>::max();
 
-  for(unsigned i=0;i<zCoordinates.size();i++)
+  for(unsigned i=0; i<_zCoordinates.size(); i++)
   {
-	if (min > zCoordinates[i]) min = zCoordinates[i];
+	if (min > _zCoordinates[i]) min = _zCoordinates[i];
   }
   return min;
 }
 
-void delta::geometry::mesh::Mesh::getCenterOfGeometry(
+void delta::geometry::mesh::Mesh::computeCenterOfGeometry(
 	iREAL centreOfGeometry[3])
 {
-  std::vector<iREAL> xCoordinates;
-  std::vector<iREAL> yCoordinates;
-  std::vector<iREAL> zCoordinates;
-
-  this->flatten(xCoordinates, yCoordinates, zCoordinates);
-
   centreOfGeometry[0] = 0.0;
   centreOfGeometry[1] = 0.0;
   centreOfGeometry[2] = 0.0;
 
-  unsigned nVertices = xCoordinates.size();
+  unsigned nVertices = _xCoordinates.size();
 
   for(unsigned i=0;i<nVertices;i++)
   {
-	centreOfGeometry[0] += (xCoordinates[i]);
-	centreOfGeometry[1] += (yCoordinates[i]);
-	centreOfGeometry[2] += (zCoordinates[i]);
+	centreOfGeometry[0] += (_xCoordinates[i]);
+	centreOfGeometry[1] += (_yCoordinates[i]);
+	centreOfGeometry[2] += (_zCoordinates[i]);
   }
 
   centreOfGeometry[0] = centreOfGeometry[0]/(nVertices);
@@ -726,7 +623,7 @@ void delta::geometry::mesh::Mesh::getCenterOfGeometry(
   centreOfGeometry[2] = centreOfGeometry[2]/(nVertices);
 }
 
-void delta::geometry::mesh::Mesh::getCenterOfMass(
+void delta::geometry::mesh::Mesh::computeCenterOfMass(
   iREAL&               centreOfMassX,
   iREAL&               centreOfMassY,
   iREAL&               centreOfMassZ,
@@ -734,25 +631,18 @@ void delta::geometry::mesh::Mesh::getCenterOfMass(
   iREAL&               refcentreOfMassY,
   iREAL&               refcentreOfMassZ
 ) {
-
-  std::vector<iREAL> xCoordinates;
-  std::vector<iREAL> yCoordinates;
-  std::vector<iREAL> zCoordinates;
-
-  this->flatten(xCoordinates, yCoordinates, zCoordinates);
-
   centreOfMassX = 0.0;
   centreOfMassY = 0.0;
   centreOfMassZ = 0.0;
 
-  unsigned nVertices = xCoordinates.size();
+  unsigned nVertices = _xCoordinates.size();
 
   //#pragma omp parallel for
   for(unsigned i=0;i<nVertices;i++)
   {
-    centreOfMassX += xCoordinates[i];
-    centreOfMassY += yCoordinates[i];
-    centreOfMassZ += zCoordinates[i];
+    centreOfMassX += _xCoordinates[i];
+    centreOfMassY += _yCoordinates[i];
+    centreOfMassZ += _zCoordinates[i];
   }
 
   centreOfMassX = centreOfMassX/(nVertices*3);
@@ -764,33 +654,27 @@ void delta::geometry::mesh::Mesh::getCenterOfMass(
   refcentreOfMassZ = centreOfMassZ;
 }
 
-void delta::geometry::mesh::Mesh::explode(
-  iREAL length
+void delta::geometry::mesh::Mesh::computeExplode(
+	  iREAL length
 ) {
-
-  std::vector<iREAL> xCoordinates;
-  std::vector<iREAL> yCoordinates;
-  std::vector<iREAL> zCoordinates;
-
-  this->flatten(xCoordinates, yCoordinates, zCoordinates);
 
   std::vector<iREAL> exCoordinates, eyCoordinates, ezCoordinates;
 
   //#pragma omp parallel for
-  for(unsigned i=0;i<xCoordinates.size();i+=3)
+  for(unsigned i=0; i<_xCoordinates.size(); i+=3)
   {
     iREAL A[3], B[3], C[3];
-    A[0] = xCoordinates[i];
-    A[1] = yCoordinates[i];
-    A[2] = zCoordinates[i];
+    A[0] = _xCoordinates[i];
+    A[1] = _yCoordinates[i];
+    A[2] = _zCoordinates[i];
 
-    B[0] = xCoordinates[i+1];
-    B[1] = yCoordinates[i+1];
-    B[2] = zCoordinates[i+1];
+    B[0] = _xCoordinates[i+1];
+    B[1] = _yCoordinates[i+1];
+    B[2] = _zCoordinates[i+1];
 
-    C[0] = xCoordinates[i+2];
-    C[1] = yCoordinates[i+2];
-    C[2] = zCoordinates[i+2];
+    C[0] = _xCoordinates[i+2];
+    C[1] = _yCoordinates[i+2];
+    C[2] = _zCoordinates[i+2];
 
     iREAL V[3], W[3], N[3];
     V[0] = B[0] - A[0];
@@ -812,110 +696,44 @@ void delta::geometry::mesh::Mesh::explode(
     
    // #pragma omp critical
     {
-        exCoordinates.push_back(xCoordinates[i] + length * N[0]);
-        eyCoordinates.push_back(yCoordinates[i] + length * N[1]);
-        ezCoordinates.push_back(zCoordinates[i] + length * N[2]);
+        exCoordinates.push_back(_xCoordinates[i] + length * N[0]);
+        eyCoordinates.push_back(_yCoordinates[i] + length * N[1]);
+        ezCoordinates.push_back(_zCoordinates[i] + length * N[2]);
 
-        exCoordinates.push_back(xCoordinates[i+1] + length * N[0]);
-        eyCoordinates.push_back(yCoordinates[i+1] + length * N[1]);
-        ezCoordinates.push_back(zCoordinates[i+1] + length * N[2]);
+        exCoordinates.push_back(_xCoordinates[i+1] + length * N[0]);
+        eyCoordinates.push_back(_yCoordinates[i+1] + length * N[1]);
+        ezCoordinates.push_back(_zCoordinates[i+1] + length * N[2]);
 
-        exCoordinates.push_back(xCoordinates[i+2] + length * N[0]);
-        eyCoordinates.push_back(yCoordinates[i+2] + length * N[1]);
-        ezCoordinates.push_back(zCoordinates[i+2] + length * N[2]);
+        exCoordinates.push_back(_xCoordinates[i+2] + length * N[0]);
+        eyCoordinates.push_back(_yCoordinates[i+2] + length * N[1]);
+        ezCoordinates.push_back(_zCoordinates[i+2] + length * N[2]);
     }
   }
 
-  xCoordinates.insert(xCoordinates.end(), exCoordinates.begin(), exCoordinates.end());
-  yCoordinates.insert(yCoordinates.end(), eyCoordinates.begin(), eyCoordinates.end());
-  zCoordinates.insert(zCoordinates.end(), ezCoordinates.begin(), ezCoordinates.end());
+  _xCoordinates.insert(_xCoordinates.end(), exCoordinates.begin(), exCoordinates.end());
+  _yCoordinates.insert(_yCoordinates.end(), eyCoordinates.begin(), eyCoordinates.end());
+  _zCoordinates.insert(_zCoordinates.end(), ezCoordinates.begin(), ezCoordinates.end());
 }
 
-void delta::geometry::mesh::Mesh::exploded(
-  iREAL length
-) {
-
-  std::vector<iREAL> xCoordinates;
-  std::vector<iREAL> yCoordinates;
-  std::vector<iREAL> zCoordinates;
-
-  this->flatten(xCoordinates, yCoordinates, zCoordinates);
-
-  std::vector<iREAL> exCoordinates, eyCoordinates, ezCoordinates;
-    
-  //#pragma omp parallel for
-  for(unsigned i=0;i<xCoordinates.size();i+=3)
-  {
-    iREAL A[3], B[3], C[3];
-    A[0] = xCoordinates[i];
-    A[1] = yCoordinates[i];
-    A[2] = zCoordinates[i];
-
-    B[0] = xCoordinates[i+1];
-    B[1] = yCoordinates[i+1];
-    B[2] = zCoordinates[i+1];
-
-    C[0] = xCoordinates[i+2];
-    C[1] = yCoordinates[i+2];
-    C[2] = zCoordinates[i+2];
-
-    iREAL V[3], W[3], N[3];
-    V[0] = B[0] - A[0];
-    V[1] = B[1] - A[1];
-    V[2] = B[2] - A[2];
-
-    W[0] = C[0] - B[0];
-    W[1] = C[1] - B[1];
-    W[2] = C[2] - B[2];
-
-    N[0] = (V[1]*W[2])-(V[2]*W[1]);
-    N[1] = (V[2]*W[0])-(V[0]*W[2]);
-    N[2] = (V[0]*W[1])-(V[1]*W[0]);
-
-    iREAL mag = std::sqrt((N[0]*N[0])+(N[1]*N[1])+(N[2]*N[2]));
-    N[0] = N[0]/mag;
-    N[1] = N[1]/mag;
-    N[2] = N[2]/mag;
-
-    xCoordinates[i] = xCoordinates[i] + length * N[0];
-    yCoordinates[i] = yCoordinates[i] + length * N[1];
-    zCoordinates[i] = zCoordinates[i] + length * N[2];
-
-    xCoordinates[i+1] = xCoordinates[i+1] + length * N[0];
-    yCoordinates[i+1] = yCoordinates[i+1] + length * N[1];
-    zCoordinates[i+1] = zCoordinates[i+1] + length * N[2];
-
-    xCoordinates[i+2] = xCoordinates[i+2] + length * N[0];
-    yCoordinates[i+2] = yCoordinates[i+2] + length * N[1];
-    zCoordinates[i+2] = zCoordinates[i+2] + length * N[2];
-  }
-}
-
-iREAL delta::geometry::mesh::Mesh::getHMin()
+iREAL delta::geometry::mesh::Mesh::computeHMin()
 {
-  std::vector<iREAL> xCoordinates;
-  std::vector<iREAL> yCoordinates;
-  std::vector<iREAL> zCoordinates;
-
-  this->flatten(xCoordinates, yCoordinates, zCoordinates);
-
   iREAL min = 1E99;
 
   //#pragma omp parallel for
-  for(unsigned i=0; i<xCoordinates.size(); i+=3)
+  for(unsigned i=0; i<_xCoordinates.size(); i+=3)
   {
 	iREAL A[3], B[3], C[3];
-	A[0] = xCoordinates[i];
-	A[1] = yCoordinates[i];
-	A[2] = zCoordinates[i];
+	A[0] = _xCoordinates[i];
+	A[1] = _yCoordinates[i];
+	A[2] = _zCoordinates[i];
 
-	B[0] = xCoordinates[i+1];
-	B[1] = yCoordinates[i+1];
-	B[2] = zCoordinates[i+1];
+	B[0] = _xCoordinates[i+1];
+	B[1] = _yCoordinates[i+1];
+	B[2] = _zCoordinates[i+1];
 
-	C[0] = xCoordinates[i+2];
-	C[1] = yCoordinates[i+2];
-	C[2] = zCoordinates[i+2];
+	C[0] = _xCoordinates[i+2];
+	C[1] = _yCoordinates[i+2];
+	C[2] = _zCoordinates[i+2];
 
 	iREAL AB = sqrt((A[0]-B[0])*(A[0]-B[0])+(A[1]-B[1])*(A[1]-B[1])+(A[2]-B[2])*(A[2]-B[2]));
 	iREAL BC = sqrt((B[0]-C[0])*(B[0]-C[0])+(B[1]-C[1])*(B[1]-C[1])+(B[2]-C[2])*(B[2]-C[2]));
@@ -954,7 +772,8 @@ void delta::geometry::mesh::Mesh::computeInertia(
 iREAL delta::geometry::mesh::Mesh::computeMass(
     delta::geometry::material::MaterialType material)
 {
-  return delta::geometry::operators::physics::computeMass(_xCoordinates, _yCoordinates, _zCoordinates, material);
+  return delta::geometry::operators::physics::computeMass(
+	  _xCoordinates, _yCoordinates, _zCoordinates, material);
 }
 
 void delta::geometry::mesh::Mesh::computeInverseInertia(
@@ -967,12 +786,8 @@ void delta::geometry::mesh::Mesh::computeInverseInertia(
 
 iREAL delta::geometry::mesh::Mesh::computeVolume()
 {
-  std::vector<iREAL> xCoordinates;
-  std::vector<iREAL> yCoordinates;
-  std::vector<iREAL> zCoordinates;
-
-  flatten(xCoordinates, yCoordinates, zCoordinates);
-  return delta::geometry::operators::physics::computeVolume(xCoordinates, yCoordinates, zCoordinates);
+  return delta::geometry::operators::physics::computeVolume(
+	  _xCoordinates, _yCoordinates, _zCoordinates);
 }
 
 std::vector<std::array<int, 3>> delta::geometry::mesh::Mesh::getTriangleFaces()
@@ -998,6 +813,16 @@ iREAL delta::geometry::mesh::Mesh::getMinMeshSize()
 iREAL delta::geometry::mesh::Mesh::getAvgMeshSize()
 {
   return _avgMeshSize;
+}
+
+std::array<iREAL, 3> delta::geometry::mesh::Mesh::getBoundaryMinVertex()
+{
+  return _minBoundary;
+}
+
+std::array<iREAL, 3> delta::geometry::mesh::Mesh::getBoundaryMaxVertex()
+{
+  return _maxBoundary;
 }
 
 void delta::geometry::mesh::Mesh::toString()

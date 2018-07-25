@@ -56,8 +56,9 @@ delta::core::data::ParticleRecord::ParticleRecord(delta::geometry::Object& objec
   this->	_isFriction = object.getIsFriction();
   this->_isConvex = object.getIsConvex();
 
-  std::array<iREAL,3> minVertex = object.getMesh().getMinBoundaryVertex();
-  std::array<iREAL,3> maxVertex = object.getMesh().getMaxBoundaryVertex();
+  std::array<iREAL,3> minVertex = object.getMesh().computeBoundaryMinVertex();
+  std::array<iREAL,3> maxVertex = object.getMesh().computeBoundaryMaxVertex();
+
   _bbox = {	minVertex[0], minVertex[1], minVertex[2],
 			maxVertex[0], maxVertex[1], maxVertex[2]};
 

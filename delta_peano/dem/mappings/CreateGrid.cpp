@@ -37,14 +37,14 @@ peano::MappingSpecification   dem::mappings::CreateGrid::descendSpecification(in
 tarch::logging::Log                   	dem::mappings::CreateGrid::_log( "dem::mappings::CreateGrid" );
 dem::mappings::CreateGrid::Scenario   	dem::mappings::CreateGrid::_scenario[4];
 dem::mappings::CreateGrid::GridType   	dem::mappings::CreateGrid::_gridType;
-iREAL                                	dem::mappings::CreateGrid::_maxH;
+iREAL                                	dem::mappings::CreateGrid::_maxGridRefinedH;
 
-iREAL                                	dem::mappings::CreateGrid::_minComputeDomain[3];
-iREAL                                	dem::mappings::CreateGrid::_maxComputeDomain[3];
-iREAL                                	dem::mappings::CreateGrid::_minParticleDiam;
-iREAL                                	dem::mappings::CreateGrid::_maxParticleDiam;
+std::array<iREAL,3>                      dem::mappings::CreateGrid::_minGlobalComputeDomain;
+std::array<iREAL,3>                      dem::mappings::CreateGrid::_maxGlobalComputeDomain;
+iREAL                                	dem::mappings::CreateGrid::_minGlobalParticleDiam;
+iREAL                                	dem::mappings::CreateGrid::_maxGlobalParticleDiam;
 
-iREAL								 	dem::mappings::CreateGrid::_epsilon;
+iREAL								 	dem::mappings::CreateGrid::_globalEpsilon;
 int 								     	dem::mappings::CreateGrid::_noPointsPerParticle;
 bool                                  	dem::mappings::CreateGrid::_isSphere;
 bool                                  	dem::mappings::CreateGrid::_gravity;
@@ -63,17 +63,17 @@ void dem::mappings::CreateGrid::setScenario(
     GridType 	gridType,
     int 			noPointsPerGranulate)
 {
-	_scenario[0]          = scenario[0];
-	_scenario[1]          = scenario[1];
-	_scenario[2]          = scenario[2];
-	_scenario[3]          = scenario[3];
-	_maxH                 = maxH;
-	_minParticleDiam      = _maxH;
-	_maxParticleDiam      = _maxH;
-	_gridType             = gridType;
-	_epsilon              = epsilon;
-	_noPointsPerParticle  = noPointsPerGranulate;
-	_gravity					= true;
+	_scenario[0]          	= scenario[0];
+	_scenario[1]          	= scenario[1];
+	_scenario[2]          	= scenario[2];
+	_scenario[3]          	= scenario[3];
+	_maxGridRefinedH        		= maxH;
+	_minGlobalParticleDiam      	= _maxGridRefinedH;
+	_maxGlobalParticleDiam      	= _maxGridRefinedH;
+	_gridType             		= gridType;
+	_globalEpsilon              	= epsilon;
+	_noPointsPerParticle			= noPointsPerGranulate;
+	_gravity						= true;
 }
 
 void dem::mappings::CreateGrid::deployEnviroment(
@@ -210,7 +210,7 @@ void dem::mappings::CreateGrid::beginIteration(
   dem::ParticleHeap::getInstance().setName( "particle-heap" );
   dem::DEMdoubleHeap::getInstance().setName( "geometry-heap" );
 
-  logInfo( "beginIteration()", "maxH=" << _maxH );
+  logInfo( "beginIteration()", "maxH=" << _maxGridRefinedH );
 
   srand (time(NULL));
 
@@ -225,7 +225,8 @@ void dem::mappings::CreateGrid::beginIteration(
 
   if(_scenario[1] == nuclear)
   {
-	delta::world::scenarios::nuclear(1, _isSphere, centre, _noPointsPerParticle, _epsilon, _coarseObjects, _fineObjects);
+	delta::world::scenarios::nuclear(
+		1, _isSphere, centre, _noPointsPerParticle, _globalEpsilon, _coarseObjects, _fineObjects);
   } else if(_scenario[1] == hopper)
   {
 	iREAL xzcuts = 0; iREAL ycuts = 0;
@@ -254,10 +255,10 @@ void dem::mappings::CreateGrid::beginIteration(
 	if(_scenario[2] == uniform) uni = true;
 
 	delta::world::scenarios::hopper(_coarseObjects, _insitufineObjects,
-		centre, xzcuts, ycuts, uni, _isSphere, _noPointsPerParticle, _epsilon);
+		centre, xzcuts, ycuts, uni, _isSphere, _noPointsPerParticle, _globalEpsilon);
   } else if(_scenario[0] == turbine)
   {
-	delta::world::scenarios::turbine(_coarseObjects, _isSphere, _noPointsPerParticle, _epsilon);
+	delta::world::scenarios::turbine(_coarseObjects, _globalEpsilon);
 	  _gravity = false;
   } else if(_scenario[1] == friction)
   {
@@ -272,15 +273,18 @@ void dem::mappings::CreateGrid::beginIteration(
 	{
 	  sc = 3;
 	}
-	delta::world::scenarios::friction(sc,  _isSphere, centre, _noPointsPerParticle, _epsilon, _coarseObjects);
+	delta::world::scenarios::friction(
+		sc,  _isSphere, centre, _noPointsPerParticle, _globalEpsilon, _coarseObjects);
   } else if(_scenario[0] == ParticleRotation)
   {
-	delta::world::scenarios::rotateParticle(_coarseObjects, _isSphere, _noPointsPerParticle, _epsilon);
+	delta::world::scenarios::rotateParticle(
+		_coarseObjects, _isSphere, _noPointsPerParticle, _globalEpsilon);
 	_gravity = false;
   }
   else if(_scenario[0] == TwoParticlesCrash)
   {
-  delta::world::scenarios::twoParticlesCrash(_coarseObjects, _isSphere, _noPointsPerParticle, _epsilon);
+  delta::world::scenarios::twoParticlesCrash(
+	  _coarseObjects, _isSphere, _noPointsPerParticle, _globalEpsilon);
   _gravity = false;
   }
   else if(_scenario[0] == blackHoleWithCubes ||
@@ -294,7 +298,8 @@ void dem::mappings::CreateGrid::beginIteration(
 	{
 	  scn = 1;
 	}
-	delta::world::scenarios::freeFall(scn, _isSphere, centre, _noPointsPerParticle, _epsilon, _coarseObjects);
+	delta::world::scenarios::freeFall(
+		scn, _isSphere, centre, _noPointsPerParticle, _globalEpsilon, _coarseObjects);
   }
   else if(_scenario[0] == nonescenario)
   {
@@ -312,32 +317,29 @@ void dem::mappings::CreateGrid::endIteration(
 {
   logTraceInWith1Argument( "endIteration(State)", solverState );
 
-  if(!_isSphere)
   delta::world::operators::computeBoundary(
 		 _coarseObjects,
 		 _fineObjects,
 		 _insitufineObjects,
-		 _minParticleDiam,
-		 _maxParticleDiam,
-		 &_minComputeDomain[0],
-		 &_maxComputeDomain[0]);
+		 _minGlobalParticleDiam,
+		 _maxGlobalParticleDiam,
+		 _minGlobalComputeDomain,
+		 _maxGlobalComputeDomain);
+
+  _coarseObjects.clear();
+  _insitufineObjects.clear();
+  _fineObjects.clear();
 
   solverState.incNumberOfParticles(_numberOfParticles);
   solverState.incNumberOfObstacles(_numberOfObstacles);
 
-  solverState.setPrescribedMinimumMeshWidth(_minParticleDiam);
-  solverState.setPrescribedMaximumMeshWidth(_maxParticleDiam);
+  solverState.setPrescribedMinimumMeshWidth(_minGlobalParticleDiam);
+  solverState.setPrescribedMaximumMeshWidth(_maxGlobalParticleDiam);
 
   logInfo( "endIteration(State)", "created "
 			<< _numberOfParticles << " particles with "
 			<< _numberOfObstacles << " obstacles "
 			<< _numberOfTriangles << " triangles");
-
-  //delta::sys::Sys::saveScenario(_numberOfParticles, _numberOfObstacles);
-
-  _coarseObjects.clear();
-  _insitufineObjects.clear();
-  _fineObjects.clear();
 
   logTraceOutWith1Argument( "endIteration(State)", solverState);
 }
@@ -371,7 +373,6 @@ void dem::mappings::CreateGrid::enterCell(
     for(unsigned i=0; i<fineGridVertices[fineGridVerticesEnumerator(k)].getNumberOfParticles(); i++)
     {
       records::Particle&  particle = fineGridVertices[fineGridVerticesEnumerator(k)].getParticle(i);
-
       tarch::la::Vector<DIMENSIONS,int> correctVertex;
       for(int d=0; d<DIMENSIONS; d++)
       {
@@ -432,17 +433,21 @@ void dem::mappings::CreateGrid::createInnerVertex(
   dropParticles(fineGridVertex, coarseGridVertices, coarseGridVerticesEnumerator, fineGridPositionOfVertex, fineGridH(0));
   bool spheremodel = (dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere);
 
-  if(_gridType != NoGrid && fineGridH(0) > _maxH && fineGridVertex.getRefinementControl() == Vertex::Records::Unrefined)
+  if(	_gridType != NoGrid &&
+		fineGridH(0) > _maxGridRefinedH &&
+		fineGridVertex.getRefinementControl() == Vertex::Records::Unrefined)
   {
     if(_gridType == RegularGrid)
     {
       fineGridVertex.refine();
     }
-    else if((_gridType == AdaptiveGrid || _gridType == ReluctantAdaptiveGrid || _gridType == FlopAdaptiveGrid))
+    else if((	_gridType == AdaptiveGrid ||
+    				_gridType == ReluctantAdaptiveGrid ||
+				_gridType == FlopAdaptiveGrid))
     {
-      if(fineGridX(0) >= _minComputeDomain[0] && fineGridX(0) <= _maxComputeDomain[0] &&
-         fineGridX(1) >= _minComputeDomain[1] && fineGridX(1) <= _maxComputeDomain[1] &&
-         fineGridX(2) >= _minComputeDomain[2] && fineGridX(2) <= _maxComputeDomain[2])
+      if(fineGridX(0) >= _minGlobalComputeDomain[0] && fineGridX(0) <= _maxGlobalComputeDomain[0] &&
+         fineGridX(1) >= _minGlobalComputeDomain[1] && fineGridX(1) <= _maxGlobalComputeDomain[1] &&
+         fineGridX(2) >= _minGlobalComputeDomain[2] && fineGridX(2) <= _maxGlobalComputeDomain[2])
       {
         fineGridVertex.refine();
       }
@@ -472,17 +477,21 @@ void dem::mappings::CreateGrid::createBoundaryVertex(
   dropParticles(fineGridVertex, coarseGridVertices, coarseGridVerticesEnumerator, fineGridPositionOfVertex, fineGridH(0));
   bool spheremodel = (dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Sphere);
 
-  if(_gridType != NoGrid && fineGridH(0) > _maxH && fineGridVertex.getRefinementControl() == Vertex::Records::Unrefined)
+  if(	_gridType != NoGrid &&
+		fineGridH(0) > _maxGridRefinedH &&
+		fineGridVertex.getRefinementControl() == Vertex::Records::Unrefined)
   {
 	if(_gridType == RegularGrid)
 	{
 	  fineGridVertex.refine();
 	}
-	else if((_gridType == AdaptiveGrid || _gridType == ReluctantAdaptiveGrid || _gridType == FlopAdaptiveGrid))
+	else if((	_gridType == AdaptiveGrid ||
+				_gridType == ReluctantAdaptiveGrid ||
+				_gridType == FlopAdaptiveGrid))
 	{
-	  if(fineGridX(0) >= _minComputeDomain[0] && fineGridX(0) <= _maxComputeDomain[0] &&
-		 fineGridX(1) >= _minComputeDomain[1] && fineGridX(1) <= _maxComputeDomain[1] &&
-		 fineGridX(2) >= _minComputeDomain[2] && fineGridX(2) <= _maxComputeDomain[2])
+	  if(fineGridX(0) >= _minGlobalComputeDomain[0] && fineGridX(0) <= _maxGlobalComputeDomain[0] &&
+		 fineGridX(1) >= _minGlobalComputeDomain[1] && fineGridX(1) <= _maxGlobalComputeDomain[1] &&
+		 fineGridX(2) >= _minGlobalComputeDomain[2] && fineGridX(2) <= _maxGlobalComputeDomain[2])
 	  {
 		fineGridVertex.refine();
 	  }
@@ -510,7 +519,6 @@ void dem::mappings::CreateGrid::createCell(
   if(_scenario[0] == nonescenario) return;
 
   dem::Vertex&  vertex  = fineGridVertices[fineGridVerticesEnumerator(0)];
-  //printf("cell created length: %f\n", fineGridVerticesEnumerator.getCellSize()(0));
 
   iREAL centreAsArray[3] = {fineGridVerticesEnumerator.getCellCenter()(0)-1E-4,
                             fineGridVerticesEnumerator.getCellCenter()(1)-1E-4,
@@ -521,7 +529,8 @@ void dem::mappings::CreateGrid::createCell(
     deployEnviroment(vertex, fineGridVerticesEnumerator.getCellSize()(0), centreAsArray, false);
   }
 
-  if(peano::grid::aspects::VertexStateAnalysis::doAllNonHangingVerticesCarryRefinementFlag(fineGridVertices, fineGridVerticesEnumerator, Vertex::Records::Unrefined) &&
+  if(peano::grid::aspects::VertexStateAnalysis::doAllNonHangingVerticesCarryRefinementFlag(
+	  fineGridVertices, fineGridVerticesEnumerator, Vertex::Records::Unrefined) &&
      !peano::grid::aspects::VertexStateAnalysis::isOneVertexHanging(fineGridVertices, fineGridVerticesEnumerator))
   {
     deployEnviroment(vertex, fineGridVerticesEnumerator.getCellSize()(0), centreAsArray, true);
@@ -582,7 +591,7 @@ void dem::mappings::CreateGrid::destroyCell(
 		const tarch::la::Vector<DIMENSIONS,int>&                             fineGridPositionOfCell
 ) {
 	logTraceInWith4Arguments( "destroyCell(...)", fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, fineGridPositionOfCell );
-	// @todo Insert your code here
+
 	logTraceOutWith1Argument( "destroyCell(...)", fineGridCell );
 }
 
@@ -596,7 +605,6 @@ void dem::mappings::CreateGrid::mergeWithNeighbour(
 		int                                           level
 ) {
 	logTraceInWith6Arguments( "mergeWithNeighbour(...)", vertex, neighbour, fromRank, fineGridX, fineGridH, level );
-	// @todo Insert your code here
 	logTraceOut( "mergeWithNeighbour(...)" );
 }
 
@@ -608,7 +616,7 @@ void dem::mappings::CreateGrid::prepareSendToNeighbour(
 		int                                           level
 ) {
 	logTraceInWith3Arguments( "prepareSendToNeighbour(...)", vertex, toRank, level );
-	// @todo Insert your code here
+
 	logTraceOut( "prepareSendToNeighbour(...)" );
 }
 
@@ -620,7 +628,7 @@ void dem::mappings::CreateGrid::prepareCopyToRemoteNode(
 		int                                           level
 ) {
 	logTraceInWith5Arguments( "prepareCopyToRemoteNode(...)", localVertex, toRank, x, h, level );
-	// @todo Insert your code here
+
 	logTraceOut( "prepareCopyToRemoteNode(...)" );
 }
 
@@ -632,7 +640,7 @@ void dem::mappings::CreateGrid::prepareCopyToRemoteNode(
 		int                                           level
 ) {
 	logTraceInWith5Arguments( "prepareCopyToRemoteNode(...)", localCell, toRank, cellCentre, cellSize, level );
-	// @todo Insert your code here
+
 	logTraceOut( "prepareCopyToRemoteNode(...)" );
 }
 
@@ -645,7 +653,7 @@ void dem::mappings::CreateGrid::mergeWithRemoteDataDueToForkOrJoin(
 		int                                       level
 ) {
 	logTraceInWith6Arguments( "mergeWithRemoteDataDueToForkOrJoin(...)", localVertex, masterOrWorkerVertex, fromRank, x, h, level );
-	// @todo Insert your code here
+
 	logTraceOut( "mergeWithRemoteDataDueToForkOrJoin(...)" );
 }
 
@@ -658,7 +666,7 @@ void dem::mappings::CreateGrid::mergeWithRemoteDataDueToForkOrJoin(
 		int                                       level
 ) {
 	logTraceInWith3Arguments( "mergeWithRemoteDataDueToForkOrJoin(...)", localCell, masterOrWorkerCell, fromRank );
-	// @todo Insert your code here
+
 	logTraceOut( "mergeWithRemoteDataDueToForkOrJoin(...)" );
 }
 
@@ -673,7 +681,7 @@ bool dem::mappings::CreateGrid::prepareSendToWorker(
 		int                                                                  worker
 ) {
 	logTraceIn( "prepareSendToWorker(...)" );
-	// @todo Insert your code here
+
 	logTraceOutWith1Argument( "prepareSendToWorker(...)", true );
 	return true;
 }
@@ -688,7 +696,7 @@ void dem::mappings::CreateGrid::prepareSendToMaster(
 		const tarch::la::Vector<DIMENSIONS,int>&   fineGridPositionOfCell
 ) {
 	logTraceInWith2Arguments( "prepareSendToMaster(...)", localCell, verticesEnumerator.toString() );
-	// @todo Insert your code here
+
 	logTraceOut( "prepareSendToMaster(...)" );
 }
 
@@ -708,7 +716,7 @@ void dem::mappings::CreateGrid::mergeWithMaster(
 		dem::State&                masterState
 ) {
 	logTraceIn( "mergeWithMaster(...)" );
-	// @todo Insert your code here
+
 	logTraceOut( "mergeWithMaster(...)" );
 }
 
@@ -725,7 +733,7 @@ void dem::mappings::CreateGrid::receiveDataFromMaster(
 		const tarch::la::Vector<DIMENSIONS,int>&    fineGridPositionOfCell
 ) {
 	logTraceIn( "receiveDataFromMaster(...)" );
-	// @todo Insert your code here
+
 	logTraceOut( "receiveDataFromMaster(...)" );
 }
 
@@ -737,7 +745,7 @@ void dem::mappings::CreateGrid::mergeWithWorker(
 		int                                          level
 ) {
 	logTraceInWith2Arguments( "mergeWithWorker(...)", localCell.toString(), receivedMasterCell.toString() );
-	// @todo Insert your code here
+
 	logTraceOutWith1Argument( "mergeWithWorker(...)", localCell.toString() );
 }
 
@@ -749,7 +757,7 @@ void dem::mappings::CreateGrid::mergeWithWorker(
 		int                                           level
 ) {
 	logTraceInWith2Arguments( "mergeWithWorker(...)", localVertex.toString(), receivedMasterVertex.toString() );
-	// @todo Insert your code here
+
 	logTraceOutWith1Argument( "mergeWithWorker(...)", localVertex.toString() );
 }
 #endif
@@ -760,8 +768,8 @@ void dem::mappings::CreateGrid::descend(
 		const peano::grid::VertexEnumerator&                fineGridVerticesEnumerator,
 		dem::Vertex * const        coarseGridVertices,
 		const peano::grid::VertexEnumerator&                coarseGridVerticesEnumerator,
-		dem::Cell&                 coarseGridCell
-) {
+		dem::Cell&                 coarseGridCell)
+{
 }
 
 void dem::mappings::CreateGrid::ascend(
@@ -770,6 +778,7 @@ void dem::mappings::CreateGrid::ascend(
 		const peano::grid::VertexEnumerator&          fineGridVerticesEnumerator,
 		dem::Vertex * const  coarseGridVertices,
 		const peano::grid::VertexEnumerator&          coarseGridVerticesEnumerator,
-		dem::Cell&           coarseGridCell
-) {
+		dem::Cell&           coarseGridCell)
+{
+
 }

@@ -28,6 +28,7 @@ namespace delta {
 	  iREAL yw = std::fabs(maxpoint[1]-minpoint[1]);
 	  iREAL zw = std::fabs(maxpoint[2]-minpoint[2]);
 
+	  _domain = domain;
 	  //target refinement length cannot be smaller than then largest triangle (maybe 2 x bigger is ideal)
 	  if(xw < maxMeshSize || yw < maxMeshSize || zw < maxMeshSize)
 	  {//stop refinement if current cell width is smaller than one specified
@@ -41,7 +42,6 @@ namespace delta {
 		G = nullptr;
 		H = nullptr;
 		_isLeaf = true;
-		_domain = domain;
 		return;
 	  }
 	  else //else refine
@@ -265,8 +265,6 @@ namespace delta {
 	  return _domain;
 	}
 
-
-
 	void OctTree::getBoundary(
 		iREAL x[3],
 		std::array<iREAL, 6>& childDomain)
@@ -390,9 +388,9 @@ namespace delta {
 		iREAL y[3] = {xCoordinates[i+1], yCoordinates[i+1], zCoordinates[i+1]};
 		iREAL z[3] = {xCoordinates[i+2], yCoordinates[i+2], zCoordinates[i+2]};
 
-		//printf("POINT:  %f %f %f\n", x[0], x[1], x[2]);
-		//printf("DOMAIN: %f %f %f | %f %f %f\n", boundingBox[0], boundingBox[1], boundingBox[2], boundingBox[3], boundingBox[4], boundingBox[5]);
-		if(isInDomain(x, boundingBox) == true || isInDomain(y, boundingBox) == true || isInDomain(z, boundingBox) == true)
+		if(	isInDomain(x, boundingBox) == true ||
+			isInDomain(y, boundingBox) == true ||
+			isInDomain(z, boundingBox) == true)
 		{
 		  return true;
 		}

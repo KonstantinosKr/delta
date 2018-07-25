@@ -41,25 +41,34 @@ namespace delta {
 class delta::world::World {
 
   public:
-	World(std::string scenario, bool gravity, delta::core::data::Meta::CollisionModel collisionModelID, iREAL meshDensity);
-
-	iREAL 					getEpsilon();
-	bool 					hasGravity();
-	bool 					getIsSphere();
-	std::array<iREAL, 6> 	getBoundary();
-	int 						getNumberOfTriangles();
-	int 						getMeshDensity();
-	std::vector<delta::geometry::Object> getObjects();
+	World(
+	  std::string 								scenario,
+	  bool 										gravity,
+	  delta::core::data::Meta::CollisionModel 	collisionModelID,
+	  iREAL 										meshDensity);
 
 	virtual ~World();
+
+	void 								createWorld();
+	bool 								hasGravity();
+	bool 								getIsSphere();
+	int 									getNumberOfTriangles();
+	int 									getGlobalPrescribedMeshDensity();
+	iREAL								getGlobalPrescribedEpsilon();
+	std::array<iREAL, 6> 				getBoundary();
+	std::vector<delta::geometry::Object> getObjects();
+
   private:
-	std::array<iREAL, 6> _boundary;
-	int _triangles;
-	iREAL _gravity;
-	iREAL _epsilon;
-	iREAL _meshDensity;
-	bool _isSphere;
-	std::vector<delta::geometry::Object> _particles;
+	int 										_triangles;
+	iREAL 									_gravity;
+	iREAL 									_globalPrescribedEpsilon;
+	iREAL 									_globalPrescribedMeshDensity;
+	bool 									_isSphere;
+	std::string								_scenario;
+	std::array<iREAL, 6> 					_boundary;
+	iREAL 									_minParticleDiam;
+	iREAL 									_maxParticleDiam;
+	std::vector<delta::geometry::Object> 	_particles;
 };
 
 #endif /* DELTA_WORLD_WORLD_H_ */

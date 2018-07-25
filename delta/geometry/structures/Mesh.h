@@ -220,7 +220,7 @@ class delta::geometry::mesh::Mesh {
 	 *  @param none
 	 *  @returns iREAL value
 	 */
-	iREAL getXw();
+	iREAL computeXw();
 
 	/*
 	 *  Get Width of the Y Coordinates
@@ -231,7 +231,7 @@ class delta::geometry::mesh::Mesh {
 	 *  @param none
 	 *  @returns iREAL value
 	 */
-	iREAL getYw();
+	iREAL computeYw();
 
 	/*
 	 *  Get Width of the Z Coordinates
@@ -242,7 +242,7 @@ class delta::geometry::mesh::Mesh {
 	 *  @param none
 	 *  @returns iREAL value
 	 */
-	iREAL getZw();
+	iREAL computeZw();
 
 	/*
 	 *  Get Max Value on X Axis
@@ -253,7 +253,7 @@ class delta::geometry::mesh::Mesh {
 	 *  @param none
 	 *  @returns iREAL value
 	 */
-	iREAL getMaxXAxis();
+	iREAL computeMaxXAxis();
 
 	/*
 	 *  Get Max Value on Y Axis
@@ -264,7 +264,7 @@ class delta::geometry::mesh::Mesh {
 	 *  @param none
 	 *  @returns iREAL value
 	 */
-	iREAL getMaxYAxis();
+	iREAL computeMaxYAxis();
 
 	/*
 	 *  Get Max Value on Z Axis
@@ -275,7 +275,7 @@ class delta::geometry::mesh::Mesh {
 	 *  @param none
 	 *  @returns iREAL value
 	 */
-	iREAL getMaxZAxis();
+	iREAL computeMaxZAxis();
 
 	/*
 	 *  Get Min Value on X Axis
@@ -286,7 +286,7 @@ class delta::geometry::mesh::Mesh {
 	 *  @param none
 	 *  @returns iREAL value
 	 */
-	iREAL getMinXAxis();
+	iREAL computeMinXAxis();
 
 	/*
 	 *  Get Min Value on Y Axis
@@ -297,7 +297,7 @@ class delta::geometry::mesh::Mesh {
 	 *  @param none
 	 *  @returns iREAL value
 	 */
-	iREAL getMinYAxis();
+	iREAL computeMinYAxis();
 
 	/*
 	 *  Get Min Value on Z Axis
@@ -308,7 +308,7 @@ class delta::geometry::mesh::Mesh {
 	 *  @param none
 	 *  @returns iREAL value
 	 */
-	iREAL getMinZAxis();
+	iREAL computeMinZAxis();
 
 	/*
 	 *  Get H Min
@@ -319,7 +319,7 @@ class delta::geometry::mesh::Mesh {
 	 *  @param none
 	 *  @returns iREAL value
 	 */
-	iREAL getHMin();
+	iREAL computeHMin();
 
 	/*
 	 *  Get Min Boundary Vertex
@@ -330,7 +330,7 @@ class delta::geometry::mesh::Mesh {
 	 *  @param none
 	 *  @returns xyz vertex
 	 */
-	std::array<iREAL, 3> getMinBoundaryVertex();
+	std::array<iREAL, 3> computeBoundaryMinVertex();
 
 	/*
 	 *  Get Max Boundary Vertex
@@ -341,7 +341,7 @@ class delta::geometry::mesh::Mesh {
 	 *  @param none
 	 *  @returns xyz vertex
 	 */
-	std::array<iREAL, 3> getMaxBoundaryVertex();
+	std::array<iREAL, 3> computeBoundaryMaxVertex();
 
 	/*
 	 *  Get XY Width
@@ -352,7 +352,7 @@ class delta::geometry::mesh::Mesh {
 	 *  @param none
 	 *  @returns iREAL
 	 */
-	iREAL getXZWidth();
+	iREAL computeXZWidth();
 
 	/*
 	 *  Get Diameter Width
@@ -363,7 +363,7 @@ class delta::geometry::mesh::Mesh {
 	 *  @param none
 	 *  @returns iREAL
 	 */
-	iREAL getDiameter();
+	iREAL computeDiameter();
 
 	/*
 	 *  Get Triangle Faces
@@ -400,8 +400,8 @@ class delta::geometry::mesh::Mesh {
 	 *  @param centreOfGeometry
 	 *  @returns void
 	 */
-	void getCenterOfGeometry(
-	  iREAL centreOfGeometry[3]);
+	void computeCenterOfGeometry(
+		  iREAL centreOfGeometry[3]);
 
 	/*
 	 *  Get Center of Mass
@@ -418,13 +418,13 @@ class delta::geometry::mesh::Mesh {
 	 *
 	 *  @returns void
 	 */
-	void getCenterOfMass(
-	  iREAL&               centreOfMassX,
-	  iREAL&               centreOfMassY,
-	  iREAL&               centreOfMassZ,
-	  iREAL&               refcentreOfMassX,
-	  iREAL&               refcentreOfMassY,
-	  iREAL&               refcentreOfMassZ
+	void computeCenterOfMass(
+		  iREAL&               centreOfMassX,
+		  iREAL&               centreOfMassY,
+		  iREAL&               centreOfMassZ,
+		  iREAL&               refcentreOfMassX,
+		  iREAL&               refcentreOfMassY,
+		  iREAL&               refcentreOfMassZ
 	);
 
 	/*
@@ -460,8 +460,7 @@ class delta::geometry::mesh::Mesh {
 	 */
 	std::vector<iREAL> getZCoordinatesAsVector();
 
-	void explode(iREAL length);
-	void exploded(iREAL length);
+	void computeExplode(iREAL length);
 
 	/*
 	 *  Get Mass
@@ -520,13 +519,6 @@ class delta::geometry::mesh::Mesh {
 	    iREAL inverse[9],
 	    bool isObject);
 
-	iREAL getMaxMeshSize();
-	iREAL getMinMeshSize();
-	iREAL getAvgMeshSize();
-
-	virtual ~Mesh();
-  private:
-
 	/*
 	 *  Get XYZ Width
 	 *
@@ -536,7 +528,17 @@ class delta::geometry::mesh::Mesh {
 	 *  @param none
 	 *  @returns iREAL
 	 */
-	iREAL getXYZWidth();
+	iREAL computeXYZWidth();
+
+	iREAL getMaxMeshSize();
+	iREAL getMinMeshSize();
+	iREAL getAvgMeshSize();
+
+	std::array<iREAL, 3> getBoundaryMinVertex();
+	std::array<iREAL, 3> getBoundaryMaxVertex();
+
+	virtual ~Mesh();
+  private:
 
 	/*
 	 *  Get Distance Between two Vertices
@@ -573,9 +575,9 @@ class delta::geometry::mesh::Mesh {
 	 *  @returns void
 	 */
 	void compressFromVectors(
-		std::vector<iREAL>& xCoordinates,
-		std::vector<iREAL>& yCoordinates,
-		std::vector<iREAL>& zCoordinates);
+		  std::vector<iREAL>& xCoordinates,
+		  std::vector<iREAL>& yCoordinates,
+		  std::vector<iREAL>& zCoordinates);
 
 	/*
 	 *  Print arrays to screen
@@ -592,6 +594,15 @@ class delta::geometry::mesh::Mesh {
     std::vector<iREAL>   						_xCoordinates;
     std::vector<iREAL>   						_yCoordinates;
     std::vector<iREAL>   						_zCoordinates;
+
+    std::array<iREAL, 3>							_minBoundary;
+    std::array<iREAL, 3>							_maxBoundary;
+
+    //dimensions
+    iREAL                						_wx;
+    iREAL                						_wy;
+    iREAL                						_wz;
+
     iREAL 										_maxMeshSize;
     iREAL 										_minMeshSize;
     iREAL										_avgMeshSize;

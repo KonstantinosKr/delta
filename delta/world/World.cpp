@@ -27,38 +27,105 @@
 
 #define epsilon 1E-3
 
-delta::world::World::World(std::string scenario, bool gravity, delta::core::data::Meta::CollisionModel collisionModelID, iREAL meshDensity) {
+delta::world::World::World(
+	std::string								scenario,
+	bool 									gravity,
+	delta::core::data::Meta::CollisionModel 	collisionModelID,
+	iREAL 									meshDensity)
+{
+  _boundary 						= {0.0, 0.0, 0.0, 1.0, 1.0, 1.0};
+  _gravity 						= gravity;
+  _globalPrescribedEpsilon 		= epsilon;
+  _globalPrescribedMeshDensity 	= meshDensity;
+  _scenario 						= scenario;
+  _isSphere 						= false;
+  _triangles	 					= 0;
+  _maxParticleDiam 				= 0;
+  _minParticleDiam 				= 1E99;
 
-  _boundary = {0.0, 0.0, 0.0, 1.0, 1.0, 1.0};
-
-  _gravity = gravity;
-  _epsilon = epsilon;
-  _meshDensity = meshDensity;
-  _isSphere = false;
-
-  if(scenario == "two-particles-crash")
+  if(collisionModelID == delta::core::data::Meta::CollisionModel::Sphere)
   {
-    delta::world::scenarios::twoParticlesCrash(_particles, _isSphere, _meshDensity, epsilon);
-  }
-  else if(scenario == "turbine")
-  {
-    delta::world::scenarios::turbine(_particles, epsilon);
-  }
-  else if(scenario == "kaikoura")
-  {
-    delta::world::scenarios::kaikoura(_particles, epsilon);
-  }
-  else if(scenario == "helicopter")
-  {
-	delta::world::scenarios::helicopter(_particles, epsilon);
+	_isSphere = true;
   }
 
-  _triangles = 0;
+  delta::world::World::createWorld();
+
+  std::array<iREAL,3> globalMin = {1E99, 1E99, 1E99};
+  std::array<iREAL,3> globalMax = {0.0, 0.0, 0.0};
+  std::array<iREAL,3> min, max;
 
   if(!_isSphere)
-  for(int i=0; i<_particles.size(); i++)
   {
-	_triangles += _particles[i].getNumberOfTriangles();
+	for(int i=0; i<_particles.size(); i++)
+	{
+	  _triangles += _particles[i].getNumberOfTriangles();
+
+	  min = _particles[i].getMesh().getBoundaryMinVertex();
+	  max = _particles[i].getMesh().getBoundaryMaxVertex();
+
+	  if(min[0] < globalMin[0]) globalMin[0] = min[0];
+	  if(min[1] < globalMin[1]) globalMin[1] = min[1];
+	  if(min[2] < globalMin[2]) globalMin[2] = min[2];
+
+	  if(max[0] > globalMax[0]) globalMin[0] = max[0];
+	  if(max[1] > globalMax[1]) globalMin[1] = max[1];
+	  if(max[2] > globalMax[2]) globalMin[2] = max[2];
+
+	  if(_particles[i].getRad() * 2.0 < _minParticleDiam)
+		_minParticleDiam = _particles[i].getRad() * 2.0;
+	  if(_particles[i].getRad() * 2.0 > _maxParticleDiam)
+		_maxParticleDiam = _particles[i].getRad() * 2.0;
+	}
+  } else
+  {
+	for(int i=0; i<_particles.size(); i++)
+	{
+	  min = {	_particles[i].getCentre()[0] - _particles[i].getRad(),
+				_particles[i].getCentre()[1] - _particles[i].getRad(),
+				_particles[i].getCentre()[2] - _particles[i].getRad()};
+
+	  max = {	_particles[i].getCentre()[0] + _particles[i].getRad(),
+				_particles[i].getCentre()[1] + _particles[i].getRad(),
+				_particles[i].getCentre()[2] + _particles[i].getRad()};
+
+	  if(min[0] < globalMin[0]) globalMin[0] = min[0];
+	  if(min[1] < globalMin[1]) globalMin[1] = min[1];
+	  if(min[2] < globalMin[2]) globalMin[2] = min[2];
+
+	  if(max[0] > globalMax[0]) globalMin[0] = max[0];
+	  if(max[1] > globalMax[1]) globalMin[1] = max[1];
+	  if(max[2] > globalMax[2]) globalMin[2] = max[2];
+
+	  if(_particles[i].getRad() * 2.0 < _minParticleDiam)
+		_minParticleDiam = _particles[i].getRad() * 2.0;
+	  if(_particles[i].getRad() * 2.0 > _maxParticleDiam)
+		_maxParticleDiam = _particles[i].getRad() * 2.0;
+	}
+  }
+  _boundary = {min[0], min[1], min[2], max[0], max[1], max[2]};
+}
+
+void delta::world::World::createWorld()
+{
+  if(_scenario == "two-particles-crash")
+  {
+    delta::world::scenarios::twoParticlesCrash(
+    	_particles, _isSphere, _globalPrescribedMeshDensity, _globalPrescribedEpsilon);
+  }
+  else if(_scenario == "turbine")
+  {
+    delta::world::scenarios::turbine(
+    	_particles, _globalPrescribedEpsilon);
+  }
+  else if(_scenario == "kaikoura")
+  {
+    delta::world::scenarios::kaikoura(
+    	_particles, _globalPrescribedEpsilon);
+  }
+  else if(_scenario == "helicopter")
+  {
+	delta::world::scenarios::helicopter(
+	_particles, _globalPrescribedEpsilon);
   }
 }
 
@@ -87,14 +154,14 @@ bool delta::world::World::getIsSphere()
   return _isSphere;
 }
 
-int delta::world::World::getMeshDensity()
+int delta::world::World::getGlobalPrescribedMeshDensity()
 {
-  return _meshDensity;
+  return _globalPrescribedMeshDensity;
 }
 
-iREAL delta::world::World::getEpsilon()
+iREAL delta::world::World::getGlobalPrescribedEpsilon()
 {
-  return _epsilon;
+  return _globalPrescribedEpsilon;
 }
 
 delta::world::World::~World() {

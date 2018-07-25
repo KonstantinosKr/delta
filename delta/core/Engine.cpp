@@ -56,8 +56,8 @@ delta::core::Engine::Engine(
   std::cout << "Delta t			: " 	<< _state.getStepSize() 		<< std::endl
 			<< "Overlap			: " 	<< _overlapCheck				<< std::endl
 			<< "Sphere 			: " 	<< world.getIsSphere() 		<< std::endl
-			<< "Mesh   			: " 	<< world.getMeshDensity() 	<< std::endl
-			<< "Epsilon			: " 	<< world.getEpsilon() 		<< std::endl
+			<< "Mesh   			: " 	<< world.getGlobalPrescribedMeshDensity() 	<< std::endl
+			<< "Epsilon			: " 	<< world.getGlobalPrescribedEpsilon() 		<< std::endl
 			<< "Particles		: " 	<< _data.getNumberOfParticles()	<< std::endl
 			<< "Triangles		: " 	<< _data.getNumberOfTriangles()	<< std::endl;
   std::cout << "----------Simulation Run----------------" << std::endl;
@@ -241,13 +241,15 @@ void delta::core::Engine::contactDetection()
 	  }
 
 	  std::vector<delta::contact::contactpoint> newContactPoints;
+#if defined(SharedTBB) && defined(peanoCall)
 
-	  switch (_collisionModel) {
+#else
+	  switch (_collisionModel)
+	  {
 		case CollisionModel::Sphere:
-		if(
-		  particleA.getIsObstacle() &&
-		  !particleB.getIsObstacle()
-		) {
+		if(	particleA.getIsObstacle() &&
+			!particleB.getIsObstacle())
+		{
 		  newContactPoints = delta::contact::detection::sphereWithBarrierBA(
 					particleB._centre[0],
 					particleB._centre[1],
@@ -387,6 +389,7 @@ void delta::core::Engine::contactDetection()
 		case CollisionModel::none:
 		break;
 	  }
+#endif
 
 	  if(!newContactPoints.empty()) {
 		delta::core::Engine::addCollision(newContactPoints, particleA, particleB, _collisionModel == CollisionModel::Sphere);
