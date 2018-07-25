@@ -22,7 +22,8 @@
  SOFTWARE.
  */
 
-#include "delta/core/Engine.h"
+#include <delta/core/data/Meta.h>
+#include <delta/core/Engine.h>
 #include <delta/world/World.h>
 
 delta::core::Engine::Engine()
@@ -54,12 +55,12 @@ delta::core::Engine::Engine(
   std::cout << "-----------------------------------------" << std::endl;
   std::cout << "----------Simulation Scenario------------" << std::endl;
   std::cout << "Delta t			: " 	<< _state.getStepSize() 		<< std::endl
-			<< "Overlap			: " 	<< _overlapCheck				<< std::endl
-			<< "Sphere 			: " 	<< world.getIsSphere() 		<< std::endl
-			<< "Mesh   			: " 	<< world.getGlobalPrescribedMeshDensity() 	<< std::endl
-			<< "Epsilon			: " 	<< world.getGlobalPrescribedEpsilon() 		<< std::endl
-			<< "Particles		: " 	<< _data.getNumberOfParticles()	<< std::endl
-			<< "Triangles		: " 	<< _data.getNumberOfTriangles()	<< std::endl;
+			<< "Overlap	PreCheck	: " 	<< _overlapCheck				<< std::endl
+			<< "Sphere Model		: " 	<< world.getIsSphere() 		<< std::endl
+			<< "Global Mesh x  	: " 	<< world.getGlobalPrescribedMeshDensity() 	<< std::endl
+			<< "Global Epsilon	: " 	<< world.getGlobalPrescribedEpsilon() 		<< std::endl
+			<< "# Particles		: " 	<< _data.getNumberOfParticles()	<< std::endl
+			<< "# Triangles		: " 	<< _data.getNumberOfTriangles()	<< std::endl;
   std::cout << "----------Simulation Run----------------" << std::endl;
 }
 
@@ -89,9 +90,9 @@ delta::core::Engine::Engine(
   std::cout << "-----------------------------------------" << std::endl;
   std::cout << "----------Simulation Scenario------------" << std::endl;
   std::cout << "Delta t			: " 	<< _state.getStepSize() 		<< std::endl
-			<< "Overlap			: " 	<< _overlapCheck				<< std::endl
-			<< "Particles		: " 	<< _data.getNumberOfParticles()	<< std::endl
-			<< "Triangles		: " 	<< _data.getNumberOfTriangles()	<< std::endl;
+			<< "Overlap	PreCheck	: " 	<< _overlapCheck				<< std::endl
+			<< "# Particles		: " 	<< _data.getNumberOfParticles()	<< std::endl
+			<< "# Triangles		: " 	<< _data.getNumberOfTriangles()	<< std::endl;
   std::cout << "----------Simulation Run----------------" << std::endl;
 }
 
@@ -104,8 +105,8 @@ void delta::core::Engine::iterate()
 {
   delta::core::Engine::plot();
 
-  //delta::core::Engine::contactDetection();
-  //delta::core::Engine::deriveForces();
+  delta::core::Engine::contactDetection();
+  delta::core::Engine::deriveForces();
   delta::core::Engine::updatePosition();
 
   _logBook->log(_state);
@@ -118,14 +119,16 @@ void delta::core::Engine::addCollision(
 	delta::core::data::ParticleRecord&           particleB,
 	bool sphere
 ) {
-/*
+
   //////////////START initial insertion of collision vectors into _collisionsOfNextTraversal<id, collision> map for next move update of particle A and B
   if( _collisionsOfNextTraversal.count(particleA.getGlobalParticleID())==0 ) {
-	_collisionsOfNextTraversal.insert(std::pair<int,std::vector<Collisions>>(particleA.getGlobalParticleID(), std::vector<Collisions>()));
+	_collisionsOfNextTraversal.insert(
+		std::pair<int,std::vector<Collisions>>(particleA.getGlobalParticleID(), std::vector<Collisions>()));
   }
 
   if( _collisionsOfNextTraversal.count(particleB.getGlobalParticleID())==0 ) {
-	_collisionsOfNextTraversal.insert(std::pair<int,std::vector<Collisions>>(particleB.getGlobalParticleID(), std::vector<Collisions>()));
+	_collisionsOfNextTraversal.insert(
+		std::pair<int,std::vector<Collisions>>(particleB.getGlobalParticleID(), std::vector<Collisions>()));
   }
   ///////////////END
 
@@ -135,8 +138,8 @@ void delta::core::Engine::addCollision(
   //////////////END
 
   /////////////////START if already exist | find and assign reference collision list to dataA or dataB particle
-  for (std::vector<Collisions>::iterator p=_collisionsOfNextTraversal[particleA.getGlobalParticleID()].begin();
-	 p!=_collisionsOfNextTraversal[particleA.getGlobalParticleID()].end();  p++)
+  for (std::vector<delta::core::data::Meta::Collisions>::iterator p=_collisionsOfNextTraversal[particleA.getGlobalParticleID()].begin();
+		p!=_collisionsOfNextTraversal[particleA.getGlobalParticleID()].end(); p++)
   {
 	if(p->_copyOfPartnerParticle.getGlobalParticleID()==particleB.getGlobalParticleID())
 	{
@@ -144,7 +147,7 @@ void delta::core::Engine::addCollision(
 	}
   }
 
-  for(std::vector<Collisions>::iterator p=_collisionsOfNextTraversal[particleB.getGlobalParticleID()].begin();
+  for(std::vector<delta::core::data::Meta::Collisions>::iterator p=_collisionsOfNextTraversal[particleB.getGlobalParticleID()].begin();
 	 p!=_collisionsOfNextTraversal[particleB.getGlobalParticleID()].end(); p++)
   {
 	if(p->_copyOfPartnerParticle.getGlobalParticleID()==particleA.getGlobalParticleID())
@@ -163,9 +166,11 @@ void delta::core::Engine::addCollision(
   //START if dataset A and B is empty
   if(dataSetA==nullptr)
   {
-	//START push_back collisions object into corresponding both A and B particle index collision list
-	_collisionsOfNextTraversal[particleA.getGlobalParticleID()].push_back( Collisions() );
-	_collisionsOfNextTraversal[particleB.getGlobalParticleID()].push_back( Collisions() );
+	/*//START push_back collisions object into corresponding both A and B particle index collision list
+	_collisionsOfNextTraversal[particleA.getGlobalParticleID()].push_back(
+		delta::core::data::Meta::Collisions() );
+	_collisionsOfNextTraversal[particleB.getGlobalParticleID()].push_back(
+		delta::core::data::Meta::Collisions() );
 	//END push_back
 
 	//START reference of vector to data A and B ready to used
@@ -176,10 +181,10 @@ void delta::core::Engine::addCollision(
 	//START add copy of master and slave particles to sets (dual contact reference)
 	dataSetA->_copyOfPartnerParticle = particleB;
 	dataSetB->_copyOfPartnerParticle = particleA;
-	//END
+	//END*/
   }
   ////////END
-*/
+
   /*
    * Problem here was:
    * Although all normals were pointing to opposite direction for each particle due to how we loop particles
@@ -188,7 +193,7 @@ void delta::core::Engine::addCollision(
    * C. we always want to ensure that normal of particle point away from obstacle
    * D. we don't care about normal of obstacle.
    */
-/*
+
   dataSetA->_contactPoints.insert(dataSetA->_contactPoints.end(), newContactPoints.begin(), newContactPoints.end());
 
   for (std::vector<delta::contact::contactpoint>::iterator p = newContactPoints.begin(); p != newContactPoints.end(); p++)
@@ -200,7 +205,6 @@ void delta::core::Engine::addCollision(
   }
 
   dataSetB->_contactPoints.insert(dataSetB->_contactPoints.end(), newContactPoints.begin(), newContactPoints.end());
-  */
 }
 
 delta::core::State delta::core::Engine::getState()
@@ -390,7 +394,6 @@ void delta::core::Engine::contactDetection()
 		break;
 	  }
 #endif
-
 	  if(!newContactPoints.empty()) {
 		delta::core::Engine::addCollision(newContactPoints, particleA, particleB, _collisionModel == CollisionModel::Sphere);
 	  }

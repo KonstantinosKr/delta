@@ -14,28 +14,31 @@
 namespace delta {
   namespace core {
 	namespace data {
-
 	  namespace Meta {
 
-		struct Collisions {
+		struct Collisions
+		{
 		  delta::core::data::ParticleRecord             _copyOfPartnerParticle;
 		  std::vector<delta::contact::contactpoint>     _contactPoints;
 		};
 
-	    enum class CollisionModel {
-	    	Sphere,
-	    	BruteForce,
-	    	Penalty,
-	    	PenaltyStat,
-	    PenaltyTune,
-	    	HybridOnTrianglePairs,
-	    	HybridOnBatches,
-		HybridTriangleStat,
-	    	HybridBatchStat,
-	    	GJK,
-	    	none};
+	    enum class CollisionModel
+		{
+		  Sphere,
+		  BruteForce,
+		  Penalty,
+		  PenaltyStat,
+		  PenaltyTune,
+		  HybridOnTrianglePairs,
+		  HybridOnBatches,
+		  HybridTriangleStat,
+		  HybridBatchStat,
+		  GJK,
+		  none
+	    };
 
-	    enum class Plot {
+	    enum class Plot
+		{
 	      EveryIteration,
 	      Never,
 	      UponChange,
@@ -50,6 +53,7 @@ namespace delta {
 	      bool				overlapPreCheck;
 	      Plot				plotScheme;
 	      iREAL				dt;
+	      iREAL				maxPrescribedRefinement;
 	    };
 	  }
 	} /* namespace data */

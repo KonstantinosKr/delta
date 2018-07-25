@@ -31,11 +31,20 @@ namespace delta {
 		 *  @returns void
 		 */
 		void computeBoundary(
-			 std::vector<delta::world::structure::Object>& 	objects,
-			 iREAL& 											minParticleDiam,
-			 iREAL& 											maxParticleDiam,
-			 iREAL* 											minComputeDomain,
-			 iREAL* 											maxComputeDomain);
+		   std::vector<delta::world::structure::Object>& 	coarseObjects,
+		   std::vector<delta::world::structure::Object>& 	fineObjects,
+		   std::vector<delta::world::structure::Object>& 	objects,
+		   iREAL& 											minParticleDiam,
+		   iREAL& 											maxParticleDiam,
+		   std::array<iREAL, 3>& 							minComputeDomain,
+		   std::array<iREAL, 3>& 							maxComputeDomain);
+
+		void computeBoundary(
+		   std::vector<delta::world::structure::Object>& 	objects,
+		   iREAL& 											minParticleDiam,
+		   iREAL& 											maxParticleDiam,
+		   std::array<iREAL, 3> 							minComputeDomain,
+		   std::array<iREAL, 3> 							maxComputeDomain);
 	  } /* namespace Object */
 	} /* namespace operators */
   } /* namespace geometry */

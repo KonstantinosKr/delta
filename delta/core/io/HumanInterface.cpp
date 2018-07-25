@@ -42,10 +42,11 @@ delta::core::io::HumanInterface::HumanInterface(int argc, const char* argv[]) {
   setPlotScheme(plotID);
   setCollisionScheme(collisionModelID);
 
-  _engineMeta.plotScheme = _plotScheme;
-  _engineMeta.modelScheme = _collisionModel;
-  _engineMeta.dt = _dt;
-  _engineMeta.overlapPreCheck = _dt;
+  _engineMeta.plotScheme 				= _plotScheme;
+  _engineMeta.modelScheme 				= _collisionModel;
+  _engineMeta.dt 						= _dt;
+  _engineMeta.overlapPreCheck 			= true;
+  _engineMeta.maxPrescribedRefinement 	= 0.0;
 }
 
 void delta::core::io::HumanInterface::setPlotScheme(std::string plotID)

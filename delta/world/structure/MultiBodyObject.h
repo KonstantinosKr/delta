@@ -11,11 +11,10 @@
 #include <array>
 #include <string>
 #include <vector>
-#include "../structure/Object.h"
+#include <delta/world/structure/Object.h>
 
 namespace delta {
   namespace geometry {
-
 	namespace structure {
 	  class MultiBodyObject {
 		public:

@@ -18,9 +18,9 @@
 
 #include <iomanip>
 
-#include "dem/mappings/Collision.h"
-#include "delta/geometry/material.h"
-#include "delta/world/structure/Object.h"
+#include <dem/mappings/Collision.h>
+#include <delta/geometry/material.h>
+#include <delta/world/structure/Object.h>
 
 namespace dem { 
   class Vertex;

@@ -41,9 +41,9 @@ namespace delta {
 		 *  @param cuts
 		 *  @returns iREAL
 		 */
-	 iREAL getDiscritization(
-			   iREAL 	length,
-			   int 		cuts);
+	   iREAL getDiscritization(
+				 iREAL 		length,
+				 int 		cuts);
 
 		/*
 		 *  Get One Dimensional Discretisation Positions
@@ -55,10 +55,10 @@ namespace delta {
 		 *  @param partitions	: segmentations
 		 *  @returns vector of positions
 		 */
-	 std::vector<std::array<iREAL, 3>> array1d(
-		  iREAL position[3],
-		  iREAL xAxisLength,
-		  int 	partitions);
+	   std::vector<std::array<iREAL, 3>> array1d(
+			iREAL position[3],
+			iREAL xAxisLength,
+			int 	partitions);
 
 		/*
 		 *  Get Two Dimensional Discretisation Positions
@@ -70,10 +70,10 @@ namespace delta {
 		 *  @param partitions	: segmentations
 		 *  @returns vector of positions
 		 */
-	 std::vector<std::array<iREAL, 3>> array2d(
-		  iREAL position[3],
-		  iREAL xyAxisLength,
-		  int 	partitions);
+	   std::vector<std::array<iREAL, 3>> array2d(
+			iREAL position[3],
+			iREAL xyAxisLength,
+			int 	partitions);
 
 		/*
 		 *  Get Three Dimensional Discretisation Positions
@@ -85,10 +85,10 @@ namespace delta {
 		 *  @param partitions	: segmentations
 		 *  @returns vector of positions
 		 */
-	 std::vector<std::array<iREAL, 3>> array3d(
-		  iREAL position[3],
-		  iREAL xyzAxisLength,
-		  int 	partitions);
+	   std::vector<std::array<iREAL, 3>> array3d(
+			iREAL 	position[3],
+			iREAL 	xyzAxisLength,
+			int 		partitions);
 
 		/*
 		 *  Get Three Dimensional Discretisation Positions
@@ -102,12 +102,12 @@ namespace delta {
 		 *  @param partitionsY		: segmentations on y axis
 		 *  @returns vector of positions
 		 */
-	 std::vector<std::array<iREAL, 3>> array3d(
-		  iREAL position[3],
-		  iREAL xyzAxisLength,
-		  int 	partitionsXYZ,
-		  iREAL yAxisLength,
-		  int 	partitionsY);
+	   std::vector<std::array<iREAL, 3>> array3d(
+			iREAL 	position[3],
+			iREAL 	xyzAxisLength,
+			int 		partitionsXYZ,
+			iREAL 	yAxisLength,
+			int 		partitionsY);
 
 
 	  /*
@@ -125,13 +125,13 @@ namespace delta {
 	   *  @returns void
 	   */
   void collapseUniformGrid(
-	  iREAL 								position[3],
+	  iREAL 									position[3],
 	  std::vector<std::array<iREAL, 3>>& 	grid,
 	  int 									xzcuts,
 	  int 									ycuts,
-	  iREAL 								elementWidth,
-	  iREAL 								elementHeight,
-	  iREAL 								epsilon);
+	  iREAL 									elementWidth,
+	  iREAL 									elementHeight,
+	  iREAL 									epsilon);
 
 	  /*
 	   *  Make grid layout
@@ -145,10 +145,10 @@ namespace delta {
 	   *  @returns void
 	   */
   std::vector<std::array<iREAL, 3>> makeGridLayout(
-	  iREAL 	position[3],
+	  iREAL 		position[3],
 	  int 		xzcuts,
 	  int 		ycuts,
-	  iREAL 	gridxyLength);
+	  iREAL 		gridxyLength);
 	}
   } /* namespace world */
 } /* namespace delta */

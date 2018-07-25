@@ -28,13 +28,10 @@
 #include <array>
 #include <vector>
 
-#include "delta/core/delta.h"
-
-#include "delta/geometry/material.h"
-#include "delta/world/structure/Object.h"
-
-#include "delta/world/scenario/configuration.h"
-#include <delta/world/operators/boundary.h>
+#include <delta/core/delta.h>
+#include <delta/geometry/material.h>
+#include <delta/world/structure/Object.h>
+#include <delta/world/scenario/configuration.h>
 #include <delta/world/scenario/scenarios.h>
 
 namespace dem {
