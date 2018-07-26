@@ -27,9 +27,15 @@
 
 #include <array>
 #include <vector>
+#include <string>
+#include <iostream>
+#include <cmath>
+#include <ctime>
 
 #include <delta/core/delta.h>
 #include <delta/geometry/material.h>
+
+#include <delta/world/operators/object.h>
 #include <delta/world/structure/Object.h>
 #include <delta/world/scenario/configuration.h>
 #include <delta/world/scenario/scenarios.h>

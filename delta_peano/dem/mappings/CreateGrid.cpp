@@ -2,11 +2,6 @@
 
 #include "peano/grid/aspects/VertexStateAnalysis.h"
 
-#include <string>
-#include <iostream>
-#include <cmath>
-#include <ctime>
-
 #define epsilon 0.001
 
 peano::CommunicationSpecification   dem::mappings::CreateGrid::communicationSpecification() const {
@@ -318,7 +313,7 @@ void dem::mappings::CreateGrid::endIteration(
 {
   logTraceInWith1Argument( "endIteration(State)", solverState );
 
-  delta::world::operators::computeBoundary(
+  delta::world::operators::object::computeBoundary(
 		 _coarseObjects,
 		 _fineObjects,
 		 _insitufineObjects,

@@ -8,14 +8,14 @@
 #include "object.h"
 
 namespace delta {
-  namespace geometry {
+  namespace world {
 	namespace operators {
 	  namespace object {
 
 		void computeBoundary(
-		   std::vector<delta::world::structure::Object>& 	coarseObjects,
-		   std::vector<delta::world::structure::Object>& 	fineObjects,
-		   std::vector<delta::world::structure::Object>& 	objects,
+		   std::vector<delta::world::structure::Object>& 		coarseObjects,
+		   std::vector<delta::world::structure::Object>& 		fineObjects,
+		   std::vector<delta::world::structure::Object>& 		objects,
 		   iREAL& 											minParticleDiam,
 		   iREAL& 											maxParticleDiam,
 		   std::array<iREAL, 3>& 							minComputeDomain,
@@ -113,8 +113,8 @@ namespace delta {
 
 		void computeBoundary(
 		   std::vector<delta::world::structure::Object>& 	objects,
-		   iREAL& 											minParticleDiam,
-		   iREAL& 											maxParticleDiam,
+		   iREAL& 										minParticleDiam,
+		   iREAL& 										maxParticleDiam,
 		   std::array<iREAL, 3> 							minComputeDomain,
 		   std::array<iREAL, 3> 							maxComputeDomain)
 		{

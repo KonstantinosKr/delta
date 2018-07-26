@@ -14,7 +14,7 @@
 #include "../structure/Object.h"
 
 namespace delta {
-  namespace geometry {
+  namespace world {
 	namespace operators {
 	  namespace object {
 
