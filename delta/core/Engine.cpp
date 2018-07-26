@@ -22,9 +22,8 @@
  SOFTWARE.
  */
 
-#include <delta/core/data/Meta.h>
+
 #include <delta/core/Engine.h>
-#include <delta/world/World.h>
 
 delta::core::Engine::Engine()
 {
@@ -35,65 +34,27 @@ delta::core::Engine::Engine(
 	delta::world::World					world,
 	delta::core::data::Meta::EngineMeta 	meta)
 {
-  _overlapCheck = meta.overlapPreCheck;
-  _collisionModel = meta.modelScheme;
-
-  _plot = meta.plotScheme;
-  _gravity = world.hasGravity();
-  _data = delta::core::data::Structure(world.getObjects());
-  _boundary = world.getBoundary();
-
-  _state = delta::core::State(_data.getNumberOfParticles(), _data.getNumberOfObstacles(), meta.dt);
-
-  std::vector<std::string> parameters;
-  _logBook = new delta::core::io::LogTimeStamp("LOG", _state.getStartTime(), parameters);
-  _logWarningBook = new delta::core::io::LogWarning("WARNING", _state.getStartTime(), parameters);
-  _logErrorBook = new delta::core::io::LogError("ERROR", _state.getStartTime(), parameters);
-
-  std::cout << "-----------------------------------------" << std::endl;
-  std::cout << "-Delta Library - Kostantinos Krestenitis-" << std::endl;
-  std::cout << "-----------------------------------------" << std::endl;
-  std::cout << "----------Simulation Scenario------------" << std::endl;
-  std::cout << "Delta t			: " 	<< _state.getStepSize() 		<< std::endl
-			<< "Overlap	PreCheck	: " 	<< _overlapCheck				<< std::endl
-			<< "Sphere Model		: " 	<< world.getIsSphere() 		<< std::endl
-			<< "Global Mesh x  	: " 	<< world.getGlobalPrescribedMeshDensity() 	<< std::endl
-			<< "Global Epsilon	: " 	<< world.getGlobalPrescribedEpsilon() 		<< std::endl
-			<< "# Particles		: " 	<< _data.getNumberOfParticles()	<< std::endl
-			<< "# Triangles		: " 	<< _data.getNumberOfTriangles()	<< std::endl;
-  std::cout << "----------Simulation Run----------------" << std::endl;
+  _overlapCheck 		= meta.overlapPreCheck;
+  _collisionModel 	= meta.modelScheme;
+  _plot 				= meta.plotScheme;
+  _gravity 			= world.hasGravity();
+  _data 				= delta::core::data::Structure(world.getObjects());
+  _boundary 			= world.getBoundary();
+  _state 			= delta::core::State(_data, meta);
 }
 
 delta::core::Engine::Engine(
 	std::vector<delta::world::structure::Object> particles,
-	bool 										gravity,
 	std::array<iREAL, 6> 						boundary,
 	delta::core::data::Meta::EngineMeta 			meta)
 {
-  _overlapCheck = meta.overlapPreCheck;
-  _collisionModel = meta.modelScheme;
-
-  _plot = meta.plotScheme;
-  _gravity = gravity;
-  _data = delta::core::data::Structure(particles);
-  _boundary = boundary;
-
-  _state = delta::core::State(_data.getNumberOfParticles(), _data.getNumberOfObstacles(), meta.dt);
-
-  std::vector<std::string> parameters;
-  _logBook = new delta::core::io::LogTimeStamp("LOG", _state.getStartTime(), parameters);
-  _logWarningBook = new delta::core::io::LogWarning("WARNING", _state.getStartTime(), parameters);
-  _logErrorBook = new delta::core::io::LogError("ERROR", _state.getStartTime(), parameters);
-
-  std::cout << "-----------------------------------------" << std::endl;
-  std::cout << "-Delta Library - Kostantinos Krestenitis-" << std::endl;
-  std::cout << "-----------------------------------------" << std::endl;
-  std::cout << "----------Simulation Scenario------------" << std::endl;
-  std::cout << "Delta t			: " 	<< _state.getStepSize() 		<< std::endl
-			<< "Overlap	PreCheck	: " 	<< _overlapCheck				<< std::endl
-			<< "# Particles		: " 	<< _data.getNumberOfParticles()	<< std::endl
-			<< "# Triangles		: " 	<< _data.getNumberOfTriangles()	<< std::endl;
-  std::cout << "----------Simulation Run----------------" << std::endl;
+  _overlapCheck 		= meta.overlapPreCheck;
+  _collisionModel 	= meta.modelScheme;
+  _plot 				= meta.plotScheme;
+  _gravity 			= meta.gravity;
+  _data 				= delta::core::data::Structure(particles);
+  _state 			= delta::core::State(_data, meta);
+  _boundary 			= boundary;
 }
 
 delta::core::Engine::~Engine()
@@ -109,7 +70,6 @@ void delta::core::Engine::iterate()
   delta::core::Engine::deriveForces();
   delta::core::Engine::updatePosition();
 
-  _logBook->log(_state);
   _state.update();
 }
 

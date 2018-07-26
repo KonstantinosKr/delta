@@ -53,6 +53,7 @@ namespace delta {
 	      bool				overlapPreCheck;
 	      Plot				plotScheme;
 	      iREAL				dt;
+	      bool				gravity;
 	      iREAL				maxPrescribedRefinement;
 	    };
 	  }

@@ -35,9 +35,10 @@
 #include <delta/core/data/Structure.h>
 #include <delta/core/data/ParticleRecord.h>
 #include <delta/core/data/Meta.h>
+
 #include <delta/core/io/read.h>
 #include <delta/core/io/write.h>
-#include <delta/core/io/Log.h>
+
 #include <delta/core/State.h>
 
 #include <delta/geometry/material.h>
@@ -65,27 +66,24 @@ class delta::core::Engine
 
 	Engine(
 		std::vector<delta::world::structure::Object> particles,
-		bool 										gravity,
 		std::array<iREAL, 6> 						boundary,
 		delta::core::data::Meta::EngineMeta 			meta);
 
 	virtual ~Engine();
 
-	void iterate();
-	delta::core::State getState();
-	int getNumberOfCollisions();
-	void contactDetection();
-	void deriveForces();
-	void updatePosition();
+	void 				iterate();
+	delta::core::State 	getState();
+	int 					getNumberOfCollisions();
+	void 				contactDetection();
+	void 				deriveForces();
+	void 				updatePosition();
+	void 				plot();
+
 	std::vector<delta::core::data::ParticleRecord>& getParticleRecords();
-	void plot();
+
 	CollisionModel	_collisionModel;
 
   private:
-	delta::core::io::LogTimeStamp *	_logBook;
-	delta::core::io::LogWarning *	_logWarningBook;
-	delta::core::io::LogError *		_logErrorBook;
-
 	delta::core::data::Meta::Plot 	_plot;
 	bool 							_overlapCheck;
 	delta::core::State 				_state;

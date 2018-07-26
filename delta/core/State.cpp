@@ -30,27 +30,38 @@ delta::core::State::State()
 }
 
 delta::core::State::State(
-	int 		noOfParticles,
-	int 		noOfObstacles,
-	iREAL 	dt)
+	  delta::core::data::Structure& 			datastructure,
+	  delta::core::data::Meta::EngineMeta& 	meta)
 {
   _start = Time::now();
 
-  _noOfParticles = noOfParticles;
-  _noOfObstacles = noOfObstacles;
-  _dt = dt;
+  _noOfParticles 	= datastructure.getNumberOfParticles();
+  _noOfObstacles 	= datastructure.getNumberOfObstacles();
+  _dt 				= meta.dt;
 
-  _numberOfTriangleComparisons = 0;
-  _numberOfParticleComparisons = 0;
-  _numberOfCollisions = 0;
+  _numberOfTriangleComparisons 	= 0;
+  _numberOfParticleComparisons 	= 0;
+  _numberOfCollisions 			= 0;
+  _iteration 					= 0;
+
+  std::vector<std::string> parameters;
+
+  std::cout << "-----------------------------------------" << std::endl;
+  std::cout << "-Delta Library - Kostantinos Krestenitis-" << std::endl;
+  std::cout << "-----------------------------------------" << std::endl;
+  std::cout << "----------Simulation Scenario------------" << std::endl;
+  std::cout << "Delta t			: " 	<< getStepSize() 		<< std::endl
+			<< "Overlap	PreCheck	: " 	<< meta.overlapPreCheck	<< std::endl
+			<< "# Particles		: " 	<< datastructure.getNumberOfParticles()	<< std::endl
+			<< "# Triangles		: " 	<< datastructure.getNumberOfTriangles()	<< std::endl;
+  std::cout << "----------Simulation Run----------------" << std::endl;
 
   //_checkpointFile = "output.out";
-
-  _iteration = 0;
 }
 
 void delta::core::State::update()
 {
+  log();
   _iteration ++;
 }
 
@@ -100,6 +111,36 @@ std::chrono::steady_clock::time_point delta::core::State::getStartTime()
 {
   return _start;
 }
+
+iREAL delta::core::State::getCurrentTime()
+{
+  std::chrono::steady_clock::time_point end = Time::now();
+  fsec fs = end - _start;
+  return fs.count();
+}
+
+void delta::core::State::log()
+{
+  std::cout << std::left
+			<< std::setfill('0')
+			<< std::setw(12)
+			<< std::setprecision(5)
+			<< getCurrentTime()
+            << std::left
+			<< std::setw(2)
+			<< " | DELTA | i:"
+			<< getCurrentStepIteration()
+			<< " -- cpt:"
+			<< getCollisions() << std::endl;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////
+
+void delta::core::State::termination()
+{
+  std::cout << "DELTA ----------Execution Terminated-----------" << std::endl;
+}
+
 
 void delta::core::State::saveParticleGeometry()
 {

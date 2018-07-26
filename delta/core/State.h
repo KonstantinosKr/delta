@@ -32,6 +32,8 @@
 #include <chrono>
 #include <iomanip>
 #include <iostream>
+#include <delta/core/data/Structure.h>
+#include <delta/core/data/Meta.h>
 
 typedef std::chrono::steady_clock Time;
 typedef std::chrono::duration<float> fsec;
@@ -46,40 +48,43 @@ class delta::core::State {
   public:
 	State();
 
-	State(int 		noOfParticles,
-		  int 		noOfObstacles,
-		  iREAL 		dt);
+	State(
+		  delta::core::data::Structure& 			datastructure,
+		  delta::core::data::Meta::EngineMeta& 	meta);
 
-	void initCheckpoint(int iteration);
-	void closeCheckpoint();
+	void 	initCheckpoint(int iteration);
+	void 	closeCheckpoint();
+	void 	readState();
+	void 	writeState();
+	void 	saveParticleGeometry();
+	void 	update();
 
-	void readState();
-	void writeState();
-	void saveParticleGeometry();
+	int 		getCurrentStepIteration();
+	int 		getCollisions();
+	iREAL 	getStepSize();
 
-	void update();
-	int getCurrentStepIteration();
-	int getCollisions();
-	iREAL getStepSize();
+	void 	incNumberOfTriangleComparisons(int n);
+	void 	incNumberOfParticleComparisons(int n);
 
-	void incNumberOfTriangleComparisons(int n);
-	void incNumberOfParticleComparisons(int n);
 	std::chrono::steady_clock::time_point getStartTime();
 
+	iREAL getCurrentTime();
+
+	void log();
+	void termination();
   private:
+	//physical simulation
 	int 		_noOfParticles;
 	int 		_noOfObstacles;
 	iREAL 	_dt;
-
-	std::chrono::steady_clock::time_point _start;
-
-	//physical simulation
-	int _numberOfTriangleComparisons;
-	int _numberOfParticleComparisons;
-	int _numberOfCollisions = 0;
+	int 		_numberOfTriangleComparisons;
+	int 		_numberOfParticleComparisons;
+	int 		_numberOfCollisions;
 
 	//engine
-	int _iteration;
+	int 		_iteration;
+
+	std::chrono::steady_clock::time_point _start;
 
 	//std::ofstream 	_checkpointFile;
 };

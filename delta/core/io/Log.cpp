@@ -26,7 +26,9 @@
 
 std::chrono::steady_clock::time_point delta::core::io::Log::_start;
 
-delta::core::io::Log::Log(std::string name, std::chrono::steady_clock::time_point start)
+delta::core::io::Log::Log(
+	std::string name,
+	std::chrono::steady_clock::time_point start)
 {
   _logIdentifier = name;
   _start = start;
@@ -48,15 +50,26 @@ delta::core::io::Log::~Log()
 ////////////////////////////////////////////////////////////////////////////////////////
 
 delta::core::io::LogTimeStamp::LogTimeStamp(
-	std::string name, std::chrono::steady_clock::time_point start, std::vector<std::string> parameters) : Log(name, start)
+	std::string name,
+	std::chrono::steady_clock::time_point start,
+	std::vector<std::string> parameters) : Log(name, start)
 {
 
 }
 
-void delta::core::io::LogTimeStamp::log(State &state)
+void delta::core::io::LogTimeStamp::log(delta::core::State& state)
 {
-  std::cout << std::left << std::setfill('0') << std::setw(12) << std::setprecision(5) << getCurrentTime()
-            << std::left << std::setw(2)  << " | DELTA |" << " i:" << state.getCurrentStepIteration() << " -- " << "cpt:" << state.getCollisions() << std::endl;
+  std::cout << std::left
+			<< std::setfill('0')
+			<< std::setw(12)
+			<< std::setprecision(5)
+			<< getCurrentTime()
+            << std::left
+			<< std::setw(2)
+			<< " | DELTA | i:"
+			<< state.getCurrentStepIteration()
+			<< " -- cpt:"
+			<< state.getCollisions() << std::endl;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -64,32 +77,6 @@ void delta::core::io::LogTimeStamp::log(State &state)
 void delta::core::io::LogTimeStamp::termination()
 {
   std::cout << "DELTA ----------Execution Terminated-----------" << std::endl;
-}
-
-////////////////////////////////////////////////////////////////////////////////////////
-
-delta::core::io::LogWarning::LogWarning(
-	std::string name, std::chrono::steady_clock::time_point start, std::vector<std::string> parameters) : Log(name, start)
-{
-
-}
-
-void delta::core::io::LogWarning::log()
-{
-  std::cout << "DELTA ERROR";
-}
-
-////////////////////////////////////////////////////////////////////////////////////////
-
-delta::core::io::LogError::LogError(
-	std::string name, std::chrono::steady_clock::time_point start, std::vector<std::string> parameters) : Log(name, start)
-{
-
-}
-
-void delta::core::io::LogError::log()
-{
-  std::cout << "DELTA ERROR" ;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////

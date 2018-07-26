@@ -51,7 +51,6 @@ namespace delta {
 		{
 		  delta::core::data::ParticleRecord record(objects[i]);
 		  record.refineTree(record.getAvgMeshSize());
-		  printf("entered\n");
 
 		  this->_particles.push_back(record);
 		  if(record.getIsObstacle())

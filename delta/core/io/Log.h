@@ -30,11 +30,8 @@
 #include <vector>
 #include <iomanip>
 #include <iostream>
-#include <delta/core/State.h>
-#include <iostream>
 #include <ctime>
-#include <vector>
-#include <string>
+#include <delta/core/State.h>
 
 typedef std::chrono::steady_clock Time;
 typedef std::chrono::duration<float> fsec;
@@ -45,8 +42,6 @@ namespace delta {
 
 	  class Log;
 	  class LogTimeStamp;
-	  class LogWarning;
-	  class LogError;
 
 	} /* namespace io */
   } /* namespace core */
@@ -55,10 +50,12 @@ namespace delta {
 
 class delta::core::io::Log {
   public:
-	explicit Log(std::string name, std::chrono::steady_clock::time_point start);
+	explicit Log(
+		std::string name,
+		std::chrono::steady_clock::time_point start);
 	virtual ~Log();
   private:
-	std::string _logIdentifier;
+	std::string 									_logIdentifier;
 	static std::chrono::steady_clock::time_point _start;
   protected:
 	iREAL getCurrentTime();
@@ -66,22 +63,13 @@ class delta::core::io::Log {
 
 class delta::core::io::LogTimeStamp : public delta::core::io::Log {
   public:
-	LogTimeStamp(std::string name,  std::chrono::steady_clock::time_point start, std::vector<std::string> parameters);
-	void log(State &state);
+	LogTimeStamp(
+		std::string 								name,
+		std::chrono::steady_clock::time_point 	start,
+		std::vector<std::string> 				parameters);
+	void log(delta::core::State&	state);
   private:
 	void termination();
-};
-
-class delta::core::io::LogWarning : public delta::core::io::Log {
-  public:
-	LogWarning(std::string name,  std::chrono::steady_clock::time_point start, std::vector<std::string> parameters);
-	void log();
-};
-
-class delta::core::io::LogError : public delta::core::io::Log {
-  public:
-	LogError(std::string name,  std::chrono::steady_clock::time_point start, std::vector<std::string> parameters);
-	void log();
 };
 
 #endif /* DELTA_CORE_IO_LOG_H_ */
