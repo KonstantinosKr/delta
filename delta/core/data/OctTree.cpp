@@ -20,7 +20,7 @@ namespace delta {
 		iREAL maxMeshSize,
 		std::array<iREAL, 6> domain)
 	{
-	  std::array<iREAL, 3> minpoint = {domain[0], domain[1], domain[2]};
+      std::array<iREAL, 3> minpoint = {domain[0], domain[1], domain[2]};
 	  std::array<iREAL, 3> maxpoint = {domain[3], domain[4], domain[5]};
 
 	  //compute coarse level dimensions widths
@@ -416,15 +416,15 @@ namespace delta {
 		if(isInDomain(x, boundingBox) == true || isInDomain(y, boundingBox) == true || isInDomain(z, boundingBox) == true)
 		{
 		  xPartialCoordinates.push_back(xCoordinates[i]);
-		  yPartialCoordinates.push_back(yCoordinates[i+1]);
-		  zPartialCoordinates.push_back(zCoordinates[i+2]);
+		  yPartialCoordinates.push_back(yCoordinates[i]);
+		  zPartialCoordinates.push_back(zCoordinates[i]);
 
-		  xPartialCoordinates.push_back(xCoordinates[i]);
+		  xPartialCoordinates.push_back(xCoordinates[i+1]);
 		  yPartialCoordinates.push_back(yCoordinates[i+1]);
-		  zPartialCoordinates.push_back(zCoordinates[i+2]);
+		  zPartialCoordinates.push_back(zCoordinates[i+1]);
 
-		  xPartialCoordinates.push_back(xCoordinates[i]);
-		  yPartialCoordinates.push_back(yCoordinates[i+1]);
+		  xPartialCoordinates.push_back(xCoordinates[i+2]);
+		  yPartialCoordinates.push_back(yCoordinates[i+2]);
 		  zPartialCoordinates.push_back(zCoordinates[i+2]);
 		}
 	  }
@@ -505,18 +505,15 @@ namespace delta {
 	  		  zCoordinatesPartial);
 	  if(_isLeaf)
 	  {
-		std::vector<iREAL> xPartialCoordinates;
-		std::vector<iREAL> yPartialCoordinates;
-		std::vector<iREAL> zPartialCoordinates;
 		if(isInDomain(x))
 		{
 		  getPartialMesh(_domain,
 			  xCoordinates,
 			  yCoordinates,
 			  zCoordinates,
-			  xPartialCoordinates,
-			  yPartialCoordinates,
-			  zPartialCoordinates);
+			  xCoordinatesPartial,
+			  yCoordinatesPartial,
+			  zCoordinatesPartial);
 		}
 	  }
 	}

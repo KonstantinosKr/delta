@@ -6,7 +6,8 @@
  */
 
 #include <delta/geometry/operators/mesh.h>
-
+#include <iostream>
+#include <stdio.h>
 void delta::geometry::operators::mesh::moveMeshFromPositionToOrigin(
     std::vector<iREAL> &xCoordinates,
     std::vector<iREAL> &yCoordinates,
@@ -14,7 +15,7 @@ void delta::geometry::operators::mesh::moveMeshFromPositionToOrigin(
     iREAL center[3])
 {
   #ifdef OMPProcess
-	#pragma omp parallel for
+//	#pragma omp parallel for
   #endif
   for(unsigned i=0;i<xCoordinates.size();i++)
   {
@@ -31,7 +32,7 @@ void delta::geometry::operators::mesh::moveMeshFromOriginToPosition(
     iREAL center[3])
 {
   #ifdef OMPProcess
-	#pragma omp parallel for
+//	#pragma omp parallel for
   #endif
   for(unsigned i=0;i<xCoordinates.size();i++)
   {
@@ -51,7 +52,7 @@ void delta::geometry::operators::mesh::scaleXYZ(
   delta::geometry::operators::mesh::moveMeshFromPositionToOrigin(xCoordinates, yCoordinates, zCoordinates, position);
 
   #ifdef OMPProcess
-	#pragma omp parallel for
+//	#pragma omp parallel for
   #endif
   for(unsigned i=0;i<xCoordinates.size();i++)
   {
@@ -71,7 +72,7 @@ void delta::geometry::operators::mesh::rotateX(
   const iREAL pi = std::acos(-1);
 
   #ifdef OMPProcess
-	#pragma omp parallel for
+//	#pragma omp parallel for
   #endif
   for (unsigned i=0;i<xCoordinates.size(); i++)
   {

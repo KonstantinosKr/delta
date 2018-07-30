@@ -542,7 +542,7 @@ iREAL delta::geometry::mesh::Mesh::computeMaxXAxis()
 
   for(unsigned i=0;i<_xCoordinates.size();i++)
   {
-	if (max < _xCoordinates[i]) max = _xCoordinates[i];
+	if (_xCoordinates[i] > max) max = _xCoordinates[i];
   }
   return max;
 }
@@ -553,7 +553,7 @@ iREAL delta::geometry::mesh::Mesh::computeMaxYAxis()
 
   for(unsigned i=0;i<_yCoordinates.size();i++)
   {
-	if (max < _yCoordinates[i]) max = _yCoordinates[i];
+	if (_yCoordinates[i] > max) max = _yCoordinates[i];
   }
   return max;
 }
@@ -564,7 +564,7 @@ iREAL delta::geometry::mesh::Mesh::computeMaxZAxis()
 
   for(unsigned i=0; i<_zCoordinates.size(); i++)
   {
-	if (max < _zCoordinates[i]) max = _zCoordinates[i];
+	if (_zCoordinates[i] > max) max = _zCoordinates[i];
   }
   return max;
 }
@@ -575,7 +575,7 @@ iREAL delta::geometry::mesh::Mesh::computeMinXAxis()
 
   for(unsigned i=0;i<_xCoordinates.size();i++)
   {
-	if (min > _xCoordinates[i]) min = _xCoordinates[i];
+	if (_xCoordinates[i] < min) min = _xCoordinates[i];
   }
   return min;
 }
@@ -586,7 +586,7 @@ iREAL delta::geometry::mesh::Mesh::computeMinYAxis()
 
   for(unsigned i=0; i<_yCoordinates.size(); i++)
   {
-	if (min > _yCoordinates[i]) min = _yCoordinates[i];
+	if (_yCoordinates[i] < min) min = _yCoordinates[i];
   }
   return min;
 }
@@ -597,7 +597,7 @@ iREAL delta::geometry::mesh::Mesh::computeMinZAxis()
 
   for(unsigned i=0; i<_zCoordinates.size(); i++)
   {
-	if (min > _zCoordinates[i]) min = _zCoordinates[i];
+	if (_zCoordinates[i] < min) min = _zCoordinates[i];
   }
   return min;
 }
@@ -751,7 +751,7 @@ iREAL delta::geometry::mesh::Mesh::computeHMin()
 }
 
 /*
- * gets the inertia using simplex integration from solfec
+ *gets the inertia using simplex integration from solfec
  */
 void delta::geometry::mesh::Mesh::computeInertia(
 		delta::geometry::material::MaterialType material,

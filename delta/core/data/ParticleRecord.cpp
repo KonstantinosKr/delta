@@ -242,7 +242,9 @@ void delta::core::data::ParticleRecord::getSubsetOfMesh(
 	  _xCoordinates,
 	  _yCoordinates,
 	  _zCoordinates,
-	  xCoordinatesPartial, yCoordinatesPartial, zCoordinatesPartial);
+	  xCoordinatesPartial, 
+      yCoordinatesPartial, 
+      zCoordinatesPartial);
 }
 
 delta::core::data::ParticleRecord::~ParticleRecord() {

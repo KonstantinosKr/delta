@@ -30,7 +30,8 @@ class delta::core::data::Structure {
 
 	Structure(
 		std::vector<delta::world::structure::Object> objects,
-		iREAL 										maxMeshRefinement);
+		iREAL 										maxMeshRefinement,
+        bool                                        enforceRefinement);
 
 	delta::core::data::ParticleRecord& 				getParticle(int i);
 	std::vector<delta::core::data::ParticleRecord>& 	getAll();

@@ -17,7 +17,8 @@ namespace delta {
 
 	  Structure::Structure(
 		  std::vector<delta::world::structure::Object> 	objects,
-		  iREAL 											maxMeshRefinement)
+		  iREAL 										maxMeshRefinement,
+          bool                                          enforceRefinement)
 	  {
 		std::array<iREAL,6> boundary = {0.0, 0.0, 0.0, 1.0, 1.0, 1.0};
 
@@ -27,7 +28,7 @@ namespace delta {
 		for(int i=0; i<objects.size(); i++)
 		{
 		  delta::core::data::ParticleRecord record(objects[i]);
-		  if(maxMeshRefinement > record.getAvgMeshSize())
+		  if(maxMeshRefinement > record.getAvgMeshSize() || enforceRefinement)
 		  {
 			record.refineTree(maxMeshRefinement);
 		  }
@@ -50,7 +51,7 @@ namespace delta {
 		for(int i=0; i<objects.size(); i++)
 		{
 		  delta::core::data::ParticleRecord record(objects[i]);
-		  record.refineTree(record.getAvgMeshSize());
+          record.refineTree(record.getAvgMeshSize());
 
 		  this->_particles.push_back(record);
 		  if(record.getIsObstacle())

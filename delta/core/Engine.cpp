@@ -31,30 +31,38 @@ delta::core::Engine::Engine()
 }
 
 delta::core::Engine::Engine(
-	delta::world::World					world,
+	delta::world::World					    world,
 	delta::core::data::Meta::EngineMeta 	meta)
 {
-  _overlapCheck 		= meta.overlapPreCheck;
+  _overlapCheck 	= meta.overlapPreCheck;
   _collisionModel 	= meta.modelScheme;
-  _plot 				= meta.plotScheme;
+  _plot 			= meta.plotScheme;
   _gravity 			= world.hasGravity();
-  _data 				= delta::core::data::Structure(world.getObjects());
-  _boundary 			= world.getBoundary();
+  _data 			= delta::core::data::Structure(world.getObjects());
+  _boundary 		= world.getBoundary();
   _state 			= delta::core::State(_data, meta);
 }
 
 delta::core::Engine::Engine(
-	std::vector<delta::world::structure::Object> particles,
-	std::array<iREAL, 6> 						boundary,
+	std::vector<delta::world::structure::Object>    particles,
+	std::array<iREAL, 6> 						    boundary,
 	delta::core::data::Meta::EngineMeta 			meta)
 {
-  _overlapCheck 		= meta.overlapPreCheck;
-  _collisionModel 	= meta.modelScheme;
-  _plot 				= meta.plotScheme;
-  _gravity 			= meta.gravity;
-  _data 				= delta::core::data::Structure(particles);
-  _state 			= delta::core::State(_data, meta);
-  _boundary 			= boundary;
+  _overlapCheck     = meta.overlapPreCheck;
+  _collisionModel   = meta.modelScheme;
+  _plot             = meta.plotScheme;
+  _gravity          = meta.gravity;
+  if(meta.maxPrescribedRefinement > 0.0)
+  { 
+    _data = delta::core::data::Structure(
+                particles, 
+                meta.maxPrescribedRefinement,
+                true);
+  } else {
+    _data = delta::core::data::Structure(particles);
+  }
+  _state            = delta::core::State(_data, meta);
+  _boundary         = boundary;
 }
 
 delta::core::Engine::~Engine()
@@ -476,8 +484,9 @@ std::vector<delta::core::data::ParticleRecord>& delta::core::Engine::getParticle
 
 void delta::core::Engine::plot()
 {
-  if(_plot == delta::core::data::Meta::Plot::EveryIteration)
+  //if(_plot == delta::core::data::Meta::Plot::EveryIteration)
   {
+    printf("entered\n");
 	delta::core::io::writeGeometryToVTK(_state.getCurrentStepIteration(), _data.getAll());
 	delta::core::io::writeGridGeometryToVTK(_state.getCurrentStepIteration(), _data.getGeometryGrid());
   }
