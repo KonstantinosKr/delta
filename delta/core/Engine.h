@@ -30,6 +30,7 @@
 #include <delta/contact/detection/bf.h>
 #include <delta/contact/detection/penalty.h>
 #include <delta/contact/detection/hybrid.h>
+#include "delta/contact/detection/point.h"
 #include <delta/contact/forces/forces.h>
 
 #include <delta/core/data/Structure.h>
@@ -70,6 +71,14 @@ class delta::core::Engine
 		delta::core::data::Meta::EngineMeta 			meta);
 
 	virtual ~Engine();
+
+	void hyperContacts(
+		double epsilonA,
+		double epsilonB,
+		std::vector<iREAL>& ex,
+		std::vector<iREAL>& ey,
+		std::vector<iREAL>& ez,
+		std::vector<std::array<iREAL,4>>& d);
 
 	void 				iterate();
 	delta::core::State 	getState();

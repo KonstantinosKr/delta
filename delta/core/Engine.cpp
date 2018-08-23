@@ -31,22 +31,22 @@ delta::core::Engine::Engine()
 }
 
 delta::core::Engine::Engine(
-	delta::world::World					    world,
+	delta::world::World					world,
 	delta::core::data::Meta::EngineMeta 	meta)
 {
-  _overlapCheck 	= meta.overlapPreCheck;
+  _overlapCheck 		= meta.overlapPreCheck;
   _collisionModel 	= meta.modelScheme;
-  _plot 			= meta.plotScheme;
+  _plot 				= meta.plotScheme;
   _gravity 			= world.hasGravity();
-  _data 			= delta::core::data::Structure(world.getObjects());
-  _boundary 		= world.getBoundary();
+  _data 				= delta::core::data::Structure(world.getObjects());
+  _boundary 			= world.getBoundary();
   _state 			= delta::core::State(_data, meta);
 }
 
 delta::core::Engine::Engine(
-	std::vector<delta::world::structure::Object>    particles,
+	std::vector<delta::world::structure::Object>    	particles,
 	std::array<iREAL, 6> 						    boundary,
-	delta::core::data::Meta::EngineMeta 			meta)
+	delta::core::data::Meta::EngineMeta 				meta)
 {
   _overlapCheck     = meta.overlapPreCheck;
   _collisionModel   = meta.modelScheme;
@@ -68,6 +68,78 @@ delta::core::Engine::Engine(
 delta::core::Engine::~Engine()
 {
 
+}
+
+/*
+ * Currently API only supports hyperspace points
+ */
+void delta::core::Engine::hyperContacts(
+	double epsilonA,
+	double epsilonB,
+	std::vector<iREAL>& ex,
+	std::vector<iREAL>& ey,
+	std::vector<iREAL>& ez,
+	std::vector<std::array<iREAL,4>>& d)
+{
+
+  for(int h=0; h<ex.size(); h++)
+  {
+	iREAL xx[3] = {ex[h], ey[h], ez[h]};
+
+	for(int ii=0; ii<getParticleRecords().size() &&
+		getState().getCurrentStepIteration() > 0; ii++)
+	{
+		std::vector<iREAL> xCoordinatesPartial, yCoordinatesPartial, zCoordinatesPartial;
+		getParticleRecords()[ii].getSubsetOfMesh( xx, epsilonA,
+												  xCoordinatesPartial,
+												  yCoordinatesPartial,
+												  zCoordinatesPartial);
+
+		auto newContactPoints = delta::contact::detection::pointToGeometry(
+												  xx[0], xx[1], xx[2], 0, epsilonA,
+												  xCoordinatesPartial.data(),
+												  yCoordinatesPartial.data(),
+												  zCoordinatesPartial.data(),
+												  zCoordinatesPartial.size()/3,
+												  1, epsilonB);
+
+		iREAL distance = 1E99;
+		int index = 0;
+		for(int i=0; i<newContactPoints.size(); i++)
+		{
+		  iREAL contactDistance = newContactPoints[i].getDistance();
+		  if(distance > contactDistance)
+		  {//get smallest distance
+			distance = contactDistance;
+			index = i;
+		  }
+		}
+
+		if(newContactPoints.size() > 0)
+		{
+		  //contact found (i.e. distance closer than epsilon)
+		  d[h][0] = newContactPoints[index].Q[1];
+		  d[h][1] = newContactPoints[index].Q[2];
+		  d[h][2] = newContactPoints[index].Q[3];
+		  d[h][3] = distance;
+
+		  if(newContactPoints[index].penetration < 0.0)
+		  { //point x is inside the body
+			//printf("internal penetration\n");
+			d[h][3] = 0.0;
+		  }
+		  //printf("contact: %f\n", distance);
+		}
+		else
+		{
+		  d[h][0] = 0.0;
+		  d[h][1] = 0.0;
+		  d[h][2] = 0.0;
+		  d[h][3] = epsilonA; //outside so this values should be epsilon;
+		  //printf("no contact: %f\n", vars.d(3));
+		}
+	}
+  }
 }
 
 void delta::core::Engine::iterate()
@@ -484,9 +556,8 @@ std::vector<delta::core::data::ParticleRecord>& delta::core::Engine::getParticle
 
 void delta::core::Engine::plot()
 {
-  //if(_plot == delta::core::data::Meta::Plot::EveryIteration)
+  if(_plot == delta::core::data::Meta::Plot::EveryIteration)
   {
-    printf("entered\n");
 	delta::core::io::writeGeometryToVTK(_state.getCurrentStepIteration(), _data.getAll());
 	delta::core::io::writeGridGeometryToVTK(_state.getCurrentStepIteration(), _data.getGeometryGrid());
   }
