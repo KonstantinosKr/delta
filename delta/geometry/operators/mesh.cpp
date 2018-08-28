@@ -6,8 +6,7 @@
  */
 
 #include <delta/geometry/operators/mesh.h>
-#include <iostream>
-#include <stdio.h>
+
 void delta::geometry::operators::mesh::moveMeshFromPositionToOrigin(
     std::vector<iREAL> &xCoordinates,
     std::vector<iREAL> &yCoordinates,
@@ -146,7 +145,6 @@ void delta::geometry::operators::mesh::rotateZ(
       zCoordinates[i] =   M[6] * x + M[7] * y + M[8] * z;
   }
 }
-
 
 void delta::geometry::operators::mesh::moveMeshFromPositionToOrigin(
     std::vector<iREAL> &points,

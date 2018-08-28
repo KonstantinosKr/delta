@@ -154,7 +154,7 @@ void delta::world::scenarios::kaikoura(
   std::array<iREAL, 3> linear 	= {0.0, 0.0, 0.0};
   std::array<iREAL, 3> angular 	= {0.0, 0.0, 0.0};
 
-  kaikoura->scaleXYZ(1/kaikoura->computeXYZWidth());
+  kaikoura->scaleXYZ(1/kaikoura->computeXYZw());
   delta::world::structure::Object kaikouraObject("kaikoura", 2, kaikoura, centre,
 								  delta::geometry::material::MaterialType::WOOD,
 								  false, false, true, epsilon, linear, angular);

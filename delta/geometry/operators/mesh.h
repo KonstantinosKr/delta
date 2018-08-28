@@ -10,6 +10,8 @@
 
 #include <vector>
 #include <cmath>
+#include <iostream>
+#include <stdio.h>
 
 namespace delta {
   namespace geometry {

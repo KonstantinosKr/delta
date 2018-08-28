@@ -54,10 +54,8 @@ delta::core::Engine::Engine(
   _gravity          = meta.gravity;
   if(meta.maxPrescribedRefinement > 0.0)
   { 
-    _data = delta::core::data::Structure(
-                particles, 
-                meta.maxPrescribedRefinement,
-                true);
+    _data = delta::core::data::Structure(particles,
+                meta.maxPrescribedRefinement,true);
   } else {
     _data = delta::core::data::Structure(particles);
   }
@@ -82,6 +80,7 @@ void delta::core::Engine::hyperContacts(
 	std::vector<std::array<iREAL,4>>& d)
 {
 
+  //check if bounding box exist
   for(int h=0; h<ex.size(); h++)
   {
 	iREAL xx[3] = {ex[h], ey[h], ez[h]};
@@ -89,55 +88,57 @@ void delta::core::Engine::hyperContacts(
 	for(int ii=0; ii<getParticleRecords().size() &&
 		getState().getCurrentStepIteration() > 0; ii++)
 	{
-		std::vector<iREAL> xCoordinatesPartial, yCoordinatesPartial, zCoordinatesPartial;
-		getParticleRecords()[ii].getSubsetOfMesh( xx, epsilonA,
-												  xCoordinatesPartial,
-												  yCoordinatesPartial,
-												  zCoordinatesPartial);
+	  std::vector<iREAL> xCoordinatesPartial, yCoordinatesPartial, zCoordinatesPartial;
+	  getParticleRecords()[ii].getSubsetOfMesh( xx, epsilonA,
+												xCoordinatesPartial,
+												yCoordinatesPartial,
+												zCoordinatesPartial);
 
-		auto newContactPoints = delta::contact::detection::pointToGeometry(
-												  xx[0], xx[1], xx[2], 0, epsilonA,
-												  xCoordinatesPartial.data(),
-												  yCoordinatesPartial.data(),
-												  zCoordinatesPartial.data(),
-												  zCoordinatesPartial.size()/3,
-												  1, epsilonB);
+	  auto newContactPoints = delta::contact::detection::pointToGeometry(
+												xx[0], xx[1], xx[2], 0, epsilonA,
+												xCoordinatesPartial.data(),
+												yCoordinatesPartial.data(),
+												zCoordinatesPartial.data(),
+												zCoordinatesPartial.size()/3,
+												1, epsilonB);
 
-		iREAL distance = 1E99;
-		int index = 0;
-		for(int i=0; i<newContactPoints.size(); i++)
-		{
-		  iREAL contactDistance = newContactPoints[i].getDistance();
-		  if(distance > contactDistance)
-		  {//get smallest distance
-			distance = contactDistance;
-			index = i;
-		  }
+	  iREAL distance = 1E99;
+	  int index = 0;
+
+	  //find closest distances
+	  for(int i=0; i<newContactPoints.size(); i++)
+	  {
+		iREAL contactDistance = newContactPoints[i].getDistance();
+		if(distance > contactDistance)
+		{//get smallest distance
+		  distance = contactDistance;
+		  index = i;
 		}
+	  }
 
-		if(newContactPoints.size() > 0)
-		{
-		  //contact found (i.e. distance closer than epsilon)
-		  d[h][0] = newContactPoints[index].Q[1];
-		  d[h][1] = newContactPoints[index].Q[2];
-		  d[h][2] = newContactPoints[index].Q[3];
-		  d[h][3] = distance;
+	  if(newContactPoints.size() > 0)
+	  {
+		//contact found (i.e. distance closer than epsilon)
+		d[h][0] = newContactPoints[index].Q[1];
+		d[h][1] = newContactPoints[index].Q[2];
+		d[h][2] = newContactPoints[index].Q[3];
+		d[h][3] = distance;
 
-		  if(newContactPoints[index].penetration < 0.0)
-		  { //point x is inside the body
-			//printf("internal penetration\n");
-			d[h][3] = 0.0;
-		  }
-		  //printf("contact: %f\n", distance);
+		if(newContactPoints[index].penetration < 0.0)
+		{ //point x is inside the body
+		  //printf("internal penetration\n");
+		  d[h][3] = 0.0;
 		}
-		else
-		{
-		  d[h][0] = 0.0;
-		  d[h][1] = 0.0;
-		  d[h][2] = 0.0;
-		  d[h][3] = epsilonA; //outside so this values should be epsilon;
-		  //printf("no contact: %f\n", vars.d(3));
-		}
+		//printf("contact: %f\n", distance);
+	  }
+	  else
+	  {
+		d[h][0] = 0.0;
+		d[h][1] = 0.0;
+		d[h][2] = 0.0;
+		d[h][3] = epsilonA; //outside so this values should be epsilon;
+		//printf("no contact: %f\n", vars.d(3));
+	  }
 	}
   }
 }

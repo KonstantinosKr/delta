@@ -352,7 +352,7 @@ class delta::geometry::mesh::Mesh {
 	 *  @param none
 	 *  @returns iREAL
 	 */
-	iREAL computeXZWidth();
+	iREAL computeXZw();
 
 	/*
 	 *  Get Diameter Width
@@ -528,7 +528,7 @@ class delta::geometry::mesh::Mesh {
 	 *  @param none
 	 *  @returns iREAL
 	 */
-	iREAL computeXYZWidth();
+	iREAL computeXYZw();
 
 	iREAL getMaxMeshSize();
 	iREAL getMinMeshSize();
@@ -539,20 +539,6 @@ class delta::geometry::mesh::Mesh {
 
 	virtual ~Mesh();
   private:
-
-	/*
-	 *  Get Distance Between two Vertices
-	 *
-	 *  Returns distance
-	 *
-	 *
-	 *  @param A vertex
-  	 *  @param B vertex
-	 *  @returns iREAL
-	 */
-	iREAL computeDistanceAB(
-	    std::array<iREAL, 3> A,
-	    std::array<iREAL, 3> B);
 
 	/*
 	 *  Compress from vectors

@@ -5,7 +5,9 @@
  *      Author: konstantinos
  */
 
-#include "../structure/Mesh.h"
+#include "delta/geometry/structure/Mesh.h"
+#include "delta/geometry/structure/Triangle.h"
+#include "delta/geometry/operators/vertex.h"
 
 #include <vector>
 #include <map>
@@ -19,7 +21,6 @@
 #include <iomanip>
 #include <functional>
 #include <unordered_set>
-#include "../structure/Triangle.h"
 
 delta::geometry::mesh::Mesh::Mesh()
 {
@@ -458,148 +459,58 @@ void delta::geometry::mesh::Mesh::rotateZ(iREAL alphaZ)
 	  _xCoordinates, _yCoordinates, _zCoordinates, alphaZ);
 }
 
-iREAL delta::geometry::mesh::Mesh::computeDistanceAB(
-    std::array<iREAL, 3> A,
-    std::array<iREAL, 3> B)
-{
-  return std::sqrt(((B[0]-A[0])*(B[0]-A[0]))+((B[1]-A[1])*(B[1]-A[1]))+((B[2]-A[2])*(B[2]-A[2])));
-}
-
 iREAL delta::geometry::mesh::Mesh::computeDiameter()
 {
-  return delta::geometry::mesh::Mesh::computeXYZWidth();
+  return delta::geometry::operators::vertex::computeXYZw(
+	  _xCoordinates, _yCoordinates, _zCoordinates);
 }
 
-iREAL delta::geometry::mesh::Mesh::computeXYZWidth()
+iREAL delta::geometry::mesh::Mesh::computeXYZw()
 {
-  iREAL xw = delta::geometry::mesh::Mesh::computeXw();
-  iREAL yw = delta::geometry::mesh::Mesh::computeYw();
-  iREAL zw = delta::geometry::mesh::Mesh::computeZw();
-
-  iREAL tmp = xw > yw ? xw : yw;
-
-  return tmp>zw ? tmp : zw;
+  return delta::geometry::operators::vertex::computeXYZw(
+	  _xCoordinates, _yCoordinates, _zCoordinates);
 }
 
-iREAL delta::geometry::mesh::Mesh::computeXZWidth()
+iREAL delta::geometry::mesh::Mesh::computeXZw()
 {
-  iREAL xw = delta::geometry::mesh::Mesh::computeXw();
-  iREAL zw = delta::geometry::mesh::Mesh::computeZw();
-
-  return xw>zw ? xw : zw;
+  return delta::geometry::operators::vertex::computeXZw(
+	  _xCoordinates, _yCoordinates, _zCoordinates);
 }
 
 iREAL delta::geometry::mesh::Mesh::computeXw()
 {
-  std::array<iREAL, 3> min = delta::geometry::mesh::Mesh::computeBoundaryMinVertex();
-  std::array<iREAL, 3> max = delta::geometry::mesh::Mesh::computeBoundaryMaxVertex();
-
-  return std::abs(min[0] - max[0]);
+  return delta::geometry::operators::vertex::computeXw(
+	  _xCoordinates, _yCoordinates, _zCoordinates);
 }
 
 iREAL delta::geometry::mesh::Mesh::computeYw()
 {
-  std::array<iREAL, 3> min = delta::geometry::mesh::Mesh::computeBoundaryMinVertex();
-  std::array<iREAL, 3> max = delta::geometry::mesh::Mesh::computeBoundaryMaxVertex();
-
-  return std::abs(min[1] - max[1]);
+  return delta::geometry::operators::vertex::computeYw(
+	  _xCoordinates, _yCoordinates, _zCoordinates);
 }
 
 iREAL delta::geometry::mesh::Mesh::computeZw()
 {
-  std::array<iREAL, 3> min = delta::geometry::mesh::Mesh::computeBoundaryMinVertex();
-  std::array<iREAL, 3> max = delta::geometry::mesh::Mesh::computeBoundaryMaxVertex();
-
-  return std::abs(min[2] - max[2]);
+  return delta::geometry::operators::vertex::computeZw(
+	  _xCoordinates, _yCoordinates, _zCoordinates);
 }
 
 std::array<iREAL, 3> delta::geometry::mesh::Mesh::computeBoundaryMinVertex()
 {
-  std::array<iREAL, 3> vertex = {computeMinXAxis(), computeMinYAxis(), computeMinZAxis()};
-  return vertex;
+  return delta::geometry::operators::vertex::computeBoundaryMinVertex(
+	  _xCoordinates, _yCoordinates, _zCoordinates);
 }
 
 std::array<iREAL, 3> delta::geometry::mesh::Mesh::computeBoundaryMaxVertex()
 {
-  std::array<iREAL, 3> vertex = {computeMaxXAxis(), computeMaxYAxis(), computeMaxZAxis()};
-
-  return vertex;
+  return delta::geometry::operators::vertex::computeBoundaryMaxVertex(
+	  _xCoordinates, _yCoordinates, _zCoordinates);
 }
 
 iREAL delta::geometry::mesh::Mesh::computeDiagonal()
 {
-  std::array<iREAL, 3> minPoint, maxPoint;
-
-  minPoint = computeBoundaryMinVertex();
-  maxPoint = computeBoundaryMaxVertex();
-
-  return computeDistanceAB(minPoint,maxPoint);
-}
-
-iREAL delta::geometry::mesh::Mesh::computeMaxXAxis()
-{
-  iREAL max = std::numeric_limits<iREAL>::min();
-
-  for(unsigned i=0;i<_xCoordinates.size();i++)
-  {
-	if (_xCoordinates[i] > max) max = _xCoordinates[i];
-  }
-  return max;
-}
-
-iREAL delta::geometry::mesh::Mesh::computeMaxYAxis()
-{
-  iREAL max = std::numeric_limits<iREAL>::min();
-
-  for(unsigned i=0;i<_yCoordinates.size();i++)
-  {
-	if (_yCoordinates[i] > max) max = _yCoordinates[i];
-  }
-  return max;
-}
-
-iREAL delta::geometry::mesh::Mesh::computeMaxZAxis()
-{
-  iREAL max = std::numeric_limits<iREAL>::min();
-
-  for(unsigned i=0; i<_zCoordinates.size(); i++)
-  {
-	if (_zCoordinates[i] > max) max = _zCoordinates[i];
-  }
-  return max;
-}
-
-iREAL delta::geometry::mesh::Mesh::computeMinXAxis()
-{
-  iREAL min = std::numeric_limits<iREAL>::max();
-
-  for(unsigned i=0;i<_xCoordinates.size();i++)
-  {
-	if (_xCoordinates[i] < min) min = _xCoordinates[i];
-  }
-  return min;
-}
-
-iREAL delta::geometry::mesh::Mesh::computeMinYAxis()
-{
-  iREAL min = std::numeric_limits<iREAL>::max();
-
-  for(unsigned i=0; i<_yCoordinates.size(); i++)
-  {
-	if (_yCoordinates[i] < min) min = _yCoordinates[i];
-  }
-  return min;
-}
-
-iREAL delta::geometry::mesh::Mesh::computeMinZAxis()
-{
-  iREAL min = std::numeric_limits<iREAL>::max();
-
-  for(unsigned i=0; i<_zCoordinates.size(); i++)
-  {
-	if (_zCoordinates[i] < min) min = _zCoordinates[i];
-  }
-  return min;
+  return delta::geometry::operators::vertex::computeDiagonal(
+	  _xCoordinates, _yCoordinates, _zCoordinates);
 }
 
 void delta::geometry::mesh::Mesh::computeCenterOfGeometry(

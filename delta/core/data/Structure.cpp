@@ -48,10 +48,11 @@ namespace delta {
 		std::array<iREAL,6> boundary = {0.0, 0.0, 0.0, 1.0, 1.0, 1.0};
 		_numberOfObjects = 0;
 		_numberOfTriangles = 0;
+
 		for(int i=0; i<objects.size(); i++)
 		{
 		  delta::core::data::ParticleRecord record(objects[i]);
-          record.refineTree(record.getAvgMeshSize());
+		  record.refineTree(record.getAvgMeshSize());
 
 		  this->_particles.push_back(record);
 		  if(record.getIsObstacle())

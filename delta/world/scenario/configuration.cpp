@@ -513,7 +513,7 @@ void delta::world::configuration::nonUniformlyDistributedTotalMass(
 
   //measurements
   delta::geometry::mesh::Mesh *mesh = delta::geometry::hardcoded::generateBrickFB();
-  iREAL w = mesh->computeXZWidth();
+  iREAL w = mesh->computeXZw();
   iREAL h = mesh->computeYw();
 
   //read nuclear graphite schematics
@@ -577,7 +577,7 @@ void delta::world::configuration::nonUniformlyDistributedTotalMass(
   //////////////////////////MESH///////////////////////////////////////////////////////////////////////////////////
   //measurements
   delta::geometry::mesh::Mesh *mesh = delta::geometry::hardcoded::generateBrickFB();
-  iREAL width = mesh->computeXZWidth();
+  iREAL width = mesh->computeXZw();
   iREAL height = mesh->computeYw();
   xCoordinates.clear(); yCoordinates.clear(); zCoordinates.clear();
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////

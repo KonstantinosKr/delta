@@ -29,8 +29,8 @@ delta::core::data::ParticleRecord::ParticleRecord(delta::world::structure::Objec
 
   this->_material = object.getMaterial();
 
-  object.computeInertia(_material, this->_mass, _centreOfMass.data(), this->_inertia.data());
-  object.computeInverseInertia(this->_inertia.data(), this->_inverse.data(), object.getIsObstacle());
+  object.computeInertia(_material, _mass, _centreOfMass.data(), _inertia.data());
+  object.computeInverseInertia(_inertia.data(), _inverse.data(), object.getIsObstacle());
 
   this->_xCoordinates = object.getMesh().getXCoordinatesAsVector();
   this->_yCoordinates = object.getMesh().getYCoordinatesAsVector();
