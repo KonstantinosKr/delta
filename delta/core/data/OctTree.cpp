@@ -342,40 +342,6 @@ namespace delta {
 	  return inside;
 	}
 
-	bool OctTree::isInDomain(
-		iREAL x[3],
-		std::array<iREAL,6> boundingBox)
-	{
-	  bool axisXinside = false;
-	  bool axisYinside = false;
-	  bool axisZinside = false;
-
-	  if(x[0] >= boundingBox[0] && x[0] <= boundingBox[3])
-	  {
-		axisXinside = true;
-	  } else
-	  {
-		return false;
-	  }
-
-	  if(x[1] >= boundingBox[1] && x[1] <= boundingBox[4])
-	  {
-		axisYinside = true;
-	  } else
-	  {
-		return false;
-	  }
-
-	  if(x[2] >= boundingBox[2] && x[2] <= boundingBox[5])
-	  {
-		axisZinside = true;
-	  } else
-	  {
-		return false;
-	  }
-	  return true;
-	}
-
 	bool OctTree::isPartiallyInDomain(
 		std::array<iREAL,6> boundingBox,
 		std::vector<iREAL>& xCoordinates,
@@ -388,9 +354,9 @@ namespace delta {
 		iREAL y[3] = {xCoordinates[i+1], yCoordinates[i+1], zCoordinates[i+1]};
 		iREAL z[3] = {xCoordinates[i+2], yCoordinates[i+2], zCoordinates[i+2]};
 
-		if(	isInDomain(x, boundingBox) == true ||
-			isInDomain(y, boundingBox) == true ||
-			isInDomain(z, boundingBox) == true)
+		if(	delta::contact::detection::isInBox(x, boundingBox) == true ||
+			delta::contact::detection::isInBox(y, boundingBox) == true ||
+			delta::contact::detection::isInBox(z, boundingBox) == true)
 		{
 		  return true;
 		}
@@ -413,7 +379,9 @@ namespace delta {
 		iREAL y[3] = {xCoordinates[i+1], yCoordinates[i+1], zCoordinates[i+1]};
 		iREAL z[3] = {xCoordinates[i+2], yCoordinates[i+2], zCoordinates[i+2]};
 
-		if(isInDomain(x, boundingBox) == true || isInDomain(y, boundingBox) == true || isInDomain(z, boundingBox) == true)
+		if(	delta::contact::detection::isInBox(x, boundingBox) == true ||
+			delta::contact::detection::isInBox(y, boundingBox) == true ||
+			delta::contact::detection::isInBox(z, boundingBox) == true)
 		{
 		  xPartialCoordinates.push_back(xCoordinates[i]);
 		  yPartialCoordinates.push_back(yCoordinates[i]);

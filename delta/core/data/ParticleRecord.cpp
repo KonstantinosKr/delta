@@ -247,6 +247,11 @@ void delta::core::data::ParticleRecord::getSubsetOfMesh(
       zCoordinatesPartial);
 }
 
+std::array<iREAL, 6> delta::core::data::ParticleRecord::getBbox()
+{
+  return _bbox;
+}
+
 delta::core::data::ParticleRecord::~ParticleRecord() {
   // TODO Auto-generated destructor stub
 }

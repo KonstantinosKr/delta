@@ -31,21 +31,21 @@ delta::core::Engine::Engine()
 }
 
 delta::core::Engine::Engine(
-	delta::world::World					world,
+	delta::world::World					    world,
 	delta::core::data::Meta::EngineMeta 	meta)
 {
   _overlapCheck 		= meta.overlapPreCheck;
-  _collisionModel 	= meta.modelScheme;
+  _collisionModel 	    = meta.modelScheme;
   _plot 				= meta.plotScheme;
-  _gravity 			= world.hasGravity();
+  _gravity 			    = world.hasGravity();
   _data 				= delta::core::data::Structure(world.getObjects());
   _boundary 			= world.getBoundary();
-  _state 			= delta::core::State(_data, meta);
+  _state 			    = delta::core::State(_data, meta);
 }
 
 delta::core::Engine::Engine(
 	std::vector<delta::world::structure::Object>    	particles,
-	std::array<iREAL, 6> 						    boundary,
+	std::array<iREAL, 6> 						        boundary,
 	delta::core::data::Meta::EngineMeta 				meta)
 {
   _overlapCheck     = meta.overlapPreCheck;
@@ -79,68 +79,75 @@ void delta::core::Engine::hyperContacts(
 	std::vector<iREAL>& ez,
 	std::vector<std::array<iREAL,4>>& d)
 {
-
   //check if bounding box exist
-  for(int h=0; h<ex.size(); h++)
+  std::array<iREAL, 6> bboxA = delta::geometry::operators::vertex::computeBbox(ex, ey, ez);
+
+  for(int ii=0; ii<getParticleRecords().size() &&
+	  getState().getCurrentStepIteration() > 0; ii++)
   {
-	iREAL xx[3] = {ex[h], ey[h], ez[h]};
-
-	for(int ii=0; ii<getParticleRecords().size() &&
-		getState().getCurrentStepIteration() > 0; ii++)
+	std::array<iREAL, 6> bboxB = getParticleRecords()[ii].getBbox();
+	if (delta::contact::detection::box(bboxA, epsilonA, bboxB, epsilonB))
 	{
-	  std::vector<iREAL> xCoordinatesPartial, yCoordinatesPartial, zCoordinatesPartial;
-	  getParticleRecords()[ii].getSubsetOfMesh( xx, epsilonA,
-												xCoordinatesPartial,
-												yCoordinatesPartial,
-												zCoordinatesPartial);
-
-	  auto newContactPoints = delta::contact::detection::pointToGeometry(
-												xx[0], xx[1], xx[2], 0, epsilonA,
-												xCoordinatesPartial.data(),
-												yCoordinatesPartial.data(),
-												zCoordinatesPartial.data(),
-												zCoordinatesPartial.size()/3,
-												1, epsilonB);
-
-	  iREAL distance = 1E99;
-	  int index = 0;
-
-	  //find closest distances
-	  for(int i=0; i<newContactPoints.size(); i++)
+	  for(int h=0; h<ex.size(); h++)
 	  {
-		iREAL contactDistance = newContactPoints[i].getDistance();
-		if(distance > contactDistance)
-		{//get smallest distance
-		  distance = contactDistance;
-		  index = i;
+		iREAL xx[3] = {ex[h], ey[h], ez[h]};
+
+		std::vector<iREAL> xCoordinatesPartial, yCoordinatesPartial, zCoordinatesPartial;
+		getParticleRecords()[ii].getSubsetOfMesh(  xx, epsilonA,
+												  xCoordinatesPartial,
+												  yCoordinatesPartial,
+												  zCoordinatesPartial);
+
+		auto newContactPoints = delta::contact::detection::pointToGeometry(
+												  xx[0], xx[1], xx[2], 0, epsilonA,
+												  xCoordinatesPartial.data(),
+												  yCoordinatesPartial.data(),
+												  zCoordinatesPartial.data(),
+												  zCoordinatesPartial.size()/3,
+												  1, epsilonB);
+
+		iREAL distance = 1E99;
+		int index = 0;
+
+		//find closest distances
+		for(int i=0; i<newContactPoints.size(); i++)
+		{
+		  iREAL contactDistance = newContactPoints[i].getDistance();
+		  if(distance > contactDistance)
+		  {//get smallest distance
+			distance = contactDistance;
+			index = i;
+		  }
 		}
-	  }
 
-	  if(newContactPoints.size() > 0)
-	  {
-		//contact found (i.e. distance closer than epsilon)
-		d[h][0] = newContactPoints[index].Q[1];
-		d[h][1] = newContactPoints[index].Q[2];
-		d[h][2] = newContactPoints[index].Q[3];
-		d[h][3] = distance;
+		if(newContactPoints.size() > 0)
+		{
+		  //contact found (i.e. distance closer than epsilon)
+		  d[h][0] = newContactPoints[index].Q[1];
+		  d[h][1] = newContactPoints[index].Q[2];
+		  d[h][2] = newContactPoints[index].Q[3];
+		  d[h][3] = distance;
 
-		if(newContactPoints[index].penetration < 0.0)
-		{ //point x is inside the body
-		  //printf("internal penetration\n");
-		  d[h][3] = 0.0;
+		  if(newContactPoints[index].penetration < 0.0)
+		  { //point x is inside the body
+			//printf("internal penetration\n");
+			d[h][3] = 0.0;
+		  }
+		  //printf("contact: %f\n", distance);
 		}
-		//printf("contact: %f\n", distance);
-	  }
-	  else
-	  {
-		d[h][0] = 0.0;
-		d[h][1] = 0.0;
-		d[h][2] = 0.0;
-		d[h][3] = epsilonA; //outside so this values should be epsilon;
-		//printf("no contact: %f\n", vars.d(3));
+		else
+		{
+		  d[h][0] = 0.0;
+		  d[h][1] = 0.0;
+		  d[h][2] = 0.0;
+		  d[h][3] = epsilonA; //outside so this values should be epsilon;
+		  //printf("no contact: %f\n", vars.d(3));
+		}
+
 	  }
 	}
   }
+
 }
 
 void delta::core::Engine::iterate()

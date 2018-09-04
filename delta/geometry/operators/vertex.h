@@ -11,6 +11,7 @@
 #include <vector>
 #include <array>
 #include <cmath>
+#include <limits>
 
 namespace delta {
   namespace geometry {
@@ -44,6 +45,11 @@ namespace delta {
 			std::vector<iREAL> zCoordinates);
 
 		std::array<iREAL, 3> computeBoundaryMaxVertex(
+			std::vector<iREAL> xCoordinates,
+			std::vector<iREAL> yCoordinates,
+			std::vector<iREAL> zCoordinates);
+
+		std::array<iREAL, 6> computeBbox(
 			std::vector<iREAL> xCoordinates,
 			std::vector<iREAL> yCoordinates,
 			std::vector<iREAL> zCoordinates);

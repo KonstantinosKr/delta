@@ -83,6 +83,8 @@ class delta::core::data::ParticleRecord
 	std::vector<iREAL>   	_refyCoordinates;
 	std::vector<iREAL>   	_refzCoordinates;
 
+	std::array<iREAL, 6> 	getBbox();
+
   private:
 	int                   	_globalParticleID;
 	int                  	_localParticleID;

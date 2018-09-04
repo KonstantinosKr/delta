@@ -10,6 +10,7 @@
 
 #include <vector>
 #include <array>
+#include <delta/contact/detection/box.h>
 
 namespace delta {
   namespace core {
@@ -74,9 +75,6 @@ class delta::core::data::OctTree {
 		std::vector<iREAL>& xCoordinates,
 		std::vector<iREAL>& yCoordinates,
 		std::vector<iREAL>& zCoordinates);
-	bool isInDomain(
-		iREAL x[3],
-		std::array<iREAL,6> boundingBox);
 
 	std::array<iREAL, 6> _domain;
 	bool _isLeaf;

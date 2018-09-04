@@ -30,7 +30,8 @@
 #include <delta/contact/detection/bf.h>
 #include <delta/contact/detection/penalty.h>
 #include <delta/contact/detection/hybrid.h>
-#include "delta/contact/detection/point.h"
+#include <delta/contact/detection/point.h>
+#include <delta/contact/detection/box.h>
 #include <delta/contact/forces/forces.h>
 
 #include <delta/core/data/Structure.h>
@@ -43,6 +44,7 @@
 #include <delta/core/State.h>
 
 #include <delta/geometry/material.h>
+#include <delta/geometry/operators/vertex.h>
 #include <delta/dynamics/dynamics.h>
 
 #include <delta/world/World.h>

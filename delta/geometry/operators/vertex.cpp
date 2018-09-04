@@ -66,6 +66,19 @@ iREAL delta::geometry::operators::vertex::computeZw(
   return std::abs(min[2] - max[2]);
 }
 
+std::array<iREAL, 6> delta::geometry::operators::vertex::computeBbox(
+	std::vector<iREAL> xCoordinates,
+	std::vector<iREAL> yCoordinates,
+	std::vector<iREAL> zCoordinates)
+{
+  std::array<iREAL, 3> vertexMin = computeBoundaryMinVertex(xCoordinates, yCoordinates, zCoordinates);
+  std::array<iREAL, 3> vertexMax = computeBoundaryMaxVertex(xCoordinates, yCoordinates, zCoordinates);
+
+  std::array<iREAL, 6> bbox = {vertexMin[0], vertexMin[1], vertexMin[2],
+							  vertexMax[0], vertexMax[1], vertexMax[2]};
+  return bbox;
+}
+
 std::array<iREAL, 3> delta::geometry::operators::vertex::computeBoundaryMinVertex(
 	std::vector<iREAL> xCoordinates,
 	std::vector<iREAL> yCoordinates,
