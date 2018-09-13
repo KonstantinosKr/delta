@@ -145,17 +145,17 @@ class dem::mappings::CreateGrid {
     static iREAL   		_maxGridRefinedH;
     static bool 			_gravity;
 
-    static std::array<iREAL, 3>   	_minGlobalComputeDomain;
-    static std::array<iREAL, 3>   	_maxGlobalComputeDomain;
-    static iREAL   					_minGlobalParticleDiam;
-    static iREAL   					_maxGlobalParticleDiam;
+    static std::array<iREAL, 3>	_minGlobalComputeDomain;
+    static std::array<iREAL, 3>	_maxGlobalComputeDomain;
+    static iREAL   				_minGlobalParticleDiam;
+    static iREAL   				_maxGlobalParticleDiam;
 
-    static int     		_noPointsPerParticle;
-    static iREAL   		_globalEpsilon;
+    static int     				_noPointsPerParticle;
+    static iREAL   				_globalEpsilon;
 
-    static int   		_numberOfParticles;
-    static int   		_numberOfObstacles;
-    static int   		_numberOfTriangles;
+    static int   				_numberOfParticles;
+    static int   				_numberOfObstacles;
+    static int   				_numberOfTriangles;
 
     static std::vector<delta::world::structure::Object> _coarseObjects;
     static std::vector<delta::world::structure::Object> _fineObjects;

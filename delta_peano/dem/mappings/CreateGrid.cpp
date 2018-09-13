@@ -29,28 +29,28 @@ peano::MappingSpecification   dem::mappings::CreateGrid::descendSpecification(in
 	return peano::MappingSpecification(peano::MappingSpecification::Nop,peano::MappingSpecification::AvoidCoarseGridRaces,true);
 }
 
-tarch::logging::Log                   	dem::mappings::CreateGrid::_log( "dem::mappings::CreateGrid" );
-dem::mappings::CreateGrid::Scenario   	dem::mappings::CreateGrid::_scenario[4];
-dem::mappings::CreateGrid::GridType   	dem::mappings::CreateGrid::_gridType;
-iREAL                                	dem::mappings::CreateGrid::_maxGridRefinedH;
+tarch::logging::Log                	dem::mappings::CreateGrid::_log( "dem::mappings::CreateGrid" );
+dem::mappings::CreateGrid::Scenario	dem::mappings::CreateGrid::_scenario[4];
+dem::mappings::CreateGrid::GridType	dem::mappings::CreateGrid::_gridType;
+iREAL								dem::mappings::CreateGrid::_maxGridRefinedH;
 
-std::array<iREAL,3>                      dem::mappings::CreateGrid::_minGlobalComputeDomain;
-std::array<iREAL,3>                      dem::mappings::CreateGrid::_maxGlobalComputeDomain;
-iREAL                                	dem::mappings::CreateGrid::_minGlobalParticleDiam;
-iREAL                                	dem::mappings::CreateGrid::_maxGlobalParticleDiam;
+std::array<iREAL,3>					dem::mappings::CreateGrid::_minGlobalComputeDomain;
+std::array<iREAL,3>					dem::mappings::CreateGrid::_maxGlobalComputeDomain;
+iREAL								dem::mappings::CreateGrid::_minGlobalParticleDiam;
+iREAL								dem::mappings::CreateGrid::_maxGlobalParticleDiam;
 
-iREAL								 	dem::mappings::CreateGrid::_globalEpsilon;
-int 								     	dem::mappings::CreateGrid::_noPointsPerParticle;
-bool                                  	dem::mappings::CreateGrid::_isSphereContactModel;
-bool                                  	dem::mappings::CreateGrid::_gravity;
+iREAL								dem::mappings::CreateGrid::_globalEpsilon;
+int									dem::mappings::CreateGrid::_noPointsPerParticle;
+bool									dem::mappings::CreateGrid::_isSphereContactModel;
+bool									dem::mappings::CreateGrid::_gravity;
 
-std::vector<delta::world::structure::Object>     dem::mappings::CreateGrid::_coarseObjects;
-std::vector<delta::world::structure::Object>     dem::mappings::CreateGrid::_insitufineObjects;
-std::vector<delta::world::structure::Object>     dem::mappings::CreateGrid::_fineObjects;
+int									dem::mappings::CreateGrid::_numberOfParticles;
+int									dem::mappings::CreateGrid::_numberOfTriangles;
+int									dem::mappings::CreateGrid::_numberOfObstacles;
 
-int                                   	dem::mappings::CreateGrid::_numberOfParticles;
-int                                   	dem::mappings::CreateGrid::_numberOfTriangles;
-int                                   	dem::mappings::CreateGrid::_numberOfObstacles;
+std::vector<delta::world::structure::Object>	dem::mappings::CreateGrid::_coarseObjects;
+std::vector<delta::world::structure::Object>	dem::mappings::CreateGrid::_insitufineObjects;
+std::vector<delta::world::structure::Object>	dem::mappings::CreateGrid::_fineObjects;
 
 void dem::mappings::CreateGrid::setScenario(
     Scenario 	scenario[4],
@@ -62,26 +62,26 @@ void dem::mappings::CreateGrid::setScenario(
 	_scenario[1]          	= scenario[1];
 	_scenario[2]          	= scenario[2];
 	_scenario[3]          	= scenario[3];
-	_maxGridRefinedH        		= maxH;
-	_minGlobalParticleDiam      	= _maxGridRefinedH;
-	_maxGlobalParticleDiam      	= _maxGridRefinedH;
-	_gridType             		= gridType;
-	_globalEpsilon              	= epsilon;
-	_noPointsPerParticle			= noPointsPerGranulate;
-	_gravity						= true;
+	_maxGridRefinedH        	= maxH;
+	_minGlobalParticleDiam	= _maxGridRefinedH;
+	_maxGlobalParticleDiam	= _maxGridRefinedH;
+	_gridType				= gridType;
+	_globalEpsilon			= epsilon;
+	_noPointsPerParticle		= noPointsPerGranulate;
+	_gravity					= true;
 }
 
 void dem::mappings::CreateGrid::deployEnviroment(
     dem::Vertex& 	vertex,
     iREAL 			cellSize,
-    iREAL 			centreAsArray[3],
+    iREAL 			centre[3],
 	bool 			isFine)
 {
-  iREAL cellXLeftBoundary = centreAsArray[0] - cellSize/2, cellZLeftBoundary = centreAsArray[2] - cellSize/2;
-  iREAL cellXRightBoundary= centreAsArray[0] + cellSize/2, cellZRightBoundary = centreAsArray[2] + cellSize/2;
+  iREAL cellXLeftBoundary = centre[0] - cellSize/2.0, cellZLeftBoundary = centre[2] - cellSize/2.0;
+  iREAL cellXRightBoundary = centre[0] + cellSize/2.0, cellZRightBoundary = centre[2] + cellSize/2.0;
 
-  iREAL cellYUPBoundary = centreAsArray[1] + cellSize/2;
-  iREAL cellYDWBoundary = centreAsArray[1] - cellSize/2;
+  iREAL cellYUPBoundary = centre[1] + cellSize/2.0;
+  iREAL cellYDWBoundary = centre[1] - cellSize/2.0;
 
   if(isFine)
   {
@@ -90,49 +90,31 @@ void dem::mappings::CreateGrid::deployEnviroment(
 	{
 	  delta::world::structure::Object object = _insitufineObjects[i];
 	  if((object.getCentre()[0] >= cellXLeftBoundary 	&& object.getCentre()[0] <= cellXRightBoundary) &&
-		 (object.getCentre()[1] >= cellYDWBoundary 		&& object.getCentre()[1] <= cellYUPBoundary) &&
-		 (object.getCentre()[2] >= cellZLeftBoundary 	&& object.getCentre()[2] <= cellZRightBoundary))
+		 (object.getCentre()[1] >= cellYDWBoundary 	&& object.getCentre()[1] <= cellYUPBoundary) &&
+		 (object.getCentre()[2] >= cellZLeftBoundary && object.getCentre()[2] <= cellZRightBoundary))
 	  {
-		//std::cout << vertex.toString();
 		dem::mappings::CreateGrid::deployObject(vertex, object);
-		//printf("particle fine: %i\n", _numberOfParticles);
 	  }
 	}
 
-	//////////////////////////////////////////////////////////////
 	//////////////PER CELL CENTER DEPLOYMENT//////////////////////
+	int randNum = rand() % _fineObjects.size();
+
+	delta::world::structure::Object object = _fineObjects[randNum];
+	object.setCentre(centre);
+	dem::mappings::CreateGrid::deployObject(vertex, object);
 	//////////////////////////////////////////////////////////////
-	//if((_numberOfParticles-_numberOfObstacles) <= _fineObjects.size())
-	for(unsigned i=0; i<_fineObjects.size(); i++)
-	{
-	  delta::world::structure::Object obj = _fineObjects[i];
-
-	  iREAL position[3] = {centreAsArray[0], centreAsArray[1], centreAsArray[2]};
-	  obj.setCentre(position);
-	  dem::mappings::CreateGrid::deployObject(vertex, obj);
-	}
   } else {
-
-	  //std::vector<int> deleteCoarseObjects;
-
-	  //if(_numberOfParticles <= _coarseObjects.size())
-	  for(unsigned i=0; i<_coarseObjects.size(); i++)
+	for(unsigned i=0; i<_coarseObjects.size(); i++)
+	{
+	  delta::world::structure::Object object = _coarseObjects[i];
+	  if((object.getCentre()[0] >= cellXLeftBoundary 	&& object.getCentre()[0] <= cellXRightBoundary) &&
+		 (object.getCentre()[1] >= cellYDWBoundary	&& object.getCentre()[1] <= cellYUPBoundary) &&
+		 (object.getCentre()[2] >= cellZLeftBoundary && object.getCentre()[2] <= cellZRightBoundary))
 	  {
-		delta::world::structure::Object object = _coarseObjects[i];
-	    if((object.getCentre()[0] >= cellXLeftBoundary 	&& object.getCentre()[0] <= cellXRightBoundary) &&
-	       (object.getCentre()[1] >= cellYDWBoundary 		&& object.getCentre()[1] <= cellYUPBoundary) &&
-	       (object.getCentre()[2] >= cellZLeftBoundary 	&& object.getCentre()[2] <= cellZRightBoundary))
-	    {
-
-	      dem::mappings::CreateGrid::deployObject(vertex, object);
-	      //deleteCoarseObjects.push_back(i);
-	    }
+		dem::mappings::CreateGrid::deployObject(vertex, object);
 	  }
-	  /*
-	  for(unsigned i=0; i<deleteCoarseObjects.size(); i++)
-	  {
-	    _coarseObjects.erase(_coarseObjects.begin()+deleteCoarseObjects[i]);
-	  }*/
+	}
   }
   //////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////
@@ -221,7 +203,7 @@ void dem::mappings::CreateGrid::beginIteration(
   if(_scenario[1] == nuclear)
   {
 	delta::world::scenarios::nuclear(
-		1, _isSphereContactModel, centre, _noPointsPerParticle, _globalEpsilon, _coarseObjects, _fineObjects);
+		1, centre, _noPointsPerParticle, _globalEpsilon, _coarseObjects);
   } else if(_scenario[1] == hopper)
   {
 	iREAL xzcuts = 0; iREAL ycuts = 0;
@@ -250,8 +232,8 @@ void dem::mappings::CreateGrid::beginIteration(
 	if(_scenario[2] == uniform) uni = true;
 
 	delta::world::scenarios::hopper(
-		_coarseObjects, _insitufineObjects,
-		centre, xzcuts, ycuts, uni, _isSphereContactModel, _noPointsPerParticle, _globalEpsilon);
+	  _coarseObjects, _insitufineObjects,
+	  centre, xzcuts, ycuts, uni, _isSphereContactModel, _noPointsPerParticle, _globalEpsilon);
   } else if(_scenario[0] == turbine)
   {
 	delta::world::scenarios::turbine(_coarseObjects, _globalEpsilon);
@@ -274,35 +256,61 @@ void dem::mappings::CreateGrid::beginIteration(
   } else if(_scenario[0] == ParticleRotation)
   {
 	delta::world::scenarios::rotateParticle(
-		_coarseObjects, _isSphereContactModel, _noPointsPerParticle, _globalEpsilon);
-	_gravity = false;
+	  _coarseObjects, _isSphereContactModel, _noPointsPerParticle, _globalEpsilon);
+	  _gravity = false;
   }
   else if(_scenario[0] == TwoParticlesCrash)
   {
-  delta::world::scenarios::twoParticlesCrash(
+	delta::world::scenarios::twoParticlesCrash(
 	  _coarseObjects, _isSphereContactModel, _noPointsPerParticle, _globalEpsilon);
-  _gravity = false;
+	  _gravity = false;
   }
   else if(_scenario[0] == blackHoleWithCubes ||
           _scenario[0] == freefallWithCubes ||
           _scenario[0] == blackHoleWithRandomOrientedCubes ||
-          _scenario[0] == freefallWithRandomOrientedCubes)
+          _scenario[0] == freefallWithRandomOrientedCubes ||
+		  _scenario[0] == freefallWithGranulates ||
+		  _scenario[0] == blackHoleWithGranulates)
   {
-	int scn = 0;
+	int enableRandomVelocities = 0;
 	if( _scenario[0] == blackHoleWithRandomOrientedCubes ||
         _scenario[0] == freefallWithRandomOrientedCubes)
 	{
-	  scn = 1;
+	  enableRandomVelocities = 1;
+	}
+
+	std::string shape = "";
+
+	if(_scenario[0] == blackHoleWithCubes ||
+       _scenario[0] == freefallWithCubes)
+	{
+	  shape = "cube";
+	}
+	else if(_scenario[0] == freefallWithGranulates ||
+			_scenario[0] == blackHoleWithGranulates)
+	{
+	  shape = "granulate";
+
+	  for(int i=0; i<1000; i++)
+	  {
+		delta::world::scenarios::freeFall(
+			enableRandomVelocities, shape, centre, _noPointsPerParticle, _globalEpsilon, _fineObjects);
+	  }
+	  return;
+	}
+	else
+	{
+	  shape = "sphere";
 	}
 	delta::world::scenarios::freeFall(
-		scn, _isSphereContactModel, centre, _noPointsPerParticle, _globalEpsilon, _coarseObjects);
+		enableRandomVelocities, shape, centre, _noPointsPerParticle, _globalEpsilon, _fineObjects);
   }
   else if(_scenario[0] == nonescenario)
   {
     return;
   }
 
-  dem::mappings::Collision::gravity	= _gravity==true ? 9.81 : 0.0;
+  dem::mappings::Collision::gravity = _gravity==true ? 9.81 : 0.0;
 
   logTraceOutWith1Argument( "beginIteration(State)", solverState);
 }
@@ -370,6 +378,7 @@ void dem::mappings::CreateGrid::enterCell(
     {
       records::Particle&  particle = fineGridVertices[fineGridVerticesEnumerator(k)].getParticle(i);
       tarch::la::Vector<DIMENSIONS,int> correctVertex;
+
       for(int d=0; d<DIMENSIONS; d++)
       {
         correctVertex(d) = particle._persistentRecords._centre(d) < fineGridVerticesEnumerator.getCellCenter()(d) ? 0 : 1;
@@ -514,7 +523,7 @@ void dem::mappings::CreateGrid::createCell(
 
   if(_scenario[0] == nonescenario) return;
 
-  dem::Vertex&  vertex  = fineGridVertices[fineGridVerticesEnumerator(0)];
+  dem::Vertex& vertex = fineGridVertices[fineGridVerticesEnumerator(0)];
 
   iREAL centreAsArray[3] = {fineGridVerticesEnumerator.getCellCenter()(0)-1E-4,
                             fineGridVerticesEnumerator.getCellCenter()(1)-1E-4,

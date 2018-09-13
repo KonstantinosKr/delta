@@ -23,39 +23,39 @@ delta::world::structure::Object::Object(
 	std::array<iREAL, 3> 					linear,
 	std::array<iREAL, 3> 					angular)
 {
-  this->_component = component;
-  this->_globalParticleID = particleID;
+  _component = component;
+  _globalParticleID = particleID;
 
-  this->_centre[0] = centre[0];
-  this->_centre[1] = centre[1];
-  this->_centre[2] = centre[2];
+  _centre[0] = centre[0];
+  _centre[1] = centre[1];
+  _centre[2] = centre[2];
 
-  this->_material 	= material;
-  this->_isObstacle 	= isObstacle;
-  this->_isFriction	= isFriction;
+  _material 		= material;
+  _isObstacle 	= isObstacle;
+  _isFriction	= isFriction;
 
-  this->_linearVelocity[0] = linear[0];
-  this->_linearVelocity[1] = linear[1];
-  this->_linearVelocity[2] = linear[2];
+  _linearVelocity[0] = linear[0];
+  _linearVelocity[1] = linear[1];
+  _linearVelocity[2] = linear[2];
 
-  this->_angularVelocity[0] = angular[0];
-  this->_angularVelocity[1] = angular[1];
-  this->_angularVelocity[2] = angular[2];
+  _angularVelocity[0] = angular[0];
+  _angularVelocity[1] = angular[1];
+  _angularVelocity[2] = angular[2];
 
-  this->_epsilon = epsilon;
-  this->_haloDiameter 		= 	(_diameter+epsilon*2) * 1.1;
-  this->_diameter			=	_rad/2;
-  this->_rad					= 	_diameter/2;
+  _epsilon 			= epsilon;
+  _haloDiameter 		= (_diameter+epsilon*2) * 1.1;
+  _diameter			= _rad/2;
+  _rad				= _diameter/2;
 
-  this->_localParticleID 	= 0;
-  this->_isConvex 			= isConvex;
+  _localParticleID 	= 0;
+  _isConvex 			= isConvex;
 
-  this-> _mesh			= 	nullptr;
-  this->_mass			=	0;
+  _mesh				= nullptr;
+  _mass				= 0;
 
-  _wx = 0;
-  _wy = 0;
-  _wz = 0;
+  _wx 				= 0;
+  _wy 				= 0;
+  _wz 				= 0;
 }
 
 delta::world::structure::Object::Object(
@@ -71,31 +71,31 @@ iREAL 									epsilon,
 std::array<iREAL, 3> 					linear,
 std::array<iREAL, 3> 					angular)
 {
-  this->_component = component;
-  this->_globalParticleID = particleID;
-  this->_localParticleID = 0;
+  _component = component;
+  _globalParticleID = particleID;
+  _localParticleID = 0;
 
-  this->_isConvex = isConvex;
+  _isConvex = isConvex;
 
-  this->_centre[0] = centre[0];
-  this->_centre[1] = centre[1];
-  this->_centre[2] = centre[2];
+  _centre[0] = centre[0];
+  _centre[1] = centre[1];
+  _centre[2] = centre[2];
 
-  this->_material 	= material;
-  this->_isObstacle 	= isObstacle;
-  this->_isFriction 	= isFriction;
+  _material		= material;
+  _isObstacle 	= isObstacle;
+  _isFriction 	= isFriction;
 
-  this->_epsilon = epsilon;
+  _epsilon = epsilon;
 
-  this->_linearVelocity[0] = linear[0];
-  this->_linearVelocity[1] = linear[1];
-  this->_linearVelocity[2] = linear[2];
+  _linearVelocity[0] = linear[0];
+  _linearVelocity[1] = linear[1];
+  _linearVelocity[2] = linear[2];
 
-  this->_angularVelocity[0] = angular[0];
-  this->_angularVelocity[1] = angular[1];
-  this->_angularVelocity[2] = angular[2];
+  _angularVelocity[0] = angular[0];
+  _angularVelocity[1] = angular[1];
+  _angularVelocity[2] = angular[2];
 
-  this-> _mesh			= 	mesh;
+  _mesh	= mesh;
 
   iREAL po[3] = {centre[0], centre[1], centre[2]};
   mesh->moveMeshToPosition(po);
@@ -129,13 +129,13 @@ std::array<iREAL, 3> 					angular)
   _centreOfMass[1] = centerOfMass[1];
   _centreOfMass[2] = centerOfMass[2];
 
-  this->_diameter		=	mesh->computeDiameter();
-  this->_rad				= 	_diameter/2;
-  this->_haloDiameter 	= 	(_diameter+epsilon*2) * 1.1;
-  this->_mass			=	mass;
+  _diameter		= mesh->computeDiameter();
+  _rad			= _diameter/2;
+  _haloDiameter 	= (_diameter+epsilon*2) * 1.1;
+  _mass			= mass;
 
-  this->_minBoundBox 	=	mesh->getBoundaryMinVertex();
-  this->_maxBoundBox 	=	mesh->getBoundaryMinVertex();
+  _minBoundBox 	= mesh->getBoundaryMinVertex();
+  _maxBoundBox 	= mesh->getBoundaryMinVertex();
 
   //dimensions
   _wx = 0;
@@ -157,42 +157,42 @@ iREAL 									epsilon,
 std::array<iREAL, 3> 					linear,
 std::array<iREAL, 3> 					angular)
 {
-  this->_component 			= component;
-  this->_rad					= rad;
-  this->_globalParticleID 	= particleID;
-  this->_localParticleID 	= 0;
+  _component 		= component;
+  _rad				= rad;
+  _globalParticleID 	= particleID;
+  _localParticleID 	= 0;
 
-  this->_centre[0] 	= centre[0];
-  this->_centre[1] 	= centre[1];
-  this->_centre[2] 	= centre[2];
+  _centre[0] 	= centre[0];
+  _centre[1] 	= centre[1];
+  _centre[2] 	= centre[2];
 
-  this->_centreOfMass[0] = _centre[0];
-  this->_centreOfMass[1] = _centre[1];
-  this->_centreOfMass[2] = _centre[2];
+  _centreOfMass[0] = _centre[0];
+  _centreOfMass[1] = _centre[1];
+  _centreOfMass[2] = _centre[2];
 
-  this->_material 		= material;
-  this->_isObstacle 		= isObstacle;
-  this->_isFriction 		= isFriction;
-  this->_isFriction 		= isConvex;
+  _material			= material;
+  _isObstacle 		= isObstacle;
+  _isFriction 		= isFriction;
+  _isFriction 		= isConvex;
 
-  this->_epsilon 		= epsilon;
+  _epsilon			= epsilon;
 
-  this->_linearVelocity[0] = linear[0];
-  this->_linearVelocity[1] = linear[1];
-  this->_linearVelocity[2] = linear[2];
+  _linearVelocity[0] = linear[0];
+  _linearVelocity[1] = linear[1];
+  _linearVelocity[2] = linear[2];
 
-  this->_angularVelocity[0] = angular[0];
-  this->_angularVelocity[1] = angular[1];
-  this->_angularVelocity[2] = angular[2];
+  _angularVelocity[0] = angular[0];
+  _angularVelocity[1] = angular[1];
+  _angularVelocity[2] = angular[2];
 
-  this->_haloDiameter 	= 	(_diameter+epsilon*2) * 1.1;
-  this->_diameter		=	rad*2;
-  this->_mass			=	0;
-  this->_isConvex 		= 	isConvex;
-  this-> _mesh			= 	nullptr;
+  _haloDiameter 	= (_diameter+epsilon*2) * 1.1;
+  _diameter		= rad*2;
+  _mass			= 0;
+  _isConvex 		= isConvex;
+  _mesh			= nullptr;
 
-  this->_minBoundBox 	=	{centre[0] - _rad, centre[1] - _rad, centre[2] - _rad};
-  this->_maxBoundBox 	=	{centre[0] + _rad, centre[1] + _rad, centre[2] + _rad};
+  _minBoundBox 	= {centre[0] - _rad, centre[1] - _rad, centre[2] - _rad};
+  _maxBoundBox 	= {centre[0] + _rad, centre[1] + _rad, centre[2] + _rad};
 
   //dimensions
   _wx = 0;
@@ -292,13 +292,18 @@ std::array<iREAL, 3> delta::world::structure::Object::getCentre()
 
 void delta::world::structure::Object::setCentre(iREAL centre[3])
 {
-  this->_centre[0] = centre[0];
-  this->_centre[1] = centre[1];
-  this->_centre[2] = centre[2];
+  if(_mesh != nullptr)
+  {
+	_mesh->moveMeshToPosition(centre);
+  }
 
-  this->_centreOfMass[0] = _centre[0];
-  this->_centreOfMass[1] = _centre[1];
-  this->_centreOfMass[2] = _centre[2];
+  _centre[0] = centre[0];
+  _centre[1] = centre[1];
+  _centre[2] = centre[2];
+
+  _centreOfMass[0] = _centre[0];
+  _centreOfMass[1] = _centre[1];
+  _centreOfMass[2] = _centre[2];
 }
 
 iREAL delta::world::structure::Object::getEpsilon()
@@ -318,12 +323,12 @@ iREAL delta::world::structure::Object::getRad()
 
 void delta::world::structure::Object::setRad(iREAL rad)
 {
-  this->_minBoundBox 	=	{_centre[0] - _rad, _centre[1] - _rad, _centre[2] - _rad};
-  this->_maxBoundBox 	=	{_centre[0] + _rad, _centre[1] + _rad, _centre[2] + _rad};
+  _minBoundBox 	= {_centre[0] - _rad, _centre[1] - _rad, _centre[2] - _rad};
+  _maxBoundBox 	= {_centre[0] + _rad, _centre[1] + _rad, _centre[2] + _rad};
 
   _rad = rad;
-  this->_haloDiameter 	= 	(_diameter+_epsilon*2) * 1.1;
-  this->_diameter		=	rad*2;
+  _haloDiameter 	= (_diameter+_epsilon*2) * 1.1;
+  _diameter		= rad*2;
 }
 
 iREAL delta::world::structure::Object::getMass()
@@ -401,16 +406,16 @@ void delta::world::structure::Object::setCentreOfMass(iREAL centreOfMass[3])
 
 void delta::world::structure::Object::setLinearVelocity(std::array<iREAL, 3>  linearVelocity)
 {
-  this->_linearVelocity[0] = linearVelocity[0];
-  this->_linearVelocity[1] = linearVelocity[1];
-  this->_linearVelocity[2] = linearVelocity[2];
+  _linearVelocity[0] = linearVelocity[0];
+  _linearVelocity[1] = linearVelocity[1];
+  _linearVelocity[2] = linearVelocity[2];
 }
 
 void delta::world::structure::Object::setAngularVelocity(std::array<iREAL, 3>  angularVelocity)
 {
-  this->_angularVelocity[0] = angularVelocity[0];
-  this->_angularVelocity[1] = angularVelocity[1];
-  this->_angularVelocity[2] = angularVelocity[2];
+  _angularVelocity[0] = angularVelocity[0];
+  _angularVelocity[1] = angularVelocity[1];
+  _angularVelocity[2] = angularVelocity[2];
 }
 
 std::array<iREAL, 3> delta::world::structure::Object::getLinearVelocity()
@@ -428,9 +433,9 @@ iREAL delta::world::structure::Object::computeVolume()
   std::vector<iREAL> xCoordinates;
   std::vector<iREAL> yCoordinates;
   std::vector<iREAL> zCoordinates;
-  this->getMesh().flatten(xCoordinates, yCoordinates, zCoordinates);
+  getMesh().flatten(xCoordinates, yCoordinates, zCoordinates);
 
-  return this->getMesh().computeVolume();
+  return getMesh().computeVolume();
 }
 
 /*
@@ -442,16 +447,16 @@ void delta::world::structure::Object::computeInertia(
 		iREAL center[3],
 		iREAL inertia[9])
 {
-  this->getMesh().computeInertia(material, mass, center, inertia);
-  this->setInertia(inertia);
-  this->setMass(mass);
+  getMesh().computeInertia(material, mass, center, inertia);
+  setInertia(inertia);
+  setMass(mass);
 }
 
 iREAL delta::world::structure::Object::computeMass(
 		delta::geometry::material::MaterialType material)
 {
-  iREAL mass = this->getMesh().computeMass(material);
-  this->setMass(mass);
+  iREAL mass = getMesh().computeMass(material);
+  setMass(mass);
   return mass;
 }
 
@@ -461,7 +466,7 @@ void delta::world::structure::Object::computeInverseInertia(
 	  bool 	isObject)
 {
   delta::geometry::operators::physics::computeInverseInertia(inertia, inverse, isObject);
-  this->setInverse(inverse);
+  setInverse(inverse);
 }
 
 bool delta::world::structure::Object::getIsConvex()

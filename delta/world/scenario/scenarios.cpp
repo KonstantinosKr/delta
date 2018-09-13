@@ -47,7 +47,8 @@ void delta::world::scenarios::hopper(
   iREAL _hopperHatch = 0.05; iREAL _hopperThickness = 0.005; int refinement = 0;
 
   iREAL pos[3] = {position[0], position[1], position[2]};
-  delta::geometry::mesh::Mesh *geometry = delta::geometry::hardcoded::generateHopper(pos, hopperWidth, _hopperThickness, hopperHeight, _hopperHatch, refinement, 0.01);
+  delta::geometry::mesh::Mesh *geometry = delta::geometry::hardcoded::generateHopper(
+	  pos, hopperWidth, _hopperThickness, hopperHeight, _hopperHatch, refinement, 0.01);
   delta::world::structure::Object objectHopper(
 	  "hopper", 0, geometry, position,
 	  delta::geometry::material::MaterialType::WOOD, true, false, false, epsilon, {0,0,0}, {0,0,0});
@@ -56,8 +57,10 @@ void delta::world::scenarios::hopper(
 #else
   int refinement = 3;
   std::vector<iREAL> xCoordinates, yCoordinates, zCoordinates;
-  delta::geometry::mesh::Mesh *geometry = delta::geometry::hardcoded::generateHopper(centre, hopperWidth, hopperThickness, hopperHeight, hopperHatch, refinement, _minParticleDiam);
-  hopperParticles = geometry->decomposeMeshIntoParticles(material, isObstacle, isFriction, _insitufineObjects);
+  delta::geometry::mesh::Mesh *geometry = delta::geometry::hardcoded::generateHopper(
+	  centre, hopperWidth, hopperThickness, hopperHeight, hopperHatch, refinement, _minParticleDiam);
+  hopperParticles = geometry->decomposeMeshIntoParticles(
+	  material, isObstacle, isFriction, _insitufineObjects);
 #endif
 
 
@@ -68,10 +71,11 @@ void delta::world::scenarios::hopper(
   position = {centre[0], 0.35, centre[2]};
 
   iREAL po[3] = {position[0], position[1], position[2]};
-  delta::geometry::mesh::Mesh *cube = delta::geometry::primitive::cube::generateHullCube(po, width, height, width, 0, 0, 0, 0);
+  delta::geometry::mesh::Mesh *cube = delta::geometry::primitive::cube::generateHullCube(
+	  po, width, height, width, 0, 0, 0, 0);
   delta::world::structure::Object objectFloor(
-	  "cube", 0, cube,
-	  position, delta::geometry::material::MaterialType::WOOD, true, true, true, epsilon, {0,0,0}, {0,0,0});
+	  "cube", 0, cube, position,
+	  delta::geometry::material::MaterialType::WOOD, true, true, true, epsilon, {0,0,0}, {0,0,0});
 
   coarse.push_back(objectFloor);
   ///////////////////////////////////////////////////////////////////////////////////////////
@@ -93,12 +97,14 @@ void delta::world::scenarios::hopper(
 
   if(uniform)
   {
-	delta::world::configuration::uniformlyDistributedTotalMass(insitu, pos, xzcuts, ycuts, gridxyLength, totalMass, hopperWidth, hopperParticles, epsilon, isSphere, meshDensity);
+	delta::world::configuration::uniformlyDistributedTotalMass(
+		insitu, pos, xzcuts, ycuts, gridxyLength, totalMass, hopperWidth, hopperParticles, epsilon, isSphere, meshDensity);
   }
   else
   {
 	iREAL gridCellLength = ((iREAL)gridxyLength/(iREAL)xzcuts) - epsilon*4;
-	delta::world::configuration::nonUniformlyDistributedTotalMass(insitu, pos, xzcuts, ycuts, gridxyLength, totalMass, hopperWidth, hopperParticles, epsilon, isSphere, gridCellLength, meshDensity);
+	delta::world::configuration::nonUniformlyDistributedTotalMass(
+		insitu, pos, xzcuts, ycuts, gridxyLength, totalMass, hopperWidth, hopperParticles, epsilon, isSphere, gridCellLength, meshDensity);
   }
 
   //////////////////////////////////////////////////////
@@ -214,10 +220,12 @@ void delta::world::scenarios::rotateParticle(
 	coarseObjects.push_back(objectA);
   } else {
 	iREAL pos[3] = {centreArray[0], centreArray[1], centreArray[2]};
-	delta::geometry::mesh::Mesh *geometry = delta::geometry::primitive::granulate::generateParticle(pos, 0.01*2, meshDensity);
+	delta::geometry::mesh::Mesh *geometry = delta::geometry::primitive::granulate::generateParticle(
+		pos, 0.01*2, meshDensity);
 	delta::world::structure::Object objectA(
 		"granulate", 0, geometry,
-		centreArray, delta::geometry::material::MaterialType::WOOD, false, false, true, epsilon, linear, {1,0,0});
+		centreArray, delta::geometry::material::MaterialType::WOOD,
+		false, false, true, epsilon, linear, {1,0,0});
 	coarseObjects.push_back(objectA);
   }
 }
@@ -252,7 +260,8 @@ void delta::world::scenarios::twoParticlesCrash(
 
 	delta::world::structure::Object objectB(
 		"sphere", 0.1, 1, centreArray,
-		delta::geometry::material::MaterialType::WOOD, false, false, true, epsilon, linear, {0,0,0});
+		delta::geometry::material::MaterialType::WOOD,
+		false, false, true, epsilon, linear, {0,0,0});
 	coarseObjects.push_back(objectB);
   } else {
 	iREAL rad = 0.01;
@@ -262,10 +271,12 @@ void delta::world::scenarios::twoParticlesCrash(
 	centreArray[2] = 0.5;
 
 	iREAL pos[3] = {centreArray[0], centreArray[1], centreArray[2]};
-	delta::geometry::mesh::Mesh *geometry = delta::geometry::primitive::granulate::generateParticle(pos, rad*2, meshDensity);
+	delta::geometry::mesh::Mesh *geometry = delta::geometry::primitive::granulate::generateParticle(
+		pos, rad*2, meshDensity);
 	delta::world::structure::Object objectA(
 		"granulate", 0, geometry, centreArray,
-		delta::geometry::material::MaterialType::WOOD, false, false, true, epsilon, linear, {0,0,0});
+		delta::geometry::material::MaterialType::WOOD,
+		false, false, true, epsilon, linear, {0,0,0});
 
 	rad = 0.1;
 
@@ -281,7 +292,8 @@ void delta::world::scenarios::twoParticlesCrash(
 	geometry = delta::geometry::primitive::granulate::generateParticle(po, rad*2, meshDensity);
 	delta::world::structure::Object objectB(
 		"granulate", 1, geometry, centreArray,
-		delta::geometry::material::MaterialType::WOOD, false, false, true, epsilon, linear, {0,0,0});
+		delta::geometry::material::MaterialType::WOOD,
+		false, false, true, epsilon, linear, {0,0,0});
 
 	coarseObjects.push_back(objectA);
 	coarseObjects.push_back(objectB);
@@ -306,10 +318,12 @@ void delta::world::scenarios::friction(
 
   ////////////////////////////////////////////////////////////////////////////////
   iREAL pos[3] = {position[0], position[1], position[2]};
-  delta::geometry::mesh::Mesh *geometry = delta::geometry::primitive::cube::generateHullCube(pos, width, height, width, 0, 0, 0, 0);
+  delta::geometry::mesh::Mesh *geometry = delta::geometry::primitive::cube::generateHullCube(
+	  pos, width, height, width, 0, 0, 0, 0);
   delta::world::structure::Object objectFloor(
 	  "cube", 0, geometry, position,
-	  delta::geometry::material::MaterialType::WOOD, true, true, true, epsilon, {0,0,0}, {0,0,0});
+	  delta::geometry::material::MaterialType::WOOD,
+	  true, true, true, epsilon, {0,0,0}, {0,0,0});
   coarse.push_back(objectFloor);
   ////////////////////////////////////////////////////////////////////////////////
   if(scenario == 1)
@@ -321,14 +335,17 @@ void delta::world::scenarios::friction(
 	  if(isSphere){
 		delta::world::structure::Object objectA(
 			"sphere", rad, 1, position,
-			delta::geometry::material::MaterialType::WOOD, false, true, true, epsilon, {0,0,0}, {0,0,0});
+			delta::geometry::material::MaterialType::WOOD,
+			false, true, true, epsilon, {0,0,0}, {0,0,0});
 		coarse.push_back(objectA);
 	  } else {
 		iREAL pos[3] = {position[0], position[1], position[2]};
-		delta::geometry::mesh::Mesh *geometry = delta::geometry::primitive::cube::generateHullCube(pos, rad, rad, rad, 0, 0, 0, 0);
+		delta::geometry::mesh::Mesh *geometry = delta::geometry::primitive::cube::generateHullCube(
+			pos, rad, rad, rad, 0, 0, 0, 0);
 		delta::world::structure::Object objectA(
 			"cube", 1, geometry, position,
-			delta::geometry::material::MaterialType::WOOD, false, true, true, epsilon, {0,0,0}, {0,0,0});
+			delta::geometry::material::MaterialType::WOOD,
+			false, true, true, epsilon, {0,0,0}, {0,0,0});
 		coarse.push_back(objectA);
 	  }
   } else if(scenario == 2)
@@ -340,14 +357,17 @@ void delta::world::scenarios::friction(
 	if(isSphere){
 		delta::world::structure::Object objectA(
 			"sphere", rad, 1, position,
-			delta::geometry::material::MaterialType::WOOD, false, true, true, epsilon, linear, {0,0,0});
+			delta::geometry::material::MaterialType::WOOD,
+			false, true, true, epsilon, linear, {0,0,0});
 	  coarse.push_back(objectA);
 	} else {
 	  iREAL pos[3] = {position[0], position[1], position[2]};
-	  delta::geometry::mesh::Mesh *geometry = delta::geometry::primitive::cube::generateHullCube(pos, rad, rad, rad, 0, 0, 0, 0);
+	  delta::geometry::mesh::Mesh *geometry = delta::geometry::primitive::cube::generateHullCube(
+		  pos, rad, rad, rad, 0, 0, 0, 0);
 	  delta::world::structure::Object objectA(
 		  "cube", 1, geometry, position,
-		  delta::geometry::material::MaterialType::WOOD, false, true, true, epsilon, linear, {0,0,0});
+		  delta::geometry::material::MaterialType::WOOD,
+		  false, true, true, epsilon, linear, {0,0,0});
 	  coarse.push_back(objectA);
 	}
   } else if(scenario == 3)
@@ -359,14 +379,16 @@ void delta::world::scenarios::friction(
 	if(isSphere){
 	  delta::world::structure::Object objectA(
 		  "sphere", rad, 1, position,
-		  delta::geometry::material::MaterialType::WOOD, false, true, true, epsilon, {0,0,0}, angular);
+		  delta::geometry::material::MaterialType::WOOD,
+		  false, true, true, epsilon, {0,0,0}, angular);
 	  coarse.push_back(objectA);
 	} else {
 	  iREAL pos[3] = {position[0], position[1], position[2]};
 	  delta::geometry::mesh::Mesh *geometry = delta::geometry::primitive::cube::generateHullCube(pos, rad, rad, rad, 0, 0, 0, 0);
 	  delta::world::structure::Object objectA(
 		  "cube", 1, geometry, position,
-		  delta::geometry::material::MaterialType::WOOD, false, true, true, epsilon, {0,0,0}, angular);
+		  delta::geometry::material::MaterialType::WOOD,
+		  false, true, true, epsilon, {0,0,0}, angular);
 	  coarse.push_back(objectA);
 	}
   }
@@ -376,8 +398,8 @@ void delta::world::scenarios::friction(
 }
 
 void delta::world::scenarios::freeFall(
-	int 												scenario,
-	bool 											isSphere,
+	int 												randomVelocities,
+	std::string 										shape,
 	iREAL 											centre[3],
 	int 												meshDensity,
 	iREAL 											epsilon,
@@ -392,27 +414,43 @@ void delta::world::scenarios::freeFall(
 
   iREAL rad = 0.01;
   std::array<iREAL, 3> linear = {0, 0, 0};
-  std::array<iREAL, 3> position = {centre[0], 0.8, centre[2]};
+  std::array<iREAL, 3> position = {centre[0], centre[1], centre[2]};
 
-  if(scenario == 1)
+  if(randomVelocities == 1)
   {
 	linear[0] = static_cast<iREAL>( rand() ) / static_cast<iREAL>(RAND_MAX);
 	linear[1] = static_cast<iREAL>( rand() ) / static_cast<iREAL>(RAND_MAX);
 	linear[2] = static_cast<iREAL>( rand() ) / static_cast<iREAL>(RAND_MAX);
   }
 
-  //Object ISSUE: here Object particles number has to be incremental with deployment in non-insitu enviroment
-  if(isSphere){
+  //ISSUE: here Object particles number has to be incremental with deployment in non-insitu enviroment
+  if(shape == "sphere"){
 	delta::world::structure::Object objectA(
 		"sphere", rad, 0, position,
-		delta::geometry::material::MaterialType::WOOD, false, false, true, epsilon, linear, {0,0,0});
+		delta::geometry::material::MaterialType::WOOD,
+		false, false, true, epsilon, linear, {0,0,0});
 	fine.push_back(objectA);
-  } else {
+  } else if(shape == "cube")
+  {
 	iREAL pos[3] = {position[0], position[1], position[2]};
-	delta::geometry::mesh::Mesh *geometry = delta::geometry::primitive::cube::generateHullCube(pos, rad, rad, rad, 0, 0, 0, 0);
+	delta::geometry::mesh::Mesh *geometry = delta::geometry::primitive::cube::generateHullCube(
+		pos, rad, rad, rad, 0, 0, 0, 0);
+
 	delta::world::structure::Object objectA(
 		"cube", 0, geometry, position,
-		delta::geometry::material::MaterialType::WOOD, false, false, true, epsilon, linear, {0,0,0});
+		delta::geometry::material::MaterialType::WOOD,
+		false, false, true, epsilon, linear, {0,0,0});
+	fine.push_back(objectA);
+  } else if(shape == "granulate")
+  {
+	iREAL pos[3] = {position[0], position[1], position[2]};
+	delta::geometry::mesh::Mesh *geometry = delta::geometry::primitive::granulate::generateParticle(
+		pos, 0.01*2, meshDensity);
+
+	delta::world::structure::Object objectA(
+		"granulate", 0, geometry, position,
+		delta::geometry::material::MaterialType::WOOD,
+		false, false, true, epsilon, linear, {1,0,0});
 	fine.push_back(objectA);
   }
   //////////////////////////////////////////////////////
@@ -422,12 +460,10 @@ void delta::world::scenarios::freeFall(
 
 void delta::world::scenarios::nuclear(
 	int 												scenario,
-	bool 											isSphere,
 	iREAL 											centre[3],
 	int 												meshDensity,
 	iREAL 											epsilon,
-	std::vector<delta::world::structure::Object>&	coarse,
-	std::vector<delta::world::structure::Object>&	fine)
+	std::vector<delta::world::structure::Object>&	coarse)
 {
 
   //////////////////////////////////////////////////////
@@ -438,10 +474,12 @@ void delta::world::scenarios::nuclear(
   std::array<iREAL, 3> position = {centre[0], centre[1], centre[2]};
 
   iREAL pos[3] = {position[0], position[1], position[2]};
-  delta::geometry::mesh::Mesh *geometry = delta::geometry::primitive::cube::generateHullCube(pos, width, height, width, 0, 0, 0, 0);
+  delta::geometry::mesh::Mesh *geometry = delta::geometry::primitive::cube::generateHullCube(
+	  pos, width, height, width, 0, 0, 0, 0);
   delta::world::structure::Object objectFloor(
 	  "cube", 0, geometry, position,
-	  delta::geometry::material::MaterialType::GOLD, true, true, true, epsilon, {-1.0, 0, 0}, {0,0,0});
+	  delta::geometry::material::MaterialType::GOLD,
+	  true, true, true, epsilon, {-1.0, 0, 0}, {0,0,0});
   coarse.push_back(objectFloor);
   //////FLOOR//////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -452,35 +490,35 @@ void delta::world::scenarios::nuclear(
 
   if(scenario == -1)
   {
-	delta::world::configuration::loadNuclearGeometry(pos, width, 1, epsilon, fine);
+	delta::world::configuration::loadNuclearGeometry(pos, width, 1, epsilon, coarse);
   } else if(scenario == 0)
   {
-	delta::world::configuration::loadNuclearGeometry(pos, width, 2, epsilon, fine);
+	delta::world::configuration::loadNuclearGeometry(pos, width, 2, epsilon, coarse);
   }
   else if(scenario > 0)
   {
 	if(scenario == 1)
 	{
 	  //nuclear deck 1s
-	  delta::world::configuration::makeBrickGrid(pos, 0.10, 1, 0.1, 1, epsilon, fine);
+	  delta::world::configuration::makeBrickGrid(pos, 0.10, 1, 0.1, 1, epsilon, coarse);
 	}else if(scenario == 4)
 	{
 	  //nuclear deck 4s
-	  delta::world::configuration::makeBrickGrid(pos, 0.10, 2, 0.1, 1, epsilon, fine);
+	  delta::world::configuration::makeBrickGrid(pos, 0.10, 2, 0.1, 1, epsilon, coarse);
 	}else if(scenario == 32)
 	{
 	  //nuclear deck 32s
-	  delta::world::configuration::makeBrickGrid(pos, 0.15, 4, 0.1, 2, epsilon, fine);
+	  delta::world::configuration::makeBrickGrid(pos, 0.15, 4, 0.1, 2, epsilon, coarse);
 	}
 	else if(scenario == 64)
 	{
 	  //nuclear deck 64
-	  delta::world::configuration::makeBrickGrid(pos, 0.15, 4, 0.4, 4, epsilon, fine);
+	  delta::world::configuration::makeBrickGrid(pos, 0.15, 4, 0.4, 4, epsilon, coarse);
 	}
 	else if(scenario == 256)
 	{
 	  //nuclear deck 256
-	  delta::world::configuration::makeBrickGrid(pos, 0.15, 10, 0.08, 4, epsilon, fine);
+	  delta::world::configuration::makeBrickGrid(pos, 0.15, 10, 0.08, 4, epsilon, coarse);
 	}
   }
 }

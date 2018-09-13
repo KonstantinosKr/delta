@@ -275,7 +275,7 @@ int main(int argc, char** argv)
     gridType = dem::mappings::CreateGrid::AdaptiveGrid;
     if(argc != NumberOfArguments)
     {
-    	printManual();
+      printManual();
       return -1;
     }
   }
@@ -283,7 +283,7 @@ int main(int argc, char** argv)
     gridType = dem::mappings::CreateGrid::ReluctantAdaptiveGrid;
     if(argc != NumberOfArguments)
     {
-    	printManual();
+      printManual();
       return -1;
     }
   }
@@ -291,67 +291,53 @@ int main(int argc, char** argv)
     gridType = dem::mappings::CreateGrid::FlopAdaptiveGrid;
     if(argc != NumberOfArguments)
     {
-    	printManual();
+    	  printManual();
       return -1;
     }
   }
   else if (gridTypeID == "range")
   {
-	  if(argc != NumberOfArguments+2)
-	  {
-		  printManual();
-		  return -1;
-	  }
+	if(argc != NumberOfArguments+2)
+	{
+		printManual();
+		return -1;
+	}
   } else {
     std::cerr << gridTypeID << " is not a valid grid type. Please run without arguments to see list of valid grid types" << std::endl;
     programExitCode = 2;
   }
 
-  dem::mappings::CreateGrid::Scenario scenarioArray[4];
-  if (scenario=="nonescenario") {
-    scenarioArray[0] = dem::mappings::CreateGrid::nonescenario;
-    scenarioArray[1] = dem::mappings::CreateGrid::nonescenario;
-    scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
+  dem::mappings::CreateGrid::Scenario scenarioArray[4] = {
+	  dem::mappings::CreateGrid::nonescenario,
+	  dem::mappings::CreateGrid::nonescenario,
+	  dem::mappings::CreateGrid::nonescenario,
+	  dem::mappings::CreateGrid::nonescenario};
 
-  } else if (scenario=="blackHoleWithRandomlyOrientedCubes") {
-    scenarioArray[0] = dem::mappings::CreateGrid::blackHoleWithRandomOrientedCubes,
-    scenarioArray[1] = dem::mappings::CreateGrid::nonescenario;
-    scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
+  if (scenario=="blackHoleWithRandomlyOrientedCubes") {
+    scenarioArray[0] = dem::mappings::CreateGrid::blackHoleWithRandomOrientedCubes;
   }
   else if (scenario=="blackHoleWithCubes") {
     scenarioArray[0] = dem::mappings::CreateGrid::blackHoleWithCubes;
-    scenarioArray[1] = dem::mappings::CreateGrid::nonescenario;
-    scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
   }
   else if (scenario=="blackHoleWithGranulates") {
     scenarioArray[0] = dem::mappings::CreateGrid::blackHoleWithGranulates;
-    scenarioArray[1] = dem::mappings::CreateGrid::nonescenario;
-    scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
   }
   else if (scenario=="freefallWithRandomlyOrientedCubes") {
     scenarioArray[0] = dem::mappings::CreateGrid::freefallWithRandomOrientedCubes;
-    scenarioArray[1] = dem::mappings::CreateGrid::nonescenario;
-    scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
   }
   else if (scenario=="freefallWithCubes") {
     scenarioArray[0] = dem::mappings::CreateGrid::freefallWithCubes;
-    scenarioArray[1] = dem::mappings::CreateGrid::nonescenario;
-    scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
   }
   else if (scenario=="freefallWithGranulates") {
     scenarioArray[0] = dem::mappings::CreateGrid::freefallWithGranulates;
-    scenarioArray[1] = dem::mappings::CreateGrid::nonescenario;
-    scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
   }
   else if (scenario=="nuclearSLA") {
     scenarioArray[0] = dem::mappings::CreateGrid::sla;
     scenarioArray[1] = dem::mappings::CreateGrid::nuclear;
-    scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
   }
   else if (scenario=="nuclearDLA") {
     scenarioArray[0] = dem::mappings::CreateGrid::dla;
     scenarioArray[1] = dem::mappings::CreateGrid::nuclear;
-    scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
   }
   else if (scenario=="nuclearDeck1") {
     scenarioArray[0] = dem::mappings::CreateGrid::nuclearDeck;
@@ -380,18 +366,12 @@ int main(int argc, char** argv)
   }
   else if (scenario=="two-particles-crash") {
     scenarioArray[0] = dem::mappings::CreateGrid::TwoParticlesCrash;
-    scenarioArray[1] = dem::mappings::CreateGrid::nonescenario;
-    scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
   }
   else if (scenario=="particle-rotation") {
     scenarioArray[0] = dem::mappings::CreateGrid::ParticleRotation;
-    scenarioArray[1] = dem::mappings::CreateGrid::nonescenario;
-    scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
   }
   else if (scenario=="turbine") {
     scenarioArray[0] = dem::mappings::CreateGrid::turbine;
-    scenarioArray[1] = dem::mappings::CreateGrid::nonescenario;
-    scenarioArray[2] = dem::mappings::CreateGrid::nonescenario;
   }
   else if (scenario=="hopperUniform") {
     scenarioArray[0] = dem::mappings::CreateGrid::hopperUniform;
@@ -502,8 +482,8 @@ int main(int argc, char** argv)
     //dem::mappings::Plot::_trackID = trackID;
     //dem::mappings::Plot::_trackParticleID.push_back(0);
     //dem::mappings::Plot::_trackParticleID.push_back(1);
-  }else {
-    std::cerr << "invalid plot option: " << plotID << "Please run without arguments to see list of valid plot variants" << std::endl;
+  } else {
+    std::cerr << "invalid plot option: " << plotID << "Please run without arguments to see list of valid plots" << std::endl;
     programExitCode = 2;
   }
 
@@ -544,17 +524,17 @@ int main(int argc, char** argv)
   //hybrid on batches fail rate histogram
   else if (collisionModel=="hybrid-on-triangle-pairs-stat")
   {
-    dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::HybridTriangleStat;
+	dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::HybridTriangleStat;
   }
   else if (collisionModel=="hybrid-on-batches-stat")
   {
-    dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::HybridBatchStat;
+	dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::HybridBatchStat;
   }
   else if (collisionModel=="gjk") {
-    dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::GJK;
+	dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::GJK;
   }
   else if (collisionModel=="none") {
-      dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::none;
+	dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::none;
   } else {
     std::cerr << "invalid collision model option. Please run without arguments to see list of valid variants" << std::endl;
     programExitCode = 2;
