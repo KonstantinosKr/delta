@@ -88,64 +88,57 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::bf(
    {
 	for(std::vector<int>::size_type iA=0; iA<r.size(); iA+=3)
 #else
-  #ifdef OMPTriangle
-	#ifdef OMPProcess
-	  #pragma omp parallel for shared(result) firstprivate(numberOfTrianglesA, numberOfTrianglesB, epsilonA, epsilonB, frictionA, frictionB, particleA, particleB, xCoordinatesOfPointsOfGeometryA, yCoordinatesOfPointsOfGeometryA, zCoordinatesOfPointsOfGeometryA, xCoordinatesOfPointsOfGeometryB, yCoordinatesOfPointsOfGeometryB, zCoordinatesOfPointsOfGeometryB)
-	#endif
+  #if defined(OMPTriangle) && defined(OMPProcess)
+	#pragma omp parallel for shared(result) firstprivate(numberOfTrianglesA, numberOfTrianglesB, epsilonA, epsilonB, frictionA, frictionB, particleA, particleB, xCoordinatesOfPointsOfGeometryA, yCoordinatesOfPointsOfGeometryA, zCoordinatesOfPointsOfGeometryA, xCoordinatesOfPointsOfGeometryB, yCoordinatesOfPointsOfGeometryB, zCoordinatesOfPointsOfGeometryB)
   #endif
   for(int iA=0; iA<numberOfTrianglesA; iA+=3)
 #endif
   {
-    __attribute__ ((aligned(byteAlignment))) contactpoint *nearestContactPoint = nullptr;
-    __attribute__ ((aligned(byteAlignment))) iREAL dd = epsilonA+epsilonB;
+    __attribute__ ((aligned(byteAlignment))) iREAL xPA[10000], yPA[10000], zPA[10000], xPB[10000], yPB[10000], zPB[10000], d[10000];
 
 	#ifdef OMPProcess
 	  #pragma omp simd
 	#endif
     for(int iB=0; iB<numberOfTrianglesB; iB+=3)
     {
-      __attribute__ ((aligned(byteAlignment))) iREAL epsilonMargin = (epsilonA+epsilonB);
-      __attribute__ ((aligned(byteAlignment))) iREAL xPA=0.0;
-      __attribute__ ((aligned(byteAlignment))) iREAL yPA=0.0;
-      __attribute__ ((aligned(byteAlignment))) iREAL zPA=0.0;
-      __attribute__ ((aligned(byteAlignment))) iREAL xPB=1.0;
-      __attribute__ ((aligned(byteAlignment))) iREAL yPB=1.0;
-      __attribute__ ((aligned(byteAlignment))) iREAL zPB=1.0;
-
       bf(xCoordinatesOfPointsOfGeometryA+(iA),
 		 yCoordinatesOfPointsOfGeometryA+(iA),
 		 zCoordinatesOfPointsOfGeometryA+(iA),
 		 xCoordinatesOfPointsOfGeometryB+(iB),
 		 yCoordinatesOfPointsOfGeometryB+(iB),
 		 zCoordinatesOfPointsOfGeometryB+(iB),
-		 xPA,
-		 yPA,
-		 zPA,
-		 xPB,
-		 yPB,
-		 zPB);
-
-      iREAL d = std::sqrt(((xPB-xPA)*(xPB-xPA))+((yPB-yPA)*(yPB-yPA))+((zPB-zPA)*(zPB-zPA)));
-      if(d <= epsilonMargin && d <= dd)
-      {
-        nearestContactPoint = new contactpoint(xPA, yPA, zPA, epsilonA, particleA, xPB, yPB, zPB, epsilonB, particleB, frictionA && frictionB);
-        dd = d;
-      }
+		 xPA[iB],
+		 yPA[iB],
+		 zPA[iB],
+		 xPB[iB],
+		 yPB[iB],
+		 zPB[iB]);
+      d[iB] = std::sqrt(((xPB[iB]-xPA[iB])*(xPB[iB]-xPA[iB]))+((yPB[iB]-yPA[iB])*(yPB[iB]-yPA[iB]))+((zPB[iB]-zPA[iB])*(zPB[iB]-zPA[iB])));
     }
 
-    if(nearestContactPoint != nullptr)
+    __attribute__ ((aligned(byteAlignment))) std::vector<contactpoint> nearestContactPoint;
+    __attribute__ ((aligned(byteAlignment))) iREAL epsilonMargin = (epsilonA+epsilonB);
+
+    for(int iB=0; iB<numberOfTrianglesB; iB+=3)
     {
+	  if(d[iB] <= epsilonMargin)
+	  {
+		nearestContactPoint.push_back(contactpoint(xPA[iB], yPA[iB], zPA[iB], epsilonA, particleA, xPB[iB], yPB[iB], zPB[iB], epsilonB, particleB, frictionA && frictionB));
+	  }
+    }
+
 	#if defined(SharedTBB) && defined(peanoCall)
 	  lock.lock();
-		result.push_back(*nearestContactPoint);
+		for(int xx=0; xx < nearestContactPoint.size(); xx++)
+		result.push_back(nearestContactPoint[xx]);
 	  lock.free();
 	#else
 	  #ifdef OMPTriangle
 		#pragma omp critical
 	  #endif
-	  result.push_back(*nearestContactPoint);
+	  for(int xx=0; xx < nearestContactPoint.size(); xx++)
+	  result.push_back(nearestContactPoint[xx]);
 	#endif
-    }
   #if defined(SharedTBB) && defined(peanoCall)
   }});
   #else

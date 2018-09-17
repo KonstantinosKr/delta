@@ -98,11 +98,14 @@ void dem::mappings::CreateGrid::deployEnviroment(
 	}
 
 	//////////////PER CELL CENTER DEPLOYMENT//////////////////////
-	int randNum = rand() % _fineObjects.size();
+	if(_fineObjects.size() > 0)
+	{
+	  int randNum = rand() % _fineObjects.size();
 
-	delta::world::structure::Object object = _fineObjects[randNum];
-	object.setCentre(centre);
-	dem::mappings::CreateGrid::deployObject(vertex, object);
+	  delta::world::structure::Object object = _fineObjects[randNum];
+	  object.setCentre(centre);
+	  dem::mappings::CreateGrid::deployObject(vertex, object);
+	}
 	//////////////////////////////////////////////////////////////
   } else {
 	for(unsigned i=0; i<_coarseObjects.size(); i++)
@@ -200,36 +203,66 @@ void dem::mappings::CreateGrid::beginIteration(
 
   iREAL centre[3] = {0.5, 0.5, 0.5};
 
-  if(_scenario[1] == nuclear)
+  if(_scenario[0] == nuclear)
   {
+	int scenario = 1;
+	if(_scenario[1] == sla)
+	{
+	  scenario = -1;
+	}
+	else if(_scenario[1] == dla)
+	{
+	  scenario = 0;
+	}
+	else if(_scenario[1] == n1)
+	{
+	  scenario = 1;
+	}
+	else if(_scenario[1] == n4)
+	{
+	  scenario = 2;
+	}
+	else if(_scenario[1] == n32)
+	{
+	  scenario = 3;
+	}
+	else if(_scenario[1] == n64)
+	{
+	  scenario = 4;
+	}
+	else if(_scenario[1] == n256)
+	{
+	  scenario = 5;
+	}
+
 	delta::world::scenarios::nuclear(
-		1, centre, _noPointsPerParticle, _globalEpsilon, _coarseObjects);
-  } else if(_scenario[1] == hopper)
+		scenario, centre, _noPointsPerParticle, _globalEpsilon, _coarseObjects);
+  } else if(_scenario[0] == hopper)
   {
 	iREAL xzcuts = 0; iREAL ycuts = 0;
-	if(_scenario[3] == n100)
+	if(_scenario[2] == n100)
 	{
 	  xzcuts = 10; ycuts = 1;
 	}
-	else if(_scenario[3] == n1k)
+	else if(_scenario[2] == n1k)
 	{
 	  xzcuts = 10; ycuts = 10;
 	}
-	else if(_scenario[3] == n10k)
+	else if(_scenario[2] == n10k)
 	{
 	  xzcuts = 30; ycuts = 12;
 	}
-	else if(_scenario[3] == n100k)
+	else if(_scenario[2] == n100k)
 	{
 	  xzcuts = 41.0; ycuts = 60;
 	}
-	else if(_scenario[3] == n500k)
+	else if(_scenario[2] == n500k)
 	{
 	  xzcuts = 100.0; ycuts = 50;
 	}
 
 	bool uni = false;
-	if(_scenario[2] == uniform) uni = true;
+	if(_scenario[1] == uniform) uni = true;
 
 	delta::world::scenarios::hopper(
 	  _coarseObjects, _insitufineObjects,
@@ -238,56 +271,55 @@ void dem::mappings::CreateGrid::beginIteration(
   {
 	delta::world::scenarios::turbine(_coarseObjects, _globalEpsilon);
 	  _gravity = false;
-  } else if(_scenario[1] == friction)
+  } else if(_scenario[0] == friction)
   {
 	int sc = 0;
-	if(_scenario[2] == sstatic)
+	if(_scenario[1] == sstatic)
 	{
 	  sc = 1;
-	} else if(_scenario[2] == slide)
+	} else if(_scenario[1] == slide)
 	{
 	  sc = 2;
-	} else if(_scenario[2] == roll)
+	} else if(_scenario[1] == roll)
 	{
 	  sc = 3;
 	}
 	delta::world::scenarios::friction(
 		sc, _isSphereContactModel, centre, _noPointsPerParticle, _globalEpsilon, _coarseObjects);
-  } else if(_scenario[0] == ParticleRotation)
+  } else if(_scenario[0] == particleRotation)
   {
 	delta::world::scenarios::rotateParticle(
 	  _coarseObjects, _isSphereContactModel, _noPointsPerParticle, _globalEpsilon);
 	  _gravity = false;
   }
-  else if(_scenario[0] == TwoParticlesCrash)
+  else if(_scenario[0] == twoParticlesCrash)
   {
-	delta::world::scenarios::twoParticlesCrash(
-	  _coarseObjects, _isSphereContactModel, _noPointsPerParticle, _globalEpsilon);
-	  _gravity = false;
+	if(_scenario[1] == diagonal)
+	{
+	  delta::world::scenarios::twoParticlesCrashDiagonal(
+		  _coarseObjects, _isSphereContactModel, _noPointsPerParticle, _globalEpsilon);
+	} else {
+	  delta::world::scenarios::twoParticlesCrash(
+		  _coarseObjects, _isSphereContactModel, _noPointsPerParticle, _globalEpsilon);
+	}
+	_gravity = false;
   }
-  else if(_scenario[0] == blackHoleWithCubes ||
-          _scenario[0] == freefallWithCubes ||
-          _scenario[0] == blackHoleWithRandomOrientedCubes ||
-          _scenario[0] == freefallWithRandomOrientedCubes ||
-		  _scenario[0] == freefallWithGranulates ||
-		  _scenario[0] == blackHoleWithGranulates)
+  else if(_scenario[0] == blackhole ||
+          _scenario[0] == freefall)
   {
 	int enableRandomVelocities = 0;
-	if( _scenario[0] == blackHoleWithRandomOrientedCubes ||
-        _scenario[0] == freefallWithRandomOrientedCubes)
+	if( _scenario[2] == randomOriented)
 	{
 	  enableRandomVelocities = 1;
 	}
 
 	std::string shape = "";
 
-	if(_scenario[0] == blackHoleWithCubes ||
-       _scenario[0] == freefallWithCubes)
+	if(_scenario[1] == cubes)
 	{
 	  shape = "cube";
 	}
-	else if(_scenario[0] == freefallWithGranulates ||
-			_scenario[0] == blackHoleWithGranulates)
+	else if(_scenario[1] == granulates)
 	{
 	  shape = "granulate";
 

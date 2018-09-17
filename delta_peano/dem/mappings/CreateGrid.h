@@ -57,59 +57,35 @@ class dem::mappings::CreateGrid {
   public:
     enum Scenario {
       nonescenario,
-      blackHoleWithRandomOrientedCubes,
-      blackHoleWithCubes,
-      blackHoleWithGranulates,
 
-      freefallWithRandomOrientedCubes,
-      freefallWithCubes,
-      freefallWithGranulates,
-
-      blackHole,
+      blackhole,
       hopper,
-      freefall,
-
-      nuclear,
-      sla,
-      dla,
-      nuclearDeck,
-
-      TwoParticlesCrash,
-	  ParticleRotation,
-
-      hopperUniform,
-      hopperUniform1k,
-      hopperUniform10k,
-      hopperUniform100k,
-      hopperUniform500k,
-
-      hopperNonUniform,
-      hopperNonUniform1k,
-      hopperNonUniform10k,
-      hopperNonUniform100k,
-      hopperNonUniform500k,
-
-      frictionStatic,
-      frictionSlide,
-      frictionRoll,
-
-      randomOriented,
-      cubes,
-      granulates,
-
       uniform,
       nonuniform,
-      n1,
-      n4,
-      n32,
-      n64,
-      n256,
 
       n100,
       n1k,
       n10k,
       n100k,
       n500k,
+
+      freefall,
+      randomOriented,
+      cubes,
+      granulates,
+
+      nuclear,
+      sla,
+      dla,
+      n1,
+      n4,
+      n32,
+      n64,
+      n256,
+
+      twoParticlesCrash,
+	  diagonal,
+	  particleRotation,
 
 	  turbine,
 
@@ -169,7 +145,7 @@ class dem::mappings::CreateGrid {
 
     void deployObject(
     		  dem::Vertex& 						vertex,
-		  delta::world::structure::Object 	Object);
+		  delta::world::structure::Object 	object);
 
   public:
   /**

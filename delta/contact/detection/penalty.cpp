@@ -66,22 +66,13 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::penaltyStat
   #endif
   for (int iA = 0; iA<numberOfTrianglesOfGeometryA*3; iA+=3)
   {
-    __attribute__ ((aligned(byteAlignment))) iREAL	epsilonMargin = (epsilonA+epsilonB);
-    __attribute__ ((aligned(byteAlignment))) iREAL dd = epsilonA+epsilonB;
-    contactpoint *nearestContactPoint = nullptr;
+    __attribute__ ((aligned(byteAlignment))) iREAL xPA[10000], yPA[10000], zPA[10000], xPB[10000], yPB[10000], zPB[10000], d[10000];
 
     #if defined(__INTEL_COMPILER)
       #pragma forceinline recursive
     #endif
     for (int iB = 0; iB<numberOfTrianglesOfGeometryB*3; iB+=3)
     {
-      __attribute__ ((aligned(byteAlignment))) iREAL xPA;
-      __attribute__ ((aligned(byteAlignment))) iREAL yPA;
-      __attribute__ ((aligned(byteAlignment))) iREAL zPA;
-      __attribute__ ((aligned(byteAlignment))) iREAL xPB;
-      __attribute__ ((aligned(byteAlignment))) iREAL yPB;
-      __attribute__ ((aligned(byteAlignment))) iREAL zPB;
-
       __attribute__ ((aligned(byteAlignment))) int numberOfNewtonIterationsRequired  = 0;
 
       penalty(xCoordinatesOfPointsOfGeometryA+(iA),
@@ -90,26 +81,31 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::penaltyStat
               xCoordinatesOfPointsOfGeometryB+(iB),
               yCoordinatesOfPointsOfGeometryB+(iB),
               zCoordinatesOfPointsOfGeometryB+(iB),
-              xPA, yPA, zPA, xPB, yPB, zPB,
+              xPA[iB], yPA[iB], zPA[iB], xPB[iB], yPB[iB], zPB[iB],
               MaxError,
               numberOfNewtonIterationsRequired);
 
       numberOfNewtonIterations[numberOfNewtonIterationsRequired]++;
 
-      iREAL d = std::sqrt(((xPB-xPA)*(xPB-xPA))+((yPB-yPA)*(yPB-yPA))+((zPB-zPA)*(zPB-zPA)));
-      if (d <= epsilonMargin && d <= dd)
-      {
-        nearestContactPoint = new contactpoint(xPA, yPA, zPA, epsilonA, particleA, xPB, yPB, zPB, epsilonB, particleB, frictionA && frictionB);;
-        dd    = d;
-      }
+      d[iB] = std::sqrt(((xPB[iB]-xPA[iB])*(xPB[iB]-xPA[iB]))+((yPB[iB]-yPA[iB])*(yPB[iB]-yPA[iB]))+((zPB[iB]-zPA[iB])*(zPB[iB]-zPA[iB])));
     }
-    if (nearestContactPoint != nullptr)
+
+    __attribute__ ((aligned(byteAlignment))) std::vector<contactpoint> nearestContactPoint;
+    __attribute__ ((aligned(byteAlignment))) iREAL epsilonMargin = (epsilonA+epsilonB);
+
+    for(int iB=0; iB<numberOfTrianglesOfGeometryB; iB+=3)
     {
-      #ifdef OMPTriangle
-        #pragma omp critical
-      #endif
-      result.push_back(*nearestContactPoint);
+	  if (d[iB] <= epsilonMargin)
+	  {
+		nearestContactPoint.push_back(contactpoint(xPA[iB], yPA[iB], zPA[iB], epsilonA, particleA, xPB[iB], yPB[iB], zPB[iB], epsilonB, particleB, frictionA && frictionB));
+	  }
     }
+
+	#ifdef OMPTriangle
+	  #pragma omp critical
+	#endif
+	for(int xx=0; xx < nearestContactPoint.size(); xx++)
+	result.push_back(nearestContactPoint[xx]);
   }
   return result;
 }
@@ -187,13 +183,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::penalty(
   for(int iA=0; iA<numberOfTrianglesA; iA+=3)
   #endif
   {
-	iREAL xPA[10000] 	__attribute__ ((aligned(byteAlignment)));
-	iREAL yPA[10000] 	__attribute__ ((aligned(byteAlignment)));
-	iREAL zPA[10000] 	__attribute__ ((aligned(byteAlignment)));
-	iREAL xPB[10000] 	__attribute__ ((aligned(byteAlignment)));
-	iREAL yPB[10000] 	__attribute__ ((aligned(byteAlignment)));
-	iREAL zPB[10000]		__attribute__ ((aligned(byteAlignment)));
-	iREAL d[10000] 		__attribute__ ((aligned(byteAlignment)));
+    __attribute__ ((aligned(byteAlignment))) iREAL xPA[10000], yPA[10000], zPA[10000], xPB[10000], yPB[10000], zPB[10000], d[10000];
 
     #if defined(__INTEL_COMPILER)
       #pragma forceinline recursive
@@ -204,7 +194,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::penalty(
 	  #pragma vector aligned
     for (int iB=0; iB<numberOfTrianglesB; iB+=3)
     {
-      __attribute__ ((aligned(byteAlignment))) bool failed = 0;
+      __attribute__ ((aligned(byteAlignment))) bool failed = false;
       __attribute__ ((aligned(byteAlignment))) const iREAL MaxError = (epsilonA+epsilonB) / 16.0;
 
       penalty(xCoordinatesOfPointsOfGeometryA+(iA),
@@ -219,30 +209,29 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::penalty(
       d[iB] = std::sqrt(((xPB[iB]-xPA[iB])*(xPB[iB]-xPA[iB]))+((yPB[iB]-yPA[iB])*(yPB[iB]-yPA[iB]))+((zPB[iB]-zPA[iB])*(zPB[iB]-zPA[iB])));
     }
 
+    __attribute__ ((aligned(byteAlignment))) std::vector<contactpoint> nearestContactPoint;
     __attribute__ ((aligned(byteAlignment))) iREAL epsilonMargin = (epsilonA+epsilonB);
-    __attribute__ ((aligned(byteAlignment))) iREAL minD = 1E99;
 
-    for (int iB=0; iB<numberOfTrianglesB; iB+=3) {
-      minD          = std::min( d[iB], minD );
-    }
-
-    contactpoint *nearestContactPoint = nullptr;
-    // Grab the closest one and insert it into the result
-    for (int iB=0; iB<numberOfTrianglesB; iB+=3) {
-      if ( d[iB] <= minD && d[iB] < epsilonMargin) {
-    		delta::contact::contactpoint* nearestContactPoint = new contactpoint(xPA[iB], yPA[iB], zPA[iB], epsilonA, particleA, xPB[iB], yPB[iB], zPB[iB], epsilonB, particleB, frictionA && frictionB);
-	#if defined(SharedTBB) && defined(peanoCall)
-		lock.lock();
-		result.push_back(*nearestContactPoint);
-		lock.free();
-	#else
-		#ifdef OMPTriangle
-		  #pragma omp critical
-		#endif
-		result.push_back(*nearestContactPoint);
-	#endif
+    for (int iB=0; iB<numberOfTrianglesB; iB+=3)
+    {
+      if (d[iB] < epsilonMargin)
+      {
+    		nearestContactPoint.push_back(contactpoint(xPA[iB], yPA[iB], zPA[iB], epsilonA, particleA, xPB[iB], yPB[iB], zPB[iB], epsilonB, particleB, frictionA && frictionB));
       }
     }
+
+	#if defined(SharedTBB) && defined(peanoCall)
+	  lock.lock();
+	  for(int xx=0; xx < nearestContactPoint.size(); xx++)
+	  result.push_back(nearestContactPoint[xx]);
+	  lock.free();
+	#else
+	  #ifdef OMPTriangle
+		#pragma omp critical
+	  #endif
+	  for(int xx=0; xx < nearestContactPoint.size(); xx++)
+	  result.push_back(nearestContactPoint[xx]);
+	#endif
   #if defined(SharedTBB) && defined(peanoCall)
   }});
   #else

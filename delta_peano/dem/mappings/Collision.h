@@ -133,16 +133,13 @@ class dem::mappings::Collision {
     	Sphere,
     	BruteForce,
     	Penalty,
-    	PenaltyStat,
-    PenaltyTune,
     	HybridOnTrianglePairs,
     	HybridOnBatches,
-	HybridTriangleStat,
-    	HybridBatchStat,
     	GJK,
     	none};
 
     static bool _enableOverlapCheck;
+    static bool _enableStat;
 
     struct Collisions {
       records::Particle                            	_copyOfPartnerParticle;

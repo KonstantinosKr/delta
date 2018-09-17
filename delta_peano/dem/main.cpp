@@ -314,140 +314,134 @@ int main(int argc, char** argv)
 	  dem::mappings::CreateGrid::nonescenario};
 
   if (scenario=="blackHoleWithRandomlyOrientedCubes") {
-    scenarioArray[0] = dem::mappings::CreateGrid::blackHoleWithRandomOrientedCubes;
+    scenarioArray[0] = dem::mappings::CreateGrid::blackhole;
+    scenarioArray[1] = dem::mappings::CreateGrid::cubes;
+    scenarioArray[2] = dem::mappings::CreateGrid::randomOriented;
   }
   else if (scenario=="blackHoleWithCubes") {
-    scenarioArray[0] = dem::mappings::CreateGrid::blackHoleWithCubes;
+    scenarioArray[0] = dem::mappings::CreateGrid::blackhole;
+    scenarioArray[1] = dem::mappings::CreateGrid::cubes;
   }
   else if (scenario=="blackHoleWithGranulates") {
-    scenarioArray[0] = dem::mappings::CreateGrid::blackHoleWithGranulates;
-  }
-  else if (scenario=="freefallWithRandomlyOrientedCubes") {
-    scenarioArray[0] = dem::mappings::CreateGrid::freefallWithRandomOrientedCubes;
+    scenarioArray[0] = dem::mappings::CreateGrid::blackhole;
+    scenarioArray[1] = dem::mappings::CreateGrid::granulates;
   }
   else if (scenario=="freefallWithCubes") {
-    scenarioArray[0] = dem::mappings::CreateGrid::freefallWithCubes;
+    scenarioArray[0] = dem::mappings::CreateGrid::freefall;
+    scenarioArray[1] = dem::mappings::CreateGrid::cubes;
+  }
+  else if (scenario=="freefallWithRandomlyOrientedCubes") {
+    scenarioArray[0] = dem::mappings::CreateGrid::freefall;
+    scenarioArray[1] = dem::mappings::CreateGrid::cubes;
+    scenarioArray[2] = dem::mappings::CreateGrid::randomOriented;
   }
   else if (scenario=="freefallWithGranulates") {
-    scenarioArray[0] = dem::mappings::CreateGrid::freefallWithGranulates;
+    scenarioArray[0] = dem::mappings::CreateGrid::freefall;
+    scenarioArray[0] = dem::mappings::CreateGrid::granulates;
   }
   else if (scenario=="nuclearSLA") {
-    scenarioArray[0] = dem::mappings::CreateGrid::sla;
-    scenarioArray[1] = dem::mappings::CreateGrid::nuclear;
+    scenarioArray[0] = dem::mappings::CreateGrid::nuclear;
+    scenarioArray[1] = dem::mappings::CreateGrid::sla;
   }
   else if (scenario=="nuclearDLA") {
-    scenarioArray[0] = dem::mappings::CreateGrid::dla;
-    scenarioArray[1] = dem::mappings::CreateGrid::nuclear;
+    scenarioArray[0] = dem::mappings::CreateGrid::nuclear;
+    scenarioArray[1] = dem::mappings::CreateGrid::dla;
   }
   else if (scenario=="nuclearDeck1") {
-    scenarioArray[0] = dem::mappings::CreateGrid::nuclearDeck;
-    scenarioArray[1] = dem::mappings::CreateGrid::nuclear;
-    scenarioArray[2] = dem::mappings::CreateGrid::n1;
+    scenarioArray[0] = dem::mappings::CreateGrid::nuclear;
+    scenarioArray[1] = dem::mappings::CreateGrid::n1;
   }
   else if (scenario=="nuclearDeck4") {
-    scenarioArray[0] = dem::mappings::CreateGrid::nuclearDeck;
-    scenarioArray[1] = dem::mappings::CreateGrid::nuclear;
-    scenarioArray[2] = dem::mappings::CreateGrid::n4;
+    scenarioArray[0] = dem::mappings::CreateGrid::nuclear;
+    scenarioArray[1] = dem::mappings::CreateGrid::n4;
   }
   else if (scenario=="nuclearDeck32") {
-    scenarioArray[0] = dem::mappings::CreateGrid::nuclearDeck;
-    scenarioArray[1] = dem::mappings::CreateGrid::nuclear;
-    scenarioArray[2] = dem::mappings::CreateGrid::n32;
+    scenarioArray[0] = dem::mappings::CreateGrid::nuclear;
+    scenarioArray[1] = dem::mappings::CreateGrid::n32;
   }
   else if (scenario=="nuclearDeck64") {
-    scenarioArray[0] = dem::mappings::CreateGrid::nuclearDeck;
-    scenarioArray[1] = dem::mappings::CreateGrid::nuclear;
-    scenarioArray[2] = dem::mappings::CreateGrid::n64;
+    scenarioArray[0] = dem::mappings::CreateGrid::nuclear;
+    scenarioArray[1] = dem::mappings::CreateGrid::n64;
   }
   else if (scenario=="nuclearDeck256") {
-    scenarioArray[0] = dem::mappings::CreateGrid::nuclearDeck;
-    scenarioArray[1] = dem::mappings::CreateGrid::nuclear;
-    scenarioArray[2] = dem::mappings::CreateGrid::n256;
+    scenarioArray[0] = dem::mappings::CreateGrid::nuclear;
+    scenarioArray[1] = dem::mappings::CreateGrid::n256;
   }
   else if (scenario=="two-particles-crash") {
-    scenarioArray[0] = dem::mappings::CreateGrid::TwoParticlesCrash;
+    scenarioArray[0] = dem::mappings::CreateGrid::twoParticlesCrash;
+  }
+  else if (scenario=="two-particles-crash-diagonal") {
+    scenarioArray[0] = dem::mappings::CreateGrid::twoParticlesCrash;
+    scenarioArray[1] = dem::mappings::CreateGrid::diagonal;
   }
   else if (scenario=="particle-rotation") {
-    scenarioArray[0] = dem::mappings::CreateGrid::ParticleRotation;
+    scenarioArray[0] = dem::mappings::CreateGrid::particleRotation;
   }
   else if (scenario=="turbine") {
     scenarioArray[0] = dem::mappings::CreateGrid::turbine;
   }
   else if (scenario=="hopperUniform") {
-    scenarioArray[0] = dem::mappings::CreateGrid::hopperUniform;
-    scenarioArray[1] = dem::mappings::CreateGrid::hopper;
-    scenarioArray[2] = dem::mappings::CreateGrid::uniform;
-    scenarioArray[3] = dem::mappings::CreateGrid::n100;
+    scenarioArray[0] = dem::mappings::CreateGrid::hopper;
+    scenarioArray[1] = dem::mappings::CreateGrid::uniform;
+    scenarioArray[2] = dem::mappings::CreateGrid::n100;
   }
   else if (scenario=="hopperUniform1k") {
-    scenarioArray[0] = dem::mappings::CreateGrid::hopperUniform1k;
-    scenarioArray[1] = dem::mappings::CreateGrid::hopper;
-    scenarioArray[2] = dem::mappings::CreateGrid::uniform;
-    scenarioArray[3] = dem::mappings::CreateGrid::n1k;
+    scenarioArray[0] = dem::mappings::CreateGrid::hopper;
+    scenarioArray[1] = dem::mappings::CreateGrid::uniform;
+    scenarioArray[2] = dem::mappings::CreateGrid::n1k;
   }
   else if (scenario=="hopperUniform10k") {
-    scenarioArray[0] = dem::mappings::CreateGrid::hopperUniform10k;
-    scenarioArray[1] = dem::mappings::CreateGrid::hopper;
-    scenarioArray[2] = dem::mappings::CreateGrid::uniform;
-    scenarioArray[3] = dem::mappings::CreateGrid::n10k;
+    scenarioArray[0] = dem::mappings::CreateGrid::hopper;
+    scenarioArray[1] = dem::mappings::CreateGrid::uniform;
+    scenarioArray[2] = dem::mappings::CreateGrid::n10k;
   }
   else if (scenario=="hopperUniform100k") {
-    scenarioArray[0] = dem::mappings::CreateGrid::hopperUniform100k;
-    scenarioArray[1] = dem::mappings::CreateGrid::hopper;
-    scenarioArray[2] = dem::mappings::CreateGrid::uniform;
-    scenarioArray[3] = dem::mappings::CreateGrid::n100k;
+    scenarioArray[0] = dem::mappings::CreateGrid::hopper;
+    scenarioArray[1] = dem::mappings::CreateGrid::uniform;
+    scenarioArray[2] = dem::mappings::CreateGrid::n100k;
   }
   else if (scenario=="hopperUniform500k") {
-    scenarioArray[0] = dem::mappings::CreateGrid::hopperUniform500k;
-    scenarioArray[1] = dem::mappings::CreateGrid::hopper;
-    scenarioArray[2] = dem::mappings::CreateGrid::uniform;
-    scenarioArray[3] = dem::mappings::CreateGrid::n500k;
+    scenarioArray[0] = dem::mappings::CreateGrid::hopper;
+    scenarioArray[1] = dem::mappings::CreateGrid::uniform;
+    scenarioArray[2] = dem::mappings::CreateGrid::n500k;
   }
   else if (scenario=="hopperNonUniform") {
-    scenarioArray[0] = dem::mappings::CreateGrid::hopperNonUniform;
-    scenarioArray[1] = dem::mappings::CreateGrid::hopper;
-    scenarioArray[2] = dem::mappings::CreateGrid::nonuniform;
-    scenarioArray[3] = dem::mappings::CreateGrid::n100;
+    scenarioArray[0] = dem::mappings::CreateGrid::hopper;
+    scenarioArray[1] = dem::mappings::CreateGrid::nonuniform;
+    scenarioArray[2] = dem::mappings::CreateGrid::n100;
   }
   else if (scenario=="hopperNonUniform1k") {
-    scenarioArray[0] = dem::mappings::CreateGrid::hopperNonUniform1k;
-    scenarioArray[1] = dem::mappings::CreateGrid::hopper;
-    scenarioArray[2] = dem::mappings::CreateGrid::nonuniform;
-    scenarioArray[3] = dem::mappings::CreateGrid::n1k;
+    scenarioArray[0] = dem::mappings::CreateGrid::hopper;
+    scenarioArray[1] = dem::mappings::CreateGrid::nonuniform;
+    scenarioArray[2] = dem::mappings::CreateGrid::n1k;
   }
   else if (scenario=="hopperNonUniform10k") {
-    scenarioArray[0] = dem::mappings::CreateGrid::hopperNonUniform10k;
-    scenarioArray[1] = dem::mappings::CreateGrid::hopper;
-    scenarioArray[2] = dem::mappings::CreateGrid::nonuniform;
-    scenarioArray[3] = dem::mappings::CreateGrid::n10k;
+    scenarioArray[0] = dem::mappings::CreateGrid::hopper;
+    scenarioArray[1] = dem::mappings::CreateGrid::nonuniform;
+    scenarioArray[2] = dem::mappings::CreateGrid::n10k;
   }
   else if (scenario=="hopperNonUniform100k") {
-    scenarioArray[0] = dem::mappings::CreateGrid::hopperNonUniform100k;
-    scenarioArray[1] = dem::mappings::CreateGrid::hopper;
-    scenarioArray[2] = dem::mappings::CreateGrid::nonuniform;
-    scenarioArray[3] = dem::mappings::CreateGrid::n100k;
+    scenarioArray[0] = dem::mappings::CreateGrid::hopper;
+    scenarioArray[1] = dem::mappings::CreateGrid::nonuniform;
+    scenarioArray[2] = dem::mappings::CreateGrid::n100k;
   }
   else if (scenario=="hopperNonUniform500k") {
-    scenarioArray[0] = dem::mappings::CreateGrid::hopperNonUniform500k;
-    scenarioArray[1] = dem::mappings::CreateGrid::hopper;
-    scenarioArray[2] = dem::mappings::CreateGrid::nonuniform;
-    scenarioArray[3] = dem::mappings::CreateGrid::n500k;
+    scenarioArray[0] = dem::mappings::CreateGrid::hopper;
+    scenarioArray[1] = dem::mappings::CreateGrid::nonuniform;
+    scenarioArray[2] = dem::mappings::CreateGrid::n500k;
   }
   //////////////PHYSICS TESTS START/////////////////////////////////////
   else if (scenario=="frictionStatic") {
-    scenarioArray[0] = dem::mappings::CreateGrid::frictionStatic;
-    scenarioArray[1] = dem::mappings::CreateGrid::friction;
-    scenarioArray[2] = dem::mappings::CreateGrid::sstatic;
+    scenarioArray[0] = dem::mappings::CreateGrid::friction;
+    scenarioArray[1] = dem::mappings::CreateGrid::sstatic;
   }
   else if (scenario=="frictionSlide") {
-    scenarioArray[0] = dem::mappings::CreateGrid::frictionSlide;
-    scenarioArray[1] = dem::mappings::CreateGrid::friction;
-    scenarioArray[2] = dem::mappings::CreateGrid::slide;
+    scenarioArray[0] = dem::mappings::CreateGrid::friction;
+    scenarioArray[1] = dem::mappings::CreateGrid::slide;
   }
   else if (scenario=="frictionRoll") {
-    scenarioArray[0] = dem::mappings::CreateGrid::frictionRoll;
-    scenarioArray[1] = dem::mappings::CreateGrid::friction;
-    scenarioArray[2] = dem::mappings::CreateGrid::roll;
+    scenarioArray[0] = dem::mappings::CreateGrid::friction;
+    scenarioArray[1] = dem::mappings::CreateGrid::roll;
   }
   //////////////PHYSICS TESTS END/////////////////////////////////////
   else {
@@ -487,58 +481,50 @@ int main(int argc, char** argv)
     programExitCode = 2;
   }
 
-  dem::mappings::Collision::_enableOverlapCheck = false;
-  if (collisionModel=="sphere" || collisionModel=="sphere-sphere") {
+  if (collisionModel=="sphere") {
     dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::Sphere;
-    if(collisionModel=="sphere-sphere") {dem::mappings::Collision::_enableOverlapCheck = true;}
   }
-  else if((collisionModel=="bf") || (collisionModel=="sphere-bf"))
+  else if(collisionModel.find("bf") != std::string::npos)
   {
     dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::BruteForce;
-    if(collisionModel=="sphere-bf") {dem::mappings::Collision::_enableOverlapCheck = true;}
   }
-  else if((collisionModel=="penalty") || (collisionModel=="sphere-penalty"))
+  else if(collisionModel.find("penalty") != std::string::npos)
   {
     dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::Penalty;
-    if(collisionModel=="sphere-penalty") {dem::mappings::Collision::_enableOverlapCheck = true;}
   }
-  //penalty iterations histogram
-  //penalty fail rate - maybe no need for this one
-  else if (collisionModel=="penalty-stat") {
-    dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::PenaltyStat;
-  }
-  else if (collisionModel=="penalty-tune") {
-    dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::PenaltyTune;
-  }
-  else if((collisionModel=="hybrid-on-triangle-pairs") || (collisionModel=="sphere-hybrid-on-triangle-pairs"))
+  else if(collisionModel.find("hybrid-on-triangle-pairs") != std::string::npos)
   {
     dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::HybridOnTrianglePairs;
-    if(collisionModel=="sphere-hybrid-on-triangle-pairs") {dem::mappings::Collision::_enableOverlapCheck = true;}
   }
-  else if ((collisionModel=="hybrid-on-batches") || (collisionModel=="sphere-hybrid-on-batches"))
+  else if (collisionModel.find("hybrid-on-batches") != std::string::npos)
   {
     dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::HybridOnBatches;
-    if(collisionModel=="sphere-hybrid-on-batches") {dem::mappings::Collision::_enableOverlapCheck = true;}
   }
-  //hybrid on triangle pairs fail rate histogram
-  //hybrid on batches fail rate histogram
-  else if (collisionModel=="hybrid-on-triangle-pairs-stat")
-  {
-	dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::HybridTriangleStat;
-  }
-  else if (collisionModel=="hybrid-on-batches-stat")
-  {
-	dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::HybridBatchStat;
-  }
-  else if (collisionModel=="gjk") {
+  else if (collisionModel.find("gjk") != std::string::npos) {
 	dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::GJK;
   }
-  else if (collisionModel=="none") {
+  else if (collisionModel.find("none") != std::string::npos) {
 	dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::none;
   } else {
     std::cerr << "invalid collision model option. Please run without arguments to see list of valid variants" << std::endl;
     programExitCode = 2;
   }
+
+  //hybrid on triangle pairs fail rate histogram
+  //hybrid on batches fail rate histogram
+  //penalty iterations histogram
+  //penalty fail rate - maybe no need for this one
+  dem::mappings::Collision::_enableStat = false;
+  bool enableStat = collisionModel.find("stat") != std::string::npos;
+  if(enableStat) {dem::mappings::Collision::_enableStat = true;}
+
+  //if (collisionModel=="penalty-tune") {
+  //  dem::mappings::Collision::_collisionModel = dem::mappings::Collision::CollisionModel::PenaltyTune;
+  //}
+
+  dem::mappings::Collision::_enableOverlapCheck = false;
+  bool exists = collisionModel.find("sphere") != std::string::npos;
+  if(exists && collisionModel != "sphere") {dem::mappings::Collision::_enableOverlapCheck = true;}
 
   logInfo( "main(...)", "scenario:" << (scenario)            << ", steps:" 			<< (iterations) 		<< ", grid:"    			<< (gridType)
                     << ", step-size:" << (stepSize)          << ", plot:"     		<< (plotID)      	<< ", realSnapshot:"    	<< (realSnapshot)

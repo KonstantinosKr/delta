@@ -85,6 +85,12 @@ namespace delta {
 		  int 											meshDensity,
 		  iREAL 											epsilon);
 
+	  void twoParticlesCrashDiagonal(
+		  std::vector<delta::world::structure::Object>& 	coarseObject,
+		  bool 											isSphere,
+		  int 											meshDensity,
+		  iREAL 											epsilon);
+
 	  void rotateParticle(
 		  std::vector<delta::world::structure::Object>& 	coarseObject,
 		  bool 											isSphere,

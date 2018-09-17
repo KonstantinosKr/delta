@@ -8,13 +8,13 @@
 //#define SPRING 50
 //#define DAMPER 0.2
 //mine
-#define SPRING 1E3
+#define SPRING 1E4
 #define DAMPER 0.5
 
 #define FRICTION 0.5
 
 //sphere parameters for piling simulation
-#define SSPRING 1E4
+#define SSPRING 2E5
 #define SDAMPER 0.5
 #define SFRICTIONGOLD 1
 #define SFRICTIONWOOD 1
