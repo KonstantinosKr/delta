@@ -1,0 +1,67 @@
+#!/bin/csh
+# Mandatory parameters are:
+# time, nodes, tasks,
+# job_name, output_file,
+# job_file, app,
+# environment, parameters, ompthreads
+#
+# Optional parameters are:
+# ranks, cores, mail
+
+#SBATCH --job-name={{job_name}}
+#SBATCH -o {{output_file}}
+#SBATCH -t {{time}}
+#SBATCH --exclusive
+#SBATCH -p par7.q
+#SBATCH --nodes={{nodes}}
+#SBATCH --ntasks-per-node={{tasks}}
+#SBATCH --cpus-per-task={{cores}}
+#SBATCH --mail-type=END
+#SBATCH --mail-user={{mail}}
+module purge
+module load slurm
+module load intel/xe_2017.2
+module load intelmpi/intel/2017.2
+module unload gcc/4.9.1
+module load gcc/4.9.1
+module load likwid/4.1
+
+setenv TBB_SHLIB "-L/ddn/apps/Cluster-Apps/intel/xe_2017.2/tbb/lib/intel64/gcc4.7 -ltbb"
+
+setenv I_MPI_FABRICS "tmi"
+
+#{{ompthread}}
+
+setenv OMP_NUM_THREADS {{cores}}
+
+# pipe some information into output file
+#echo "Timestamp (YYYY/MM/dd:hh:mm:ss): `date +%Y/%m/%d:%H:%M:%S`"
+#cat {{job_file}}
+# likwid measurements for single-node experiments
+#echo "sweep/environment={{environment}}" >>  {{output_file}}.likwid
+#echo "sweep/parameters={{parameters}}"   >> {{output_file}}.likwid
+# multiple ranks
+#mpiexec -np {{ranks}} {{app}} {{parameters}}
+{{app}}
+
+
+if ( {{cores}} == 1 ) then
+  likwid-pin -c 0 {{app}}
+
+  likwid-perfctr -f -C 0 -g MEM      {{app}} >> {{output_file}}.likwid
+  likwid-perfctr -f -C 0 -g FLOPS_DP {{app}} >> {{output_file}}.likwid
+  likwid-perfctr -f -C 0 -g L2CACHE  {{app}} >> {{output_file}}.likwid
+  likwid-perfctr -f -C 0 -g L3CACHE  {{app}} >> {{output_file}}.likwid
+  likwid-perfctr -f -C 0 -g L3       {{app}} >> {{output_file}}.likwid
+  likwid-perfctr -f -C 0 -g BRANCH   {{app}} >> {{output_file}}.likwid
+else
+  @ maxCore = {{cores}} - 1
+
+  likwid-pin -c 0-$maxCore {{app}}
+  likwid-perfctr -f -C 0-$maxCore -g MEM      {{app}} >> {{output_file}}.likwid
+  likwid-perfctr -f -C 0-$maxCore -g FLOPS_DP {{app}} >> {{output_file}}.likwid
+  likwid-perfctr -f -C 0-$maxCore -g L2CACHE  {{app}} >> {{output_file}}.likwid
+  likwid-perfctr -f -C 0-$maxCore -g L3CACHE  {{app}} >> {{output_file}}.likwid
+  likwid-perfctr -f -C 0-$maxCore -g L3       {{app}} >> {{output_file}}.likwid
+  likwid-perfctr -f -C 0-$maxCore -g BRANCH   {{app}} >> {{output_file}}.likwid
+endif

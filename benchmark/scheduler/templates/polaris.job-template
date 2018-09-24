@@ -1,0 +1,13 @@
+#$ -wd /nobackup/durkk/
+#$ -P {{OUTPUT_FILE}}
+#$ -N {{OUTPUT_FILE}}
+#$ -V
+#$ -m ea
+#$ -M {{mail}}
+#$ -l h_rt={{time}}
+#$ -l h_vmem=2G
+#$ -pe smp {{cores}}
+
+
+export OMP_NUM_THREADS={{ompthread}}
+{{app}}

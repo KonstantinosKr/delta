@@ -1,0 +1,63 @@
+-------------------------------------------------------------
+-------------------------------------------------------------
+CPU type:	Intel Core SandyBridge EP processor 
+CPU clock:	2.00 GHz 
+-------------------------------------------------------------
+-------------------------------------------------------------
+STREAM version $Revision: 1.3 $
+-------------------------------------------------------------
+This system uses 8 bytes per array element.
+-------------------------------------------------------------
+Array size = 80000000 (elements), Offset = 0 (elements)
+Memory per array = 610.4 MiB (= 0.6 GiB).
+Total memory required = 1831.1 MiB (= 1.8 GiB).
+Each kernel will be executed 10 times.
+ The *best* time for each kernel (excluding the first iteration)
+ will be used to compute the reported bandwidth.
+-------------------------------------------------------------
+Your clock granularity/precision appears to be 1 microseconds.
+Each test below will take on the order of 70167 microseconds.
+   (= 70167 clock ticks)
+Increase the size of the arrays if this shows that
+you are not getting at least 20 clock ticks per test.
+-------------------------------------------------------------
+WARNING -- The above is only a rough guideline.
+For best results, please be sure you know the
+precision of your system timer.
+-------------------------------------------------------------
+Function    Best Rate MB/s  Avg time     Min time     Max time
+Copy:           10971.5     0.116768     0.116666     0.116916
+Scale:          11598.1     0.110592     0.110363     0.111133
+Add:            12110.6     0.158911     0.158539     0.159271
+Triad:          12037.8     0.159695     0.159498     0.160076
+-------------------------------------------------------------
+Solution Validates: avg error less than 1.000000e-13 on all three arrays
+-------------------------------------------------------------
+Measuring group MEM
++-----------------------+-------------+
+|         Event         |   core 1    |
++-----------------------+-------------+
+|   INSTR_RETIRED_ANY   | 1.31529e+10 |
+| CPU_CLK_UNHALTED_CORE |  1.761e+10  |
+| CPU_CLK_UNHALTED_REF  | 1.26631e+10 |
+|     CAS_COUNT_RD      |      0      |
+|     CAS_COUNT_WR      |      0      |
+|     CAS_COUNT_RD      |      0      |
+|     CAS_COUNT_WR      |      0      |
+|     CAS_COUNT_RD      | 5.22116e+08 |
+|     CAS_COUNT_WR      | 2.2616e+08  |
+|     CAS_COUNT_RD      | 5.22158e+08 |
+|     CAS_COUNT_WR      | 2.25451e+08 |
++-----------------------+-------------+
++-----------------------------+---------+
+|           Metric            | core 1  |
++-----------------------------+---------+
+|     Runtime (RDTSC) [s]     | 6.78022 |
+|    Runtime unhalted [s]     | 8.80501 |
+|         Clock [MHz]         | 2781.31 |
+|             CPI             | 1.33887 |
+|  Memory Read BW [MBytes/s]  | 9857.13 |
+| Memory Write BW [MBytes/s]  | 4262.86 |
+|    Memory BW [MBytes/s]     |  14120  |
+| Memory data volume [GBytes] | 95.7367 |
++-----------------------------+---------+

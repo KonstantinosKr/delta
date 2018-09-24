@@ -1,0 +1,39 @@
+#!/bin/csh
+# Mandatory parameters are:
+# time, nodes, tasks,
+# job_name, output_file,
+# job_file, app,
+# environment, parameters, ompthreads
+#
+# Optional parameters are:
+# ranks, cores, mail
+
+#SBATCH --job-name={{job_name}}
+#SBATCH -o {{output_file}}
+#SBATCH -t {{time}}
+#SBATCH --exclusive
+#SBATCH -p test.q
+#SBATCH --nodes={{nodes}}
+#SBATCH --ntasks-per-node={{tasks}}
+#SBATCH --cpus-per-task={{cores}}
+#SBATCH --mail-type=END
+#SBATCH --mail-user={{mail}}
+module purge
+module load slurm
+module load intel/xe_2017.2
+module load intelmpi/intel/2017.2
+module unload gcc/4.9.1
+module load gcc/4.9.1
+
+setenv TBB_SHLIB "-L/ddn/apps/Cluster-Apps/intel/xe_2017.2/tbb/lib/intel64/gcc4.7 -ltbb"
+
+setenv I_MPI_FABRICS "tmi"
+
+setenv OMP_NUM_THREADS {{ompthread}}
+
+#echo "Timestamp (YYYY/MM/dd:hh:mm:ss): `date +%Y/%m/%d:%H:%M:%S`"
+#cat {{job_file}}
+#echo "sweep/environment={{environment}}" >  {{output_file}}.likwid
+#echo "sweep/parameters={{parameters}}"   >> {{output_file}}.likwid
+#mpiexec -np {{ranks}} {{app}} {{parameters}}
+amplxe-cl -r {{output_file}} -collect locksandwaits -no-auto-finalize -- {{app}}

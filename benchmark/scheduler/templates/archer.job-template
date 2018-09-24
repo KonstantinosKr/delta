@@ -1,0 +1,22 @@
+#!/bin/bash
+#PBS -N {{job_name}}
+#PBS -l select={{nodes}}:aoe=quad_100
+#PBS -l walltime=00:45:00
+#PBS -A e573-durkk
+#PBS -m ae
+#PBS -M {{mail}}
+#PBS -V
+#PBS -o {{output_file}}
+#Job file: {{job_file}}
+#Tasks: {{tasks}}
+#Ranks: {{ranks}}
+#Enviroment: {{environment}}"
+#Parameters: {{parameters}}
+
+export OMP_NUM_THREADS={{ompthread}}
+export KMP_AFFINITY=disabled
+export PBS_O_WORKDIR=$(readlink -f $PBS_O_WORKDIR)
+export PBS_O_WORKDIR=/work/e573/e573/durkk/
+cd $PBS_O_WORKDIR
+
+aprun -n 1 -d {{cores}} -cc depth {{app}}
