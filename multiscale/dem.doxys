@@ -1,0 +1,82 @@
+/**
+
+ @mainpage "Delta Source Code Documentation"
+
+
+ <h1>Prepare environment</h1>
+
+ If you haven't done so, you have to download/checkout Peano to some place in
+ your system. See www.peano-framework.org for details. Afterwards, please
+ change into your git directory applications/peano and do the following steps:
+
+ \code
+ ln -s your-peano-path/peano peano
+ ln -s your-peano-path/tarch tarch
+ ln -s ../delta delta
+ \endcode
+
+ Afterward, make should do the job.
+
+ <h1>Regenerate all the generated/glue code</h1>
+
+ Please change into the directory holding peano, tarch, dem, and so forth. Type in
+
+ \code
+ java -jar ~/workspace/peano/pdt/pdt.jar --create-project dem dem
+ java -jar pdt/pdt.jar --generate-gluecode dem/project.peano-specification dem pdt/usrtemplates
+ \endcode
+
+ You do need Peano's pdt (Peano Development Toolkit) to run this operation though.
+
+
+ <h1>Compiler settings (if you want to write your own makefile)</h1>
+
+ - Compile with -DDim3 at least. -DAsserts is recommended for non-production runs.
+ - Set the compile flag -Ddouble=double
+ - Set search directory to src, i.e. adopt -I...
+ - Change C++ standard to C++11 (in GNU it is -std=c++0x)
+
+ \code
+  General
+  export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/intel/tbb/lib/
+  export TBB_INC=-I/opt/intel/tbb/include/
+  export TBB_SHLIB="-L/opt/intel/tbb/lib/ -ltbb"
+  export TBB_INC=-I/opt/intel/compilers_and_libraries_2018.3.185/mac/tbb/include/
+  export TBB_SHLIB="-L/opt/intel/compilers_and_libraries_2018.3.185/mac/tbb/lib/ -ltbb"
+  export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:/opt/intel/compilers_and_libraries/linux/lib/intel64/
+  export PATH=/opt/intel/bin/:$PATH
+
+  export ASSIMP_INC=-I/Users/konstantinos/Devel/libraries/assimp/include/
+  export ASSIMP_LIB="-L/Users/konstantinos/Devel/libraries/assimp/lib/ -lassimp"
+
+  Hamilton Broadwell
+  module load intel/xe_2017.2
+  module load intelmpi/intel/2017.2
+  setenv CC Intel
+  module load gcc/4.9.1
+  
+  setenv TBB_INC "-I/ddn/apps/Cluster-Apps/intel/xe_2017.2/tbb/include/"
+  setenv TBB_SHLIB "-L/ddn/apps/Cluster-Apps/intel/xe_2017.2/tbb/lib/intel64/gcc4.7/ -ltbb"
+  
+  setenv LD_LIBRARY_PATH /ddn/home/rfmw74/libraries/assimp/lib/:$LD_LIBRARY_PATH
+  setenv ASSIMP_INC "-I/ddn/home/rfmw74/libraries/assimp/include/"
+  setenv ASSIMP_LIB "-L/ddn/home/rfmw74/libraries/assimp/lib/ -lassimp"
+
+
+  Xeon Phi Cluster - Sandy/KNC
+  export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/intel/composer_xe_2015/lib/mic/:/opt/intel/tbb/lib/mic/
+  export PATH=$PATH:/opt/intel/bin:/opt/intel/impi/5.1.1.109/bin64
+  
+  export TBB_INC=-I/opt/intel/tbb/include/
+  export TBB_SHLIB="-L/opt/intel/tbb/lib/mic -ltbb"
+  export TBB_SHLIB="-L/opt/intel/tbb/lib/intel64/gcc4.4/ -ltbb"
+  
+  Archer KNL
+  export TBB_SHLIB="-L/opt/intel/parallel_studio_xe_2017_ce/compilers_and_libraries_2017.0.098/linux/tbb/lib/intel64/gcc4.7/  -ltbb"
+  
+  VTune Amplifier
+  nohup /ddn/apps/Cluster-Apps/intel/xe_2017.2/vtune_amplifier_xe_2017/bin64/amplxe-gui -r xperiment -collect hotspots -no-auto-finalize -- ./dem-3d-release-novec > lol.log &
+
+ \endcode
+
+ */

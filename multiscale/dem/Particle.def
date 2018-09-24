@@ -1,0 +1,46 @@
+#include "peano/utils/Globals.h"
+
+
+Constant: DIMENSIONS;
+
+
+Packed-Type: short int;
+
+
+/**
+ * Can either be a particle or a particle fragment
+ */
+class dem::records::Particle {  
+
+  persistent expose double vertices[6];
+  persistent expose double verticesA[6];
+  persistent expose double verticesB[6];
+  persistent expose double verticesC[6];
+  persistent expose double verticesrefA[6];
+  persistent expose double verticesrefB[6];
+  persistent expose double verticesrefC[6];
+  persistent expose double orientation[9];
+  persistent expose double inertia[9];
+  persistent expose double inverse[9];
+  
+  persistent expose double centre[DIMENSIONS];
+  persistent expose double centreOfMass[DIMENSIONS];
+  
+  persistent expose double referentialCentreOfMass[DIMENSIONS];
+  
+  persistent expose double velocity[DIMENSIONS];
+  persistent expose double angular[DIMENSIONS];
+  persistent expose double referentialAngular[DIMENSIONS];
+  
+  persistent expose double diameter;
+  persistent expose double haloDiameter;
+  persistent expose double epsilon;
+  persistent expose double mass;
+  persistent expose double hMin;
+  persistent expose int globalParticleId;
+  persistent expose int localParticleId;
+  persistent expose int numberOfTriangles;
+  persistent expose int material;
+  persistent expose bool isObstacle;
+  persistent expose bool friction;
+};

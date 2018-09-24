@@ -1,0 +1,12 @@
+/**
+
+ @dir "MPI Balancing Toolkit"
+  
+ To recreate the archive, please change into the toolboxes directory and type in
+ \code
+  tar -cvf mpibalancing.tar mpibalancing --exclude=.svn
+  gzip mpibalancing.tar
+  mv mpibalancing.tar.gz ../tarballs/toolboxes
+ \endcode
+
+ */ 

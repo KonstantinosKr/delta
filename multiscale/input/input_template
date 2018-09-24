@@ -1,0 +1,12 @@
+[Properties]
+NAME	= scenario;
+STEPS	= scenario;
+GRID	=;
+PLOT	=;
+CM	=;
+
+[BODY]
+ID	= 1;
+RAD	= ;
+
+
