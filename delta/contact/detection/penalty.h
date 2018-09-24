@@ -40,6 +40,7 @@
 namespace delta {
   namespace contact {
 	namespace detection {
+
 	  void cleanPenaltyStatistics();
 
 	  /**
@@ -49,7 +50,9 @@ namespace delta {
 	   * and clean the statistics with cleanPenaltyStatistics(). The whole
 	   * statistics stuff is not thread-safe.
 	   */
-	  std::vector<int> getPenaltyStatistics();
+	  std::vector<int> getPenaltyIterationStatistics();
+
+	  std::vector<std::vector<iREAL>> getPenaltyErrorStatistics();
 
 
 	  /**
@@ -114,7 +117,7 @@ namespace delta {
 
 	  #pragma omp declare simd
 	  #pragma omp declare simd linear(xCoordinatesOfTriangleA:3) linear(yCoordinatesOfTriangleA:3) linear(zCoordinatesOfTriangleA:3) linear(xCoordinatesOfTriangleB:3) linear(yCoordinatesOfTriangleB:3) linear(zCoordinatesOfTriangleB:3) nomask notinbranch
-	  extern void penalty(
+	  extern void penaltySolver(
 		const iREAL   *xCoordinatesOfTriangleA,
 		const iREAL   *yCoordinatesOfTriangleA,
 		const iREAL   *zCoordinatesOfTriangleA,
@@ -135,21 +138,21 @@ namespace delta {
 	   * above, this one does terminate as soon as the error underruns maxError
 	   * or the number of itertions exceeds maxNumberOfNewtonIterations.
 	   */
-	  void penalty(
-		const iREAL   xCoordinatesOfTriangleA[],
-		const iREAL   yCoordinatesOfTriangleA[],
-		const iREAL   zCoordinatesOfTriangleA[],
-		const iREAL   xCoordinatesOfTriangleB[],
-		const iREAL   yCoordinatesOfTriangleB[],
-		const iREAL   zCoordinatesOfTriangleB[],
-		iREAL&        xPA,
-		iREAL&        yPA,
-		iREAL&        zPA,
-		iREAL&        xPB,
-		iREAL&        yPB,
-		iREAL&        zPB,
-		iREAL         maxError,
-		int&          numberOfNewtonIterationsRequired);
+	  void penaltySolver(
+		const iREAL			*xCoordinatesOfTriangleA,
+		const iREAL			*yCoordinatesOfTriangleA,
+		const iREAL			*zCoordinatesOfTriangleA,
+		const iREAL			*xCoordinatesOfTriangleB,
+		const iREAL			*yCoordinatesOfTriangleB,
+		const iREAL			*zCoordinatesOfTriangleB,
+		iREAL&				xPA,
+		iREAL&				yPA,
+		iREAL&				zPA,
+		iREAL&				xPB,
+		iREAL&				yPB,
+		iREAL&				zPB,
+		iREAL				maxError,
+		int&          		numberOfNewtonIterationsRequired);
 	}
   }
 }

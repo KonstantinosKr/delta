@@ -26,18 +26,25 @@
 #include <delta/contact/detection/penalty.h>
 
 namespace {
-  std::vector<int> numberOfNewtonIterations(MaxNumberOfNewtonIterations+1);
+  static std::vector<int> _numberOfNewtonIterations(MaxNumberOfNewtonIterations+1);
+  static std::vector<std::vector<iREAL>> _errorGlobalTracker;
 }
 
 void delta::contact::detection::cleanPenaltyStatistics() {
   #pragma omp simd
   for(int i=0; i<MaxNumberOfNewtonIterations+1; i++) {
-    numberOfNewtonIterations[i] = 0;
+    _numberOfNewtonIterations[i] = 0;
   }
+
+  _errorGlobalTracker.clear();
 }
 
-std::vector<int> delta::contact::detection::getPenaltyStatistics() {
-  return numberOfNewtonIterations;
+std::vector<int> delta::contact::detection::getPenaltyIterationStatistics() {
+  return _numberOfNewtonIterations;
+}
+
+std::vector<std::vector<iREAL>> delta::contact::detection::getPenaltyErrorStatistics() {
+  return _errorGlobalTracker;
 }
 
 std::vector<delta::contact::contactpoint> delta::contact::detection::penaltyStat(
@@ -57,35 +64,31 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::penaltyStat
   const bool      frictionB,
   const int       particleB)
 {
-  const iREAL MaxError = (epsilonA+epsilonB) / 16.0;
-
   std::vector<contactpoint> result;
 
-  #ifdef OMPTriangle
-    #pragma omp parallel for
-  #endif
+  std::vector<std::vector<iREAL>> v;
   for (int iA = 0; iA<numberOfTrianglesOfGeometryA*3; iA+=3)
   {
     __attribute__ ((aligned(byteAlignment))) iREAL xPA[10000], yPA[10000], zPA[10000], xPB[10000], yPB[10000], zPB[10000], d[10000];
-
+    __attribute__ ((aligned(byteAlignment))) const iREAL MaxError = (epsilonA+epsilonB) / 16.0;
     #if defined(__INTEL_COMPILER)
       #pragma forceinline recursive
     #endif
     for (int iB = 0; iB<numberOfTrianglesOfGeometryB*3; iB+=3)
     {
-      __attribute__ ((aligned(byteAlignment))) int numberOfNewtonIterationsRequired  = 0;
+      __attribute__ ((aligned(byteAlignment))) int numberOfNewtonIterationsRequired = 0;
 
-      penalty(xCoordinatesOfPointsOfGeometryA+(iA),
-              yCoordinatesOfPointsOfGeometryA+(iA),
-              zCoordinatesOfPointsOfGeometryA+(iA),
-              xCoordinatesOfPointsOfGeometryB+(iB),
-              yCoordinatesOfPointsOfGeometryB+(iB),
-              zCoordinatesOfPointsOfGeometryB+(iB),
-              xPA[iB], yPA[iB], zPA[iB], xPB[iB], yPB[iB], zPB[iB],
-              MaxError,
-              numberOfNewtonIterationsRequired);
+      penaltySolver(	xCoordinatesOfPointsOfGeometryA+(iA),
+					yCoordinatesOfPointsOfGeometryA+(iA),
+					zCoordinatesOfPointsOfGeometryA+(iA),
+					xCoordinatesOfPointsOfGeometryB+(iB),
+					yCoordinatesOfPointsOfGeometryB+(iB),
+					zCoordinatesOfPointsOfGeometryB+(iB),
+					xPA[iB], yPA[iB], zPA[iB], xPB[iB], yPB[iB], zPB[iB],
+					MaxError,
+					numberOfNewtonIterationsRequired);
 
-      numberOfNewtonIterations[numberOfNewtonIterationsRequired]++;
+      _numberOfNewtonIterations[numberOfNewtonIterationsRequired]++;
 
       d[iB] = std::sqrt(((xPB[iB]-xPA[iB])*(xPB[iB]-xPA[iB]))+((yPB[iB]-yPA[iB])*(yPB[iB]-yPA[iB]))+((zPB[iB]-zPA[iB])*(zPB[iB]-zPA[iB])));
     }
@@ -101,9 +104,6 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::penaltyStat
 	  }
     }
 
-	#ifdef OMPTriangle
-	  #pragma omp critical
-	#endif
 	for(int xx=0; xx < nearestContactPoint.size(); xx++)
 	result.push_back(nearestContactPoint[xx]);
   }
@@ -197,14 +197,14 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::penalty(
       __attribute__ ((aligned(byteAlignment))) bool failed = false;
       __attribute__ ((aligned(byteAlignment))) const iREAL MaxError = (epsilonA+epsilonB) / 16.0;
 
-      penalty(xCoordinatesOfPointsOfGeometryA+(iA),
-              yCoordinatesOfPointsOfGeometryA+(iA),
-              zCoordinatesOfPointsOfGeometryA+(iA),
-              xCoordinatesOfPointsOfGeometryB+(iB),
-              yCoordinatesOfPointsOfGeometryB+(iB),
-              zCoordinatesOfPointsOfGeometryB+(iB),
-              xPA[iB], yPA[iB], zPA[iB], xPB[iB], yPB[iB], zPB[iB],
-              MaxError, failed);
+      penaltySolver(	xCoordinatesOfPointsOfGeometryA+(iA),
+					yCoordinatesOfPointsOfGeometryA+(iA),
+					zCoordinatesOfPointsOfGeometryA+(iA),
+					xCoordinatesOfPointsOfGeometryB+(iB),
+					yCoordinatesOfPointsOfGeometryB+(iB),
+					zCoordinatesOfPointsOfGeometryB+(iB),
+					xPA[iB], yPA[iB], zPA[iB], xPB[iB], yPB[iB], zPB[iB],
+					MaxError, failed);
 
       d[iB] = std::sqrt(((xPB[iB]-xPA[iB])*(xPB[iB]-xPA[iB]))+((yPB[iB]-yPA[iB])*(yPB[iB]-yPA[iB]))+((zPB[iB]-zPA[iB])*(zPB[iB]-zPA[iB])));
     }
@@ -275,7 +275,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::penalty(
 #else
   #pragma omp declare simd
 #endif
-extern void delta::contact::detection::penalty(
+extern void delta::contact::detection::penaltySolver(
   const iREAL   *xCoordinatesOfTriangleA,
   const iREAL   *yCoordinatesOfTriangleA,
   const iREAL   *zCoordinatesOfTriangleA,
@@ -431,21 +431,21 @@ extern void delta::contact::detection::penalty(
 }
  
 //iteration histogram
-void delta::contact::detection::penalty(
-  const iREAL   xCoordinatesOfTriangleA[],
-  const iREAL   yCoordinatesOfTriangleA[],
-  const iREAL   zCoordinatesOfTriangleA[],
-  const iREAL   xCoordinatesOfTriangleB[],
-  const iREAL   yCoordinatesOfTriangleB[],
-  const iREAL   zCoordinatesOfTriangleB[],
-  iREAL&        xPA,
-  iREAL&        yPA,
-  iREAL&        zPA,
-  iREAL&        xPB,
-  iREAL&        yPB,
-  iREAL&        zPB,
-  iREAL         maxError,
-  int&          numberOfNewtonIterationsRequired)
+void delta::contact::detection::penaltySolver(
+  const iREAL			*xCoordinatesOfTriangleA,
+  const iREAL			*yCoordinatesOfTriangleA,
+  const iREAL			*zCoordinatesOfTriangleA,
+  const iREAL			*xCoordinatesOfTriangleB,
+  const iREAL			*yCoordinatesOfTriangleB,
+  const iREAL			*zCoordinatesOfTriangleB,
+  iREAL&					xPA,
+  iREAL&					yPA,
+  iREAL&					zPA,
+  iREAL&					xPB,
+  iREAL&					yPB,
+  iREAL&					zPB,
+  iREAL					maxError,
+  int&          			numberOfNewtonIterationsRequired)
  {
   __attribute__ ((aligned(byteAlignment))) iREAL BA[3];
   __attribute__ ((aligned(byteAlignment))) iREAL CA[3];

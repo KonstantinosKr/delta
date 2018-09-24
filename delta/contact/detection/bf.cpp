@@ -101,18 +101,18 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::bf(
 	#endif
     for(int iB=0; iB<numberOfTrianglesB; iB+=3)
     {
-      bf(xCoordinatesOfPointsOfGeometryA+(iA),
-		 yCoordinatesOfPointsOfGeometryA+(iA),
-		 zCoordinatesOfPointsOfGeometryA+(iA),
-		 xCoordinatesOfPointsOfGeometryB+(iB),
-		 yCoordinatesOfPointsOfGeometryB+(iB),
-		 zCoordinatesOfPointsOfGeometryB+(iB),
-		 xPA[iB],
-		 yPA[iB],
-		 zPA[iB],
-		 xPB[iB],
-		 yPB[iB],
-		 zPB[iB]);
+      bfSolver(	xCoordinatesOfPointsOfGeometryA+(iA),
+    				yCoordinatesOfPointsOfGeometryA+(iA),
+				zCoordinatesOfPointsOfGeometryA+(iA),
+				xCoordinatesOfPointsOfGeometryB+(iB),
+				yCoordinatesOfPointsOfGeometryB+(iB),
+				zCoordinatesOfPointsOfGeometryB+(iB),
+				xPA[iB],
+				yPA[iB],
+				zPA[iB],
+				xPB[iB],
+				yPB[iB],
+				zPB[iB]);
       d[iB] = std::sqrt(((xPB[iB]-xPA[iB])*(xPB[iB]-xPA[iB]))+((yPB[iB]-yPA[iB])*(yPB[iB]-yPA[iB]))+((zPB[iB]-zPA[iB])*(zPB[iB]-zPA[iB])));
     }
 
@@ -213,19 +213,19 @@ int NoDivTriTriIsect(
   return 0;
 }
 
-void delta::contact::detection::bf(
+void delta::contact::detection::bfSolver(
   const iREAL   *xxCoordinatesOfPointsOfGeometryA,
   const iREAL   *yyCoordinatesOfPointsOfGeometryA,
   const iREAL   *zzCoordinatesOfPointsOfGeometryA,
   const iREAL   *xxCoordinatesOfPointsOfGeometryB,
   const iREAL   *yyCoordinatesOfPointsOfGeometryB,
   const iREAL   *zzCoordinatesOfPointsOfGeometryB,
-  iREAL&  xPA,
-  iREAL&  yPA,
-  iREAL&  zPA,
-  iREAL&  xPB,
-  iREAL&  yPB,
-  iREAL&  zPB)
+  iREAL&  		xPA,
+  iREAL&  		yPA,
+  iREAL&  		zPA,
+  iREAL&  		xPB,
+  iREAL&  		yPB,
+  iREAL&  		zPB)
 {
 
 

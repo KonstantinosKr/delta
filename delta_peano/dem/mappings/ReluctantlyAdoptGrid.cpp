@@ -101,11 +101,11 @@ void dem::mappings::ReluctantlyAdoptGrid::beginIteration(
 
   assertion( dem::mappings::Collision::_collisionsOfNextTraversal.empty() );
 
-  if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::PenaltyStat)
-  delta::contact::detection::cleanPenaltyStatistics();
-
-  if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::HybridBatchStat)
-  delta::contact::detection::cleanHybridStatistics();
+  if(dem::mappings::Collision::_enableStat)
+  {
+	delta::contact::detection::cleanPenaltyStatistics();
+	delta::contact::detection::cleanHybridStatistics();
+  }
 
   tarch::multicore::jobs::startToProcessBackgroundJobs();
 
@@ -130,22 +130,34 @@ void dem::mappings::ReluctantlyAdoptGrid::endIteration(
   assertion( _backgroundTaskState.getNumberOfContactPoints()==0 || ! dem::mappings::Collision::_activeCollisions.empty() );
   dem::mappings::Collision::_collisionsOfNextTraversal.clear();
 
-  if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::PenaltyStat)
+  if(	dem::mappings::Collision::_enableStat &&
+		dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Penalty)
   {
-    std::vector<int> penaltyStatistics = delta::contact::detection::getPenaltyStatistics();
-    for (int i=0; i<static_cast<int>(penaltyStatistics.size()); i++)
-    {
-      logInfo( "endIteration(State)", i << " Newton iterations: " << penaltyStatistics[i] );
-    }
+	std::vector<int> penaltyIterationStatistics = delta::contact::detection::getPenaltyIterationStatistics();
+	for(int i=0; i<static_cast<int>(penaltyIterationStatistics.size()); i++)
+	{
+	  logInfo( "endIteration(State)", i << " Newton iterations: " << penaltyIterationStatistics[i] );
+	}
+
+	std::vector<std::vector<iREAL>> penaltyErrorStatistics = delta::contact::detection::getPenaltyErrorStatistics();
+	for(int i=0; i<penaltyErrorStatistics.size(); i++)
+	{
+	  for(int j=0; j<penaltyErrorStatistics[i].size(); j++)
+	  {
+		logInfo( "endIteration(State)", i << " Newton Error [" << i << "] : "<< penaltyErrorStatistics[i][j] );
+	  }
+	}
   }
 
-  if(dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::HybridBatchStat)
+  if(  dem::mappings::Collision::_enableStat &&
+	  (dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::HybridOnBatches ||
+	   dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::HybridOnTrianglePairs))
   {
-    logInfo( "endIteration(State)", std::endl
-                                 << "Penalty Fails: " << delta::contact::detection::getPenaltyFails() << " PenaltyFail avg: " << (iREAL)delta::contact::detection::getPenaltyFails()/(iREAL)delta::contact::detection::getBatchSize() << std::endl
-                                 << "Batch Size: " << delta::contact::detection::getBatchSize() << std::endl
-                                 << "Batch Fails: " << delta::contact::detection::getBatchFails() << " BatchFail avg: " << (iREAL)delta::contact::detection::getBatchFails()/(iREAL)delta::contact::detection::getBatchSize() << std::endl
-                                 << "BatchError avg: " << (iREAL)delta::contact::detection::getBatchError()/(iREAL)delta::contact::detection::getBatchSize());
+	logInfo( "endIteration(State)", std::endl
+							   << "Penalty Fails: " << delta::contact::detection::getPenaltyFails() << " PenaltyFail avg: " << (iREAL)delta::contact::detection::getPenaltyFails()/(iREAL)delta::contact::detection::getBatchSize() << std::endl
+							   << "Batch Size: " << delta::contact::detection::getBatchSize() << std::endl
+							   << "Batch Fails: " << delta::contact::detection::getBatchFails() << " BatchFail avg: " << (iREAL)delta::contact::detection::getBatchFails()/(iREAL)delta::contact::detection::getBatchSize() << std::endl
+							   << "BatchError avg: " << (iREAL)delta::contact::detection::getBatchError()/(iREAL)delta::contact::detection::getBatchSize());
   }
 
   logTraceOutWith1Argument( "endIteration(State)", solverState);

@@ -92,7 +92,7 @@ namespace delta {
 	  #ifdef OMPProcess
 		#pragma omp declare simd
 	  #endif
-	  void bf(
+	  void bfSolver(
 		const iREAL   *xCoordinatesOfTriangleA,
 		const iREAL   *yCoordinatesOfTriangleA,
 		const iREAL   *zCoordinatesOfTriangleA,

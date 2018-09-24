@@ -935,10 +935,19 @@ void dem::mappings::Collision::endIteration(
 	if(	dem::mappings::Collision::_enableStat &&
 		dem::mappings::Collision::_collisionModel == dem::mappings::Collision::CollisionModel::Penalty)
 	{
-	  std::vector<int> penaltyStatistics = delta::contact::detection::getPenaltyStatistics();
-	  for (int i=0; i<static_cast<int>(penaltyStatistics.size()); i++)
+	  std::vector<int> penaltyIterationStatistics = delta::contact::detection::getPenaltyIterationStatistics();
+	  for(int i=0; i<static_cast<int>(penaltyIterationStatistics.size()); i++)
 	  {
-		logInfo( "endIteration(State)", i << " Newton iterations: " << penaltyStatistics[i] );
+		logInfo( "endIteration(State)"," Newton iterations: " << penaltyIterationStatistics[i] );
+	  }
+
+	  std::vector<std::vector<iREAL>> penaltyErrorStatistics = delta::contact::detection::getPenaltyErrorStatistics();
+	  for(int i=0; i<penaltyErrorStatistics.size(); i++)
+	  {
+		for(int j=0; j<penaltyErrorStatistics[i].size(); j++)
+		{
+		  logInfo( "endIteration(State)"," Newton Error [" << i << "] : "<< penaltyErrorStatistics[i][j] );
+		}
 	  }
 	}
 

@@ -162,11 +162,6 @@ namespace delta {
 		const bool      frictionB,
 		const int       particleB);
 
-		static int 		_numberOfPenaltyFails;
-		static int 		_numberOfBatchFails;
-		static int 		_batchSize;
-		static iREAL		_batchError;
-
 		void 	cleanHybridStatistics();
 		int 		getPenaltyFails();
 		int 		getBatchFails();
