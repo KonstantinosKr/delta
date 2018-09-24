@@ -1,10 +1,10 @@
-delta_peano/geometry-*
-delta_peano/grid-*
-delta_peano/dem-*
-delta_peano/peano
-delta_peano/tarch
-delta_peano/pdt
-delta_peano/it-*
+geometry-*
+grid-*
+dem-*
+peano
+tarch
+pdt
+it-*
 *.log
 *.pyc
 *.txt
@@ -15,16 +15,14 @@ delta_peano/it-*
 *.DS_Store
 *.xml
 *._*
-thesis/Final/paper.aux
-thesis/Final/paper.synctex.gz
+paper.aux
+paper.synctex.gz
 shared-memory*
 *.148t.vect
-delta_peano/latex/
-
-delta_peano/doxygen-html/
+latex/
+doxygen-html/
 
 *.vtk
+delta-*
 
-delta_peano/delta-icc-release-tbb
-
-delta_peano/delta-icc-serial
+realtime/ogre-*
