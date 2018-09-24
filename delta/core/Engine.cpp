@@ -31,27 +31,28 @@ delta::core::Engine::Engine()
 }
 
 delta::core::Engine::Engine(
-	delta::world::World					    world,
-	delta::core::data::Meta::EngineMeta 	meta)
+	delta::world::World 					world,
+	delta::core::data::Meta::EngineMeta	meta)
 {
-  _overlapCheck 		= meta.overlapPreCheck;
-  _collisionModel 	    = meta.modelScheme;
-  _plot 				= meta.plotScheme;
-  _gravity 			    = world.hasGravity();
-  _data 				= delta::core::data::Structure(world.getObjects());
-  _boundary 			= world.getBoundary();
-  _state 			    = delta::core::State(_data, meta);
+  _overlapCheck		= meta.overlapPreCheck;
+  _collisionModel	= meta.modelScheme;
+  _plot				= meta.plotScheme;
+  _gravity			= world.hasGravity();
+  _boundary			= world.getBoundary();
+  _data				= delta::core::data::Structure(world.getObjects());
+  _state				= delta::core::State(_data, meta);
 }
 
 delta::core::Engine::Engine(
 	std::vector<delta::world::structure::Object>    	particles,
-	std::array<iREAL, 6> 						        boundary,
-	delta::core::data::Meta::EngineMeta 				meta)
+	std::array<iREAL, 6>								boundary,
+	delta::core::data::Meta::EngineMeta				meta)
 {
   _overlapCheck     = meta.overlapPreCheck;
   _collisionModel   = meta.modelScheme;
   _plot             = meta.plotScheme;
   _gravity          = meta.gravity;
+
   if(meta.maxPrescribedRefinement > 0.0)
   { 
     _data = delta::core::data::Structure(particles,
@@ -170,12 +171,12 @@ void delta::core::Engine::addCollision(
 
   //////////////START initial insertion of collision vectors into _collisionsOfNextTraversal<id, collision> map for next move update of particle A and B
   if( _collisionsOfNextTraversal.count(particleA.getGlobalParticleID())==0 ) {
-	_collisionsOfNextTraversal.insert(
+	  _collisionsOfNextTraversal.insert(
 		std::pair<int,std::vector<Collisions>>(particleA.getGlobalParticleID(), std::vector<Collisions>()));
   }
 
   if( _collisionsOfNextTraversal.count(particleB.getGlobalParticleID())==0 ) {
-	_collisionsOfNextTraversal.insert(
+	  _collisionsOfNextTraversal.insert(
 		std::pair<int,std::vector<Collisions>>(particleB.getGlobalParticleID(), std::vector<Collisions>()));
   }
   ///////////////END
