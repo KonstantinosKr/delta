@@ -18,28 +18,25 @@ LINK_LIBS=$(ASSIMP_LIB)
 
 ##############################################################################################
 
+DELTA_STATS=-DPARTICLESTATSMIN #-DPARTICLESTATSFULL -DCONTACTSTATS
+DELTA_SETTINGS=-DiREAL=double -DbyteAlignment=32 #64
+PEANO_SETTINGS=-DTrackGridStatistics -DpeanoCall
+CPU= -xHOST #-mmic
+
+##############################################################################################
+
 GCC_OMP_SHAREDMEMORY=-fopenmp -DOMPProcess
 ICC_OMP_SHAREDMEMORY=-qopenmp -qopt-threads-per-core=1 -DOMPProcess
 
 ##############################################################################################
-
-DELTA_STATS=-DPARTICLESTATSMIN #-DPARTICLESTATSFULL -DCONTACTSTATS
-
-DELTAPHI_SETTINGS=-DiREAL=double -DbyteAlignment=64
-
-DELTA_SETTINGS=-DiREAL=double -DbyteAlignment=32
-PEANO_SETTINGS=-DTrackGridStatistics -DpeanoCall
-
 ##############################################################################################
-
 GCCRUN=-O3 -Wall -ftree-vectorize -ftree-vectorizer-verbose=3 -ftree-loop-optimize -faggressive-loop-optimizations -funroll-loops -fprefetch-loop-arrays -falign-loops -fopt-info-vec -fopt-info-loop -fstrict-aliasing
 GCCDEBUG=-O3 -Wall -g -DDebug -DAsserts -pedantic -pedantic-errors
 GCCNOVEC=-O3 -Wall -fno-tree-vectorize -ftree-vectorizer-verbose=3 -funroll-loops -fprefetch-loop-arrays -falign-loops -fopt-info-vec -fopt-info-loop -fopenmp -fstrict-aliasing
 ##############################################################################################
-
-ICCRUN=-O3 -Wall -simd-function-pointers -qopt-report=5 -qopt-prefetch=2 -falign-loops=32 -funroll-loops -fstrict-aliasing -restrict -pedantic -ip -xHOST
+ICCRUN=-O3 -Wall -simd-function-pointers -qopt-report=5 -qopt-prefetch=2 -falign-loops=32 -funroll-loops -fstrict-aliasing -restrict -pedantic -ip $(CPU)
 ICCDEBUG=-O3 -Wall -g -DAsserts -pedantic -pedantic-errors -no-ipo
-ICCNOVEC=-O3 -Wall -no-vec -qno-openmp-simd -no-ipo -qopt-report=5 -fstrict-aliasing -restrict -pedantic -fno-rtti -xHOST
+ICCNOVEC=-O3 -Wall -no-vec -qno-openmp-simd -no-ipo -qopt-report=5 -fstrict-aliasing -restrict -pedantic -fno-rtti $(CPU)
 ##############################################################################################
 
 default: header
@@ -51,6 +48,7 @@ default: header
 	@echo delta-gcc-omp
 	@echo delta-gcc-omp-novec
 	@echo delta-gcc-pstats
+	@echo delta-gcc-release-tbb
 	@echo delta-gcc-release-tbb-novec
 	@echo delta-gcc-release-mpi
 	@echo --ICC-------------------------------
@@ -58,8 +56,8 @@ default: header
 	@echo delta-icc-serial
 	@echo delta-icc-omp
 	@echo delta-icc-omp-novec
-	@echo delta-gcc-pstats
 	@echo delta-icc-release-pstats
+	@echo delta-icc-release-tbb
 	@echo delta-icc-release-tbb-novec
 	@echo delta-icc-release-mpi
 
@@ -115,14 +113,6 @@ delta-gcc-release-pstats: LFLAGS=$(LINK_LIBS)
 delta-gcc-release-pstats: EXECUTABLE=delta-gcc-release-tbb-stats
 delta-gcc-release-pstats: header build
 
-delta-gcc-release-tbb-phi: CC=g++ -std=c++14
-delta-gcc-release-tbb-phi: DIM=-DDim3
-delta-gcc-release-tbb-phi: SETTINGS=$(DELTAPHI_SETTINGS) $(PEANO_SETTINGS) -DSharedTBB
-delta-gcc-release-tbb-phi: CFLAGS=$(GCCRUN) $(INCLUDE_TBB) $(GCC_OMP_SHAREDMEMORY) $(INCLUDE_LIBS)
-delta-gcc-release-tbb-phi: LFLAGS=$(LINK_TBB) $(LINK_OMP) $(LINK_LIBS) -mmic
-delta-gcc-release-tbb-phi: EXECUTABLE=delta-gcc-release-tbb-phi
-delta-gcc-release-tbb-phi: header build
-
 delta-gcc-release-mpi: CC=mpic++ -std=c++14
 delta-gcc-release-mpi: DIM=-DDim3
 delta-gcc-release-mpi: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) -DSharedTBB -DParallel -DMPICH_IGNORE_CXX_SEEK -DMultipleThreadsMayTriggerMPICalls
@@ -138,7 +128,7 @@ delta-gcc-release-mpi: header build
 delta-icc-asserts: CC=icpc -std=c++14
 delta-icc-asserts: DIM=-DDim3
 delta-icc-asserts: SETTINGS=$(DELTA_SETTINGS) $(PEANO_SETTINGS) $(INCLUDE_LIBS)
-delta-icc-asserts: CFLAGS=$(ICCDEBUG) -g
+delta-icc-asserts: CFLAGS=$(ICCDEBUG)
 delta-icc-asserts: LFLAGS= $(LINK_LIBS)
 delta-icc-asserts: EXECUTABLE=delta-icc-asserts
 delta-icc-asserts: header build
@@ -190,14 +180,6 @@ delta-icc-release-pstats: CFLAGS=$(ICCRUN) $(INCLUDE_TBB) $(ICC_OMP_SHAREDMEMORY
 delta-icc-release-pstats: LFLAGS=$(LINK_TBB) $(LINK_OMP) $(LINK_LIBS)
 delta-icc-release-pstats: EXECUTABLE=delta-icc-release-tbb-pstats
 delta-icc-release-pstats: header build
-
-delta-icc-release-tbb-phi: CC=g++ -std=c++14
-delta-icc-release-tbb-phi: DIM=-DDim3
-delta-icc-release-tbb-phi: SETTINGS=$(DELTAPHI_SETTINGS) $(PEANO_SETTINGS) -DSharedTBB
-delta-icc-release-tbb-phi: CFLAGS=$(GCCRUN) $(INCLUDE_TBB) $(ICC_OMP_SHAREDMEMORY) $(INCLUDE_LIBS)
-delta-icc-release-tbb-phi: LFLAGS=$(LINK_TBB) $(LINK_OMP) $(LINK_LIBS) -mmic
-delta-icc-release-tbb-phi: EXECUTABLE=delta-icc-release-tbb-phi
-delta-icc-release-tbb-phi: header build
 
 delta-icc-release-mpi: CC=mpiicc -std=c++14
 delta-icc-release-mpi: DIM=-DDim3
