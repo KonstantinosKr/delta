@@ -549,7 +549,7 @@ void dem::mappings::Collision::collisionDetection(
       }
       break;
     case CollisionModel::GJK:
-      assertionMsg(false,"Konstantinos, bf has to use const iREAL* and not iREAL* as input" );
+//      assertionMsg(false,"Konstantinos, bf has to use const iREAL* and not iREAL* as input" );
   /*		newContactPoints = delta::collision::gjk(
 							numberOfTrianglesA,
 							xCoordinatesA,
