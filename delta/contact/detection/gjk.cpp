@@ -23,21 +23,21 @@
 #include <delta/contact/detection/gjk.h>
 
 std::vector<delta::contact::contactpoint> delta::contact::detection::gjk(
-		  int       	numberOfTrianglesOfGeometryA,
+		  int       numberOfTrianglesOfGeometryA,
 		  iREAL*   	xCoordinatesOfPointsOfGeometryA,
 		  iREAL*   	yCoordinatesOfPointsOfGeometryA,
 		  iREAL*   	zCoordinatesOfPointsOfGeometryA,
 		  iREAL    	epsilonA,
 		  bool      frictionA,
-		  int 		particleA,
+		  int 			particleA,
 
 		  int       numberOfTrianglesOfGeometryB,
 		  iREAL*   	xCoordinatesOfPointsOfGeometryB,
 		  iREAL*   	yCoordinatesOfPointsOfGeometryB,
 		  iREAL*   	zCoordinatesOfPointsOfGeometryB,
 		  iREAL    	epsilonB,
-		  bool   	frictionB,
-		  int		particleB
+		  bool   		frictionB,
+		  int				particleB
 ) {
   std::vector<contactpoint> result;
   

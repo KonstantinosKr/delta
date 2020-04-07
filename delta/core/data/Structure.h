@@ -8,7 +8,7 @@
 #ifndef DELTA_CORE_DATA_STRUCTURE_H_
 #define DELTA_CORE_DATA_STRUCTURE_H_
 
-#include <delta/core/data/ParticleRecord.h>
+#include <core/data/ParticleRecord.h>
 #include <vector>
 #include "../../world/structure/Object.h"
 

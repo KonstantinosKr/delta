@@ -1,0 +1,121 @@
+component: DEM
+
+namespace: ::dem
+
+heap-dastgen-file: Particle.def
+
+vertex:
+  dastgen-file: Vertex.def
+  
+cell:
+  dastgen-file: Cell.def
+
+state:
+  dastgen-file: State.def
+
+event-mapping:
+  name: CreateGrid
+
+event-mapping:
+  name: MoveParticles
+
+event-mapping:
+  name: Collision
+
+event-mapping:
+  name: AdoptGrid
+
+event-mapping:
+  name: FlopAdoptGrid
+
+event-mapping:
+  name: ReluctantlyAdoptGrid
+  
+event-mapping:
+  name: Plot
+
+adapter:
+  name: CreateGrid
+  merge-with-user-defined-mapping: CreateGrid
+
+adapter:
+  name: CreateGridAndPlot
+  merge-with-user-defined-mapping: CreateGrid
+  merge-with-user-defined-mapping: Plot
+  merge-with-predefined-mapping: VTKGridVisualiser(grid)
+
+adapter:
+  name: TimeStep
+  merge-with-user-defined-mapping: Collision
+  merge-with-user-defined-mapping: MoveParticles
+
+adapter:
+  name: TimeStepAndPlot
+  merge-with-user-defined-mapping: Collision
+  merge-with-user-defined-mapping: MoveParticles
+  merge-with-user-defined-mapping: Plot
+  merge-with-predefined-mapping: VTKGridVisualiser(grid)
+  
+adapter:
+  name: Collision
+  merge-with-user-defined-mapping: Collision
+
+adapter: 
+  name: MoveParticles
+  merge-with-user-defined-mapping: MoveParticles
+
+adapter:
+  name: Adopt
+  merge-with-user-defined-mapping: AdoptGrid
+  
+adapter:
+  name: AdoptReluctantly
+  merge-with-user-defined-mapping: ReluctantlyAdoptGrid
+
+adapter:
+  name: FlopAdopt
+  merge-with-user-defined-mapping: FlopAdoptGrid
+
+adapter: 
+  name: PlotData
+  merge-with-user-defined-mapping: Plot
+  merge-with-predefined-mapping: VTKGridVisualiser(grid)
+
+adapter:
+  name: TimeStepOnDynamicGrid
+  merge-with-user-defined-mapping: AdoptGrid
+  merge-with-user-defined-mapping: Collision
+  merge-with-user-defined-mapping: MoveParticles
+  
+adapter:
+  name: TimeStepAndPlotOnDynamicGrid
+  merge-with-user-defined-mapping: AdoptGrid
+  merge-with-user-defined-mapping: Collision
+  merge-with-user-defined-mapping: MoveParticles
+  merge-with-user-defined-mapping: Plot
+  merge-with-predefined-mapping: VTKGridVisualiser(grid)
+ 
+adapter:
+  name: TimeStepOnReluctantDynamicGrid
+  merge-with-user-defined-mapping: ReluctantlyAdoptGrid
+  merge-with-user-defined-mapping: MoveParticles
+
+adapter:
+  name: TimeStepAndPlotOnReluctantDynamicGrid
+  merge-with-user-defined-mapping: ReluctantlyAdoptGrid
+  merge-with-user-defined-mapping: MoveParticles
+  merge-with-user-defined-mapping: Plot
+  merge-with-predefined-mapping: VTKGridVisualiser(grid)
+ 
+adapter:
+  name: TimeStepOnFlopDynamicGrid
+  merge-with-user-defined-mapping: FlopAdoptGrid
+  merge-with-user-defined-mapping: Collision
+  merge-with-user-defined-mapping: MoveParticles
+
+adapter:
+  name: TimeStepAndPlotOnFlopDynamicGrid
+  merge-with-user-defined-mapping: ReluctantlyAdoptGrid
+  merge-with-user-defined-mapping: MoveParticles
+  merge-with-user-defined-mapping: Plot
+  merge-with-predefined-mapping: VTKGridVisualiser(grid)

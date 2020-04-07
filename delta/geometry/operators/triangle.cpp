@@ -22,7 +22,7 @@
  SOFTWARE.
  */
 
-#include <delta/geometry/operators/triangle.h>
+#include <geometry/operators/triangle.h>
 
 void delta::geometry::operators::triangle::bisectTriangle(
 		iREAL A[3],

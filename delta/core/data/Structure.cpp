@@ -5,7 +5,7 @@
  *      Author: konstantinos
  */
 
-#include "delta/core/data/Structure.h"
+#include "core/data/Structure.h"
 
 namespace delta {
   namespace core {

@@ -57,12 +57,12 @@ namespace delta {
 		const iREAL   diameterA,
 		const iREAL   epsilonA,
 		const bool    frictionA,
-		const int	  particleA,
+		const int	  	particleA,
 
 		const iREAL   *xCoordinatesOfPointsOfGeometryB,
 		const iREAL   *yCoordinatesOfPointsOfGeometryB,
 		const iREAL   *zCoordinatesOfPointsOfGeometryB,
-		const int	  numberOfTrianglesOfGeometryB,
+		const int	  	numberOfTrianglesOfGeometryB,
 		const iREAL   epsilonB,
 		const bool 	  frictionB,
 		const int 	  particleB

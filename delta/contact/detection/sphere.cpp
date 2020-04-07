@@ -23,7 +23,7 @@
  */
 
 #include <delta/contact/detection/sphere.h>
-#include "delta/contact/detection/point.h"
+#include <delta/contact/detection/point.h>
 #include "delta/core/algo.h"
 
 std::vector<delta::contact::contactpoint> delta::contact::detection::sphere(
@@ -33,7 +33,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::sphere(
   const iREAL   diameterA,
   const iREAL   epsilonA,
   const bool    frictionA,
-  const int 	  	particleA,
+  const int 	  particleA,
 
   const iREAL   xCoordinatesOfPointsOfGeometryB,
   const iREAL   yCoordinatesOfPointsOfGeometryB,
@@ -41,7 +41,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::sphere(
   const iREAL   diameterB,
   const iREAL   epsilonB,
   const bool    frictionB,
-  const int 	  	particleB)
+  const int 	  particleB)
 {
   std::vector<contactpoint> result;
 
@@ -86,7 +86,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::sphereWithB
   int   			numberOfTrianglesOfGeometryB,
   iREAL   		epsilonB,
   bool    		frictionB,
-  int 			particleB)
+  int 				particleB)
 {
   std::vector<contactpoint> result;
 
@@ -148,7 +148,7 @@ int 	    particleB,
 const iREAL   *xCoordinatesOfPointsOfGeometryA,
 const iREAL   *yCoordinatesOfPointsOfGeometryA,
 const iREAL   *zCoordinatesOfPointsOfGeometryA,
-int   			numberOfTrianglesOfGeometryA,
+int   				numberOfTrianglesOfGeometryA,
 iREAL   			epsilonA,
 bool    			frictionA,
 int 	  			particleA)

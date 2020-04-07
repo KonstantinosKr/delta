@@ -28,8 +28,8 @@
 #include <limits>
 #include <float.h>
 #include "delta/core/algo.h"
-#ifdef peanoCall
 
+#ifdef peanoCall
 #include "peano/utils/Loop.h"
 #include "tarch/multicore/Lock.h"
 #include "tarch/multicore/BooleanSemaphore.h"
@@ -76,7 +76,7 @@ namespace delta {
 		const bool      frictionB,
 		const int 	    particleB);
 
-#ifdef peanoCall
+#if defined(SharedTBB) && defined(peanoCall)
 	  std::vector<contactpoint> penalty(
 		const iREAL*    xCoordinatesOfPointsOfGeometryA,
 		const iREAL*    yCoordinatesOfPointsOfGeometryA,
@@ -151,8 +151,8 @@ namespace delta {
 		iREAL&				xPB,
 		iREAL&				yPB,
 		iREAL&				zPB,
-		iREAL				maxError,
-		int&          		numberOfNewtonIterationsRequired);
+		iREAL					maxError,
+		int&          numberOfNewtonIterationsRequired);
 	}
   }
 }

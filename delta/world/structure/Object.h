@@ -28,8 +28,8 @@
 #include <vector>
 #include <array>
 #include <string>
-#include <delta/geometry/material.h>
-#include "../../geometry/structure/Mesh.h"
+#include <geometry/material.h>
+#include <geometry/structure/Mesh.h>
 
 namespace delta {
   namespace world {

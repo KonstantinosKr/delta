@@ -24,7 +24,7 @@
  #include "dem/adapters/MoveParticles.h" 
  #include "dem/adapters/Adopt.h" 
  #include "dem/adapters/AdoptReluctantly.h" 
- #include "dem/adapters/AdoptFlop.h" 
+ #include "dem/adapters/FlopAdopt.h" 
  #include "dem/adapters/PlotData.h" 
  #include "dem/adapters/TimeStepOnDynamicGrid.h" 
  #include "dem/adapters/TimeStepAndPlotOnDynamicGrid.h" 
@@ -65,7 +65,7 @@ class dem::repositories::RepositoryArrayStack: public dem::repositories::Reposit
     peano::grid::Grid<dem::Vertex,dem::Cell,dem::State,VertexStack,CellStack,dem::adapters::MoveParticles> _gridWithMoveParticles;
     peano::grid::Grid<dem::Vertex,dem::Cell,dem::State,VertexStack,CellStack,dem::adapters::Adopt> _gridWithAdopt;
     peano::grid::Grid<dem::Vertex,dem::Cell,dem::State,VertexStack,CellStack,dem::adapters::AdoptReluctantly> _gridWithAdoptReluctantly;
-    peano::grid::Grid<dem::Vertex,dem::Cell,dem::State,VertexStack,CellStack,dem::adapters::AdoptFlop> _gridWithAdoptFlop;
+    peano::grid::Grid<dem::Vertex,dem::Cell,dem::State,VertexStack,CellStack,dem::adapters::FlopAdopt> _gridWithFlopAdopt;
     peano::grid::Grid<dem::Vertex,dem::Cell,dem::State,VertexStack,CellStack,dem::adapters::PlotData> _gridWithPlotData;
     peano::grid::Grid<dem::Vertex,dem::Cell,dem::State,VertexStack,CellStack,dem::adapters::TimeStepOnDynamicGrid> _gridWithTimeStepOnDynamicGrid;
     peano::grid::Grid<dem::Vertex,dem::Cell,dem::State,VertexStack,CellStack,dem::adapters::TimeStepAndPlotOnDynamicGrid> _gridWithTimeStepAndPlotOnDynamicGrid;
@@ -85,7 +85,7 @@ class dem::repositories::RepositoryArrayStack: public dem::repositories::Reposit
     tarch::timing::Measurement _measureMoveParticlesCPUTime;
     tarch::timing::Measurement _measureAdoptCPUTime;
     tarch::timing::Measurement _measureAdoptReluctantlyCPUTime;
-    tarch::timing::Measurement _measureAdoptFlopCPUTime;
+    tarch::timing::Measurement _measureFlopAdoptCPUTime;
     tarch::timing::Measurement _measurePlotDataCPUTime;
     tarch::timing::Measurement _measureTimeStepOnDynamicGridCPUTime;
     tarch::timing::Measurement _measureTimeStepAndPlotOnDynamicGridCPUTime;
@@ -102,7 +102,7 @@ class dem::repositories::RepositoryArrayStack: public dem::repositories::Reposit
     tarch::timing::Measurement _measureMoveParticlesCalendarTime;
     tarch::timing::Measurement _measureAdoptCalendarTime;
     tarch::timing::Measurement _measureAdoptReluctantlyCalendarTime;
-    tarch::timing::Measurement _measureAdoptFlopCalendarTime;
+    tarch::timing::Measurement _measureFlopAdoptCalendarTime;
     tarch::timing::Measurement _measurePlotDataCalendarTime;
     tarch::timing::Measurement _measureTimeStepOnDynamicGridCalendarTime;
     tarch::timing::Measurement _measureTimeStepAndPlotOnDynamicGridCalendarTime;
@@ -163,7 +163,7 @@ class dem::repositories::RepositoryArrayStack: public dem::repositories::Reposit
     virtual void switchToMoveParticles();    
     virtual void switchToAdopt();    
     virtual void switchToAdoptReluctantly();    
-    virtual void switchToAdoptFlop();    
+    virtual void switchToFlopAdopt();    
     virtual void switchToPlotData();    
     virtual void switchToTimeStepOnDynamicGrid();    
     virtual void switchToTimeStepAndPlotOnDynamicGrid();    
@@ -180,7 +180,7 @@ class dem::repositories::RepositoryArrayStack: public dem::repositories::Reposit
     virtual bool isActiveAdapterMoveParticles() const;
     virtual bool isActiveAdapterAdopt() const;
     virtual bool isActiveAdapterAdoptReluctantly() const;
-    virtual bool isActiveAdapterAdoptFlop() const;
+    virtual bool isActiveAdapterFlopAdopt() const;
     virtual bool isActiveAdapterPlotData() const;
     virtual bool isActiveAdapterTimeStepOnDynamicGrid() const;
     virtual bool isActiveAdapterTimeStepAndPlotOnDynamicGrid() const;

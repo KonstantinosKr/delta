@@ -11,8 +11,8 @@
 #include <array>
 #include <string>
 #include <vector>
-#include <delta/geometry/material.h>
-#include <delta/core/data/OctTree.h>
+#include <geometry/material.h>
+#include <core/data/OctTree.h>
 #include "../../world/structure/Object.h"
 
 namespace delta {

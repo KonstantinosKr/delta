@@ -25,8 +25,8 @@
 #ifndef DELTA_WORLD_WORLD_H_
 #define DELTA_WORLD_WORLD_H_
 
-#include <delta/world/scenario/scenarios.h>
-#include <delta/core/data/Meta.h>
+#include <world/scenario/scenarios.h>
+#include <core/data/Meta.h>
 #include <string>
 #include <array>
 

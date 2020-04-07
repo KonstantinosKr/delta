@@ -77,7 +77,7 @@ class dem::repositories::Repository {
     virtual void switchToMoveParticles() = 0;    
     virtual void switchToAdopt() = 0;    
     virtual void switchToAdoptReluctantly() = 0;    
-    virtual void switchToAdoptFlop() = 0;    
+    virtual void switchToFlopAdopt() = 0;    
     virtual void switchToPlotData() = 0;    
     virtual void switchToTimeStepOnDynamicGrid() = 0;    
     virtual void switchToTimeStepAndPlotOnDynamicGrid() = 0;    
@@ -94,7 +94,7 @@ class dem::repositories::Repository {
     virtual bool isActiveAdapterMoveParticles() const = 0;
     virtual bool isActiveAdapterAdopt() const = 0;
     virtual bool isActiveAdapterAdoptReluctantly() const = 0;
-    virtual bool isActiveAdapterAdoptFlop() const = 0;
+    virtual bool isActiveAdapterFlopAdopt() const = 0;
     virtual bool isActiveAdapterPlotData() const = 0;
     virtual bool isActiveAdapterTimeStepOnDynamicGrid() const = 0;
     virtual bool isActiveAdapterTimeStepAndPlotOnDynamicGrid() const = 0;

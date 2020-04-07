@@ -22,8 +22,8 @@
  SOFTWARE.
  */
 
-#include <delta/world/World.h>
-#include <delta/core/Engine.h>
+#include <world/World.h>
+#include <core/Engine.h>
 
 #define epsilon 1E-3
 

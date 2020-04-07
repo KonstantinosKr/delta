@@ -45,7 +45,7 @@ std::string dem::records::RepositoryState::toString(const Action& param) {
       case UseAdapterMoveParticles: return "UseAdapterMoveParticles";
       case UseAdapterAdopt: return "UseAdapterAdopt";
       case UseAdapterAdoptReluctantly: return "UseAdapterAdoptReluctantly";
-      case UseAdapterAdoptFlop: return "UseAdapterAdoptFlop";
+      case UseAdapterFlopAdopt: return "UseAdapterFlopAdopt";
       case UseAdapterPlotData: return "UseAdapterPlotData";
       case UseAdapterTimeStepOnDynamicGrid: return "UseAdapterTimeStepOnDynamicGrid";
       case UseAdapterTimeStepAndPlotOnDynamicGrid: return "UseAdapterTimeStepAndPlotOnDynamicGrid";
@@ -59,7 +59,7 @@ std::string dem::records::RepositoryState::toString(const Action& param) {
 }
 
 std::string dem::records::RepositoryState::getActionMapping() {
-   return "Action(WriteCheckpoint=0,ReadCheckpoint=1,Terminate=2,RunOnAllNodes=3,UseAdapterCreateGrid=4,UseAdapterCreateGridAndPlot=5,UseAdapterTimeStep=6,UseAdapterTimeStepAndPlot=7,UseAdapterCollision=8,UseAdapterMoveParticles=9,UseAdapterAdopt=10,UseAdapterAdoptReluctantly=11,UseAdapterAdoptFlop=12,UseAdapterPlotData=13,UseAdapterTimeStepOnDynamicGrid=14,UseAdapterTimeStepAndPlotOnDynamicGrid=15,UseAdapterTimeStepOnReluctantDynamicGrid=16,UseAdapterTimeStepAndPlotOnReluctantDynamicGrid=17,UseAdapterTimeStepOnFlopDynamicGrid=18,UseAdapterTimeStepAndPlotOnFlopDynamicGrid=19,NumberOfAdapters=20)";
+   return "Action(WriteCheckpoint=0,ReadCheckpoint=1,Terminate=2,RunOnAllNodes=3,UseAdapterCreateGrid=4,UseAdapterCreateGridAndPlot=5,UseAdapterTimeStep=6,UseAdapterTimeStepAndPlot=7,UseAdapterCollision=8,UseAdapterMoveParticles=9,UseAdapterAdopt=10,UseAdapterAdoptReluctantly=11,UseAdapterFlopAdopt=12,UseAdapterPlotData=13,UseAdapterTimeStepOnDynamicGrid=14,UseAdapterTimeStepAndPlotOnDynamicGrid=15,UseAdapterTimeStepOnReluctantDynamicGrid=16,UseAdapterTimeStepAndPlotOnReluctantDynamicGrid=17,UseAdapterTimeStepOnFlopDynamicGrid=18,UseAdapterTimeStepAndPlotOnFlopDynamicGrid=19,NumberOfAdapters=20)";
 }
 
 

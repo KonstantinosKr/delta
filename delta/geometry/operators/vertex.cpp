@@ -5,7 +5,7 @@
  *      Author: konstantinos
  */
 
-#include "delta/geometry/operators/vertex.h"
+#include "geometry/operators/vertex.h"
 
 
 iREAL delta::geometry::operators::vertex::computeXYZw(

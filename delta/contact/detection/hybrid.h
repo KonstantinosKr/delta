@@ -27,10 +27,11 @@
 #include <delta/contact/contactpoint.h>
 #include <delta/contact/detection/penalty.h>
 #include <vector>
+
 #ifdef peanoCall
-#include "peano/utils/Loop.h"
-#include "tarch/multicore/Lock.h"
-#include "tarch/multicore/BooleanSemaphore.h"
+	#include "peano/utils/Loop.h"
+	#include "tarch/multicore/Lock.h"
+	#include "tarch/multicore/BooleanSemaphore.h"
 #endif
 namespace delta {
   namespace contact {
@@ -53,7 +54,7 @@ namespace delta {
 	   *
 	   * @return Set of contact points.
 	   */
-#ifdef peanoCall
+#if defined(SharedTBB) && defined(peanoCall)
 	  std::vector<contactpoint> hybridWithPerTriangleFallBack(
 		const iREAL*    xCoordinatesOfPointsOfGeometryA,
 		const iREAL*    yCoordinatesOfPointsOfGeometryA,
@@ -90,7 +91,7 @@ namespace delta {
 		const int 	    particleB);
 #endif
 
-#ifdef peanoCall
+#if defined(SharedTBB) && defined(peanoCall)
 	  std::vector<contactpoint> hybridWithPerBatchFallBack(
 		const iREAL*    xCoordinatesOfPointsOfGeometryA,
 		const iREAL*    yCoordinatesOfPointsOfGeometryA,

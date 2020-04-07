@@ -5,7 +5,7 @@
  *      Author: konstantinos
  */
 
-#include <delta/core/io/write.h>
+#include <core/io/write.h>
 
 void delta::core::io::writeGeometryToVTK(
 	std::vector<delta::world::structure::Object>& vectorGeometries, std::array<iREAL, 6> boundary)

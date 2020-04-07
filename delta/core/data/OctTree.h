@@ -10,7 +10,7 @@
 
 #include <vector>
 #include <array>
-#include <delta/contact/detection/box.h>
+#include <contact/detection/box.h>
 
 namespace delta {
   namespace core {

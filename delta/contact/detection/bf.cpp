@@ -24,15 +24,16 @@
 
 #include <delta/contact/detection/bf.h>
 
+
 #if defined(SharedTBB) && defined(peanoCall)
 std::vector<delta::contact::contactpoint> delta::contact::detection::bf(
     const iREAL*    xCoordinatesOfPointsOfGeometryA,
     const iREAL*    yCoordinatesOfPointsOfGeometryA,
     const iREAL*    zCoordinatesOfPointsOfGeometryA,
-	int             numberOfPointsOfGeometryA,
+		int             numberOfPointsOfGeometryA,
     iREAL           epsilonA,
     bool            frictionA,
-    int 	            particleA,
+    int 	          particleA,
 
     const iREAL*    xCoordinatesOfPointsOfGeometryB,
     const iREAL*    yCoordinatesOfPointsOfGeometryB,
@@ -40,17 +41,17 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::bf(
     int             numberOfPointsOfGeometryB,
     iREAL           epsilonB,
     bool            frictionB,
-    int 	            particleB,
+    int 	          particleB,
 	tarch::multicore::BooleanSemaphore &semaphore)
 #else
 std::vector<delta::contact::contactpoint> delta::contact::detection::bf(
     const iREAL*    xCoordinatesOfPointsOfGeometryA,
     const iREAL*    yCoordinatesOfPointsOfGeometryA,
     const iREAL*    zCoordinatesOfPointsOfGeometryA,
-	int             numberOfPointsOfGeometryA,
+		int             numberOfPointsOfGeometryA,
     iREAL           epsilonA,
     bool            frictionA,
-    int 	            particleA,
+    int 	          particleA,
 
     const iREAL*    xCoordinatesOfPointsOfGeometryB,
     const iREAL*    yCoordinatesOfPointsOfGeometryB,
@@ -58,7 +59,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::bf(
     int             numberOfPointsOfGeometryB,
     iREAL           epsilonB,
     bool            frictionB,
-    int 	            particleB)
+    int 	          particleB)
 #endif
 {
 #if defined(__INTEL_COMPILER)

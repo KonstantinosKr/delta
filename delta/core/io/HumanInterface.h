@@ -27,7 +27,7 @@
 #define DELTA_CORE_IO_HUMANINTERFACE_H_
 
 #include <iostream>
-#include <delta/core/data/Meta.h>
+#include <core/data/Meta.h>
 
 
 namespace delta {

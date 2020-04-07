@@ -25,29 +25,29 @@
 #ifndef DELTA_CORE_ENGINE_H_
 #define DELTA_CORE_ENGINE_H_
 
-#include <delta/contact/contactpoint.h>
-#include <delta/contact/detection/sphere.h>
-#include <delta/contact/detection/bf.h>
-#include <delta/contact/detection/penalty.h>
-#include <delta/contact/detection/hybrid.h>
-#include <delta/contact/detection/point.h>
-#include <delta/contact/detection/box.h>
-#include <delta/contact/forces/forces.h>
+#include <contact/contactpoint.h>
+#include <contact/detection/sphere.h>
+#include <contact/detection/bf.h>
+#include <contact/detection/penalty.h>
+#include <contact/detection/hybrid.h>
+#include <contact/detection/point.h>
+#include <contact/detection/box.h>
+#include <contact/forces/forces.h>
 
-#include <delta/core/data/Structure.h>
-#include <delta/core/data/ParticleRecord.h>
-#include <delta/core/data/Meta.h>
+#include <core/data/Structure.h>
+#include <core/data/ParticleRecord.h>
+#include <core/data/Meta.h>
 
-#include <delta/core/io/read.h>
-#include <delta/core/io/write.h>
+#include <core/io/read.h>
+#include <core/io/write.h>
 
-#include <delta/core/State.h>
+#include <core/State.h>
 
-#include <delta/geometry/material.h>
-#include <delta/geometry/operators/vertex.h>
-#include <delta/dynamics/dynamics.h>
+#include <geometry/material.h>
+#include <geometry/operators/vertex.h>
+#include <dynamics/dynamics.h>
 
-#include <delta/world/World.h>
+#include <world/World.h>
 
 #include <map>
 

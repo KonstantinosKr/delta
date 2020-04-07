@@ -32,7 +32,7 @@ namespace dem {
  *
  * 		   build date: 09-02-2014 14:40
  *
- * @date   03/06/2018 23:01
+ * @date   05/04/2020 23:13
  */
 class dem::records::Particle { 
    
@@ -2954,7 +2954,7 @@ class dem::records::Particle {
  *
  * 		   build date: 09-02-2014 14:40
  *
- * @date   03/06/2018 23:01
+ * @date   05/04/2020 23:13
  */
 class dem::records::ParticlePacked { 
    

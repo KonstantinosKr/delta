@@ -22,9 +22,9 @@
  SOFTWARE.
  */
 
-#include <delta/core/delta.h>
-#include <delta/core/io/write.h>
-#include <delta/core/io/read.h>
+#include <core/delta.h>
+#include <core/io/write.h>
+#include <core/io/read.h>
 
 delta::core::Delta::Delta()
 {

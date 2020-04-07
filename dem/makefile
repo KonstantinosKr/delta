@@ -1,0 +1,1 @@
+This file is empty. We keep it here to avoid that PDT generates a makefile template when we rerun it.

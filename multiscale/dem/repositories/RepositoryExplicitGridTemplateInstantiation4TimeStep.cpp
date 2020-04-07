@@ -21,7 +21,7 @@
  #include "dem/adapters/MoveParticles.h" 
  #include "dem/adapters/Adopt.h" 
  #include "dem/adapters/AdoptReluctantly.h" 
- #include "dem/adapters/AdoptFlop.h" 
+ #include "dem/adapters/FlopAdopt.h" 
  #include "dem/adapters/PlotData.h" 
  #include "dem/adapters/TimeStepOnDynamicGrid.h" 
  #include "dem/adapters/TimeStepAndPlotOnDynamicGrid.h" 

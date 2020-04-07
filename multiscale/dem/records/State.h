@@ -33,7 +33,7 @@ namespace dem {
     *
     * 		   build date: 09-02-2014 14:40
     *
-    * @date   03/06/2018 23:01
+    * @date   05/04/2020 23:13
     */
    class dem::records::State { 
       
@@ -66,6 +66,8 @@ namespace dem {
             bool _hasChangedVertexOrCellState;
             bool _hasModifiedGridInPreviousIteration;
             bool _isTraversalInverted;
+            int _totalNumberOfBatchIterations;
+            int _batchIteration;
             /**
              * Generated
              */
@@ -74,7 +76,7 @@ namespace dem {
             /**
              * Generated
              */
-            PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const bool& adaptiveStepSize, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const bool& twoParticlesSeparate, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
+            PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const bool& adaptiveStepSize, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const bool& twoParticlesSeparate, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const int& totalNumberOfBatchIterations, const int& batchIteration);
             
             
             inline double getNumberOfContactPoints() const 
@@ -557,6 +559,46 @@ namespace dem {
             
             
             
+            inline int getTotalNumberOfBatchIterations() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               return _totalNumberOfBatchIterations;
+            }
+            
+            
+            
+            inline void setTotalNumberOfBatchIterations(const int& totalNumberOfBatchIterations) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               _totalNumberOfBatchIterations = totalNumberOfBatchIterations;
+            }
+            
+            
+            
+            inline int getBatchIteration() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               return _batchIteration;
+            }
+            
+            
+            
+            inline void setBatchIteration(const int& batchIteration) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               _batchIteration = batchIteration;
+            }
+            
+            
+            
          };
          private: 
             PersistentRecords _persistentRecords;
@@ -575,7 +617,7 @@ namespace dem {
             /**
              * Generated
              */
-            State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const bool& adaptiveStepSize, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const bool& twoParticlesSeparate, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
+            State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const bool& adaptiveStepSize, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const bool& twoParticlesSeparate, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const int& totalNumberOfBatchIterations, const int& batchIteration);
             
             /**
              * Generated
@@ -1062,6 +1104,46 @@ namespace dem {
             }
             
             
+            
+            inline int getTotalNumberOfBatchIterations() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               return _persistentRecords._totalNumberOfBatchIterations;
+            }
+            
+            
+            
+            inline void setTotalNumberOfBatchIterations(const int& totalNumberOfBatchIterations) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               _persistentRecords._totalNumberOfBatchIterations = totalNumberOfBatchIterations;
+            }
+            
+            
+            
+            inline int getBatchIteration() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               return _persistentRecords._batchIteration;
+            }
+            
+            
+            
+            inline void setBatchIteration(const int& batchIteration) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               _persistentRecords._batchIteration = batchIteration;
+            }
+            
+            
             /**
              * Generated
              */
@@ -1135,7 +1217,7 @@ namespace dem {
     *
     * 		   build date: 09-02-2014 14:40
     *
-    * @date   03/06/2018 23:01
+    * @date   05/04/2020 23:13
     */
    class dem::records::StatePacked { 
       
@@ -1160,6 +1242,8 @@ namespace dem {
             double _maxVelocityApproach;
             double _maxVelocityTravel;
             bool _isTraversalInverted;
+            int _totalNumberOfBatchIterations;
+            int _batchIteration;
             
             /** mapping of records:
             || Member 	|| startbit 	|| length
@@ -1180,7 +1264,7 @@ namespace dem {
             /**
              * Generated
              */
-            PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const bool& adaptiveStepSize, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const bool& twoParticlesSeparate, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
+            PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const bool& adaptiveStepSize, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const bool& twoParticlesSeparate, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const int& totalNumberOfBatchIterations, const int& batchIteration);
             
             
             inline double getNumberOfContactPoints() const 
@@ -1681,6 +1765,46 @@ namespace dem {
             
             
             
+            inline int getTotalNumberOfBatchIterations() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               return _totalNumberOfBatchIterations;
+            }
+            
+            
+            
+            inline void setTotalNumberOfBatchIterations(const int& totalNumberOfBatchIterations) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               _totalNumberOfBatchIterations = totalNumberOfBatchIterations;
+            }
+            
+            
+            
+            inline int getBatchIteration() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               return _batchIteration;
+            }
+            
+            
+            
+            inline void setBatchIteration(const int& batchIteration) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               _batchIteration = batchIteration;
+            }
+            
+            
+            
          };
          private: 
             PersistentRecords _persistentRecords;
@@ -1699,7 +1823,7 @@ namespace dem {
             /**
              * Generated
              */
-            StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const bool& adaptiveStepSize, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const bool& twoParticlesSeparate, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
+            StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const bool& adaptiveStepSize, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const bool& twoParticlesSeparate, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const int& totalNumberOfBatchIterations, const int& batchIteration);
             
             /**
              * Generated
@@ -2204,6 +2328,46 @@ namespace dem {
             }
             
             
+            
+            inline int getTotalNumberOfBatchIterations() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               return _persistentRecords._totalNumberOfBatchIterations;
+            }
+            
+            
+            
+            inline void setTotalNumberOfBatchIterations(const int& totalNumberOfBatchIterations) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               _persistentRecords._totalNumberOfBatchIterations = totalNumberOfBatchIterations;
+            }
+            
+            
+            
+            inline int getBatchIteration() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               return _persistentRecords._batchIteration;
+            }
+            
+            
+            
+            inline void setBatchIteration(const int& batchIteration) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+               _persistentRecords._batchIteration = batchIteration;
+            }
+            
+            
             /**
              * Generated
              */
@@ -2273,13 +2437,17 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   03/06/2018 23:01
+       * @date   05/04/2020 23:13
        */
       class dem::records::State { 
          
          public:
             
             typedef dem::records::StatePacked Packed;
+            
+            enum BoundaryRefinement {
+               RefineArtificially = 0, Nop = 1, EraseAggressively = 2
+            };
             
             struct PersistentRecords {
                double _numberOfContactPoints;
@@ -2330,6 +2498,9 @@ namespace dem {
                bool _reduceStateAndCell;
                bool _couldNotEraseDueToDecompositionFlag;
                bool _subWorkerIsInvolvedInJoinOrFork;
+               BoundaryRefinement _refineArtificiallyOutsideDomain;
+               int _totalNumberOfBatchIterations;
+               int _batchIteration;
                /**
                 * Generated
                 */
@@ -2338,7 +2509,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const bool& adaptiveStepSize, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const bool& twoParticlesSeparate, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
+               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const bool& adaptiveStepSize, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const bool& twoParticlesSeparate, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork, const BoundaryRefinement& refineArtificiallyOutsideDomain, const int& totalNumberOfBatchIterations, const int& batchIteration);
                
                
                inline double getNumberOfContactPoints() const 
@@ -3217,6 +3388,66 @@ namespace dem {
                
                
                
+               inline BoundaryRefinement getRefineArtificiallyOutsideDomain() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _refineArtificiallyOutsideDomain;
+               }
+               
+               
+               
+               inline void setRefineArtificiallyOutsideDomain(const BoundaryRefinement& refineArtificiallyOutsideDomain) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _refineArtificiallyOutsideDomain = refineArtificiallyOutsideDomain;
+               }
+               
+               
+               
+               inline int getTotalNumberOfBatchIterations() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _totalNumberOfBatchIterations;
+               }
+               
+               
+               
+               inline void setTotalNumberOfBatchIterations(const int& totalNumberOfBatchIterations) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _totalNumberOfBatchIterations = totalNumberOfBatchIterations;
+               }
+               
+               
+               
+               inline int getBatchIteration() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _batchIteration;
+               }
+               
+               
+               
+               inline void setBatchIteration(const int& batchIteration) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _batchIteration = batchIteration;
+               }
+               
+               
+               
             };
             private: 
                PersistentRecords _persistentRecords;
@@ -3235,7 +3466,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const bool& adaptiveStepSize, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const bool& twoParticlesSeparate, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
+               State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const bool& adaptiveStepSize, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const bool& twoParticlesSeparate, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork, const BoundaryRefinement& refineArtificiallyOutsideDomain, const int& totalNumberOfBatchIterations, const int& batchIteration);
                
                /**
                 * Generated
@@ -4170,6 +4401,76 @@ namespace dem {
                }
                
                
+               
+               inline BoundaryRefinement getRefineArtificiallyOutsideDomain() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._refineArtificiallyOutsideDomain;
+               }
+               
+               
+               
+               inline void setRefineArtificiallyOutsideDomain(const BoundaryRefinement& refineArtificiallyOutsideDomain) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._refineArtificiallyOutsideDomain = refineArtificiallyOutsideDomain;
+               }
+               
+               
+               
+               inline int getTotalNumberOfBatchIterations() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._totalNumberOfBatchIterations;
+               }
+               
+               
+               
+               inline void setTotalNumberOfBatchIterations(const int& totalNumberOfBatchIterations) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._totalNumberOfBatchIterations = totalNumberOfBatchIterations;
+               }
+               
+               
+               
+               inline int getBatchIteration() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._batchIteration;
+               }
+               
+               
+               
+               inline void setBatchIteration(const int& batchIteration) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._batchIteration = batchIteration;
+               }
+               
+               
+               /**
+                * Generated
+                */
+               static std::string toString(const BoundaryRefinement& param);
+               
+               /**
+                * Generated
+                */
+               static std::string getBoundaryRefinementMapping();
+               
                /**
                 * Generated
                 */
@@ -4243,11 +4544,13 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   03/06/2018 23:01
+       * @date   05/04/2020 23:13
        */
       class dem::records::StatePacked { 
          
          public:
+            
+            typedef dem::records::State::BoundaryRefinement BoundaryRefinement;
             
             struct PersistentRecords {
                double _numberOfContactPoints;
@@ -4281,6 +4584,8 @@ namespace dem {
                double _numberOfOuterLeafCells;
                int _maxLevel;
                bool _isTraversalInverted;
+               int _totalNumberOfBatchIterations;
+               int _batchIteration;
                
                /** mapping of records:
                || Member 	|| startbit 	|| length
@@ -4293,6 +4598,7 @@ namespace dem {
                 |  reduceStateAndCell	| startbit 6	| #bits 1
                 |  couldNotEraseDueToDecompositionFlag	| startbit 7	| #bits 1
                 |  subWorkerIsInvolvedInJoinOrFork	| startbit 8	| #bits 1
+                |  refineArtificiallyOutsideDomain	| startbit 9	| #bits 2
                 */
                short int _packedRecords0;
                
@@ -4304,7 +4610,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const bool& adaptiveStepSize, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const bool& twoParticlesSeparate, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
+               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const bool& adaptiveStepSize, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const bool& twoParticlesSeparate, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork, const BoundaryRefinement& refineArtificiallyOutsideDomain, const int& totalNumberOfBatchIterations, const int& batchIteration);
                
                
                inline double getNumberOfContactPoints() const 
@@ -5210,6 +5516,75 @@ namespace dem {
                
                
                
+               inline BoundaryRefinement getRefineArtificiallyOutsideDomain() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask =  (1 << (2)) - 1;
+   mask = static_cast<short int>(mask << (9));
+   short int tmp = static_cast<short int>(_packedRecords0 & mask);
+   tmp = static_cast<short int>(tmp >> (9));
+   assertion(( tmp >= 0 &&  tmp <= 2));
+   return (BoundaryRefinement) tmp;
+               }
+               
+               
+               
+               inline void setRefineArtificiallyOutsideDomain(const BoundaryRefinement& refineArtificiallyOutsideDomain) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  assertion((refineArtificiallyOutsideDomain >= 0 && refineArtificiallyOutsideDomain <= 2));
+   short int mask =  (1 << (2)) - 1;
+   mask = static_cast<short int>(mask << (9));
+   _packedRecords0 = static_cast<short int>(_packedRecords0 & ~mask);
+   _packedRecords0 = static_cast<short int>(_packedRecords0 | static_cast<short int>(refineArtificiallyOutsideDomain) << (9));
+               }
+               
+               
+               
+               inline int getTotalNumberOfBatchIterations() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _totalNumberOfBatchIterations;
+               }
+               
+               
+               
+               inline void setTotalNumberOfBatchIterations(const int& totalNumberOfBatchIterations) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _totalNumberOfBatchIterations = totalNumberOfBatchIterations;
+               }
+               
+               
+               
+               inline int getBatchIteration() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _batchIteration;
+               }
+               
+               
+               
+               inline void setBatchIteration(const int& batchIteration) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _batchIteration = batchIteration;
+               }
+               
+               
+               
             };
             private: 
                PersistentRecords _persistentRecords;
@@ -5228,7 +5603,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const bool& adaptiveStepSize, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const bool& twoParticlesSeparate, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
+               StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const bool& adaptiveStepSize, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const bool& twoParticlesSeparate, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork, const BoundaryRefinement& refineArtificiallyOutsideDomain, const int& totalNumberOfBatchIterations, const int& batchIteration);
                
                /**
                 * Generated
@@ -6190,6 +6565,85 @@ namespace dem {
                }
                
                
+               
+               inline BoundaryRefinement getRefineArtificiallyOutsideDomain() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask =  (1 << (2)) - 1;
+   mask = static_cast<short int>(mask << (9));
+   short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
+   tmp = static_cast<short int>(tmp >> (9));
+   assertion(( tmp >= 0 &&  tmp <= 2));
+   return (BoundaryRefinement) tmp;
+               }
+               
+               
+               
+               inline void setRefineArtificiallyOutsideDomain(const BoundaryRefinement& refineArtificiallyOutsideDomain) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  assertion((refineArtificiallyOutsideDomain >= 0 && refineArtificiallyOutsideDomain <= 2));
+   short int mask =  (1 << (2)) - 1;
+   mask = static_cast<short int>(mask << (9));
+   _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 & ~mask);
+   _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 | static_cast<short int>(refineArtificiallyOutsideDomain) << (9));
+               }
+               
+               
+               
+               inline int getTotalNumberOfBatchIterations() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._totalNumberOfBatchIterations;
+               }
+               
+               
+               
+               inline void setTotalNumberOfBatchIterations(const int& totalNumberOfBatchIterations) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._totalNumberOfBatchIterations = totalNumberOfBatchIterations;
+               }
+               
+               
+               
+               inline int getBatchIteration() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._batchIteration;
+               }
+               
+               
+               
+               inline void setBatchIteration(const int& batchIteration) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._batchIteration = batchIteration;
+               }
+               
+               
+               /**
+                * Generated
+                */
+               static std::string toString(const BoundaryRefinement& param);
+               
+               /**
+                * Generated
+                */
+               static std::string getBoundaryRefinementMapping();
+               
                /**
                 * Generated
                 */
@@ -6260,7 +6714,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   03/06/2018 23:01
+       * @date   05/04/2020 23:13
        */
       class dem::records::State { 
          
@@ -6314,6 +6768,8 @@ namespace dem {
                bool _hasChangedVertexOrCellState;
                bool _hasModifiedGridInPreviousIteration;
                bool _isTraversalInverted;
+               int _totalNumberOfBatchIterations;
+               int _batchIteration;
                /**
                 * Generated
                 */
@@ -6322,7 +6778,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const bool& adaptiveStepSize, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const bool& twoParticlesSeparate, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
+               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const bool& adaptiveStepSize, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const bool& twoParticlesSeparate, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const int& totalNumberOfBatchIterations, const int& batchIteration);
                
                
                inline double getNumberOfContactPoints() const 
@@ -7141,6 +7597,46 @@ namespace dem {
                
                
                
+               inline int getTotalNumberOfBatchIterations() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _totalNumberOfBatchIterations;
+               }
+               
+               
+               
+               inline void setTotalNumberOfBatchIterations(const int& totalNumberOfBatchIterations) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _totalNumberOfBatchIterations = totalNumberOfBatchIterations;
+               }
+               
+               
+               
+               inline int getBatchIteration() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _batchIteration;
+               }
+               
+               
+               
+               inline void setBatchIteration(const int& batchIteration) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _batchIteration = batchIteration;
+               }
+               
+               
+               
             };
             private: 
                PersistentRecords _persistentRecords;
@@ -7159,7 +7655,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const bool& adaptiveStepSize, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const bool& twoParticlesSeparate, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
+               State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const bool& adaptiveStepSize, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const bool& twoParticlesSeparate, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const int& totalNumberOfBatchIterations, const int& batchIteration);
                
                /**
                 * Generated
@@ -8034,6 +8530,46 @@ namespace dem {
                }
                
                
+               
+               inline int getTotalNumberOfBatchIterations() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._totalNumberOfBatchIterations;
+               }
+               
+               
+               
+               inline void setTotalNumberOfBatchIterations(const int& totalNumberOfBatchIterations) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._totalNumberOfBatchIterations = totalNumberOfBatchIterations;
+               }
+               
+               
+               
+               inline int getBatchIteration() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._batchIteration;
+               }
+               
+               
+               
+               inline void setBatchIteration(const int& batchIteration) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._batchIteration = batchIteration;
+               }
+               
+               
                /**
                 * Generated
                 */
@@ -8107,7 +8643,7 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   03/06/2018 23:01
+       * @date   05/04/2020 23:13
        */
       class dem::records::StatePacked { 
          
@@ -8145,6 +8681,8 @@ namespace dem {
                double _numberOfOuterLeafCells;
                int _maxLevel;
                bool _isTraversalInverted;
+               int _totalNumberOfBatchIterations;
+               int _batchIteration;
                
                /** mapping of records:
                || Member 	|| startbit 	|| length
@@ -8165,7 +8703,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const bool& adaptiveStepSize, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const bool& twoParticlesSeparate, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
+               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const bool& adaptiveStepSize, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const bool& twoParticlesSeparate, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const int& totalNumberOfBatchIterations, const int& batchIteration);
                
                
                inline double getNumberOfContactPoints() const 
@@ -9002,6 +9540,46 @@ namespace dem {
                
                
                
+               inline int getTotalNumberOfBatchIterations() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _totalNumberOfBatchIterations;
+               }
+               
+               
+               
+               inline void setTotalNumberOfBatchIterations(const int& totalNumberOfBatchIterations) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _totalNumberOfBatchIterations = totalNumberOfBatchIterations;
+               }
+               
+               
+               
+               inline int getBatchIteration() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _batchIteration;
+               }
+               
+               
+               
+               inline void setBatchIteration(const int& batchIteration) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _batchIteration = batchIteration;
+               }
+               
+               
+               
             };
             private: 
                PersistentRecords _persistentRecords;
@@ -9020,7 +9598,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const bool& adaptiveStepSize, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const bool& twoParticlesSeparate, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted);
+               StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const bool& adaptiveStepSize, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const bool& twoParticlesSeparate, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const tarch::la::Vector<DIMENSIONS,double>& minMeshWidth, const tarch::la::Vector<DIMENSIONS,double>& maxMeshWidth, const double& numberOfInnerVertices, const double& numberOfBoundaryVertices, const double& numberOfOuterVertices, const double& numberOfInnerCells, const double& numberOfOuterCells, const double& numberOfInnerLeafVertices, const double& numberOfBoundaryLeafVertices, const double& numberOfOuterLeafVertices, const double& numberOfInnerLeafCells, const double& numberOfOuterLeafCells, const int& maxLevel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const int& totalNumberOfBatchIterations, const int& batchIteration);
                
                /**
                 * Generated
@@ -9910,6 +10488,46 @@ namespace dem {
  #endif 
  {
                   _persistentRecords._isTraversalInverted = isTraversalInverted;
+               }
+               
+               
+               
+               inline int getTotalNumberOfBatchIterations() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._totalNumberOfBatchIterations;
+               }
+               
+               
+               
+               inline void setTotalNumberOfBatchIterations(const int& totalNumberOfBatchIterations) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._totalNumberOfBatchIterations = totalNumberOfBatchIterations;
+               }
+               
+               
+               
+               inline int getBatchIteration() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._batchIteration;
+               }
+               
+               
+               
+               inline void setBatchIteration(const int& batchIteration) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._batchIteration = batchIteration;
                }
                
                
@@ -9983,13 +10601,17 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   03/06/2018 23:01
+       * @date   05/04/2020 23:13
        */
       class dem::records::State { 
          
          public:
             
             typedef dem::records::StatePacked Packed;
+            
+            enum BoundaryRefinement {
+               RefineArtificially = 0, Nop = 1, EraseAggressively = 2
+            };
             
             struct PersistentRecords {
                double _numberOfContactPoints;
@@ -10019,6 +10641,9 @@ namespace dem {
                bool _reduceStateAndCell;
                bool _couldNotEraseDueToDecompositionFlag;
                bool _subWorkerIsInvolvedInJoinOrFork;
+               BoundaryRefinement _refineArtificiallyOutsideDomain;
+               int _totalNumberOfBatchIterations;
+               int _batchIteration;
                /**
                 * Generated
                 */
@@ -10027,7 +10652,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const bool& adaptiveStepSize, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const bool& twoParticlesSeparate, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
+               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const bool& adaptiveStepSize, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const bool& twoParticlesSeparate, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork, const BoundaryRefinement& refineArtificiallyOutsideDomain, const int& totalNumberOfBatchIterations, const int& batchIteration);
                
                
                inline double getNumberOfContactPoints() const 
@@ -10570,6 +11195,66 @@ namespace dem {
                
                
                
+               inline BoundaryRefinement getRefineArtificiallyOutsideDomain() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _refineArtificiallyOutsideDomain;
+               }
+               
+               
+               
+               inline void setRefineArtificiallyOutsideDomain(const BoundaryRefinement& refineArtificiallyOutsideDomain) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _refineArtificiallyOutsideDomain = refineArtificiallyOutsideDomain;
+               }
+               
+               
+               
+               inline int getTotalNumberOfBatchIterations() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _totalNumberOfBatchIterations;
+               }
+               
+               
+               
+               inline void setTotalNumberOfBatchIterations(const int& totalNumberOfBatchIterations) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _totalNumberOfBatchIterations = totalNumberOfBatchIterations;
+               }
+               
+               
+               
+               inline int getBatchIteration() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _batchIteration;
+               }
+               
+               
+               
+               inline void setBatchIteration(const int& batchIteration) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _batchIteration = batchIteration;
+               }
+               
+               
+               
             };
             private: 
                PersistentRecords _persistentRecords;
@@ -10588,7 +11273,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const bool& adaptiveStepSize, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const bool& twoParticlesSeparate, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
+               State(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const bool& adaptiveStepSize, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const bool& twoParticlesSeparate, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork, const BoundaryRefinement& refineArtificiallyOutsideDomain, const int& totalNumberOfBatchIterations, const int& batchIteration);
                
                /**
                 * Generated
@@ -11135,6 +11820,76 @@ namespace dem {
                }
                
                
+               
+               inline BoundaryRefinement getRefineArtificiallyOutsideDomain() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._refineArtificiallyOutsideDomain;
+               }
+               
+               
+               
+               inline void setRefineArtificiallyOutsideDomain(const BoundaryRefinement& refineArtificiallyOutsideDomain) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._refineArtificiallyOutsideDomain = refineArtificiallyOutsideDomain;
+               }
+               
+               
+               
+               inline int getTotalNumberOfBatchIterations() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._totalNumberOfBatchIterations;
+               }
+               
+               
+               
+               inline void setTotalNumberOfBatchIterations(const int& totalNumberOfBatchIterations) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._totalNumberOfBatchIterations = totalNumberOfBatchIterations;
+               }
+               
+               
+               
+               inline int getBatchIteration() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._batchIteration;
+               }
+               
+               
+               
+               inline void setBatchIteration(const int& batchIteration) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._batchIteration = batchIteration;
+               }
+               
+               
+               /**
+                * Generated
+                */
+               static std::string toString(const BoundaryRefinement& param);
+               
+               /**
+                * Generated
+                */
+               static std::string getBoundaryRefinementMapping();
+               
                /**
                 * Generated
                 */
@@ -11208,11 +11963,13 @@ namespace dem {
        *
        * 		   build date: 09-02-2014 14:40
        *
-       * @date   03/06/2018 23:01
+       * @date   05/04/2020 23:13
        */
       class dem::records::StatePacked { 
          
          public:
+            
+            typedef dem::records::State::BoundaryRefinement BoundaryRefinement;
             
             struct PersistentRecords {
                double _numberOfContactPoints;
@@ -11233,6 +11990,8 @@ namespace dem {
                double _maxVelocityApproach;
                double _maxVelocityTravel;
                bool _isTraversalInverted;
+               int _totalNumberOfBatchIterations;
+               int _batchIteration;
                
                /** mapping of records:
                || Member 	|| startbit 	|| length
@@ -11245,6 +12004,7 @@ namespace dem {
                 |  reduceStateAndCell	| startbit 6	| #bits 1
                 |  couldNotEraseDueToDecompositionFlag	| startbit 7	| #bits 1
                 |  subWorkerIsInvolvedInJoinOrFork	| startbit 8	| #bits 1
+                |  refineArtificiallyOutsideDomain	| startbit 9	| #bits 2
                 */
                short int _packedRecords0;
                
@@ -11256,7 +12016,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const bool& adaptiveStepSize, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const bool& twoParticlesSeparate, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
+               PersistentRecords(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const bool& adaptiveStepSize, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const bool& twoParticlesSeparate, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork, const BoundaryRefinement& refineArtificiallyOutsideDomain, const int& totalNumberOfBatchIterations, const int& batchIteration);
                
                
                inline double getNumberOfContactPoints() const 
@@ -11826,6 +12586,75 @@ namespace dem {
                
                
                
+               inline BoundaryRefinement getRefineArtificiallyOutsideDomain() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask =  (1 << (2)) - 1;
+   mask = static_cast<short int>(mask << (9));
+   short int tmp = static_cast<short int>(_packedRecords0 & mask);
+   tmp = static_cast<short int>(tmp >> (9));
+   assertion(( tmp >= 0 &&  tmp <= 2));
+   return (BoundaryRefinement) tmp;
+               }
+               
+               
+               
+               inline void setRefineArtificiallyOutsideDomain(const BoundaryRefinement& refineArtificiallyOutsideDomain) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  assertion((refineArtificiallyOutsideDomain >= 0 && refineArtificiallyOutsideDomain <= 2));
+   short int mask =  (1 << (2)) - 1;
+   mask = static_cast<short int>(mask << (9));
+   _packedRecords0 = static_cast<short int>(_packedRecords0 & ~mask);
+   _packedRecords0 = static_cast<short int>(_packedRecords0 | static_cast<short int>(refineArtificiallyOutsideDomain) << (9));
+               }
+               
+               
+               
+               inline int getTotalNumberOfBatchIterations() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _totalNumberOfBatchIterations;
+               }
+               
+               
+               
+               inline void setTotalNumberOfBatchIterations(const int& totalNumberOfBatchIterations) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _totalNumberOfBatchIterations = totalNumberOfBatchIterations;
+               }
+               
+               
+               
+               inline int getBatchIteration() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _batchIteration;
+               }
+               
+               
+               
+               inline void setBatchIteration(const int& batchIteration) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _batchIteration = batchIteration;
+               }
+               
+               
+               
             };
             private: 
                PersistentRecords _persistentRecords;
@@ -11844,7 +12673,7 @@ namespace dem {
                /**
                 * Generated
                 */
-               StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const bool& adaptiveStepSize, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const bool& twoParticlesSeparate, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork);
+               StatePacked(const double& numberOfContactPoints, const double& numberOfParticleReassignments, const double& numberOfTriangleComparisons, const double& numberOfParticleComparisons, const bool& adaptiveStepSize, const double& timeStepSize, const int& timeStep, const double& currentTime, const double& stepIncrement, const double& twoParticlesAreClose, const bool& twoParticlesSeparate, const int& numberOfParticles, const int& numberOfObstacles, const double& prescribedMinimumMeshWidth, const double& prescribedMaximumMeshWidth, const double& maxVelocityApproach, const double& maxVelocityTravel, const bool& hasRefined, const bool& hasTriggeredRefinementForNextIteration, const bool& hasErased, const bool& hasTriggeredEraseForNextIteration, const bool& hasChangedVertexOrCellState, const bool& hasModifiedGridInPreviousIteration, const bool& isTraversalInverted, const bool& reduceStateAndCell, const bool& couldNotEraseDueToDecompositionFlag, const bool& subWorkerIsInvolvedInJoinOrFork, const BoundaryRefinement& refineArtificiallyOutsideDomain, const int& totalNumberOfBatchIterations, const int& batchIteration);
                
                /**
                 * Generated
@@ -12417,6 +13246,85 @@ namespace dem {
    _persistentRecords._packedRecords0 = static_cast<short int>( subWorkerIsInvolvedInJoinOrFork ? (_persistentRecords._packedRecords0 | mask) : (_persistentRecords._packedRecords0 & ~mask));
                }
                
+               
+               
+               inline BoundaryRefinement getRefineArtificiallyOutsideDomain() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  short int mask =  (1 << (2)) - 1;
+   mask = static_cast<short int>(mask << (9));
+   short int tmp = static_cast<short int>(_persistentRecords._packedRecords0 & mask);
+   tmp = static_cast<short int>(tmp >> (9));
+   assertion(( tmp >= 0 &&  tmp <= 2));
+   return (BoundaryRefinement) tmp;
+               }
+               
+               
+               
+               inline void setRefineArtificiallyOutsideDomain(const BoundaryRefinement& refineArtificiallyOutsideDomain) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  assertion((refineArtificiallyOutsideDomain >= 0 && refineArtificiallyOutsideDomain <= 2));
+   short int mask =  (1 << (2)) - 1;
+   mask = static_cast<short int>(mask << (9));
+   _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 & ~mask);
+   _persistentRecords._packedRecords0 = static_cast<short int>(_persistentRecords._packedRecords0 | static_cast<short int>(refineArtificiallyOutsideDomain) << (9));
+               }
+               
+               
+               
+               inline int getTotalNumberOfBatchIterations() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._totalNumberOfBatchIterations;
+               }
+               
+               
+               
+               inline void setTotalNumberOfBatchIterations(const int& totalNumberOfBatchIterations) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._totalNumberOfBatchIterations = totalNumberOfBatchIterations;
+               }
+               
+               
+               
+               inline int getBatchIteration() const 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  return _persistentRecords._batchIteration;
+               }
+               
+               
+               
+               inline void setBatchIteration(const int& batchIteration) 
+ #ifdef UseManualInlining
+ __attribute__((always_inline))
+ #endif 
+ {
+                  _persistentRecords._batchIteration = batchIteration;
+               }
+               
+               
+               /**
+                * Generated
+                */
+               static std::string toString(const BoundaryRefinement& param);
+               
+               /**
+                * Generated
+                */
+               static std::string getBoundaryRefinementMapping();
                
                /**
                 * Generated

@@ -46,5 +46,17 @@ class dem::records::State {
   persistent packed parallelise bool             couldNotEraseDueToDecompositionFlag;
 
   persistent packed parallelise bool             subWorkerIsInvolvedInJoinOrFork;
+
+  enum BoundaryRefinement {
+    RefineArtificially, Nop, EraseAggressively
+  };
+
+  persistent packed parallelise BoundaryRefinement       refineArtificiallyOutsideDomain;
   #endif
+
+  /**
+   * Is not parallelised as we set it locally in the runner anyway.
+   */
+  persistent packed int  totalNumberOfBatchIterations;
+  persistent packed int  batchIteration;
 };

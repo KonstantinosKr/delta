@@ -29,7 +29,7 @@
 #include <cmath>
 #include <stdlib.h>
 #include <assert.h>
-#include <delta/geometry/operators/triangle.h>
+#include <geometry/operators/triangle.h>
 #include "../structure/Mesh.h"
 
 namespace delta {

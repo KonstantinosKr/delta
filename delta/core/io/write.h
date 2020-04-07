@@ -8,7 +8,7 @@
 #ifndef DELTA_IO_WRITE_H_
 #define DELTA_IO_WRITE_H_
 
-#include "delta/core/data/ParticleRecord.h"
+#include <core/data/ParticleRecord.h>
 #include <vector>
 #include "stdio.h"
 #include "string.h"

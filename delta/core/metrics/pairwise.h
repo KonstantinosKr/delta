@@ -10,7 +10,7 @@
 
 #include <vector>
 
-#include "../../geometry/structure/Mesh.h"
+#include "delta/geometry/structure/Mesh.h"
 
 namespace delta {
   namespace metrics {

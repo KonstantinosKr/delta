@@ -8,8 +8,8 @@
 #ifndef DELTA_CORE_DATA_META_H_
 #define DELTA_CORE_DATA_META_H_
 
-#include <delta/core/data/ParticleRecord.h>
-#include <delta/contact/contactpoint.h>
+#include <core/data/ParticleRecord.h>
+#include <contact/contactpoint.h>
 
 namespace delta {
   namespace core {

@@ -5,7 +5,7 @@
  *      Author: konstantinos
  */
 
-#include <delta/geometry/operators/physics.h>
+#include <geometry/operators/physics.h>
 
 iREAL delta::geometry::operators::physics::computeVolume(
 	std::vector<iREAL>& xCoordinates,

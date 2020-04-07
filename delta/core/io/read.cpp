@@ -5,7 +5,7 @@
  *      Author: konstantinos
  */
 
-#include <delta/core/io/read.h>
+#include <core/io/read.h>
 #include <assimp/Importer.hpp>      // C++ importer interface
 #include <assimp/Exporter.hpp>      // C++ importer interface
 #include <assimp/scene.h>           // Output data structure

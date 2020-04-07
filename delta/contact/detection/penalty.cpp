@@ -110,7 +110,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::penaltyStat
   return result;
 }
 
-#ifdef peanoCall
+#if defined(SharedTBB) && defined(peanoCall)
 std::vector<delta::contact::contactpoint> delta::contact::detection::penalty(
   const iREAL*    xCoordinatesOfPointsOfGeometryA,
   const iREAL*    yCoordinatesOfPointsOfGeometryA,
@@ -165,7 +165,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::penalty(
   int numberOfTrianglesA = numberOfTrianglesOfGeometryA * 3;
   int numberOfTrianglesB = numberOfTrianglesOfGeometryB * 3;
 
-#ifdef peanoCall
+#if defined(SharedTBB) && defined(peanoCall)
   tarch::multicore::Lock lock(semaphore,false);
 #endif
 

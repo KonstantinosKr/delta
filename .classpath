@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="multiscale/pdt/src"/>
+	<classpathentry kind="lib" path="multiscale/pdt/lib/jargs.jar"/>
+	<classpathentry kind="lib" path="multiscale/pdt/lib/sablecc.jar"/>
+	<classpathentry kind="lib" path="multiscale/pdt/pdt.jar"/>
+	<classpathentry kind="output" path="multiscale/pdt/bin"/>
+</classpath>

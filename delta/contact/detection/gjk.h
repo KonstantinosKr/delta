@@ -30,20 +30,20 @@ namespace delta {
   namespace contact {
 	namespace detection {
     std::vector<contactpoint> gjk(
-	   int       numberOfTrianglesOfGeometryA,
+	   int      numberOfTrianglesOfGeometryA,
 	   iREAL*   xCoordinatesOfPointsOfGeometryA,
 	   iREAL*   yCoordinatesOfPointsOfGeometryA,
 	   iREAL*   zCoordinatesOfPointsOfGeometryA,
 	   iREAL    epsilonA,
-	   bool       frictionA,
-	   int 	   particleA,
+	   bool     frictionA,
+	   int 	   	particleA,
 
-	   int       numberOfTrianglesOfGeometryB,
+	   int      numberOfTrianglesOfGeometryB,
 	   iREAL*   xCoordinatesOfPointsOfGeometryB,
 	   iREAL*   yCoordinatesOfPointsOfGeometryB,
 	   iREAL*   zCoordinatesOfPointsOfGeometryB,
 	   iREAL    epsilonB,
-	   bool       frictionB,
+	   bool     frictionB,
 	   int 	    particleB
 	  );
 

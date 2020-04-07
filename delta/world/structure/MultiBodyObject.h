@@ -11,7 +11,7 @@
 #include <array>
 #include <string>
 #include <vector>
-#include <delta/world/structure/Object.h>
+#include <world/structure/Object.h>
 
 namespace delta {
   namespace geometry {

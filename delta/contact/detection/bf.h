@@ -37,75 +37,75 @@
 
 namespace delta {
   namespace contact {
-	namespace detection {
+		namespace detection {
 
-	  /**
-	   * @see hybrid() function with the same arguments for default
-	   */
-	  #ifdef peanoCall
-	  std::vector<contactpoint> bf(
-		const iREAL*    xCoordinatesOfPointsOfGeometryA,
-		const iREAL*    yCoordinatesOfPointsOfGeometryA,
-		const iREAL*    zCoordinatesOfPointsOfGeometryA,
-		int             numberOfPointsOfGeometryA,
-		iREAL           epsilonA,
-		bool            frictionA,
-		int 	          	particleA,
+			/**
+			 * @see hybrid() function with the same arguments for default
+			 */
+			#if defined(SharedTBB) && defined(peanoCall)
+				std::vector<delta::contact::contactpoint> bf(
+					const iREAL*    xCoordinatesOfPointsOfGeometryA,
+					const iREAL*    yCoordinatesOfPointsOfGeometryA,
+					const iREAL*    zCoordinatesOfPointsOfGeometryA,
+					int             numberOfPointsOfGeometryA,
+					iREAL           epsilonA,
+					bool            frictionA,
+					int 	          particleA,
 
-		const iREAL*    xCoordinatesOfPointsOfGeometryB,
-		const iREAL*    yCoordinatesOfPointsOfGeometryB,
-		const iREAL*    zCoordinatesOfPointsOfGeometryB,
-		int             numberOfPointsOfGeometryB,
-		iREAL           epsilonB,
-		bool            frictionB,
-		int 	          	particleB,
-		tarch::multicore::BooleanSemaphore &semaphore
-	  );
-	  #else
-	  std::vector<contactpoint> bf(
-		const iREAL*    xCoordinatesOfPointsOfGeometryA,
-		const iREAL*    yCoordinatesOfPointsOfGeometryA,
-		const iREAL*    zCoordinatesOfPointsOfGeometryA,
-		int             numberOfPointsOfGeometryA,
-		iREAL           epsilonA,
-		bool            frictionA,
-		int 	          	particleA,
+					const iREAL*    xCoordinatesOfPointsOfGeometryB,
+					const iREAL*    yCoordinatesOfPointsOfGeometryB,
+					const iREAL*    zCoordinatesOfPointsOfGeometryB,
+					int             numberOfPointsOfGeometryB,
+					iREAL           epsilonB,
+					bool            frictionB,
+					int 	          particleB,
+					tarch::multicore::BooleanSemaphore &semaphore
+				);
+			#else
+				std::vector<delta::contact::contactpoint> bf(
+					const iREAL*    xCoordinatesOfPointsOfGeometryA,
+					const iREAL*    yCoordinatesOfPointsOfGeometryA,
+					const iREAL*    zCoordinatesOfPointsOfGeometryA,
+					int             numberOfPointsOfGeometryA,
+					iREAL           epsilonA,
+					bool            frictionA,
+					int 	          particleA,
 
-		const iREAL*    xCoordinatesOfPointsOfGeometryB,
-		const iREAL*    yCoordinatesOfPointsOfGeometryB,
-		const iREAL*    zCoordinatesOfPointsOfGeometryB,
-		int             numberOfPointsOfGeometryB,
-		iREAL           epsilonB,
-		bool            frictionB,
-		int 	          	particleB
-	  );
-	  #endif
-	  /**
-	   * Brute force method for finite computation of the minimum distance
-	   * between two triangles A and B using the geometric comparisons segment to
-	   * segment and triangle to point. It returns two points PA and PB on
-	   * triangle A and B, respectively. These are the two points that are
-	   * closests to each other on the respective triangles.
-	   *
-	   * @param xPA Output parameter. x coordinate on triangle A.
-	   */
-	  #ifdef OMPProcess
-		#pragma omp declare simd
-	  #endif
-	  void bfSolver(
-		const iREAL   *xCoordinatesOfTriangleA,
-		const iREAL   *yCoordinatesOfTriangleA,
-		const iREAL   *zCoordinatesOfTriangleA,
-		const iREAL   *xCoordinatesOfTriangleB,
-		const iREAL   *yCoordinatesOfTriangleB,
-		const iREAL   *zCoordinatesOfTriangleB,
-		iREAL&  xPA,
-		iREAL&  yPA,
-		iREAL&  zPA,
-		iREAL&  xPB,
-		iREAL&  yPB,
-		iREAL&  zPB
-	  );
-	}
+					const iREAL*    xCoordinatesOfPointsOfGeometryB,
+					const iREAL*    yCoordinatesOfPointsOfGeometryB,
+					const iREAL*    zCoordinatesOfPointsOfGeometryB,
+					int             numberOfPointsOfGeometryB,
+					iREAL           epsilonB,
+					bool            frictionB,
+					int 	          particleB
+				);
+			#endif
+			/**
+			 * Brute force method for finite computation of the minimum distance
+			 * between two triangles A and B using the geometric comparisons segment to
+			 * segment and triangle to point. It returns two points PA and PB on
+			 * triangle A and B, respectively. These are the two points that are
+			 * closests to each other on the respective triangles.
+			 *
+			 * @param xPA Output parameter. x coordinate on triangle A.
+			 */
+			#ifdef OMPProcess
+			#pragma omp declare simd
+			#endif
+			void bfSolver(
+			const iREAL   *xCoordinatesOfTriangleA,
+			const iREAL   *yCoordinatesOfTriangleA,
+			const iREAL   *zCoordinatesOfTriangleA,
+			const iREAL   *xCoordinatesOfTriangleB,
+			const iREAL   *yCoordinatesOfTriangleB,
+			const iREAL   *zCoordinatesOfTriangleB,
+			iREAL&  xPA,
+			iREAL&  yPA,
+			iREAL&  zPA,
+			iREAL&  xPB,
+			iREAL&  yPB,
+			iREAL&  zPB
+			);
+		}
   }
 }

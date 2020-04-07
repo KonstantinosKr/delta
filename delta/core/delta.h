@@ -29,10 +29,10 @@
 #include <vector>
 #include <vector>
 #include <iostream>
-#include <delta/core/io/read.h>
-#include <delta/geometry/material.h>
-#include <delta/geometry/structure/Triangle.h>
-#include <delta/world/structure/Object.h>
+#include <core/io/read.h>
+#include <geometry/material.h>
+#include <geometry/structure/Triangle.h>
+#include <world/structure/Object.h>
 
 /*
 #if GCC_VERSION >= 4.2

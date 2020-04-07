@@ -22,7 +22,7 @@
  SOFTWARE.
  */
 
-#include "delta/core/State.h"
+#include "core/State.h"
 
 delta::core::State::State()
 {

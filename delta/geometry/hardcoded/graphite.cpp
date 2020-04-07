@@ -1,4 +1,4 @@
-#include <delta/geometry/hardcoded/graphite.h>
+#include <geometry/hardcoded/graphite.h>
 
 //Intact Poly Brick
 delta::geometry::mesh::Mesh *delta::geometry::hardcoded::generateBrickFB(
