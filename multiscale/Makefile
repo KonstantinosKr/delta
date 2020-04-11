@@ -8,8 +8,8 @@ PROJECT_HOME = .
 INCLUDE_TBB=$(TBB_INC)
 INCLUDE_OMP=$(OMP_INC)
 INCLUDE_MPI=$(MPI_INC)
-INCLUDE_LIBS=$(ASSIMP_INC) #$(D_INC)
-INCLUDE_DELTA=$(DELTA_INC)
+INCLUDE_LIBS=-I$(ASSIMP_INC) 
+INCLUDE_DELTA=-I$(DELTA_INC)
 
 LINK_TBB=$(TBB_SHLIB)
 LINK_OMP=$(OMP_SHLIB)
@@ -31,13 +31,13 @@ ICC_OMP_SHAREDMEMORY=-qopenmp -qopt-threads-per-core=1 -DOMPProcess
 
 ##############################################################################################
 ##############################################################################################
-GCCRUN=-O3 -Wall -ftree-vectorize -ftree-vectorizer-verbose=3 -ftree-loop-optimize -faggressive-loop-optimizations -funroll-loops -fprefetch-loop-arrays -falign-loops -fopt-info-vec -fopt-info-loop -fstrict-aliasing -I$(INCLUDE_DELTA)
-GCCDEBUG=-O3 -Wall -g -DDebug -DAsserts -pedantic -pedantic-errors -I$(INCLUDE_DELTA)
-GCCNOVEC=-O3 -Wall -fno-tree-vectorize -ftree-vectorizer-verbose=3 -funroll-loops -fprefetch-loop-arrays -falign-loops -fopt-info-vec -fopt-info-loop -fopenmp -fstrict-aliasing -I$(INCLUDE_DELTA)
+GCCRUN=-O3 -Wall -ftree-vectorize -ftree-vectorizer-verbose=3 -ftree-loop-optimize -faggressive-loop-optimizations -funroll-loops -fprefetch-loop-arrays -falign-loops -fopt-info-vec -fopt-info-loop -fstrict-aliasing $(INCLUDE_DELTA)
+GCCDEBUG=-O3 -Wall -g -DDebug -DAsserts -pedantic -pedantic-errors $(INCLUDE_DELTA)
+GCCNOVEC=-O3 -Wall -fno-tree-vectorize -ftree-vectorizer-verbose=3 -funroll-loops -fprefetch-loop-arrays -falign-loops -fopt-info-vec -fopt-info-loop -fopenmp -fstrict-aliasing $(INCLUDE_DELTA)
 ##############################################################################################
-ICCRUN=-O3 -Wall -simd-function-pointers -qopt-report=5 -qopt-prefetch=2 -falign-loops=32 -funroll-loops -fstrict-aliasing -restrict -pedantic -ip $(CPU) -I$(INCLUDE_DELTA)
-ICCDEBUG=-O3 -Wall -g -DAsserts -pedantic -pedantic-errors -no-ipo -I$(INCLUDE_DELTA)
-ICCNOVEC=-O3 -Wall -no-vec -qno-openmp-simd -no-ipo -qopt-report=5 -fstrict-aliasing -restrict -pedantic -fno-rtti $(CPU) -I$(INCLUDE_DELTA)
+ICCRUN=-O3 -Wall -simd-function-pointers -qopt-report=5 -qopt-prefetch=2 -falign-loops=32 -funroll-loops -fstrict-aliasing -restrict -pedantic -ip $(CPU) $(INCLUDE_DELTA)
+ICCDEBUG=-O3 -Wall -g -DAsserts -pedantic -pedantic-errors -no-ipo $(INCLUDE_DELTA)
+ICCNOVEC=-O3 -Wall -no-vec -qno-openmp-simd -no-ipo -qopt-report=5 -fstrict-aliasing -restrict -pedantic -fno-rtti $(CPU) $(INCLUDE_DELTA)
 ##############################################################################################
 
 default: header
