@@ -27,7 +27,7 @@
 #include <limits>
 #include <iostream>
 
-#include <delta/contact/contactpoint.h>
+#include "../contactpoint.h"
 
 namespace delta {
   namespace contact {

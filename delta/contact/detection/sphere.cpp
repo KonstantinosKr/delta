@@ -22,9 +22,9 @@
  SOFTWARE.
  */
 
-#include <delta/contact/detection/sphere.h>
-#include <delta/contact/detection/point.h>
-#include "delta/core/algo.h"
+#include "sphere.h"
+#include "point.h"
+#include "../../core/algo.h"
 
 std::vector<delta::contact::contactpoint> delta::contact::detection::sphere(
   const iREAL   xCoordinatesOfPointsOfGeometryA,

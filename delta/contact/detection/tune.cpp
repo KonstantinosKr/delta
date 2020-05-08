@@ -23,7 +23,7 @@
  */
 
 
-#include <delta/contact/detection/tune.h>
+#include "tune.h"
 
 void delta::contact::detection::penaltyTune(
   const iREAL*    xCoordinatesOfPointsOfGeometryA,

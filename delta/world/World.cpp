@@ -22,8 +22,8 @@
  SOFTWARE.
  */
 
-#include <world/World.h>
-#include <core/Engine.h>
+#include "World.h"
+#include "../core/Engine.h"
 
 #define epsilon 1E-3
 

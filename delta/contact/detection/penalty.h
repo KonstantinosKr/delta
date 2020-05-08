@@ -22,12 +22,12 @@
  SOFTWARE.
  */
 
-#include <delta/contact/contactpoint.h>
+#include "../contactpoint.h"
 #include <vector>
 
 #include <limits>
 #include <float.h>
-#include "delta/core/algo.h"
+#include "../../core/algo.h"
 
 #ifdef peanoCall
 #include "peano/utils/Loop.h"

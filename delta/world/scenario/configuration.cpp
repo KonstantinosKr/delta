@@ -21,7 +21,7 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
-#include <world/scenario/configuration.h>
+#include "configuration.h"
 
  void delta::world::configuration::uniformlyDistributedTotalMass(
 	  std::vector<delta::world::structure::Object>&		insitu,

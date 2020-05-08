@@ -22,7 +22,7 @@
  SOFTWARE.
  */
 
-#include <world/operators/arrayLayout.h>
+#include "arrayLayout.h"
 
 
 iREAL delta::world::layout::getDiscritization(

@@ -1,4 +1,4 @@
-#include <delta/contact/contactpoint.h>
+#include "../contactpoint.h"
 #include <vector>
 #include <cmath>
 #include <iostream>

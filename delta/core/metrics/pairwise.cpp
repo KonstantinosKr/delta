@@ -5,7 +5,7 @@
  *      Author: konstantinos
  */
 
-#include <delta/core/metrics/pairwise.h>
+#include "pairwise.h"
 
 void delta::metrics::pairwise::pointToMeshDistance(
 	iREAL xV,

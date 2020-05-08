@@ -20,11 +20,11 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with Solfec. If not, see <http://www.gnu.org/licenses/>. */
 
-#include <delta/contact/contactpoint.h>
+#include "../contactpoint.h"
 #include <vector>
 #include <limits>
 #include <float.h>
-#include "delta/core/algo.h"
+#include "../../core/algo.h"
 
 namespace delta {
   namespace contact {

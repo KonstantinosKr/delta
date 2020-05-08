@@ -27,9 +27,9 @@
 #include <vector>
 #include <limits>
 #include <float.h>
-#include "delta/core/algo.h"
-#include <delta/contact/detection/bf.h>
-#include <delta/contact/contactpoint.h>
+#include "../../core/algo.h"
+#include "../detection/bf.h"
+#include "../contactpoint.h"
 
 namespace delta {
   namespace contact {

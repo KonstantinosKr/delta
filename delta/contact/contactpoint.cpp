@@ -1,4 +1,4 @@
-#include <delta/contact/contactpoint.h>
+#include "contactpoint.h"
 
 delta::contact::contactpoint::contactpoint(){}
 

@@ -22,7 +22,7 @@
  SOFTWARE.
  */
 
-#include "core/io/Log.h"
+#include "Log.h"
 
 std::chrono::steady_clock::time_point delta::core::io::Log::_start;
 

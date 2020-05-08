@@ -1,4 +1,4 @@
-#include <geometry/hardcoded/cube.h>
+#include "cube.h"
 
 void delta::geometry::primitive::cube::generateSquare(
   iREAL center[2],

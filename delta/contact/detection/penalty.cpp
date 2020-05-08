@@ -23,7 +23,7 @@
  */
 
 
-#include <delta/contact/detection/penalty.h>
+#include "penalty.h"
 
 namespace {
   static std::vector<int> _numberOfNewtonIterations(MaxNumberOfNewtonIterations+1);

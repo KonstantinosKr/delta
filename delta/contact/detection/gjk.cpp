@@ -20,7 +20,7 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with Solfec. If not, see <http://www.gnu.org/licenses/>. */
 
-#include <delta/contact/detection/gjk.h>
+#include "gjk.h"
 
 std::vector<delta::contact::contactpoint> delta::contact::detection::gjk(
 		  int       numberOfTrianglesOfGeometryA,

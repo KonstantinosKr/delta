@@ -5,7 +5,7 @@
  *      Author: konstantinos
  */
 
-#include "../structure/Triangle.h"
+#include "Triangle.h"
 
 delta::geometry::mesh::Triangle::Triangle(
 	std::array<iREAL, 3> A,

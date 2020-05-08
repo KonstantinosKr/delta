@@ -22,22 +22,25 @@
  SOFTWARE.
  */
 
-#include <core/delta.h>
-#include <core/io/write.h>
-#include <core/io/read.h>
+#include "delta.h"
+#include "io/write.h"
+#include "io/read.h"
 
 delta::core::Delta::Delta()
 {
+
+	delta::core::io::readmbfcp("../inp/hopper.mbfcp");
+	/*
   delta::geometry::material::materialInit();
-/*
+
   delta::geometry::mesh::Mesh *mesh = delta::core::io::readVTKGeometry("input/turbine.stl");
 
-  std::vector<delta::geometry::Object> objects;
-  std::array<iREAL, 3> 					centre 	= {0.0, 0.0, 0.0};
-  std::array<iREAL, 3> 					linear 	= {0.0, 0.0, 0.0};
-  std::array<iREAL, 3> 					angular 	= {0.0, 0.0, 0.0};
+  std::vector<delta::world::structure::Object> objects;
+  std::array<iREAL, 3> 	centre 	= {0.0, 0.0, 0.0};
+  std::array<iREAL, 3> 	linear 	= {0.0, 0.0, 0.0};
+  std::array<iREAL, 3> 	angular = {0.0, 0.0, 0.0};
 
-  delta::geometry::Object object("mesh",
+  delta::world::structure::Object object("mesh",
 								0,
 								mesh,
 								centre,
@@ -55,7 +58,7 @@ delta::core::Delta::Delta()
 
   //printf("mesh:%i\n", meshes[0].getTriangleFaces().size());
   std::array<iREAL, 6> boundary = {0.0, 0.0, 0.0, 1.0, 1.0, 1.0};
-  delta::core::io::writeGeometryToVTK(0, boundary, objects);
+  //delta::core::io::writeGeometryToVTK(0, boundary, objects);
   */
 }
 

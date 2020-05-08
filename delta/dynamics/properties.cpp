@@ -5,7 +5,7 @@
  *      Author: konstantinos
  */
 
-#include "delta/dynamics/properties.h"
+#include "properties.h"
 
 iREAL delta::dynamics::properties::getKineticRotationalEnergy(
     iREAL 	velocity[3],

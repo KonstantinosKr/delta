@@ -5,7 +5,7 @@
  *      Author: konstantinos
  */
 
-#include <geometry/operators/mesh.h>
+#include "mesh.h"
 
 void delta::geometry::operators::mesh::moveMeshFromPositionToOrigin(
     std::vector<iREAL> &xCoordinates,

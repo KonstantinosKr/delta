@@ -25,7 +25,7 @@
 #ifndef _DELTA_COLLISION_FILTER_H_
 #define _DELTA_COLLISION_FILTER_H_
 
-#include <delta/contact/contactpoint.h>
+#include "contactpoint.h"
 #include <vector>
 #include <cmath>
 

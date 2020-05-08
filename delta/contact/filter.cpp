@@ -1,4 +1,4 @@
-#include <delta/contact/filter.h>
+#include "filter.h"
 
 void delta::contact::filterOldContacts(
     std::vector<contactpoint>& dataStoredContactPoints,

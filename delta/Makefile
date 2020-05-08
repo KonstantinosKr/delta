@@ -8,13 +8,14 @@ PROJECT_HOME = .
 INCLUDE_TBB=$(TBB_INC)
 INCLUDE_OMP=$(OMP_INC)
 INCLUDE_MPI=$(MPI_INC)
-INCLUDE_LIBS=$(ASSIMP_INC)
+INCLUDE_LIBS=-I$(ASSIMP_INC) 
+INCLUDE_DELTA=-I.
 
 LINK_TBB=$(TBB_SHLIB)
 LINK_OMP=$(OMP_SHLIB)
 LINK_OMP=-fopenmp
 LINK_MPI=-L/usr/local/Cluster-Apps/openmpi/gcc-4.9.1/1.8.2/lib/ -lmpi
-LINK_LIBS=$(ASSIMP_LIB)
+LINK_LIBS=-L$(ASSIMP_LIB) -lassimp
 
 ##############################################################################################
 

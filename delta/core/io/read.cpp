@@ -1,11 +1,9 @@
-/*
- * read.cpp
- *
+ /*
  *  Created on: 8 Feb 2017
  *      Author: konstantinos
  */
 
-#include <core/io/read.h>
+#include "read.h"
 #include <assimp/Importer.hpp>      // C++ importer interface
 #include <assimp/Exporter.hpp>      // C++ importer interface
 #include <assimp/scene.h>           // Output data structure
@@ -299,4 +297,194 @@ delta::geometry::mesh::Mesh* delta::core::io::readPartGeometry(std::string fileN
 	}
   }
   return new delta::geometry::mesh::Mesh(triangleFaces, uniqueVertices);
+}
+
+
+/*
+ *
+ * 
+SURFACE_MATERIALS:	1
+SURF1:	ANY
+SURF2:	ANY
+MODEL:	SPRING_DASHPOT
+
+FRICTION:	0
+COHESION:	0
+SPRING:	1e+06
+DASHPOT:	-1
+
+BULK_MATERIALS:	1
+LABEL:	BULK_MATERIAL_0
+MODEL:	KIRCHHOFF
+YOUNG:	1e+09
+POISSON:	0.25
+DENSITY:	1000
+
+GRAVITY:
+CONSTANT:	0
+CONSTANT:	0
+CONSTANT:	-10
+*/
+
+void delta::core::io::readmbfcp(std::string filename) {
+	std::ifstream file(filename);
+	if (file.is_open()) {
+		std::cout << "Opened: " << filename << std::endl;
+	}
+	
+	int idCounter = 0;
+	int bodies = 0;
+
+	
+	for (std::string line; getline(file, line);)
+	{
+		if (line.size() == 0)
+		{
+			std::cout << std::endl;
+			continue;
+		}
+		
+		////////////////////////////////////////////////////
+		/*
+		SURFACE_MATERIALS:	1
+		SURF1:	ANY
+		SURF2:	ANY
+		MODEL:	SPRING_DASHPOT
+
+		FRICTION:	0
+		COHESION:	0
+		SPRING:	1e+06
+		DASHPOT:	-1
+		*/
+		//std::meshVector	
+		if (line.find("SURFACE_MATERIALS:") != std::string::npos) {
+			int nmaterials = std::stoi(line.substr(18));
+			getline(file, line);
+			std::string surf1 = line.substr(7);
+			getline(file, line);
+			std::string surf2 = line.substr(7);
+			getline(file, line);
+			std::string model = line.substr(7);
+			getline(file, line);
+			iREAL friction = std::stof(line.substr(10));
+			getline(file, line);
+			iREAL cohesion = std::stoi(line.substr(10));
+			getline(file, line);
+			iREAL spring = std::stof(line.substr(8));
+			getline(file, line);
+			iREAL dashpot = std::stof(line.substr(8));
+			//////////////////////////////////////////
+			
+			/*
+			BULK_MATERIALS:	1
+			LABEL:	BULK_MATERIAL_0
+			MODEL:	KIRCHHOFF
+			YOUNG:	1e+09
+			POISSON:	0.25
+			DENSITY:	1000
+
+			GRAVITY:
+			CONSTANT:	0
+			CONSTANT:	0
+			CONSTANT:	-10
+			*/
+			std::cout << line;	
+			getline(file, line);
+			getline(file, line);
+			int bulk_materials = std::stoi(line.substr(15));
+			getline(file, line);
+		  std::string bulk_materials_label = line.substr(7);
+			getline(file, line);
+		  std::string mat_model = line.substr(7);
+			getline(file, line);
+			iREAL young = std::stof(line.substr(7));
+			getline(file, line);
+			iREAL poisson = std::stof(line.substr(9));
+			getline(file, line);
+			iREAL density = std::stof(line.substr(9));
+			getline(file, line);
+			getline(file, line);
+			getline(file, line);
+			iREAL gravity[3];
+			gravity[0] = std::stof(line.substr(10));
+			getline(file, line);
+			gravity[1] = std::stof(line.substr(10));
+			getline(file, line);
+			gravity[2] = std::stof(line.substr(10));
+			//////////////////////////////////////
+		}
+		
+		if (line.find("BODIES:") != std::string::npos) {
+			bodies = std::stoi(line.substr(8));
+			std::cout << bodies << std::endl;
+		}
+		/*
+		ID:	126
+		LABEL:	(null)
+		KINEMATICS:	OBSTACLE
+		BULK_MATERIAL:	BULK_MATERIAL_0
+		SHAPES:	1
+		
+		CONVEXES:	1
+		VERTEXES:	6
+		1  -0.1  0
+		0  -0.1  1
+		0  -0.1  0
+		0  0  1
+		0  0  0
+		1  0  0
+		FACES:	8
+		3  0  3  6  2
+		3  9  3  0  2
+		3  6  3  9  2
+		3  12  9  15  2
+		3  6  9  12  2
+		3  6  12  15  2
+		3  15  0  6  2
+		3  9  0  15  2
+		VELOCITY:  0  0  0  0  0  0
+		FORCES:	0
+ 
+		ID:	1
+		LABEL:	(null)
+		KINEMATICS:	RIGID
+		BULK_MATERIAL:	BULK_MATERIAL_0
+		SHAPES:	1
+		
+		SPHERES:	0
+		VELOCITY:  0  0  0  0  0  0
+		FORCES:	0
+		*/	
+		
+		if (line.find("ID:") != std::string::npos) {
+			std::cout << line;	
+		  int id = std::stoi(line.substr(3));
+			getline(file, line);
+		  std::string label = line.substr(6);
+			getline(file, line);
+		  std::string kinematics = line.substr(11);
+			getline(file, line);
+		  std::string bulk_material = line.substr(14);
+			getline(file, line);
+		  int shapes = std::stoi(line.substr(7));
+			getline(file, line);
+			getline(file, line);
+			
+				
+			if (line.find("SPHERES:") != std::string::npos) {
+			
+			} else if(line.find("VERTEXES:") != std::string::npos) {
+			
+			}
+			std::string id = line.substr(3);
+			getline(file, line);
+		  std::string id = line.substr(3);
+			getline(file, line);
+		  std::string id = line.substr(3);
+			getline(file, line);
+		  std::string id = line.substr(3);
+		}
+
+		std::cout << line << std::endl;
+	}
 }

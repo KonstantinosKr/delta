@@ -21,9 +21,9 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
-#include <geometry/hardcoded/surface.h>
-#include <geometry/operators/hull/hull.h>
-#include <geometry/operators/hull/alg.h>
+#include "surface.h"
+#include "../operators/hull/hull.h"
+#include "../operators/hull/alg.h"
 
 void delta::geometry::primitive::surface::generateBoundBox(
 		iREAL center[3],

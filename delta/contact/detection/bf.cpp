@@ -22,7 +22,7 @@
  SOFTWARE.
  */
 
-#include <delta/contact/detection/bf.h>
+#include "bf.h"
 
 
 #if defined(SharedTBB) && defined(peanoCall)

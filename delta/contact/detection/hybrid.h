@@ -23,9 +23,9 @@
  */
 
 
-#include <delta/contact/detection/bf.h>
-#include <delta/contact/contactpoint.h>
-#include <delta/contact/detection/penalty.h>
+#include "../detection/bf.h"
+#include "../contactpoint.h"
+#include "../detection/penalty.h"
 #include <vector>
 
 #ifdef peanoCall

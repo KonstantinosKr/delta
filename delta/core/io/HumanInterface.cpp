@@ -22,7 +22,7 @@
  SOFTWARE.
  */
 
-#include "core/io/HumanInterface.h"
+#include "HumanInterface.h"
 
 delta::core::io::HumanInterface::HumanInterface(int argc, const char* argv[]) {
   int NumberOfArguments = 7;

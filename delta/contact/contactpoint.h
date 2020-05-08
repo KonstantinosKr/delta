@@ -25,7 +25,7 @@
 #ifndef _DELTA_COLLISION_CONTACTPOINT_H_
 #define _DELTA_COLLISION_CONTACTPOINT_H_
 
-#include <delta/core/algo.h>
+#include "../core/algo.h"
 
 #include <string>
 #include <cmath>

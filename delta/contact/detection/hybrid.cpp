@@ -22,7 +22,7 @@
  SOFTWARE.
  */
 
-#include <delta/contact/detection/hybrid.h>
+#include "hybrid.h"
 
 namespace {
 

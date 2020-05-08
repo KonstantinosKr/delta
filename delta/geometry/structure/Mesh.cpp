@@ -5,9 +5,9 @@
  *      Author: konstantinos
  */
 
-#include "geometry/structure/Mesh.h"
-#include "geometry/structure/Triangle.h"
-#include "geometry/operators/vertex.h"
+#include "Mesh.h"
+#include "Triangle.h"
+#include "../operators/vertex.h"
 
 #include <vector>
 #include <map>

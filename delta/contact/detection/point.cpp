@@ -5,8 +5,8 @@
  *      Author: konstantinos
  */
 
-#include "delta/contact/detection/point.h"
-#include "delta/core/algo.h"
+#include "point.h"
+#include "../../core/algo.h"
 
 iREAL delta::contact::detection::pt(iREAL TP1[3], iREAL TP2[3], iREAL TP3[3], iREAL cPoint[3], iREAL tq[3])
 {

@@ -5,14 +5,14 @@
  *      Author: konstantinos
  */
 
-#include <world/scenario/scenarios.h>
-#include <world/scenario/configuration.h>
-#include <geometry/hardcoded/graphite.h>
-#include <geometry/hardcoded/hopper.h>
-#include <geometry/hardcoded/cube.h>
-#include <geometry/hardcoded/granulate.h>
-#include <geometry/material.h>
-#include <geometry/structure/Mesh.h>
+#include "scenarios.h"
+#include "configuration.h"
+#include "../../geometry/hardcoded/graphite.h"
+#include "../../geometry/hardcoded/hopper.h"
+#include "../../geometry/hardcoded/cube.h"
+#include "../../geometry/hardcoded/granulate.h"
+#include "../../geometry/material.h"
+#include "../../geometry/structure/Mesh.h"
 
 void delta::world::scenarios::hopper(
 	std::vector<delta::world::structure::Object>&	coarse,

@@ -5,7 +5,7 @@
  *      Author: konstantinos
  */
 
-#include "core/data/ParticleRecord.h"
+#include "ParticleRecord.h"
 
 delta::core::data::ParticleRecord::ParticleRecord(delta::world::structure::Object& object)
 {
