@@ -64,13 +64,13 @@ class delta::core::Engine
   public:
 	Engine();
 	Engine(
-		delta::world::World					world,
+		delta::world::World										world,
 		delta::core::data::Meta::EngineMeta 	meta);
 
 	Engine(
-		std::vector<delta::world::structure::Object> particles,
-		std::array<iREAL, 6> 						boundary,
-		delta::core::data::Meta::EngineMeta 			meta);
+		std::vector<delta::world::structure::Object> 	particles,
+		std::array<iREAL, 6> 													boundary,
+		delta::core::data::Meta::EngineMeta 					meta);
 
 	virtual ~Engine();
 
@@ -82,13 +82,13 @@ class delta::core::Engine
 		std::vector<iREAL>& ez,
 		std::vector<std::array<iREAL,4>>& d);
 
-	void 				iterate();
-	delta::core::State 	getState();
-	int 					getNumberOfCollisions();
-	void 				contactDetection();
-	void 				deriveForces();
-	void 				updatePosition();
-	void 				plot();
+		void 								iterate();
+		delta::core::State 	getState();
+		int 								getNumberOfCollisions();
+		void 								contactDetection();
+		void 								deriveForces();
+		void 								updatePosition();
+		void 								plot();
 
 	std::vector<delta::core::data::ParticleRecord>& getParticleRecords();
 
@@ -96,11 +96,11 @@ class delta::core::Engine
 
   private:
 	delta::core::data::Meta::Plot 	_plot;
-	bool 							_overlapCheck;
-	delta::core::State 				_state;
-	std::array<iREAL, 6>	 			_boundary;
-	iREAL 							_gravity;
-	delta::core::data::Structure 	_data;
+	bool 														_overlapCheck;
+	delta::core::State 							_state;
+	std::array<iREAL, 6>	 					_boundary;
+	iREAL 													_gravity;
+	delta::core::data::Structure 		_data;
 
 	/**
 	 * Hold all the collissions that are tied to a particular particle

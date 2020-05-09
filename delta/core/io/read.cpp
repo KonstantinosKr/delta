@@ -476,13 +476,15 @@ void delta::core::io::readmbfcp(std::string filename) {
 			} else if(line.find("VERTEXES:") != std::string::npos) {
 			
 			}
-			std::string id = line.substr(3);
+/*
+			std::string id1 = line.substr(3);
 			getline(file, line);
-		  std::string id = line.substr(3);
+		  std::string id2 = line.substr(3);
 			getline(file, line);
-		  std::string id = line.substr(3);
+		  std::string id3 = line.substr(3);
 			getline(file, line);
-		  std::string id = line.substr(3);
+		  std::string id4 = line.substr(3);
+*/
 		}
 
 		std::cout << line << std::endl;

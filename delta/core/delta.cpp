@@ -28,8 +28,6 @@
 
 delta::core::Delta::Delta()
 {
-
-	delta::core::io::readmbfcp("../inp/hopper.mbfcp");
 	/*
   delta::geometry::material::materialInit();
 

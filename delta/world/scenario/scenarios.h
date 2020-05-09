@@ -31,73 +31,73 @@
 
 namespace delta {
   namespace world {
-	namespace scenarios {
+		namespace scenarios {
 
-	  void hopper(
-		  std::vector<delta::world::structure::Object> &coarse,
-		  std::vector<delta::world::structure::Object> &insitu,
-		  iREAL centre[3],
-		  int xzcuts,
-		  int ycuts,
-		  bool uniform,
-		  bool isSphere,
-		  int meshDensity,
-		  iREAL epsilon);
+			void hopper(
+				std::vector<delta::world::structure::Object> &coarse,
+				std::vector<delta::world::structure::Object> &insitu,
+				iREAL centre[3],
+				int xzcuts,
+				int ycuts,
+				bool uniform,
+				bool isSphere,
+				int meshDensity,
+				iREAL epsilon);
 
-	  void kaikoura(
-	  	std::vector<delta::world::structure::Object>& 	coarseObjects,
-	  	iREAL 											epsilon);
+			void kaikoura(
+				std::vector<delta::world::structure::Object>& 	coarseObjects,
+				iREAL 											epsilon);
 
-	  void helicopter(
-	  	std::vector<delta::world::structure::Object>& 	coarseObjects,
-	  	iREAL 											epsilon);
+			void helicopter(
+				std::vector<delta::world::structure::Object>& 	coarseObjects,
+				iREAL 											epsilon);
 
-	  void turbine(
-	  	std::vector<delta::world::structure::Object>& 	coarseObjects,
-	  	iREAL 											epsilon);
+			void turbine(
+				std::vector<delta::world::structure::Object>& 	coarseObjects,
+				iREAL 											epsilon);
 
-	  void friction(
-		  int 											scenario,
-		  bool 											isSphere,
-		  iREAL 											centre[3],
-		  int 											meshDensity,
-		  iREAL 											epsilon,
-		  std::vector<delta::world::structure::Object>&	coarse);
+			void friction(
+				int 											scenario,
+				bool 											isSphere,
+				iREAL 										centre[3],
+				int 											meshDensity,
+				iREAL 										epsilon,
+				std::vector<delta::world::structure::Object>&	coarse);
 
-	  void nuclear(
-		  int 											scenario,
-		  iREAL 											centre[3],
-		  int 											meshDensity,
-		  iREAL 											epsilon,
-		  std::vector<delta::world::structure::Object>&	coarse);
+			void nuclear(
+				int 											scenario,
+				iREAL 										centre[3],
+				int 											meshDensity,
+				iREAL 										epsilon,
+				std::vector<delta::world::structure::Object>&	coarse);
 
-	  void freeFall(
-		  int 											randomVelocities,
-		  std::string 									shape,
-		  iREAL 											centre[3],
-		  int 											meshDensity,
-		  iREAL 											epsilon,
-		  std::vector<delta::world::structure::Object>&	fine);
+			void freeFall(
+				int 											randomVelocities,
+				std::string 							shape,
+				iREAL 										centre[3],
+				int 											meshDensity,
+				iREAL 										epsilon,
+				std::vector<delta::world::structure::Object>&	fine);
 
-	  void twoParticlesCrash(
-		  std::vector<delta::world::structure::Object>& 	coarseObject,
-		  bool 											isSphere,
-		  int 											meshDensity,
-		  iREAL 											epsilon);
+			void twoParticlesCrash(
+				std::vector<delta::world::structure::Object>& 	coarseObject,
+				bool 											isSphere,
+				int 											meshDensity,
+				iREAL 										epsilon);
 
-	  void twoParticlesCrashDiagonal(
-		  std::vector<delta::world::structure::Object>& 	coarseObject,
-		  bool 											isSphere,
-		  int 											meshDensity,
-		  iREAL 											epsilon);
+			void twoParticlesCrashDiagonal(
+				std::vector<delta::world::structure::Object>& 	coarseObject,
+				bool 											isSphere,
+				int 											meshDensity,
+				iREAL 										epsilon);
 
-	  void rotateParticle(
-		  std::vector<delta::world::structure::Object>& 	coarseObject,
-		  bool 											isSphere,
-		  int 											meshDensity,
-		  iREAL 											epsilon);
+			void rotateParticle(
+				std::vector<delta::world::structure::Object>& 	coarseObject,
+				bool 											isSphere,
+				int 											meshDensity,
+				iREAL 										epsilon);
 
-	} /* namespace scenarios */
+		} /* namespace scenarios */
   } /* namespace world */
 } /* namespace delta */
 
