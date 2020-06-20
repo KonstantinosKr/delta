@@ -28,8 +28,8 @@
 #include <vector>
 #include <array>
 #include <string>
-#include <geometry/material.h>
-#include <geometry/structure/Mesh.h>
+#include "../../geometry/material.h"
+#include "../../geometry/structure/Mesh.h"
 
 namespace delta {
   namespace world {
@@ -48,50 +48,50 @@ class delta::world::structure::Object
 	 * Mesh object with mesh unspecified
 	 */
 	Object(
-	  std::string                   				component,
-	  int                           				particleID,
-	  std::array<iREAL, 3>         				centre,
+	  std::string                   						component,
+	  int                           						particleID,
+	  std::array<iREAL, 3>         							centre,
 	  delta::geometry::material::MaterialType 	material,
-	  bool                          				isObstacle,
-	  bool                          				isFriction,
-	  bool                          				isConvex,
-	  iREAL 										epsilon,
-	  std::array<iREAL, 3> linear,
-	  std::array<iREAL, 3> angular
+	  bool                          						isObstacle,
+	  bool                          						isFriction,
+	  bool                          						isConvex,
+	  iREAL 																		epsilon,
+	  std::array<iREAL, 3> 											linear,
+	  std::array<iREAL, 3> 											angular
 	);
 
 	/*
 	 * Mesh object with mesh specified
 	 */
 	Object(
-	  std::string                   				component,
-	  int                           				particleID,
-	  delta::geometry::mesh::Mesh*				mesh,
-	  std::array<iREAL, 3>         				centre,
+	  std::string                   						component,
+	  int                           						particleID,
+	  delta::geometry::mesh::Mesh*							mesh,
+	  std::array<iREAL, 3>         							centre,
 	  delta::geometry::material::MaterialType 	material,
-	  bool                          				isObstacle,
-	  bool                          				isFriction,
-	  bool                          				isConvex,
-	  iREAL 										epsilon,
-	  std::array<iREAL, 3> 						linear,
-	  std::array<iREAL, 3> 						angular
+	  bool                          						isObstacle,
+	  bool                          						isFriction,
+	  bool                          						isConvex,
+	  iREAL 																		epsilon,
+	  std::array<iREAL, 3> 											linear,
+	  std::array<iREAL, 3> 											angular
 	);
 
 	/*
 	 * Sphere object
 	 */
 	Object(
-	  std::string                   				component,
-	  iREAL										rad,
-	  int                           				particleID,
-	  std::array<iREAL, 3>         				centre,
+	  std::string                   						component,
+	  iREAL																			rad,
+	  int                           						particleID,
+	  std::array<iREAL, 3>         							centre,
 	  delta::geometry::material::MaterialType 	material,
-	  bool                          				isObstacle,
-	  bool                          				isFriction,
-	  bool                          				isConvex,
-	  iREAL 										epsilon,
-	  std::array<iREAL, 3> 						linear,
-	  std::array<iREAL, 3> 						angular
+	  bool                          						isObstacle,
+	  bool                          						isFriction,
+	  bool                          						isConvex,
+	  iREAL 																		epsilon,
+	  std::array<iREAL, 3> 											linear,
+	  std::array<iREAL, 3> 											angular
 	);
 
 	/*
@@ -350,6 +350,8 @@ class delta::world::structure::Object
 	 *  @returns bool
 	 */
     bool getIsFriction();
+	
+    bool hasMesh();
 
 	/*
 	 *  Get Volume

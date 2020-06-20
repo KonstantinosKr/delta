@@ -11,17 +11,15 @@
 #include <array>
 #include <string>
 #include <vector>
-#include <geometry/material.h>
-#include <core/data/OctTree.h>
+#include "../../geometry/material.h"
+#include "../../core/data/OctTree.h"
 #include "../../world/structure/Object.h"
 
 namespace delta {
   namespace core {
-	namespace data {
-
-	  class ParticleRecord;
-
-	}
+		namespace data {
+			class ParticleRecord;
+		}
   }
 } /* namespace delta */
 
@@ -30,85 +28,88 @@ namespace delta {
 class delta::core::data::ParticleRecord
 {
   public:
-	ParticleRecord(delta::world::structure::Object& object);
+		ParticleRecord(delta::world::structure::Object& object);
 
-	int getGlobalParticleID();
-	int getLocalParticleID();
-	iREAL getHaloDiameter();
-	iREAL getRad();
-	iREAL getDiameter();
-	iREAL getMass();
-	iREAL getEpsilon();
-	delta::geometry::material::MaterialType getMaterial();
-	bool getIsObstacle();
-	bool getIsFriction();
-	bool getIsConvex();
-	std::array<iREAL, 9> getInertia();
-	std::array<iREAL, 9> getInverse();
-	int getNumberOfTriangles();
+		int 	getGlobalParticleID();
+		int 	getLocalParticleID();
+		int 	getNumberOfTriangles();
+		bool 	getIsObstacle();
+		bool 	getIsFriction();
+		bool 	getIsConvex();
+		bool 	getIsMesh();
 
-	std::vector<iREAL> getClosestXCoordinatesTriangles(iREAL x[3]);
-	std::vector<iREAL> getClosestYCoordinatesTriangles(iREAL x[3]);
-	std::vector<iREAL> getClosestZCoordinatesTriangles(iREAL x[3]);
+		iREAL getHaloDiameter();
+		iREAL getDiameter();
+		iREAL getEpsilon();
+		iREAL getRad();
+		iREAL getMass();
+		iREAL getMaxMeshSize();
+		iREAL getMinMeshSize();
+		iREAL getAvgMeshSize();
 
-	delta::core::data::OctTree& getTree();
-	void refineTree(double maxMeshSize);
+		std::vector<iREAL> getClosestXCoordinatesTriangles(iREAL x[3]);
+		std::vector<iREAL> getClosestYCoordinatesTriangles(iREAL x[3]);
+		std::vector<iREAL> getClosestZCoordinatesTriangles(iREAL x[3]);
 
-	void getSubsetOfMesh(
-		  double x[3], double epsilon,
-		  std::vector<iREAL> &xCoordinatesPartial,
-		  std::vector<iREAL> &yCoordinatesPartial,
-		  std::vector<iREAL> &zCoordinatesPartial);
+		delta::core::data::OctTree& getTree();
+		void refineTree(iREAL maxMeshSize);
 
-	iREAL getMaxMeshSize();
-	iREAL getMinMeshSize();
-	iREAL getAvgMeshSize();
+		void getSubsetOfMesh(
+			iREAL x[3], 
+			iREAL epsilon,
+			std::vector<iREAL> &xCoordinatesPartial,
+			std::vector<iREAL> &yCoordinatesPartial,
+			std::vector<iREAL> &zCoordinatesPartial
+		);
 
-	virtual ~ParticleRecord();
+		std::array<iREAL, 9> getInertia();
+		std::array<iREAL, 9> getInverse();
+		std::array<iREAL, 6> getBbox();
 
-	std::array<iREAL, 3> 	_linearVelocity;
-	std::array<iREAL, 3> 	_angularVelocity;
-	std::array<iREAL, 3> 	_refAngularVelocity;
+		std::array<iREAL, 3> 	_linearVelocity;
+		std::array<iREAL, 3> 	_angularVelocity;
+		std::array<iREAL, 3> 	_refAngularVelocity;
 
-	std::array<iREAL, 3> 	_centre;
-	std::array<iREAL, 3> 	_centreOfMass;
-	std::array<iREAL, 3> 	_refCentreOfMass;
-	std::array<iREAL, 9> 	_orientation;
+		std::array<iREAL, 3> 	_centre;
+		std::array<iREAL, 3> 	_centreOfMass;
+		std::array<iREAL, 3> 	_refCentreOfMass;
+		std::array<iREAL, 9> 	_orientation;
 
-	std::vector<iREAL>   	_xCoordinates;
-	std::vector<iREAL>   	_yCoordinates;
-	std::vector<iREAL>   	_zCoordinates;
+		std::vector<iREAL>   	_xCoordinates;
+		std::vector<iREAL>   	_yCoordinates;
+		std::vector<iREAL>   	_zCoordinates;
 
-	std::vector<iREAL>   	_refxCoordinates;
-	std::vector<iREAL>   	_refyCoordinates;
-	std::vector<iREAL>   	_refzCoordinates;
-
-	std::array<iREAL, 6> 	getBbox();
+		std::vector<iREAL>   	_refxCoordinates;
+		std::vector<iREAL>   	_refyCoordinates;
+		std::vector<iREAL>   	_refzCoordinates;
+		
+		delta::geometry::material::MaterialType getMaterial();
+		
+		virtual ~ParticleRecord();
 
   private:
-	int                   	_globalParticleID;
-	int                  	_localParticleID;
+		int     _globalParticleID;
+		int     _localParticleID;
+		bool    _isObstacle;
+		bool    _isFriction;
+		bool 		_isMesh;
+		bool    _isConvex;
 
-	iREAL                	_rad;
-	iREAL				 	_haloDiameter;
-	iREAL				 	_diameter;
-	iREAL               		_mass;
-	iREAL 				 	_epsilon;
-	iREAL					_maxMeshSize;
-	iREAL 					_minMeshSize;
-	iREAL 					_avgMeshSize;
+		iREAL   _rad;
+		iREAL		_haloDiameter;
+		iREAL		_diameter;
+		iREAL   _mass;
+		iREAL 	_epsilon;
+		iREAL		_maxMeshSize;
+		iREAL 	_minMeshSize;
+		iREAL 	_avgMeshSize;
+		
+		std::array<iREAL, 9> 	_inertia;
+		std::array<iREAL, 9> 	_inverse;
+		std::array<iREAL, 6> 	_bbox;
 
-	delta::geometry::material::MaterialType _material;
-
-	bool                  	_isObstacle;
-	bool                  	_isFriction;
-	bool                  	_isConvex;
-
-	std::array<iREAL, 9> 	_inertia;
-	std::array<iREAL, 9> 	_inverse;
-
-	delta::core::data::OctTree _tree;
-	std::array<iREAL,6> _bbox;
+		delta::core::data::OctTree _tree;
+		delta::geometry::material::MaterialType _material;
 };
 
 #endif /* DELTA_CORE_DATA_PARTICLERECORD_H_ */

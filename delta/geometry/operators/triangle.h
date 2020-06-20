@@ -25,9 +25,9 @@
 #ifndef GEOMETRY_OPERATORS_TRIANGLE_H_
 #define GEOMETRY_OPERATORS_TRIANGLE_H_
 
-#include <geometry/material.h>
-#include <geometry/hardcoded/surface.h>
-#include <geometry/operators/physics.h>
+#include "../material.h"
+#include "../hardcoded/surface.h"
+#include "../operators/physics.h"
 #include <stdlib.h>
 #include <assert.h>
 #include <cmath>

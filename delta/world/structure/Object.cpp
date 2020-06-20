@@ -12,16 +12,16 @@ delta::world::structure::Object::Object()
 }
 
 delta::world::structure::Object::Object(
-    std::string                   			component,
-    int                           			particleID,
-    std::array<iREAL, 3>         			centre,
-    delta::geometry::material::MaterialType 	material,
-    bool                          			isObstacle,
-    bool                          			isFriction,
-	bool                          			isConvex,
-	iREAL 									epsilon,
-	std::array<iREAL, 3> 					linear,
-	std::array<iREAL, 3> 					angular)
+  std::string                   						component,
+  int                           						particleID,
+  std::array<iREAL, 3>         							centre,
+  delta::geometry::material::MaterialType 	material,
+  bool                          						isObstacle,
+  bool                          						isFriction,
+	bool                          						isConvex,
+	iREAL 																		epsilon,
+	std::array<iREAL, 3> 											linear,
+	std::array<iREAL, 3> 											angular)
 {
   _component = component;
   _globalParticleID = particleID;
@@ -32,7 +32,7 @@ delta::world::structure::Object::Object(
 
   _material 		= material;
   _isObstacle 	= isObstacle;
-  _isFriction	= isFriction;
+  _isFriction		= isFriction;
 
   _linearVelocity[0] = linear[0];
   _linearVelocity[1] = linear[1];
@@ -42,34 +42,34 @@ delta::world::structure::Object::Object(
   _angularVelocity[1] = angular[1];
   _angularVelocity[2] = angular[2];
 
-  _epsilon 			= epsilon;
+  _epsilon 					= epsilon;
   _haloDiameter 		= (_diameter+epsilon*2) * 1.1;
-  _diameter			= _rad/2;
-  _rad				= _diameter/2;
+  _diameter					= _rad/2;
+  _rad 							= _diameter/2;
 
   _localParticleID 	= 0;
-  _isConvex 			= isConvex;
+  _isConvex 				= isConvex;
 
-  _mesh				= nullptr;
-  _mass				= 0;
+  _mesh	= nullptr;
+  _mass	= 0;
 
-  _wx 				= 0;
-  _wy 				= 0;
-  _wz 				= 0;
+  _wx = 0;
+  _wy = 0;
+  _wz = 0;
 }
 
 delta::world::structure::Object::Object(
-std::string                   			component,
-int                           			particleID,
-delta::geometry::mesh::Mesh*				mesh,
-std::array<iREAL, 3>         			centre,
-delta::geometry::material::MaterialType 	material,
-bool                          			isObstacle,
-bool                          			isFriction,
-bool                          			isConvex,
-iREAL 									epsilon,
-std::array<iREAL, 3> 					linear,
-std::array<iREAL, 3> 					angular)
+	std::string                   						component,
+	int                           						particleID,
+	delta::geometry::mesh::Mesh*							mesh,
+	std::array<iREAL, 3>         							centre,
+	delta::geometry::material::MaterialType 	material,
+	bool                          						isObstacle,
+	bool                          						isFriction,
+	bool                          						isConvex,
+	iREAL 																		epsilon,
+	std::array<iREAL, 3> 											linear,
+	std::array<iREAL, 3> 											angular)
 {
   _component = component;
   _globalParticleID = particleID;
@@ -129,10 +129,10 @@ std::array<iREAL, 3> 					angular)
   _centreOfMass[1] = centerOfMass[1];
   _centreOfMass[2] = centerOfMass[2];
 
-  _diameter		= mesh->computeDiameter();
-  _rad			= _diameter/2;
+  _diameter				= mesh->computeDiameter();
+  _rad						= _diameter/2;
   _haloDiameter 	= (_diameter+epsilon*2) * 1.1;
-  _mass			= mass;
+  _mass						= mass;
 
   _minBoundBox 	= mesh->getBoundaryMinVertex();
   _maxBoundBox 	= mesh->getBoundaryMinVertex();
@@ -145,22 +145,22 @@ std::array<iREAL, 3> 					angular)
 
 //sphere object
 delta::world::structure::Object::Object(
-std::string                   			component,
-iREAL									rad,
-int                           			particleID,
-std::array<iREAL, 3>         			centre,
-delta::geometry::material::MaterialType 	material,
-bool                          			isObstacle,
-bool                          			isFriction,
-bool                          			isConvex,
-iREAL 									epsilon,
-std::array<iREAL, 3> 					linear,
-std::array<iREAL, 3> 					angular)
+	std::string                   						component,
+	iREAL																			rad,
+	int                           						particleID,
+	std::array<iREAL, 3>         							centre,
+	delta::geometry::material::MaterialType 	material,
+	bool                          						isObstacle,
+	bool                          						isFriction,
+	bool                          						isConvex,
+	iREAL 																		epsilon,
+	std::array<iREAL, 3> 											linear,
+	std::array<iREAL, 3> 											angular)
 {
-  _component 		= component;
-  _rad				= rad;
+  _component 					= component;
+  _rad								= rad;
   _globalParticleID 	= particleID;
-  _localParticleID 	= 0;
+  _localParticleID 		= 0;
 
   _centre[0] 	= centre[0];
   _centre[1] 	= centre[1];
@@ -170,7 +170,7 @@ std::array<iREAL, 3> 					angular)
   _centreOfMass[1] = _centre[1];
   _centreOfMass[2] = _centre[2];
 
-  _material			= material;
+  _material				= material;
   _isObstacle 		= isObstacle;
   _isFriction 		= isFriction;
   _isFriction 		= isConvex;
@@ -186,10 +186,10 @@ std::array<iREAL, 3> 					angular)
   _angularVelocity[2] = angular[2];
 
   _haloDiameter 	= (_diameter+epsilon*2) * 1.1;
-  _diameter		= rad*2;
-  _mass			= 0;
-  _isConvex 		= isConvex;
-  _mesh			= nullptr;
+  _diameter				= rad*2;
+  _mass						= 0;
+  _isConvex 			= isConvex;
+  _mesh						= nullptr;
 
   _minBoundBox 	= {centre[0] - _rad, centre[1] - _rad, centre[2] - _rad};
   _maxBoundBox 	= {centre[0] + _rad, centre[1] + _rad, centre[2] + _rad};
@@ -221,6 +221,15 @@ void delta::world::structure::Object::setMesh(
 delta::geometry::mesh::Mesh delta::world::structure::Object::getMesh()
 {
   return *_mesh;
+}
+
+bool delta::world::structure::Object::hasMesh()
+{
+  if (_mesh == nullptr) 
+	{
+		return false;
+	}
+	return true;
 }
 
 void delta::world::structure::Object::setMesh(
@@ -442,10 +451,10 @@ iREAL delta::world::structure::Object::computeVolume()
  * gets the inertia using simplex integration from solfec
  */
 void delta::world::structure::Object::computeInertia(
-		delta::geometry::material::MaterialType material,
-		iREAL& mass,
-		iREAL center[3],
-		iREAL inertia[9])
+	delta::geometry::material::MaterialType material,
+	iREAL& mass,
+	iREAL center[3],
+	iREAL inertia[9])
 {
   getMesh().computeInertia(material, mass, center, inertia);
   setInertia(inertia);
@@ -461,9 +470,9 @@ iREAL delta::world::structure::Object::computeMass(
 }
 
 void delta::world::structure::Object::computeInverseInertia(
-	  iREAL inertia[9],
-	  iREAL inverse[9],
-	  bool 	isObject)
+	iREAL inertia[9],
+	iREAL inverse[9],
+	bool 	isObject)
 {
   delta::geometry::operators::physics::computeInverseInertia(inertia, inverse, isObject);
   setInverse(inverse);

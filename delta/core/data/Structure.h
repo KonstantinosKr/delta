@@ -8,8 +8,8 @@
 #ifndef DELTA_CORE_DATA_STRUCTURE_H_
 #define DELTA_CORE_DATA_STRUCTURE_H_
 
-#include <core/data/ParticleRecord.h>
 #include <vector>
+#include "ParticleRecord.h"
 #include "../../world/structure/Object.h"
 
 namespace delta {

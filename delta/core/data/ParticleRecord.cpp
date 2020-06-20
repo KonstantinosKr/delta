@@ -29,21 +29,37 @@ delta::core::data::ParticleRecord::ParticleRecord(delta::world::structure::Objec
 
   this->_material = object.getMaterial();
 
-  object.computeInertia(_material, _mass, _centreOfMass.data(), _inertia.data());
-  object.computeInverseInertia(_inertia.data(), _inverse.data(), object.getIsObstacle());
+	if (!object.hasMesh())
+	{
+		this->_isMesh = false;
+		_bbox = { object.getMinBoundaryVertex()[0], object.getMinBoundaryVertex()[1], object.getMinBoundaryVertex()[2],
+							object.getMaxBoundaryVertex()[0], object.getMaxBoundaryVertex()[1], object.getMaxBoundaryVertex()[2]};
+	
+	}	else {
+		this->_isMesh = true;
+		
+		this->_xCoordinates = object.getMesh().getXCoordinatesAsVector();
+		this->_yCoordinates = object.getMesh().getYCoordinatesAsVector();
+		this->_zCoordinates = object.getMesh().getZCoordinatesAsVector();
 
-  this->_xCoordinates = object.getMesh().getXCoordinatesAsVector();
-  this->_yCoordinates = object.getMesh().getYCoordinatesAsVector();
-  this->_zCoordinates = object.getMesh().getZCoordinatesAsVector();
+		this->_refxCoordinates = object.getMesh().getXCoordinatesAsVector();
+		this->_refyCoordinates = object.getMesh().getYCoordinatesAsVector();
+		this->_refzCoordinates = object.getMesh().getZCoordinatesAsVector();
 
-  this->_refxCoordinates = object.getMesh().getXCoordinatesAsVector();
-  this->_refyCoordinates = object.getMesh().getYCoordinatesAsVector();
-  this->_refzCoordinates = object.getMesh().getZCoordinatesAsVector();
-
-  this->_maxMeshSize = object.getMesh().getMaxMeshSize();
-  this->_minMeshSize = object.getMesh().getMinMeshSize();
-  this->_avgMeshSize = object.getMesh().getAvgMeshSize();
-
+		this->_maxMeshSize = object.getMesh().getMaxMeshSize();
+		this->_minMeshSize = object.getMesh().getMinMeshSize();
+		this->_avgMeshSize = object.getMesh().getAvgMeshSize();
+  	
+		std::array<iREAL,3> minVertex = object.getMesh().computeBoundaryMinVertex();
+  	std::array<iREAL,3> maxVertex = object.getMesh().computeBoundaryMaxVertex();
+		
+		_bbox = {	minVertex[0], minVertex[1], minVertex[2],
+							maxVertex[0], maxVertex[1], maxVertex[2]};
+		
+		object.computeInertia(_material, _mass, _centreOfMass.data(), _inertia.data());
+  	object.computeInverseInertia(_inertia.data(), _inverse.data(), object.getIsObstacle());
+	} 
+	
   this->_globalParticleID = object.getGlobalParticleId();
   this->_localParticleID = object.getLocalParticleId();
 
@@ -53,20 +69,22 @@ delta::core::data::ParticleRecord::ParticleRecord(delta::world::structure::Objec
   this->_epsilon = object.getEpsilon();
 
   this->_isObstacle = object.getIsObstacle();
-  this->	_isFriction = object.getIsFriction();
+  this->_isFriction = object.getIsFriction();
   this->_isConvex = object.getIsConvex();
-
-  std::array<iREAL,3> minVertex = object.getMesh().computeBoundaryMinVertex();
-  std::array<iREAL,3> maxVertex = object.getMesh().computeBoundaryMaxVertex();
-
-  _bbox = {	minVertex[0], minVertex[1], minVertex[2],
-			maxVertex[0], maxVertex[1], maxVertex[2]};
 
   iREAL rad = object.getRad();
 
   _tree = delta::core::data::OctTree(rad, _bbox);
 }
 
+bool delta::core::data::ParticleRecord::getIsMesh()
+{
+	if (this->_isMesh)
+	{
+		return true;
+	}
+	return false;
+}
 int delta::core::data::ParticleRecord::getGlobalParticleID()
 {
   return _globalParticleID;
@@ -157,20 +175,20 @@ std::vector<iREAL> delta::core::data::ParticleRecord::getClosestXCoordinatesTria
   std::vector<iREAL> xCoordinates;
   if(_tree.isInDomain(x))
   {
-	std::array<iREAL, 6> boundary;
-	_tree.getBoundary(x, boundary);
+		std::array<iREAL, 6> boundary;
+		_tree.getBoundary(x, boundary);
 
-	for(int i=0; i<_xCoordinates.size(); i+=3)
-	{
-	  if(((_xCoordinates[i] > boundary[0]) && (_xCoordinates[i] < boundary[3])) ||
-		 ((_xCoordinates[i+1] > boundary[0]) && (_xCoordinates[i+1] < boundary[3])) ||
-		 ((_xCoordinates[i+2] > boundary[0]) && (_xCoordinates[i+2] < boundary[3])))
-	  {
-		xCoordinates.push_back(_xCoordinates[i]);
-		xCoordinates.push_back(_xCoordinates[i+1]);
-		xCoordinates.push_back(_xCoordinates[i+2]);
-	  }
-	}
+		for(int i=0; i<_xCoordinates.size(); i+=3)
+		{
+			if(((_xCoordinates[i] > boundary[0]) && (_xCoordinates[i] < boundary[3])) ||
+			 ((_xCoordinates[i+1] > boundary[0]) && (_xCoordinates[i+1] < boundary[3])) ||
+			 ((_xCoordinates[i+2] > boundary[0]) && (_xCoordinates[i+2] < boundary[3])))
+			{
+				xCoordinates.push_back(_xCoordinates[i]);
+				xCoordinates.push_back(_xCoordinates[i+1]);
+				xCoordinates.push_back(_xCoordinates[i+2]);
+			}
+		}
   }
   return xCoordinates;
 }
@@ -180,20 +198,20 @@ std::vector<iREAL> delta::core::data::ParticleRecord::getClosestYCoordinatesTria
   std::vector<iREAL> xCoordinates;
   if(_tree.isInDomain(x))
   {
-	std::array<iREAL, 6> boundary;
-	_tree.getBoundary(x, boundary);
+		std::array<iREAL, 6> boundary;
+		_tree.getBoundary(x, boundary);
 
-	for(int i=0; i<_yCoordinates.size(); i+=3)
-	{
-	  if(((_yCoordinates[i] > boundary[1]) && (_yCoordinates[i] < boundary[4])) ||
-		 ((_yCoordinates[i+1] > boundary[1]) && (_yCoordinates[i+1] < boundary[4])) ||
-		 ((_yCoordinates[i+2] > boundary[1]) && (_yCoordinates[i+2] < boundary[4])))
-	  {
-		xCoordinates.push_back(_yCoordinates[i]);
-		xCoordinates.push_back(_yCoordinates[i+1]);
-		xCoordinates.push_back(_yCoordinates[i+2]);
-	  }
-	}
+		for(int i=0; i<_yCoordinates.size(); i+=3)
+		{
+			if(((_yCoordinates[i] > boundary[1]) && (_yCoordinates[i] < boundary[4])) ||
+			 ((_yCoordinates[i+1] > boundary[1]) && (_yCoordinates[i+1] < boundary[4])) ||
+			 ((_yCoordinates[i+2] > boundary[1]) && (_yCoordinates[i+2] < boundary[4])))
+			{
+				xCoordinates.push_back(_yCoordinates[i]);
+				xCoordinates.push_back(_yCoordinates[i+1]);
+				xCoordinates.push_back(_yCoordinates[i+2]);
+			}
+		}
   }
   return xCoordinates;
 }
@@ -203,20 +221,20 @@ std::vector<iREAL> delta::core::data::ParticleRecord::getClosestZCoordinatesTria
   std::vector<iREAL> xCoordinates;
   if(_tree.isInDomain(x))
   {
-	std::array<iREAL, 6> boundary;
-	_tree.getBoundary(x, boundary);
+		std::array<iREAL, 6> boundary;
+		_tree.getBoundary(x, boundary);
 
-	for(int i=0; i<_zCoordinates.size(); i+=3)
-	{
-	  if(((_zCoordinates[i] > boundary[2]) && (_zCoordinates[i] < boundary[5])) ||
-		 ((_zCoordinates[i+1] > boundary[2]) && (_zCoordinates[i+1] < boundary[5])) ||
-		 ((_zCoordinates[i+2] > boundary[2]) && (_zCoordinates[i+2] < boundary[5])))
-	  {
-		xCoordinates.push_back(_zCoordinates[i]);
-		xCoordinates.push_back(_zCoordinates[i+1]);
-		xCoordinates.push_back(_zCoordinates[i+2]);
-	  }
-	}
+		for(int i=0; i<_zCoordinates.size(); i+=3)
+		{
+			if(((_zCoordinates[i] > boundary[2]) && (_zCoordinates[i] < boundary[5])) ||
+				((_zCoordinates[i+1] > boundary[2]) && (_zCoordinates[i+1] < boundary[5])) ||
+				((_zCoordinates[i+2] > boundary[2]) && (_zCoordinates[i+2] < boundary[5])))
+			{
+				xCoordinates.push_back(_zCoordinates[i]);
+				xCoordinates.push_back(_zCoordinates[i+1]);
+				xCoordinates.push_back(_zCoordinates[i+2]);
+			}
+		}
   }
   return xCoordinates;
 }
@@ -238,13 +256,15 @@ void delta::core::data::ParticleRecord::getSubsetOfMesh(
 	  std::vector<iREAL> &zCoordinatesPartial)
 {
   _tree.getBBOXOverlappedMesh(
-	  x, epsilon,
+	  x,
+		epsilon,
 	  _xCoordinates,
 	  _yCoordinates,
 	  _zCoordinates,
 	  xCoordinatesPartial, 
-      yCoordinatesPartial, 
-      zCoordinatesPartial);
+    yCoordinatesPartial, 
+    zCoordinatesPartial
+	);
 }
 
 std::array<iREAL, 6> delta::core::data::ParticleRecord::getBbox()

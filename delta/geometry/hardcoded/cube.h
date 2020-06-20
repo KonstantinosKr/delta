@@ -29,10 +29,9 @@
 #include <cmath>
 #include <stdlib.h>
 #include <assert.h>
-#include <geometry/operators/hull/hull.h>
-#include <geometry/operators/hull/alg.h>
-
-#include <geometry/operators/triangle.h>
+#include "../operators/hull/hull.h"
+#include "../operators/hull/alg.h"
+#include "../operators/triangle.h"
 #include "../structure/Mesh.h"
 
 namespace delta {

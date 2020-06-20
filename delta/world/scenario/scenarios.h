@@ -27,7 +27,7 @@
 
 #include <vector>
 #include <array>
-#include <world/structure/Object.h>
+#include "../structure/Object.h"
 
 namespace delta {
   namespace world {

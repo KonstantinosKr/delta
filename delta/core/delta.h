@@ -29,10 +29,9 @@
 #include <vector>
 #include <vector>
 #include <iostream>
-#include <core/io/read.h>
-#include <geometry/material.h>
-#include <geometry/structure/Triangle.h>
-#include <world/structure/Object.h>
+#include "../geometry/material.h"
+#include "../geometry/structure/Triangle.h"
+#include "../world/structure/Object.h"
 
 /*
 #if GCC_VERSION >= 4.2

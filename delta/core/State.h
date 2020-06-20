@@ -32,8 +32,8 @@
 #include <chrono>
 #include <iomanip>
 #include <iostream>
-#include <core/data/Structure.h>
-#include <core/data/Meta.h>
+#include "data/Structure.h"
+#include "data/Meta.h"
 
 typedef std::chrono::steady_clock Time;
 typedef std::chrono::duration<float> fsec;

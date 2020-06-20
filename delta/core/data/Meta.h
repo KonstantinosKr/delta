@@ -8,56 +8,56 @@
 #ifndef DELTA_CORE_DATA_META_H_
 #define DELTA_CORE_DATA_META_H_
 
-#include <core/data/ParticleRecord.h>
-#include <contact/contactpoint.h>
+#include "ParticleRecord.h"
+#include "../../contact/contactpoint.h"
 
 namespace delta {
   namespace core {
-	namespace data {
-	  namespace Meta {
+		namespace data {
+			namespace Meta {
 
-		struct Collisions
-		{
-		  delta::core::data::ParticleRecord             _copyOfPartnerParticle;
-		  std::vector<delta::contact::contactpoint>     _contactPoints;
-		};
+				struct Collisions
+				{
+					delta::core::data::ParticleRecord             _copyOfPartnerParticle;
+					std::vector<delta::contact::contactpoint>     _contactPoints;
+				};
 
-	    enum class CollisionModel
-		{
-		  Sphere,
-		  BruteForce,
-		  Penalty,
-		  PenaltyStat,
-		  PenaltyTune,
-		  HybridOnTrianglePairs,
-		  HybridOnBatches,
-		  HybridTriangleStat,
-		  HybridBatchStat,
-		  GJK,
-		  none
-	    };
+				enum class CollisionModel
+				{
+					Sphere,
+					BruteForce,
+					Penalty,
+					PenaltyStat,
+					PenaltyTune,
+					HybridOnTrianglePairs,
+					HybridOnBatches,
+					HybridTriangleStat,
+					HybridBatchStat,
+					GJK,
+					none
+				};
 
-	    enum class Plot
-		{
-	      EveryIteration,
-	      Never,
-	      UponChange,
-	      EveryBatch,
-	      Adaptive,
-	      Range,
-	      Track
-	    };
+				enum class Plot
+				{
+					EveryIteration,
+					Never,
+					UponChange,
+					EveryBatch,
+					Adaptive,
+					Range,
+					Track
+				};
 
-	    struct EngineMeta {
-	      CollisionModel		modelScheme;
-	      bool				overlapPreCheck;
-	      Plot				plotScheme;
-	      iREAL				dt;
-	      bool				gravity;
-	      iREAL				maxPrescribedRefinement;
-	    };
-	  }
-	} /* namespace data */
+				struct EngineMeta {
+					CollisionModel		modelScheme;
+					bool							overlapPreCheck;
+					Plot							plotScheme;
+					iREAL							dt;
+					bool							gravity;
+					iREAL							maxPrescribedRefinement;
+				};
+			}
+		} /* namespace data */
   } /* namespace core */
 } /* namespace delta */
 

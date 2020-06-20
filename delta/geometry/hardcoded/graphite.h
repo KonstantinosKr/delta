@@ -35,7 +35,7 @@
 #include <iomanip>
 #include <string.h>
 #include <vector>
-#include <core/io/read.h>
+#include "../../core/io/read.h"
 #include "../structure/Mesh.h"
 
 namespace delta {

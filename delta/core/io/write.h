@@ -8,11 +8,11 @@
 #ifndef DELTA_IO_WRITE_H_
 #define DELTA_IO_WRITE_H_
 
-#include <core/data/ParticleRecord.h>
 #include <vector>
 #include "stdio.h"
 #include "string.h"
 
+#include "../../core/data/ParticleRecord.h"
 #include "../../geometry/structure/Mesh.h"
 #include "../../world/structure/Object.h"
 

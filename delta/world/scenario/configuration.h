@@ -30,12 +30,12 @@
 #include "stdlib.h"
 #include <string>
 
-#include <geometry/material.h>
-#include <world/structure/Object.h>
-#include <world/operators/arrayLayout.h>
-#include <geometry/hardcoded/graphite.h>
-#include <geometry/hardcoded/granulate.h>
-#include <geometry/hardcoded/cube.h>
+#include "../structure/Object.h"
+#include "../operators/arrayLayout.h"
+#include "../../geometry/material.h"
+#include "../../geometry/hardcoded/graphite.h"
+#include "../../geometry/hardcoded/granulate.h"
+#include "../../geometry/hardcoded/cube.h"
 
 namespace delta {
   namespace world {

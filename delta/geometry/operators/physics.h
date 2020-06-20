@@ -8,8 +8,8 @@
 #ifndef GEOMETRY_OPERATORS_PHYSICS_H_
 #define GEOMETRY_OPERATORS_PHYSICS_H_
 
-#include <geometry/material.h>
-#include <core/algo.h>
+#include "../../geometry/material.h"
+#include "../../core/algo.h"
 #include <vector>
 
 namespace delta {
