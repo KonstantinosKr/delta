@@ -37,7 +37,7 @@ delta::contact::contactpoint::contactpoint(
   const iREAL&  yPA,
   const iREAL&  zPA,
   const iREAL&  epsilonA,
-  const int 		masterID,
+  const int 	masterID,
 
   iREAL TP1[3],
   iREAL TP2[3],
@@ -46,7 +46,7 @@ delta::contact::contactpoint::contactpoint(
   const iREAL&  yQB,
   const iREAL&  zQB,
   const iREAL&  epsilonB,
-  const int 		slaveID,
+  const int 	slaveID,
   const bool&	type
 ) {
   x[0] = (xPA+xQB)/2.0;
@@ -124,7 +124,7 @@ delta::contact::contactpoint::contactpoint(
   const iREAL&  yQB,
   const iREAL&  zQB,
   const iREAL&  epsilonB,
-  const int 		slaveID,
+  const int 	slaveID,
   const bool&	type
 ) {
   x[0] = (xPA+xQB)/2.0;

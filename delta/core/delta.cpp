@@ -31,7 +31,7 @@ delta::core::Delta::Delta()
 	/*
   delta::geometry::material::materialInit();
 
-  delta::geometry::mesh::Mesh *mesh = delta::core::io::readVTKGeometry("input/turbine.stl");
+  delta::geometry::mesh::Mesh *mesh = delta::core::io::readVTKGeometry("../input/turbine.stl");
 
   std::vector<delta::world::structure::Object> objects;
   std::array<iREAL, 3> 	centre 	= {0.0, 0.0, 0.0};

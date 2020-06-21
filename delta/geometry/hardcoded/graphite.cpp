@@ -4,7 +4,7 @@
 delta::geometry::mesh::Mesh *delta::geometry::hardcoded::generateBrickFB(
   iREAL center[3], iREAL h)
 {
-  char fileinput[100] = "input/bricksmall.vtk";
+  char fileinput[100] = "../input/bricksmall.vtk";
   delta::geometry::mesh::Mesh *mesh = delta::core::io::readVTKGeometry(fileinput);
 
   iREAL centerOfGeometry[3];
@@ -19,7 +19,7 @@ delta::geometry::mesh::Mesh *delta::geometry::hardcoded::generateBrickFB(
 
 delta::geometry::mesh::Mesh *delta::geometry::hardcoded::generateBrickFB()
 {
-  char fileinput[100] = "input/bricksmall.vtk";
+  char fileinput[100] = "../input/bricksmall.vtk";
   delta::geometry::mesh::Mesh *mesh = delta::core::io::readVTKGeometry(fileinput);
 
   iREAL center[] = {0,0,0};
@@ -36,7 +36,7 @@ delta::geometry::mesh::Mesh *delta::geometry::hardcoded::generateBrickFB()
 delta::geometry::mesh::Mesh *delta::geometry::hardcoded::generateBrickFB(
   iREAL center[3])
 {
-  char fileinput[100] = "input/bricksmall.vtk";
+  char fileinput[100] = "../input/bricksmall.vtk";
 
   delta::geometry::mesh::Mesh *mesh = delta::core::io::readVTKGeometry(fileinput);
 
@@ -54,7 +54,7 @@ delta::geometry::mesh::Mesh *delta::geometry::hardcoded::generateBrickFB(
 delta::geometry::mesh::Mesh *delta::geometry::hardcoded::generateKeyXK(
   iREAL center[3], iREAL h)
 {
-  char fileinput[100] = "input/keysmall.vtk";
+  char fileinput[100] = "../input/keysmall.vtk";
 
   delta::geometry::mesh::Mesh *mesh = delta::core::io::readVTKGeometry(fileinput);
 
@@ -72,7 +72,7 @@ delta::geometry::mesh::Mesh *delta::geometry::hardcoded::generateKeyXK(
 delta::geometry::mesh::Mesh *delta::geometry::hardcoded::generateKeyYK(
   iREAL center[3], iREAL h)
 {
-  char fileinput[100] = "input/keysmall.vtk";
+  char fileinput[100] = "../input/keysmall.vtk";
 
   delta::geometry::mesh::Mesh *mesh = delta::core::io::readVTKGeometry(fileinput);
 

@@ -115,9 +115,9 @@ void delta::world::scenarios::helicopter(
 	std::vector<delta::world::structure::Object>& 	coarseObjects,
 	iREAL 											epsilon)
 {
-  delta::geometry::mesh::Mesh *rotorMesh = delta::core::io::readPartGeometry("input/Rotor.stl");
-  delta::geometry::mesh::Mesh *bodyMesh = delta::core::io::readPartGeometry("input/Body.stl");
-  delta::geometry::mesh::Mesh *tailRotorMesh = delta::core::io::readPartGeometry("input/TailRotor.stl");
+  delta::geometry::mesh::Mesh *rotorMesh = delta::core::io::readPartGeometry("../input/Rotor.stl");
+  delta::geometry::mesh::Mesh *bodyMesh = delta::core::io::readPartGeometry("../input/Body.stl");
+  delta::geometry::mesh::Mesh *tailRotorMesh = delta::core::io::readPartGeometry("../input/TailRotor.stl");
 
 
   std::array<iREAL, 3> centre 	= {0.5, 0.5, 0.43};
@@ -153,7 +153,7 @@ void delta::world::scenarios::kaikoura(
 	std::vector<delta::world::structure::Object>& 	coarseObjects,
 	iREAL 											epsilon)
 {
-  delta::geometry::mesh::Mesh *kaikoura = delta::core::io::readPartGeometry("input/KaikouraUlrichetal.stl");
+  delta::geometry::mesh::Mesh *kaikoura = delta::core::io::readPartGeometry("../input/KaikouraUlrichetal.stl");
 
   std::array<iREAL, 3> centre 	= {0.5, 0.5, 0.5};
   std::array<iREAL, 3> linear 	= {0.0, 0.0, 0.0};
@@ -171,7 +171,7 @@ void delta::world::scenarios::turbine(
 	std::vector<delta::world::structure::Object>& 	coarseObjects,
 	iREAL 											epsilon)
 {
-  delta::geometry::mesh::Mesh *meshA = delta::core::io::readPartGeometry("input/turbine.stl");
+  delta::geometry::mesh::Mesh *meshA = delta::core::io::readPartGeometry("../input/turbine.stl");
 
   std::array<iREAL, 3> 					centre 	= {0.5, 0.5, 0.43};
   std::array<iREAL, 3> 					linear 	= {0.0, 0.0, 0.0};
@@ -184,7 +184,7 @@ void delta::world::scenarios::turbine(
 
   coarseObjects.push_back(turbineA);
 
-  delta::geometry::mesh::Mesh *meshB = delta::core::io::readPartGeometry("input/turbine.stl");
+  delta::geometry::mesh::Mesh *meshB = delta::core::io::readPartGeometry("../input/turbine.stl");
 
   centre 	= {0.5, 0.5, 0.57};
   linear 	= {0.0, 0.0, 0.0};
