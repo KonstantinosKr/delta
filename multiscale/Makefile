@@ -22,19 +22,20 @@ LINK_LIBS=-L$(ASSIMP_LIB) -lassimp
 DELTA_STATS=-DPARTICLESTATSMIN #-DPARTICLESTATSFULL -DCONTACTSTATS
 DELTA_SETTINGS=-DiREAL=double -DbyteAlignment=32 #64
 PEANO_SETTINGS=-DTrackGridStatistics -DpeanoCall
-CPU= -xHOST #-mmic
 
 ##############################################################################################
 
-GCC_OMP_SHAREDMEMORY=-fopenmp -DOMPProcess
+GCC_OMP_SHAREDMEMORY=-DOMPProcess #-fopenmp 
 ICC_OMP_SHAREDMEMORY=-qopenmp -qopt-threads-per-core=1 -DOMPProcess
 
 ##############################################################################################
 ##############################################################################################
-GCCRUN=-O3 -Wall -ftree-vectorize -ftree-vectorizer-verbose=3 -ftree-loop-optimize -faggressive-loop-optimizations -funroll-loops -fprefetch-loop-arrays -falign-loops -fopt-info-vec -fopt-info-loop -fstrict-aliasing $(INCLUDE_DELTA)
+#
+GCCRUN=-O3 -Wall -ftree-vectorizer-verbose=2 -ftree-loop-optimize -faggressive-loop-optimizations -funroll-loops -fprefetch-loop-arrays -falign-loops -fopt-info-vec -fopt-info-loop -fstrict-aliasing $(INCLUDE_DELTA)
 GCCDEBUG=-O3 -Wall -g -DDebug -DAsserts -pedantic -pedantic-errors $(INCLUDE_DELTA)
 GCCNOVEC=-O3 -Wall -fno-tree-vectorize -ftree-vectorizer-verbose=3 -funroll-loops -fprefetch-loop-arrays -falign-loops -fopt-info-vec -fopt-info-loop -fopenmp -fstrict-aliasing $(INCLUDE_DELTA)
 ##############################################################################################
+CPU=-xHOST #-mmic
 ICCRUN=-O3 -Wall -simd-function-pointers -qopt-report=5 -qopt-prefetch=2 -falign-loops=32 -funroll-loops -fstrict-aliasing -restrict -pedantic -ip $(CPU) $(INCLUDE_DELTA)
 ICCDEBUG=-O3 -Wall -g -DAsserts -pedantic -pedantic-errors -no-ipo $(INCLUDE_DELTA)
 ICCNOVEC=-O3 -Wall -no-vec -qno-openmp-simd -no-ipo -qopt-report=5 -fstrict-aliasing -restrict -pedantic -fno-rtti $(CPU) $(INCLUDE_DELTA)
@@ -208,7 +209,6 @@ build: files.mk $(OBJECTS)
 	$(CC) $(OBJECTS) -o $(EXECUTABLE) $(LFLAGS)
 	@echo
 	@echo build of Peano with DEM code based upon Delta successful
-	@echo visit Peano\'s homepage at http://www.peano-framework.org
 
 clean:
 	rm -f $(EXECUTABLE)

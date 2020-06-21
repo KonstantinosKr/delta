@@ -80,7 +80,7 @@ delta::contact::contactpoint::contactpoint(
   N[2] = (V[0]*W[1])-(V[1]*W[0]);
                                                                         
   iREAL mag = std::sqrt((N[0]*N[0])+(N[1]*N[1])+(N[2]*N[2]));
-                                                                               
+
   iREAL np[3];
   np[0] = N[0]/mag;
   np[1] = N[1]/mag;
@@ -93,6 +93,7 @@ delta::contact::contactpoint::contactpoint(
   //direction is less than 0 then vectors point opposite direction (contact inside of body)
   //direction is more than 0 then vecotrs point same direction (contact outside of body)
   iREAL direction = DOT(np, normal);
+
   if(direction < 0.0) 
   {
     penetration = -1;
@@ -102,7 +103,7 @@ delta::contact::contactpoint::contactpoint(
   {
     penetration = 1;
   }
-  
+
   friction = type;
 
   master = masterID;
@@ -154,7 +155,7 @@ delta::contact::contactpoint::contactpoint(
 }
 
 iREAL delta::contact::contactpoint::getDistance() const {
-  return std::sqrt(((Q[0]-P[0])*(Q[0]-P[0]))+((Q[1]-P[1])*(Q[1]-P[1]))+((Q[2]-P[2])*(Q[2]-P[2])));
+	return std::sqrt(((Q[0]-P[0])*(Q[0]-P[0]))+((Q[1]-P[1])*(Q[1]-P[1]))+((Q[2]-P[2])*(Q[2]-P[2])));
 }
 
 std::string delta::contact::contactpoint::toString() const {
