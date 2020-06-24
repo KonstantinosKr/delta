@@ -31,22 +31,22 @@ delta::core::Engine::Engine()
 }
 
 delta::core::Engine::Engine(
-	delta::world::World 								world,
+	delta::world::World	world,
 	delta::core::data::Meta::EngineMeta	meta)
 {
   _overlapCheck		= meta.overlapPreCheck;
   _collisionModel	= meta.modelScheme;
-  _plot						= meta.plotScheme;
-  _gravity				= world.hasGravity();
-  _boundary				= world.getBoundary();
-  _data						= delta::core::data::Structure(world.getObjects());
-  _state					= delta::core::State(_data, meta);
+  _plot				= meta.plotScheme;
+  _gravity			= world.hasGravity();
+  _boundary			= world.getBoundary();
+  _data				= delta::core::data::Structure(world.getObjects());
+  _state			= delta::core::State(_data, meta);
 }
 
 delta::core::Engine::Engine(
 	std::vector<delta::world::structure::Object>    	particles,
-	std::array<iREAL, 6>															boundary,
-	delta::core::data::Meta::EngineMeta								meta)
+	std::array<iREAL, 6>								boundary,
+	delta::core::data::Meta::EngineMeta					meta)
 {
   _overlapCheck     = meta.overlapPreCheck;
   _collisionModel   = meta.modelScheme;
@@ -55,13 +55,12 @@ delta::core::Engine::Engine(
   _state            = delta::core::State(_data, meta);
   _boundary         = boundary;
 	
-  if(meta.maxPrescribedRefinement > 0.0)
-  { 
+  if(meta.maxPrescribedRefinement > 0.0) {
     _data = delta::core::data::Structure(
 			particles,
-      meta.maxPrescribedRefinement,
+			meta.maxPrescribedRefinement,
 			true
-		);
+			);
   } else {
     _data = delta::core::data::Structure(particles);
   }
@@ -133,9 +132,9 @@ void delta::core::Engine::hyperContacts(
 				d[h][3] = distance;
 
 				if(newContactPoints[index].penetration < 0.0)
-				{ //point x is inside the body
-				//printf("internal penetration\n");
-				d[h][3] = 0.0;
+				{ 	//point x is inside the body
+					//printf("internal penetration\n");
+					d[h][3] = 0.0;
 				}
 				//printf("contact: %f\n", distance);
 			}
@@ -155,7 +154,7 @@ void delta::core::Engine::hyperContacts(
 
 void delta::core::Engine::iterate()
 {
-  delta::core::Engine::plot();
+  delta::core::Engine::plot("../output/");
   delta::core::Engine::contactDetection();
   delta::core::Engine::deriveForces();
   delta::core::Engine::updatePosition();
@@ -572,11 +571,11 @@ std::vector<delta::core::data::ParticleRecord>& delta::core::Engine::getParticle
   return _data.getAll();
 }
 
-void delta::core::Engine::plot()
+void delta::core::Engine::plot(std::string path)
 {
   if(_plot == delta::core::data::Meta::Plot::EveryIteration)
   {
-	delta::core::io::writeGeometryToVTK(_state.getCurrentStepIteration(), _data.getAll());
-	delta::core::io::writeGridGeometryToVTK(_state.getCurrentStepIteration(), _data.getGeometryGrid());
+	delta::core::io::writeGeometryToVTK(path, _state.getCurrentStepIteration(), _data.getAll());
+	delta::core::io::writeGridGeometryToVTK(path, _state.getCurrentStepIteration(), _data.getGeometryGrid());
   }
 }

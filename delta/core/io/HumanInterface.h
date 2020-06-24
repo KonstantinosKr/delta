@@ -40,7 +40,6 @@ namespace delta {
 		  void printManualPeano();
 		  void printManualDefault();
 
-
 		  void setPlotScheme(std::string plotID);
 		  delta::core::data::Meta::Plot getPlotScheme();
 		  void setCollisionScheme(std::string collisionModelID);
@@ -57,15 +56,15 @@ namespace delta {
 		  virtual ~HumanInterface();
 		private:
 
-		  std::string 	_scenario;
-		  delta::core::data::Meta::Plot _plotScheme;
-		  delta::core::data::Meta::CollisionModel _collisionModel;
-		  delta::core::data::Meta::EngineMeta _engineMeta;
+		  std::string 								_scenario;
+		  delta::core::data::Meta::Plot 			_plotScheme;
+		  delta::core::data::Meta::CollisionModel 	_collisionModel;
+		  delta::core::data::Meta::EngineMeta 		_engineMeta;
 
-		  bool 			_overlapPreCheck;
-		  int 			_steps;
-		  int           	_meshDensity;
-		  iREAL      	_dt;
+		  bool 	_overlapPreCheck;
+		  int 	_steps;
+		  int	_meshDensity;
+		  iREAL _dt;
 	  };
 
 	} /* namespace io */

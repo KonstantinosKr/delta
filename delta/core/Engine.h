@@ -64,38 +64,40 @@ class delta::core::Engine
   public:
 		Engine();
 		Engine(
-			delta::world::World	world,
-			delta::core::data::Meta::EngineMeta 	meta);
+			delta::world::World						world,
+			delta::core::data::Meta::EngineMeta 	meta
+			);
 
 		Engine(
 			std::vector<delta::world::structure::Object> 	particles,
-			std::array<iREAL, 6> 													boundary,
-			delta::core::data::Meta::EngineMeta 					meta);
+			std::array<iREAL, 6> 							boundary,
+			delta::core::data::Meta::EngineMeta 			meta
+			);
 
 		virtual ~Engine();
 
 		void hyperContacts(
-			double epsilonA,
-			double epsilonB,
-			std::vector<iREAL>& ex,
-			std::vector<iREAL>& ey,
-			std::vector<iREAL>& ez,
-			std::vector<std::array<iREAL,4>>& d
-		);
+			double 								epsilonA,
+			double 								epsilonB,
+			std::vector<iREAL>& 				ex,
+			std::vector<iREAL>& 				ey,
+			std::vector<iREAL>& 				ez,
+			std::vector<std::array<iREAL,4>>& 	d
+			);
 		
 		/* steps */
 		void 	iterate();
 		void 	contactDetection();
 		void 	deriveForces();
 		void 	updatePosition();
-		void 	plot();
+		void 	plot(std::string path);
 
 		CollisionModel	_collisionModel;
 		
 		/* Getter/Setters */
-		int 																						getNumberOfCollisions();
+		int 											getNumberOfCollisions();
 		std::vector<delta::core::data::ParticleRecord>& getParticleRecords();
-		delta::core::State 															getState();
+		delta::core::State 								getState();
 
   private:
 		void addCollision(
@@ -105,12 +107,12 @@ class delta::core::Engine
 			bool sphere
 		);
 		
-		bool 														_overlapCheck;
-		iREAL 													_gravity;
-		std::array<iREAL, 6>	 					_boundary;
+		bool 							_overlapCheck;
+		iREAL 							_gravity;
+		std::array<iREAL, 6>	 		_boundary;
 		delta::core::data::Meta::Plot 	_plot;
-		delta::core::State 							_state;
-		delta::core::data::Structure 		_data;
+		delta::core::State 				_state;
+		delta::core::data::Structure 	_data;
 
 		/**
 		 * Hold all the collissions that are tied to a particular particle

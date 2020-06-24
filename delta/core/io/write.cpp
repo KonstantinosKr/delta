@@ -165,8 +165,9 @@ void delta::core::io::writeGeometryToVTK(
 }
 
 void delta::core::io::writeGeometryToVTK(
-	int step,
-	std::array<iREAL, 6> boundary,
+	std::string 									path,
+	int 											step,
+	std::array<iREAL, 6> 							boundary,
 	std::vector<delta::core::data::ParticleRecord>& geometries)
 {
   //domain boundary
@@ -181,8 +182,12 @@ void delta::core::io::writeGeometryToVTK(
 
   char iter[100];
   sprintf(iter, "%u.vtk", step);
-  char filename[100] = "geometry_"; //care or buffer overflow
-  strcat(filename, iter);
+  char base[100] = "geometry_"; //care or buffer overflow
+  strcat(base, iter);
+
+  path += base;
+  const char *filename = path.c_str();
+
 
   FILE *fp = fopen(filename, "w+");
   if( fp == NULL )
@@ -329,13 +334,17 @@ void delta::core::io::writeGeometryToVTK(
 }
 
 void delta::core::io::writeGeometryToVTK(
-	int step,
+	std::string 									path,
+	int 											step,
 	std::vector<delta::core::data::ParticleRecord>& geometries)
 {
   char iter[100];
   sprintf(iter, "%u.vtk", step);
-  char filename[100] = "geometry_"; //care or buffer overflow
-  strcat(filename, iter);
+  char base[100] = "geometry_"; //care or buffer overflow
+  strcat(base, iter);
+
+  path += base;
+  const char *filename = path.c_str();
 
   FILE *fp = fopen(filename, "w+");
   if( fp == NULL )
@@ -407,13 +416,17 @@ void delta::core::io::writeGeometryToVTK(
 }
 
 void delta::core::io::writeGridGeometryToVTK(
-	int step,
-	std::vector<std::array<iREAL, 6>> boundary)
+	std::string 						path,
+	int 								step,
+	std::vector<std::array<iREAL, 6>> 	boundary)
 {
   char iter[100];
   sprintf(iter, "%u.vtk", step);
-  char filename[100] = "grid_"; //care or buffer overflow
-  strcat(filename, iter);
+  char base[100] = "grid_"; //care or buffer overflow
+  strcat(base, iter);
+
+  path += base;
+  const char *filename = path.c_str();
 
   FILE *fp = fopen(filename, "w+");
   if( fp == NULL )

@@ -10,7 +10,7 @@ using namespace std;
 int main(int argc, const char *argv[]) {
 
 	delta::core::Delta delta;
-	delta::core::io::readmbfcp("../inp/hopper.mbfcp");
+	delta::core::io::readmbfcp("../input/hopper.mbfcp");
 
 	std::vector<delta::world::structure::Object> particles;
 	bool isSphere = true;
