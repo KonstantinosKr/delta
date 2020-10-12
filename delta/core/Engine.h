@@ -65,13 +65,13 @@ class delta::core::Engine
 		Engine();
 		Engine(
 			delta::world::World						world,
-			delta::core::data::Meta::EngineMeta 	meta
+			delta::core::data::Meta::Simulation 	meta
 			);
 
 		Engine(
 			std::vector<delta::world::structure::Object> 	particles,
 			std::array<iREAL, 6> 							boundary,
-			delta::core::data::Meta::EngineMeta 			meta
+			delta::core::data::Meta::Simulation 			meta
 			);
 
 		virtual ~Engine();

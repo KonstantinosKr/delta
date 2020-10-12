@@ -33,9 +33,9 @@
 #include "../structure/Object.h"
 #include "../operators/arrayLayout.h"
 #include "../../geometry/material.h"
-#include "../../geometry/hardcoded/graphite.h"
-#include "../../geometry/hardcoded/granulate.h"
-#include "../../geometry/hardcoded/cube.h"
+#include "../../geometry/shape/cube.h"
+#include "../../geometry/shape/granulate.h"
+#include "../../geometry/shape/graphite.h"
 
 namespace delta {
   namespace world {

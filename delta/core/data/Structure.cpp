@@ -17,7 +17,7 @@ namespace delta {
 
 			Structure::Structure(
 				std::vector<delta::world::structure::Object> 	objects,
-				iREAL 																				maxMeshRefinement,
+				iREAL 											maxMeshRefinement,
 				bool                                         	enforceRefinement)
 			{
 				_numberOfObjects = 0;

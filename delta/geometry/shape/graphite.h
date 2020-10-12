@@ -22,8 +22,8 @@
  SOFTWARE.
  */
 
-#ifndef GEOMETRY_HARDCODED_GRAPHITE_H_
-#define GEOMETRY_HARDCODED_GRAPHITE_H_
+#ifndef GEOMETRY_SHAPE_GRAPHITE_H_
+#define GEOMETRY_SHAPE_GRAPHITE_H_
 
 #include <cmath>
 #include <stdlib.h>

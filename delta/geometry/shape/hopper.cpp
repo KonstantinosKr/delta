@@ -22,7 +22,7 @@
  SOFTWARE.
  */
 
-#include "hopper.h"
+#include <geometry/shape/hopper.h>
 #include "../operators/hull/hull.h"
 
 void delta::geometry::hardcoded::generateInnerHopper(

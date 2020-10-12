@@ -22,8 +22,8 @@
  SOFTWARE.
  */
 
-#ifndef GEOMETRY_HARDCODED_CUBE_H_
-#define GEOMETRY_HARDCODED_CUBE_H_
+#ifndef GEOMETRY_SHAPE_CUBE_H_
+#define GEOMETRY_SHAPE_CUBE_H_
 
 #include <vector>
 #include <cmath>

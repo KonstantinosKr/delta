@@ -20,7 +20,7 @@
 
 #include "dynamics.h"
 #include <vector>
-#include "math.h"
+#include <cmath>
 
 /* vectorizable exponential map */
 void expmap (iREAL Omega1, iREAL Omega2, iREAL Omega3,

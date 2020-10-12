@@ -22,8 +22,8 @@
  SOFTWARE.
  */
 
-#ifndef GEOMETRY_HARDCODED_GRANULATE_H_
-#define GEOMETRY_HARDCODED_GRANULATE_H_
+#ifndef GEOMETRY_SHAPE_GRANULATE_H_
+#define GEOMETRY_SHAPE_GRANULATE_H_
 
 #include <vector>
 #include <cmath>

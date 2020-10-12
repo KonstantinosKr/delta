@@ -22,8 +22,8 @@
  SOFTWARE.
  */
 
-#ifndef GEOMETRY_HARDCODED_SURFACE_H_
-#define GEOMETRY_HARDCODED_SURFACE_H_
+#ifndef GEOMETRY_SHAPE_SURFACE_H_
+#define GEOMETRY_SHAPE_SURFACE_H_
 
 #include <vector>
 #include <array>

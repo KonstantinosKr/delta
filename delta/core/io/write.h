@@ -21,6 +21,7 @@
 namespace delta {
   namespace core {
 	namespace io {
+
 	  void writeGeometryToVTK(
 			  std::vector<delta::world::structure::Object>& 	vectorGeometries,
 			  std::array<iREAL, 6> 								boundary);

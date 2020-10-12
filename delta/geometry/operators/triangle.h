@@ -26,7 +26,6 @@
 #define GEOMETRY_OPERATORS_TRIANGLE_H_
 
 #include "../material.h"
-#include "../hardcoded/surface.h"
 #include "../operators/physics.h"
 #include <stdlib.h>
 #include <assert.h>
@@ -34,6 +33,7 @@
 #include <vector>
 #include <array>
 #include "../../world/structure/Object.h"
+#include "../shape/surface.h"
 #include "../structure/Mesh.h"
 
 namespace delta {

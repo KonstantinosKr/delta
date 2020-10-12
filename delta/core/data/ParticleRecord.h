@@ -92,21 +92,21 @@ class delta::core::data::ParticleRecord
 		int     _localParticleID;
 		bool    _isObstacle;
 		bool    _isFriction;
-		bool 		_isMesh;
+		bool    _isMesh;
 		bool    _isConvex;
 
 		iREAL   _rad;
-		iREAL		_haloDiameter;
-		iREAL		_diameter;
+		iREAL   _haloDiameter;
+		iREAL   _diameter;
 		iREAL   _mass;
-		iREAL 	_epsilon;
-		iREAL		_maxMeshSize;
-		iREAL 	_minMeshSize;
-		iREAL 	_avgMeshSize;
+		iREAL   _epsilon;
+		iREAL   _maxMeshSize;
+		iREAL   _minMeshSize;
+		iREAL   _avgMeshSize;
 		
-		std::array<iREAL, 9> 	_inertia;
-		std::array<iREAL, 9> 	_inverse;
-		std::array<iREAL, 6> 	_bbox;
+		std::array<iREAL, 9>    _inertia;
+		std::array<iREAL, 9>    _inverse;
+		std::array<iREAL, 6>    _bbox;
 
 		delta::core::data::OctTree _tree;
 		delta::geometry::material::MaterialType _material;

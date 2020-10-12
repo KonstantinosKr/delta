@@ -50,7 +50,7 @@ class delta::core::State {
 
 	State(
 		  delta::core::data::Structure& 			datastructure,
-		  delta::core::data::Meta::EngineMeta& 	meta);
+		  delta::core::data::Meta::Simulation& 		meta);
 
 	void 	initCheckpoint(int iteration);
 	void 	closeCheckpoint();

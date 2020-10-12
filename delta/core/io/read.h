@@ -14,30 +14,38 @@
 #include <vector>
 
 #include <string.h>
-#include <stdlib.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include <fstream>
-#include "math.h"
+#include <cmath>
 
 #include "../../geometry/structure/Mesh.h"
+
+
+#include <vtkGenericDataObjectReader.h>
+#include <vtkUnStructuredGrid.h>
+#include <vtkSmartPointer.h>
+
 
 namespace delta {
 	namespace core {
 	  namespace io {
-		  void parseModelGridSchematics(
-			  std::string 														fileName,
-			  std::vector<std::vector<std::string>> 	&componentGrid,
-			  std::vector<std::string> 								&componentSeq);
 
-		  delta::geometry::mesh::Mesh* readVTKGeometry(char* fileName);
+	  	  void readVTKLegacy();
 
-		  void readScenarioSpecification(std::string fileName);
+	  	  void parseModelGridSchematics(
+				std::string 														fileName,
+				std::vector<std::vector<std::string>> 	&componentGrid,
+				std::vector<std::string>								&componentSeq);
 
-		  std::vector<delta::geometry::mesh::Mesh> readGeometry(std::string fileName);
+	  	  delta::geometry::mesh::Mesh* readVTKGeometry(char* fileName);
 
-		  delta::geometry::mesh::Mesh* readPartGeometry(std::string fileName);
+	  	  void readScenarioSpecification(std::string fileName);
 
-			void readmbfcp(std::string filename);
+	  	  std::vector<delta::geometry::mesh::Mesh> readGeometry(std::string fileName);
+
+	  	  delta::geometry::mesh::Mesh* readPartGeometry(std::string fileName);
+
+	  	  void readmbfcp(std::string filename);
 	  }
 	}
 }

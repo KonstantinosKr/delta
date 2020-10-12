@@ -31,7 +31,7 @@ delta::core::State::State()
 
 delta::core::State::State(
 	  delta::core::data::Structure& 			datastructure,
-	  delta::core::data::Meta::EngineMeta& 	meta)
+	  delta::core::data::Meta::Simulation& 		meta)
 {
   _start = Time::now();
 

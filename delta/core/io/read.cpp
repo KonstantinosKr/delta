@@ -299,6 +299,22 @@ delta::geometry::mesh::Mesh* delta::core::io::readPartGeometry(std::string fileN
   return new delta::geometry::mesh::Mesh(triangleFaces, uniqueVertices);
 }
 
+void delta::core::io::readVTKLegacy() {
+
+	// Get all data from the file
+	vtkSmartPointer<vtkGenericDataObjectReader> reader =
+	  vtkSmartPointer<vtkGenericDataObjectReader>::New();
+	reader->SetFileName("../output/grid_0.vtk");
+	reader->Update();
+
+	// All of the standard data types can be checked and obtained like this:
+	if(reader->IsFileUnstructuredGrid())
+	{
+		std::cout << "output is a unstructured grid" << std::endl;
+		vtkUnstructuredGrid* output = reader->GetUnstructuredGridOutput();
+		std::cout << "output has " << output->GetNumberOfPoints() << " points." << std::endl;
+	}
+}
 
 /*
  *

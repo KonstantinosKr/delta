@@ -46,7 +46,7 @@ namespace delta {
 		  delta::core::data::Meta::CollisionModel getCollisionScheme();
 
 		  std::string getScenario();
-		  delta::core::data::Meta::EngineMeta getEngineMeta();
+		  delta::core::data::Meta::Simulation getEngineMeta();
 
 		  int getMeshDensity();
 		  int getSteps();
@@ -59,7 +59,7 @@ namespace delta {
 		  std::string 								_scenario;
 		  delta::core::data::Meta::Plot 			_plotScheme;
 		  delta::core::data::Meta::CollisionModel 	_collisionModel;
-		  delta::core::data::Meta::EngineMeta 		_engineMeta;
+		  delta::core::data::Meta::Simulation 		_engineMeta;
 
 		  bool 	_overlapPreCheck;
 		  int 	_steps;

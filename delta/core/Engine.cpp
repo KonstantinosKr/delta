@@ -32,7 +32,7 @@ delta::core::Engine::Engine()
 
 delta::core::Engine::Engine(
 	delta::world::World	world,
-	delta::core::data::Meta::EngineMeta	meta)
+	delta::core::data::Meta::Simulation	meta)
 {
   _overlapCheck		= meta.overlapPreCheck;
   _collisionModel	= meta.modelScheme;
@@ -46,7 +46,7 @@ delta::core::Engine::Engine(
 delta::core::Engine::Engine(
 	std::vector<delta::world::structure::Object>    	particles,
 	std::array<iREAL, 6>								boundary,
-	delta::core::data::Meta::EngineMeta					meta)
+	delta::core::data::Meta::Simulation					meta)
 {
   _overlapCheck     = meta.overlapPreCheck;
   _collisionModel   = meta.modelScheme;

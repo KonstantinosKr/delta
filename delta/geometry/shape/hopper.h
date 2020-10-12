@@ -22,8 +22,8 @@
  SOFTWARE.
  */
 
-#ifndef GEOMETRY_HARDCODED_HOPPER_H_
-#define GEOMETRY_HARDCODED_HOPPER_H_
+#ifndef GEOMETRY_SHAPE_HOPPER_H_
+#define GEOMETRY_SHAPE_HOPPER_H_
 
 #include <vector>
 #include <cmath>

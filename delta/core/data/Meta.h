@@ -22,7 +22,7 @@ namespace delta {
 					std::vector<delta::contact::contactpoint>     _contactPoints;
 				};
 
-				enum class CollisionModel
+				enum CollisionModel
 				{
 					Sphere,
 					BruteForce,
@@ -37,7 +37,7 @@ namespace delta {
 					none
 				};
 
-				enum class Plot
+				enum Plot
 				{
 					EveryIteration,
 					Never,
@@ -48,13 +48,13 @@ namespace delta {
 					Track
 				};
 
-				struct EngineMeta {
+				struct Simulation {
 					CollisionModel		modelScheme;
-					bool							overlapPreCheck;
-					Plot							plotScheme;
-					iREAL							dt;
-					bool							gravity;
-					iREAL							maxPrescribedRefinement;
+					bool				overlapPreCheck;
+					Plot				plotScheme;
+					iREAL				dt;
+					bool				gravity;
+					iREAL				maxPrescribedRefinement;
 				};
 			}
 		} /* namespace data */

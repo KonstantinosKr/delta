@@ -277,7 +277,7 @@ void printManualPeano()
 	<< " eg: ./delta-icc-release-tbb 0.1 hopperUniform 10 regular-grid 0.0001 never 1 sphere 10 3 true true auto false" << std::endl;
 }
 
-delta::core::data::Meta::EngineMeta delta::core::io::HumanInterface::getEngineMeta()
+delta::core::data::Meta::Simulation delta::core::io::HumanInterface::getEngineMeta()
 {
   return _engineMeta;
 }
