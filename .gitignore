@@ -26,3 +26,5 @@ doxygen-html/
 delta-*
 
 realtime/ogre-*
+
+gcc-asserts
