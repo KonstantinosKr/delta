@@ -15,19 +15,19 @@ std::vector<std::string> splitString(
   std::string input,
   std::string delimiter)
 {
- std::vector<std::string> output;
- char *str = strdup(input.c_str());
- char *pch = strtok (str, delimiter.c_str());
+	std::vector<std::string> output;
+	char *str = strdup(input.c_str());
+	char *pch = strtok (str, delimiter.c_str());
 
- while (pch != NULL)
- {
-	output.push_back(pch);
-	pch = strtok (NULL,  delimiter.c_str());
- }
+	while (pch != NULL)
+	{
+		output.push_back(pch);
+		pch = strtok (NULL,  delimiter.c_str());
+	}
 
- free(str);
+	free(str);
 
- return output;
+	return output;
 }
 
 void delta::core::io::parseModelGridSchematics(

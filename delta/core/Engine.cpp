@@ -164,7 +164,7 @@ void delta::core::Engine::iterate()
 
 void delta::core::Engine::addCollision(
 	std::vector<delta::contact::contactpoint>& 		newContactPoints,
-	delta::core::data::ParticleRecord&						particleA,
+	delta::core::data::ParticleRecord&				particleA,
 	delta::core::data::ParticleRecord&          	particleB,
 	bool sphere
 ) {
@@ -575,7 +575,7 @@ void delta::core::Engine::plot(std::string path)
 {
   if(_plot == delta::core::data::Meta::Plot::EveryIteration)
   {
-	delta::core::io::writeGeometryToVTK(path, _state.getCurrentStepIteration(), _data.getAll());
-	delta::core::io::writeGridGeometryToVTK(path, _state.getCurrentStepIteration(), _data.getGeometryGrid());
+	delta::core::io::writeGeometryToVTKVTK(path, _state.getCurrentStepIteration(), _data.getAll());
+	delta::core::io::writeGridGeometryToVTKVTK(path, _state.getCurrentStepIteration(), _data.getGeometryGrid());
   }
 }

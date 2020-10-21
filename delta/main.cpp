@@ -11,7 +11,7 @@ using namespace std;
 int main(int argc, const char *argv[]) {
 
 	//delta::core::Delta delta;
-	delta::core::io::readmbfcp("../input/hopper.mbfcp");
+	//delta::core::io::readmbfcp("../input/hopper.mbfcp");
 
 	std::vector<delta::world::structure::Object> particles;
 	bool isSphere = true;
@@ -39,7 +39,7 @@ int main(int argc, const char *argv[]) {
 		_deltaEngine.iterate();
 	}
 
-	delta::core::io::readVTKLegacy();
+	//delta::core::io::readVTKLegacy();
 
 	cout << "hello master" << endl;
 }

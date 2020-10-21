@@ -1,336 +1,186 @@
 /*
  * write.cpp
  *
- *  Created on: 2 Apr 2017
+ *  Created on: 20 Oct 2020
  *      Author: konstantinos
  */
 
 #include "write.h"
 
-void delta::core::io::writeGeometryToVTK(
-	std::vector<delta::world::structure::Object>& vectorGeometries, std::array<iREAL, 6> boundary)
-{
-  //domain boundary
-  iREAL lo[3], hi[3];
-  lo[0] = boundary[0]; // lower corner
-  lo[1] = boundary[1]; // lower corner
-  lo[2] = boundary[2]; // lower corner
-
-  hi[0] = boundary[3]; // upper corner
-  hi[1] = boundary[4]; // upper corner
-  hi[2] = boundary[5]; // upper corner
-
-  char iter[100];
-  sprintf(iter, "%u.vtk", 0);
-  char filename[100] = "geometry_"; //care or buffer overflow
-  strcat(filename, iter);
-
-  FILE *fp = fopen(filename, "w+");
-  if( fp == NULL )
-  {
-	perror("Error while opening the file.\n");
-	return;
-  }
-
-  int numVertices = 0;
-  int numberOfFaces = 0;
-  for(int i=0; i<vectorGeometries.size(); i++)
-  {
-	numVertices += vectorGeometries[i].getMesh().getUniqueVertices().size();
-	numberOfFaces += vectorGeometries[i].getMesh().getTriangleFaces().size();
-  }
-
-  int numberOfBoundaries = 1;
-  numVertices += 8*numberOfBoundaries;
-
-  fprintf(fp,"# vtk DataFile Version 2.0\n"
-			 "Output vtk file\n"
-			 "ASCII\n\n"
-			 "DATASET UNSTRUCTURED_GRID\n"
-			 "POINTS %i double\n", numVertices);
-
-  std::vector<int> meshEndPivots;
-  for(int i=0; i<vectorGeometries.size(); i++)
-  {
-	for(int j = 0; j < vectorGeometries[i].getMesh().getUniqueVertices().size(); j++)
-	{
-	  fprintf(fp,"%.5f %.5f %.5f\n",
-		  vectorGeometries[i].getMesh().getUniqueVertices()[j][0],
-		  vectorGeometries[i].getMesh().getUniqueVertices()[j][1],
-		  vectorGeometries[i].getMesh().getUniqueVertices()[j][2]);
-	}
-	meshEndPivots.push_back(vectorGeometries[i].getMesh().getUniqueVertices().size());
-  }
-
-  //BOUNDARY
-  fprintf(fp, "%.5f %.5f %.5f\n"
-			  "%.5f %.5f %.5f\n"
-			  "%.5f %.5f %.5f\n"
-			  "%.5f %.5f %.5f\n", 	lo[0], lo[1], lo[2], //0: A
-									lo[0], hi[1], lo[2], //1: B
-									lo[0], hi[1], hi[2], //2: E
-									lo[0], lo[1], hi[2]);//3: F
-
-  fprintf(fp, "%.5f %.5f %.5f\n"
-			  "%.5f %.5f %.5f\n"
-			  "%.5f %.5f %.5f\n"
-			  "%.5f %.5f %.5f\n", 	hi[0], hi[1], hi[2], //4: H
-									hi[0], lo[1], hi[2], //5: G
-									hi[0], lo[1], lo[2], //6: D
-									hi[0], hi[1], lo[2]);//7: C
-
-  int numberOfLines = numberOfBoundaries*12;
-
-  int cellPointers 	= numberOfFaces*4 + numberOfLines*3;
-  int cellNumber 	= numberOfFaces + numberOfLines;
-
-  fprintf(fp,"\nCELLS %i %i\n", cellNumber, cellPointers);
-
-  int pivot = 0; //position of start index
-  for(int i=0; i<vectorGeometries.size(); i++)
-  {
-	for(int j = 0; j < vectorGeometries[i].getMesh().getTriangleFaces().size(); j++)
-	{
-	  unsigned int A = pivot + vectorGeometries[i].getMesh().getTriangleFaces()[j][0];
-	  unsigned int B = pivot + vectorGeometries[i].getMesh().getTriangleFaces()[j][1];
-	  unsigned int C = pivot + vectorGeometries[i].getMesh().getTriangleFaces()[j][2];
-
-	  fprintf(fp,"3 %i %i %i\n", A, B, C);
-	}
-	pivot = meshEndPivots[i];
-  }
-
-  int meshEndPivot = meshEndPivots[meshEndPivots.size()-1];
-
-  //AB | 0->1
-  //AD | 0->3
-  //AG | 0->6
-
-  //EC | 4->2
-  //EH | 4->7
-  //EF | 4->5
-
-  //BC | 1->C
-  //BH | 1->H
-  //CD | 2->3
-  //DF | 3->5
-  //GH | 6->7
-  //GF | 6->5
-
-  int lA = meshEndPivot + 0;
-  int lB = meshEndPivot + 1;
-  int lE = meshEndPivot + 2;
-  int lF = meshEndPivot + 3;
-  int lH = meshEndPivot + 4;
-  int lG = meshEndPivot + 5;
-  int lD = meshEndPivot + 6;
-  int lC = meshEndPivot + 7;
-
-  fprintf(fp, "2 %i %i\n", lA, lB);
-  fprintf(fp, "2 %i %i\n", lA, lF);
-  fprintf(fp, "2 %i %i\n", lA, lD);
-
-  fprintf(fp, "2 %i %i\n", lB, lE);
-  fprintf(fp, "2 %i %i\n", lB, lC);
-
-  fprintf(fp, "2 %i %i\n", lE, lF);
-  fprintf(fp, "2 %i %i\n", lF, lG);
-
-  fprintf(fp, "2 %i %i\n", lD, lC);
-  fprintf(fp, "2 %i %i\n", lD, lG);
-
-  fprintf(fp, "2 %i %i\n", lH, lE);
-  fprintf(fp, "2 %i %i\n", lH, lC);
-  fprintf(fp, "2 %i %i\n", lH, lG);
-
-
-  fprintf(fp,"\nCELL_TYPES %i\n", cellNumber);
-
-  //write triangle faces
-  for(int i=0; i<vectorGeometries.size(); i++)
-  {
-	for(int j = 0; j < vectorGeometries[i].getMesh().getTriangleFaces().size(); j++)
-	{
-	  fprintf(fp,"5\n"); //triangle
-	}
-  }
-
-  //write line faces
-  for(int j = 0; j < numberOfLines; j++)
-  {
-	fprintf(fp, "3\n"); //lines
-  }
-
-  fclose(fp);
-}
-
-void delta::core::io::writeGeometryToVTK(
+void delta::core::io::writeGeometryToVTKVTK(
 	std::string 									path,
 	int 											step,
-	std::array<iREAL, 6> 							boundary,
-	std::vector<delta::core::data::ParticleRecord>& geometries)
+	std::vector<delta::core::data::ParticleRecord>& geometries) {
+
+	std::string filename = path + "geometry_" + std::to_string(step) + ".vtu";
+
+	vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
+
+	points->InsertNextPoint(0, 0, 0);
+	points->InsertNextPoint(1, 0, 0);
+	points->InsertNextPoint(1, 1, 0);
+	points->InsertNextPoint(0, 1, 1);
+
+	vtkSmartPointer<vtkTetra> tetra = vtkSmartPointer<vtkTetra>::New();
+
+	tetra->GetPointIds()->SetId(0, 0);
+	tetra->GetPointIds()->SetId(1, 1);
+	tetra->GetPointIds()->SetId(2, 2);
+	tetra->GetPointIds()->SetId(3, 3);
+
+	vtkSmartPointer<vtkLine> line = vtkSmartPointer<vtkLine>::New();
+	line->GetPointIds()->SetId(0, 0);
+	line->GetPointIds()->SetId(1, 1);
+
+
+	vtkSmartPointer<vtkUnstructuredGrid> unstructuredGrid = vtkSmartPointer<vtkUnstructuredGrid>::New();
+	unstructuredGrid->SetPoints(points);
+	unstructuredGrid->InsertNextCell(VTK_TETRA, tetra->GetPointIds());
+	//unstructuredGrid->InsertNextCell(VTK_LINE, line->GetPointIds());
+
+
+	// Write file
+	vtkSmartPointer<vtkXMLUnstructuredGridWriter> writer = vtkSmartPointer<vtkXMLUnstructuredGridWriter>::New();
+	writer->SetFileName(filename.c_str());
+	writer->SetInputData(unstructuredGrid);
+	writer->Write();
+
+}
+
+void delta::core::io::writeGridGeometryToVTKVTK(
+	std::string 						path,
+	int 								step,
+	std::vector<std::array<iREAL, 6>> 	boundary)
 {
-  //domain boundary
-  iREAL lo[3], hi[3];
-  lo[0] = boundary[0]; // lower corner
-  lo[1] = boundary[1]; // lower corner
-  lo[2] = boundary[2]; // lower corner
+	std::string filename = path + "grid_" + std::to_string(step) + ".vtu";
 
-  hi[0] = boundary[3]; // upper corner
-  hi[1] = boundary[4]; // upper corner
-  hi[2] = boundary[5]; // upper corner
+	vtkSmartPointer<vtkUnstructuredGrid> unstructuredGrid = vtkSmartPointer<vtkUnstructuredGrid>::New();
 
-  char iter[100];
-  sprintf(iter, "%u.vtk", step);
-  char base[100] = "geometry_"; //care or buffer overflow
-  strcat(base, iter);
+	for(const auto& value: boundary) {
+		vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
 
-  path += base;
-  const char *filename = path.c_str();
+		iREAL lo[3], hi[3];
 
+		lo[0] = value[0]; // lower corner
+		lo[1] = value[1]; // lower corner
+		lo[2] = value[2]; // lower corner
 
-  FILE *fp = fopen(filename, "w+");
-  if( fp == NULL )
-  {
-	perror("Error while opening the file.\n");
-	return;
-  }
+		hi[0] = value[3]; // upper corner
+		hi[1] = value[4]; // upper corner
+		hi[2] = value[5]; // upper corner
 
-  int numVertices = 0;
-  int numberOfFaces = 0;
-  for(int i=0; i<geometries.size(); i++)
-  {
-	numVertices += geometries[i].getNumberOfTriangles()*3.0;
-	numberOfFaces += geometries[i].getNumberOfTriangles();
-  }
+		points->InsertNextPoint(lo[0], lo[1], lo[2]); //0: A
+		points->InsertNextPoint(lo[0], hi[1], lo[2]); //1: B
+		points->InsertNextPoint(lo[0], hi[1], hi[2]); //2: E
+		points->InsertNextPoint(lo[0], lo[1], hi[2]); //3: F
 
-  int numberOfBoundaries = 1;
-  numVertices += 8*numberOfBoundaries;
+		points->InsertNextPoint(hi[0], hi[1], hi[2]); //4: H
+		points->InsertNextPoint(hi[0], lo[1], hi[2]); //5: G
+		points->InsertNextPoint(hi[0], lo[1], lo[2]); //6: D
+		points->InsertNextPoint(hi[0], hi[1], lo[2]); //7: C
 
-  fprintf(fp,"# vtk DataFile Version 2.0\n"
-			 "Output vtk file\n"
-			 "ASCII\n\n"
-			 "DATASET UNSTRUCTURED_GRID\n"
-			 "POINTS %i double\n", numVertices);
+		//AB | 0->1
+		//AD | 0->3
+		//AG | 0->6
 
-  std::vector<int> meshStartPivotPoint;
-  for(int i=0; i<geometries.size(); i++)
-  {
-	for(int j = 0; j < geometries[i].getNumberOfTriangles()*3; j++)
-	{
-	  fprintf(fp,"%.5f %.5f %.5f\n",
-		  geometries[i]._xCoordinates[j],
-		  geometries[i]._yCoordinates[j],
-		  geometries[i]._zCoordinates[j]);
+		//EC | 4->2
+		//EH | 4->7
+		//EF | 4->5
+
+		//BC | 1->C
+		//BH | 1->H
+		//CD | 2->3
+		//DF | 3->5
+		//GH | 6->7
+		//GF | 6->5
+
+		int lA = 0;
+		int lB = 1;
+		int lE = 2;
+		int lF = 3;
+		int lH = 4;
+		int lG = 5;
+		int lD = 6;
+		int lC = 7;
+
+		vtkSmartPointer<vtkLine> line = vtkSmartPointer<vtkLine>::New();
+		line->GetPointIds()->SetId(0, lA);
+		line->GetPointIds()->SetId(1, lB);
+		unstructuredGrid->SetPoints(points);
+		unstructuredGrid->InsertNextCell(VTK_LINE, line->GetPointIds());
+
+		line = vtkSmartPointer<vtkLine>::New();
+		line->GetPointIds()->SetId(0, lA);
+		line->GetPointIds()->SetId(1, lF);
+		unstructuredGrid->SetPoints(points);
+		unstructuredGrid->InsertNextCell(VTK_LINE, line->GetPointIds());
+
+		line = vtkSmartPointer<vtkLine>::New();
+		line->GetPointIds()->SetId(0, lA);
+		line->GetPointIds()->SetId(1, lD);
+		unstructuredGrid->SetPoints(points);
+		unstructuredGrid->InsertNextCell(VTK_LINE, line->GetPointIds());
+
+		line = vtkSmartPointer<vtkLine>::New();
+		line->GetPointIds()->SetId(0, lB);
+		line->GetPointIds()->SetId(1, lE);
+		unstructuredGrid->SetPoints(points);
+		unstructuredGrid->InsertNextCell(VTK_LINE, line->GetPointIds());
+
+		line = vtkSmartPointer<vtkLine>::New();
+		line->GetPointIds()->SetId(0, lB);
+		line->GetPointIds()->SetId(1, lC);
+		unstructuredGrid->SetPoints(points);
+		unstructuredGrid->InsertNextCell(VTK_LINE, line->GetPointIds());
+
+		line = vtkSmartPointer<vtkLine>::New();
+		line->GetPointIds()->SetId(0, lE);
+		line->GetPointIds()->SetId(1, lF);
+		unstructuredGrid->SetPoints(points);
+		unstructuredGrid->InsertNextCell(VTK_LINE, line->GetPointIds());
+
+		line = vtkSmartPointer<vtkLine>::New();
+		line->GetPointIds()->SetId(0, lF);
+		line->GetPointIds()->SetId(1, lG);
+		unstructuredGrid->SetPoints(points);
+		unstructuredGrid->InsertNextCell(VTK_LINE, line->GetPointIds());
+
+		line = vtkSmartPointer<vtkLine>::New();
+		line->GetPointIds()->SetId(0, lD);
+		line->GetPointIds()->SetId(1, lC);
+		unstructuredGrid->SetPoints(points);
+		unstructuredGrid->InsertNextCell(VTK_LINE, line->GetPointIds());
+
+		line = vtkSmartPointer<vtkLine>::New();
+		line->GetPointIds()->SetId(0, lD);
+		line->GetPointIds()->SetId(1, lG);
+		unstructuredGrid->SetPoints(points);
+		unstructuredGrid->InsertNextCell(VTK_LINE, line->GetPointIds());
+
+		line = vtkSmartPointer<vtkLine>::New();
+		line->GetPointIds()->SetId(0, lH);
+		line->GetPointIds()->SetId(1, lE);
+		unstructuredGrid->SetPoints(points);
+		unstructuredGrid->InsertNextCell(VTK_LINE, line->GetPointIds());
+
+		line = vtkSmartPointer<vtkLine>::New();
+		line->GetPointIds()->SetId(0, lH);
+		line->GetPointIds()->SetId(1, lC);
+		unstructuredGrid->SetPoints(points);
+		unstructuredGrid->InsertNextCell(VTK_LINE, line->GetPointIds());
+
+		line = vtkSmartPointer<vtkLine>::New();
+		line->GetPointIds()->SetId(0, lH);
+		line->GetPointIds()->SetId(1, lG);
+		unstructuredGrid->SetPoints(points);
+		unstructuredGrid->InsertNextCell(VTK_LINE, line->GetPointIds());
 	}
-	if(i == 0)
-	{
-	  meshStartPivotPoint.push_back(0);
-	}
-	else{
-	  meshStartPivotPoint.push_back(meshStartPivotPoint[i-1] + geometries[i].getNumberOfTriangles()*3.0);
-	}
-  }
 
-  //BOUNDARY
-  fprintf(fp, "%.5f %.5f %.5f\n"
-			  "%.5f %.5f %.5f\n"
-			  "%.5f %.5f %.5f\n"
-			  "%.5f %.5f %.5f\n", 	lo[0], lo[1], lo[2], //0: A
-									lo[0], hi[1], lo[2], //1: B
-									lo[0], hi[1], hi[2], //2: E
-									lo[0], lo[1], hi[2]);//3: F
+	vtkSmartPointer<vtkXMLUnstructuredGridWriter> writer = vtkSmartPointer<vtkXMLUnstructuredGridWriter>::New();
+	writer->SetFileName(filename.c_str());
+	writer->SetInputData(unstructuredGrid);
+	writer->Write();
 
-  fprintf(fp, "%.5f %.5f %.5f\n"
-			  "%.5f %.5f %.5f\n"
-			  "%.5f %.5f %.5f\n"
-			  "%.5f %.5f %.5f\n", 	hi[0], hi[1], hi[2], //4: H
-									hi[0], lo[1], hi[2], //5: G
-									hi[0], lo[1], lo[2], //6: D
-									hi[0], hi[1], lo[2]);//7: C
-
-  int numberOfLines = numberOfBoundaries*12;
-
-  int cellPointers 	= numberOfFaces*4 + numberOfLines*3;
-  int cellNumber 	= numberOfFaces + numberOfLines;
-
-  fprintf(fp,"\nCELLS %i %i\n", cellNumber, cellPointers);
-
-  int lastMeshSize = 0;
-  for(int i=0; i<geometries.size(); i++)
-  {
-	for(int j = 0; j < geometries[i].getNumberOfTriangles()*3.0; j=j+3)
-	{
-	  unsigned int A = meshStartPivotPoint[i] + j;
-	  unsigned int B = meshStartPivotPoint[i] + j+1;
-	  unsigned int C = meshStartPivotPoint[i] + j+2;
-
-	  fprintf(fp,"3 %i %i %i\n", A, B, C);
-	}
-	lastMeshSize = geometries[i].getNumberOfTriangles()*3.0;
-  }
-
-  int allMeshEndPivotPoint = meshStartPivotPoint[meshStartPivotPoint.size()-1] + lastMeshSize;
-
-  //AB | 0->1
-  //AD | 0->3
-  //AG | 0->6
-
-  //EC | 4->2
-  //EH | 4->7
-  //EF | 4->5
-
-  //BC | 1->C
-  //BH | 1->H
-  //CD | 2->3
-  //DF | 3->5
-  //GH | 6->7
-  //GF | 6->5
-
-  int lA = allMeshEndPivotPoint + 0;
-  int lB = allMeshEndPivotPoint + 1;
-  int lE = allMeshEndPivotPoint + 2;
-  int lF = allMeshEndPivotPoint + 3;
-  int lH = allMeshEndPivotPoint + 4;
-  int lG = allMeshEndPivotPoint + 5;
-  int lD = allMeshEndPivotPoint + 6;
-  int lC = allMeshEndPivotPoint + 7;
-
-  fprintf(fp, "2 %i %i\n", lA, lB);
-  fprintf(fp, "2 %i %i\n", lA, lF);
-  fprintf(fp, "2 %i %i\n", lA, lD);
-
-  fprintf(fp, "2 %i %i\n", lB, lE);
-  fprintf(fp, "2 %i %i\n", lB, lC);
-
-  fprintf(fp, "2 %i %i\n", lE, lF);
-  fprintf(fp, "2 %i %i\n", lF, lG);
-
-  fprintf(fp, "2 %i %i\n", lD, lC);
-  fprintf(fp, "2 %i %i\n", lD, lG);
-
-  fprintf(fp, "2 %i %i\n", lH, lE);
-  fprintf(fp, "2 %i %i\n", lH, lC);
-  fprintf(fp, "2 %i %i\n", lH, lG);
-
-  fprintf(fp,"\nCELL_TYPES %i\n", cellNumber);
-
-  //write triangle faces
-  for(int i=0; i<geometries.size(); i++)
-  {
-	for(int j = 0; j < geometries[i].getNumberOfTriangles(); j++)
-	{
-	  fprintf(fp,"5\n"); //triangle
-	}
-  }
-
-  //write line faces
-  for(int j = 0; j < numberOfLines; j++)
-  {
-	fprintf(fp, "3\n"); //lines
-  }
-
-  fclose(fp);
 }
 
 void delta::core::io::writeGeometryToVTK(

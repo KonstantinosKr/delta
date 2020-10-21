@@ -18,29 +18,39 @@
 #include "../../geometry/structure/Mesh.h"
 #include "../../world/structure/Object.h"
 
+#include <vtkSmartPointer.h>
+#include <vtkTetra.h>
+#include <vtkLine.h>
+#include <vtkCellArray.h>
+#include <vtkXMLUnstructuredGridReader.h>
+#include <vtkDataSetMapper.h>
+#include <vtkXMLUnstructuredGridWriter.h>
+#include <vtkUnstructuredGrid.h>
+#include <vtkPointData.h>
+
 namespace delta {
   namespace core {
 	namespace io {
 
-	  void writeGeometryToVTK(
-			  std::vector<delta::world::structure::Object>& 	vectorGeometries,
-			  std::array<iREAL, 6> 								boundary);
+	void writeGeometryToVTKVTK(
+		std::string 									path,
+		int 											step,
+		std::vector<delta::core::data::ParticleRecord>& geometries);
 
-	  void writeGeometryToVTK(
-			  std::string										path,
-			  int 												step,
-			  std::array<iREAL, 6> 								boundary,
-			  std::vector<delta::core::data::ParticleRecord>& 	vectorGeometries);
+	void writeGridGeometryToVTKVTK(
+		std::string 						path,
+		int 								step,
+		std::vector<std::array<iREAL, 6>> 	boundary);
 
-	  void writeGeometryToVTK(
-			  std::string										path,
-			  int 												step,
-			  std::vector<delta::core::data::ParticleRecord>& 	geometries);
+	void writeGeometryToVTK(
+		std::string										path,
+		int 											step,
+		std::vector<delta::core::data::ParticleRecord>& geometries);
 
-	  void writeGridGeometryToVTK(
-			  std::string								path,
-			  int 										step,
-			  std::vector<std::array<iREAL, 6>> 		boundary);
+	void writeGridGeometryToVTK(
+		std::string							path,
+		int 								step,
+		std::vector<std::array<iREAL, 6>> 	boundary);
 
 	  void writeScenarioSpecification(std::string 	fileName);
 	}
