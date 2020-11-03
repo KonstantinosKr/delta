@@ -21,12 +21,28 @@
 #include <vtkSmartPointer.h>
 #include <vtkTetra.h>
 #include <vtkLine.h>
+#include <vtkDataArray.h>
+#include <vtkDoubleArray.h>
+#include <vtkIntArray.h>
+#include <vtkMath.h>
 #include <vtkCellArray.h>
 #include <vtkXMLUnstructuredGridReader.h>
 #include <vtkDataSetMapper.h>
 #include <vtkXMLUnstructuredGridWriter.h>
 #include <vtkUnstructuredGrid.h>
 #include <vtkPointData.h>
+
+#include <vtkCellData.h>
+#include <vtkDoubleArray.h>
+#include <vtkPoints.h>
+#include <vtkPolyData.h>
+#include <vtkPointData.h>
+#include <vtkSmartPointer.h>
+#include <vtkXMLPolyDataReader.h>
+#include <vtkPolyDataNormals.h>
+#include <vtkFloatArray.h>
+#include <vtkMath.h>
+#include <string>
 
 namespace delta {
   namespace core {

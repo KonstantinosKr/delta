@@ -15,7 +15,7 @@ LINK_TBB=$(TBB_SHLIB)
 LINK_OMP=$(OMP_SHLIB)
 LINK_OMP=-fopenmp
 LINK_MPI=-L/usr/local/Cluster-Apps/openmpi/gcc-4.9.1/1.8.2/lib/ -lmpi
-LINK_LIBS=-L$(ASSIMP_LIB) -lassimp -L$(VTK_LIB) -lvtkCommonCore-9.0.1 -lvtkIOImport-9.0.1 -lvtkIOExport-9.0.1 -lvtkIOXML-9.0.1 -lvtkIOLegacy-9.0.1 -lvtkCommonDataModel-9.0.1
+LINK_LIBS=-L$(ASSIMP_LIB) -lassimp -L$(VTK_LIB) -lvtkCommonCore-9.0.1 -lvtkIOImport-9.0.1 -lvtkIOExport-9.0.1 -lvtkIOXML-9.0.1 -lvtkCommonDataModel-9.0.1 -lvtkIOLegacy-9.0.1
 
 ##############################################################################################
 

@@ -14,32 +14,51 @@ void delta::core::io::writeGeometryToVTKVTK(
 
 	std::string filename = path + "geometry_" + std::to_string(step) + ".vtu";
 
+	vtkSmartPointer<vtkUnstructuredGrid> unstructuredGrid = vtkSmartPointer<vtkUnstructuredGrid>::New();
+
 	vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
 
-	points->InsertNextPoint(0, 0, 0);
-	points->InsertNextPoint(1, 0, 0);
-	points->InsertNextPoint(1, 1, 0);
-	points->InsertNextPoint(0, 1, 1);
+    auto direction = vtkSmartPointer<vtkDoubleArray>::New();
+    direction->SetNumberOfComponents(3);
+    direction->SetName("direction");
 
+    auto radius = vtkSmartPointer<vtkDoubleArray>::New();
+    radius->SetNumberOfComponents(1);
+    radius->SetName("radius");
+
+	for(auto &geometry: geometries) {
+
+		iREAL x = geometry._centre[0];
+		iREAL y = geometry._centre[1];
+		iREAL z = geometry._centre[2];
+
+		points->InsertNextPoint(x, y, z);
+
+
+		double xnorm[3] = {-1., 0., 0.};
+		direction->InsertNextTuple(xnorm);
+
+		double rad[1] = {geometry.getRad()};
+		radius->InsertNextTuple(rad);
+
+	}
+	unstructuredGrid->SetPoints(points);
+	unstructuredGrid->GetPointData()->SetVectors(direction);
+	unstructuredGrid->GetPointData()->SetScalars(radius);
+
+/*
 	vtkSmartPointer<vtkTetra> tetra = vtkSmartPointer<vtkTetra>::New();
 
 	tetra->GetPointIds()->SetId(0, 0);
 	tetra->GetPointIds()->SetId(1, 1);
 	tetra->GetPointIds()->SetId(2, 2);
 	tetra->GetPointIds()->SetId(3, 3);
+	*/
 
-	vtkSmartPointer<vtkLine> line = vtkSmartPointer<vtkLine>::New();
-	line->GetPointIds()->SetId(0, 0);
-	line->GetPointIds()->SetId(1, 1);
-
-
-	vtkSmartPointer<vtkUnstructuredGrid> unstructuredGrid = vtkSmartPointer<vtkUnstructuredGrid>::New();
-	unstructuredGrid->SetPoints(points);
-	unstructuredGrid->InsertNextCell(VTK_TETRA, tetra->GetPointIds());
+	//unstructuredGrid->InsertNextCell(VTK_TETRA, tetra->GetPointIds());
 	//unstructuredGrid->InsertNextCell(VTK_LINE, line->GetPointIds());
+	//unstructuredGrid->InsertNextCell(VTK_POINT, points.GetPointer())
 
-
-	// Write file
 	vtkSmartPointer<vtkXMLUnstructuredGridWriter> writer = vtkSmartPointer<vtkXMLUnstructuredGridWriter>::New();
 	writer->SetFileName(filename.c_str());
 	writer->SetInputData(unstructuredGrid);
@@ -55,6 +74,11 @@ void delta::core::io::writeGridGeometryToVTKVTK(
 	std::string filename = path + "grid_" + std::to_string(step) + ".vtu";
 
 	vtkSmartPointer<vtkUnstructuredGrid> unstructuredGrid = vtkSmartPointer<vtkUnstructuredGrid>::New();
+
+    auto normals = vtkSmartPointer<vtkDoubleArray>::New();
+	normals->SetNumberOfComponents(3);
+	normals->SetName("vector123");
+	double xnorm[3] = {-1., 0., 0.};
 
 	for(const auto& value: boundary) {
 		vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
@@ -78,6 +102,17 @@ void delta::core::io::writeGridGeometryToVTKVTK(
 		points->InsertNextPoint(hi[0], lo[1], hi[2]); //5: G
 		points->InsertNextPoint(hi[0], lo[1], lo[2]); //6: D
 		points->InsertNextPoint(hi[0], hi[1], lo[2]); //7: C
+
+		normals->InsertNextTuple(xnorm);
+		normals->InsertNextTuple(xnorm);
+		normals->InsertNextTuple(xnorm);
+		normals->InsertNextTuple(xnorm);
+
+		normals->InsertNextTuple(xnorm);
+		normals->InsertNextTuple(xnorm);
+		normals->InsertNextTuple(xnorm);
+		normals->InsertNextTuple(xnorm);
+
 
 		//AB | 0->1
 		//AD | 0->3
@@ -175,6 +210,13 @@ void delta::core::io::writeGridGeometryToVTKVTK(
 		unstructuredGrid->SetPoints(points);
 		unstructuredGrid->InsertNextCell(VTK_LINE, line->GetPointIds());
 	}
+
+
+
+
+
+	unstructuredGrid->GetPointData()->SetVectors(normals);
+
 
 	vtkSmartPointer<vtkXMLUnstructuredGridWriter> writer = vtkSmartPointer<vtkXMLUnstructuredGridWriter>::New();
 	writer->SetFileName(filename.c_str());
