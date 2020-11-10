@@ -298,7 +298,7 @@ void delta::world::scenarios::twoParticlesCrash(
 void delta::world::scenarios::twoParticlesCrashDiagonal(
 	std::vector<delta::world::structure::Object>& 	coarseObjects,
 	bool 											isSphere,
-	int 												meshDensity,
+	int 											meshDensity,
 	iREAL 											epsilon)
 {
   //////////////////////////////////////////////////////
@@ -337,7 +337,8 @@ void delta::world::scenarios::twoParticlesCrashDiagonal(
 
 	iREAL pos[3] = {centreArray[0], centreArray[1], centreArray[2]};
 	delta::geometry::mesh::Mesh *geometry = delta::geometry::primitive::granulate::generateParticle(
-		pos, rad*2, meshDensity);
+												pos, rad*2, meshDensity);
+
 	delta::world::structure::Object objectA(
 		"granulate", 0, geometry, centreArray,
 		delta::geometry::material::MaterialType::WOOD,
@@ -355,6 +356,7 @@ void delta::world::scenarios::twoParticlesCrashDiagonal(
 
 	iREAL po[3] = {centreArray[0], centreArray[1], centreArray[2]};
 	geometry = delta::geometry::primitive::granulate::generateParticle(po, rad*2, meshDensity);
+
 	delta::world::structure::Object objectB(
 		"granulate", 1, geometry, centreArray,
 		delta::geometry::material::MaterialType::WOOD,

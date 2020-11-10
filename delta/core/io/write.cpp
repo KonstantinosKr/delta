@@ -16,8 +16,7 @@ void delta::core::io::writeGeometryToVTKVTK(
 
 	vtkSmartPointer<vtkUnstructuredGrid> unstructuredGrid = vtkSmartPointer<vtkUnstructuredGrid>::New();
 
-	vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
-
+	//Properties initialisation
     auto direction = vtkSmartPointer<vtkDoubleArray>::New();
     direction->SetNumberOfComponents(3);
     direction->SetName("direction");
@@ -26,8 +25,17 @@ void delta::core::io::writeGeometryToVTKVTK(
     radius->SetNumberOfComponents(1);
     radius->SetName("radius");
 
+    auto epsilon = vtkSmartPointer<vtkDoubleArray>::New();
+    epsilon->SetNumberOfComponents(1);
+    epsilon->SetName("epsilon");
+
+    /////////////////////////////////////
+
+	vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
+
 	for(auto &geometry: geometries) {
 
+		//Center
 		iREAL x = geometry._centre[0];
 		iREAL y = geometry._centre[1];
 		iREAL z = geometry._centre[2];
@@ -35,29 +43,25 @@ void delta::core::io::writeGeometryToVTKVTK(
 		points->InsertNextPoint(x, y, z);
 
 
-		double xnorm[3] = {-1., 0., 0.};
-		direction->InsertNextTuple(xnorm);
+		double dnorm[3] = {	geometry._linearVelocity[0],
+							geometry._linearVelocity[1],
+							geometry._linearVelocity[2]};
 
-		double rad[1] = {geometry.getRad()};
-		radius->InsertNextTuple(rad);
+		direction->InsertNextTuple(dnorm);
+
+		double rad = geometry.getRad();
+		radius->InsertNextTuple(&rad);
+
+		double influence = geometry.getEpsilon();
+		epsilon->InsertNextTuple(&influence);
 
 	}
+
+	//Post initialisation, add to scene
 	unstructuredGrid->SetPoints(points);
 	unstructuredGrid->GetPointData()->SetVectors(direction);
 	unstructuredGrid->GetPointData()->SetScalars(radius);
-
-/*
-	vtkSmartPointer<vtkTetra> tetra = vtkSmartPointer<vtkTetra>::New();
-
-	tetra->GetPointIds()->SetId(0, 0);
-	tetra->GetPointIds()->SetId(1, 1);
-	tetra->GetPointIds()->SetId(2, 2);
-	tetra->GetPointIds()->SetId(3, 3);
-	*/
-
-	//unstructuredGrid->InsertNextCell(VTK_TETRA, tetra->GetPointIds());
-	//unstructuredGrid->InsertNextCell(VTK_LINE, line->GetPointIds());
-	//unstructuredGrid->InsertNextCell(VTK_POINT, points.GetPointer())
+	//unstructuredGrid->GetPointData()->SetScalars(epsilon);
 
 	vtkSmartPointer<vtkXMLUnstructuredGridWriter> writer = vtkSmartPointer<vtkXMLUnstructuredGridWriter>::New();
 	writer->SetFileName(filename.c_str());

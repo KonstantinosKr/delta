@@ -20,7 +20,6 @@ int main(int argc, const char *argv[]) {
 
 	delta::world::scenarios::twoParticlesCrashDiagonal(particles, isSphere, meshDensity, epsilon);
 
-
 	/////////////////////////////////////////////////////////////////////////
 	delta::core::data::Meta::Simulation simMeta;
 
