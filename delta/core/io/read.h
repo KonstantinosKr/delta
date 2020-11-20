@@ -22,7 +22,7 @@
 
 
 #include <vtkGenericDataObjectReader.h>
-#include <vtkUnStructuredGrid.h>
+#include <vtkUnstructuredGrid.h>
 #include <vtkSmartPointer.h>
 
 
