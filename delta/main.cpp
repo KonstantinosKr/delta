@@ -10,15 +10,15 @@ using namespace std;
 
 int main(int argc, const char *argv[]) {
 
-	//delta::core::Delta delta;
-	//delta::core::io::readmbfcp("../input/hopper.mbfcp");
+	delta::core::Delta delta;
+	delta::core::io::readmbfcp("../input/hopper.mbfcp");
 
 	std::vector<delta::world::structure::Object> particles;
 	bool isSphere = true;
 	int meshDensity = 20;
 	iREAL epsilon = 0.038;
 
-	delta::world::scenarios::twoParticlesCrashDiagonal(particles, isSphere, meshDensity, epsilon);
+	//delta::world::scenarios::twoParticlesCrashDiagonal(particles, isSphere, meshDensity, epsilon);
 
 	/////////////////////////////////////////////////////////////////////////
 	delta::core::data::Meta::Simulation simMeta;
