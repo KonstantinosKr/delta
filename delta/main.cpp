@@ -13,6 +13,7 @@ int main(int argc, const char *argv[]) {
 	delta::core::Delta delta;
 	delta::core::io::readmbfcp("../input/hopper.mbfcp");
 
+	return 0;
 	std::vector<delta::world::structure::Object> particles;
 	bool isSphere = true;
 	int meshDensity = 20;

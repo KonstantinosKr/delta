@@ -13,7 +13,6 @@
 #include <iostream>
 #include <vector>
 
-#include <string.h>
 #include <cstdlib>
 #include <fstream>
 #include <cmath>
@@ -21,7 +20,7 @@
 #include "../../geometry/structure/Mesh.h"
 
 
-#include <vtkGenericDataObjectReader.h>
+#include <vtkUnstructuredGridReader.h>
 #include <vtkUnstructuredGrid.h>
 #include <vtkSmartPointer.h>
 

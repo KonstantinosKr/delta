@@ -24,6 +24,18 @@
 		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>11.1.0</name>
+			<type>2</type>
+			<location>/usr/include/c++/11.1.0</location>
+		</link>
+		<link>
+			<name>assimp</name>
+			<type>2</type>
+			<location>/usr/local/include/assimp</location>
+		</link>
+	</linkedResources>
 	<filteredResources>
 		<filter>
 			<id>1593038233037</id>
