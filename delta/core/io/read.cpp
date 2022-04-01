@@ -435,7 +435,7 @@ void delta::core::io::readmbfcp(std::string filename) {
         //extract number of bodies
         if (line.find("BODIES:") != std::string::npos) {
             bodies = std::stoi(line.substr(8));
-            std::cout << bodies << std::endl;
+            std::cout << "# bodies: " << bodies << std::endl;
         }
 
         /*
@@ -479,46 +479,60 @@ void delta::core::io::readmbfcp(std::string filename) {
 
         //extract paragraph (group of lines split by \n\n
 
-        std::cout<< line.size() << std::endl;
-        if (line.size() == 1) {
-        	std::cout << "found new line" <<std::endl;
-        }
+        //std::cout << line.size() << std::endl;
 
         //extract ID -- there is an issue before "ID:" is found in multiple lines"
         if (line.find("ID:") != std::string::npos && line.find("SURFID:") != 0) {
             
-            //std::cout << line << std::endl;
+            std::cout << line << std::endl;
 
             int id = std::stoi(line.substr(3));
-            /*
+            std::cout << id << std::endl;
             getline(file, line);
+
             std::string label = line.substr(6);
+            std::remove(label.begin(), label.end(), ' ');
+            std::cout << label << std::endl;
+
             getline(file, line);
             std::string kinematics = line.substr(11);
+            std::remove(kinematics.begin(), kinematics.end(), ' ');
+            std::cout << kinematics << std::endl;
+
+
             getline(file, line);
             std::string bulk_material = line.substr(14);
+            std::remove(bulk_material.begin(), bulk_material.end(), ' ');
+            std::cout << bulk_material << std::endl;
+
             getline(file, line);
             int shapes = std::stoi(line.substr(7));
+
             getline(file, line);
-            getline(file, line);
-            
-                    
+
+            std::cout << line << std::endl;
             if (line.find("SPHERES:") != std::string::npos) {
-            
+                getline(file, line);
+                std::cout << line << std::endl;
+
+                std::string x = line.substr(8, 4);
+                //std::cout << x << std::endl;
+                std::string y = line.substr(14, 4);
+                //std::cout << y << std::endl;
+                std::string z = line.substr(20, 4);
+                //std::cout << z << std::endl;
+
+                getline(file, line);
+                std::cout << line << std::endl;
+
+                std::string radius = line.substr(8, 4);
+                //std::cout << radius << std::endl;
+
             } else if(line.find("VERTEXES:") != std::string::npos) {
             
             }
-            */
 
-            /*
-            std::string id1 = line.substr(3);
-            getline(file, line);
-            std::string id2 = line.substr(3);
-            getline(file, line);
-            std::string id3 = line.substr(3);
-            getline(file, line);
-            std::string id4 = line.substr(3);
-            */
+
         }
 
         std::cout << line << std::endl;
