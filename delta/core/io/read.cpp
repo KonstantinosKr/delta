@@ -475,11 +475,20 @@ void delta::core::io::readmbfcp(std::string filename) {
         VELOCITY:  0  0  0  0  0  0
         FORCES:	0
         */	
+
+
+        //extract paragraph (group of lines split by \n\n
+
+        std::cout<< line.size() << std::endl;
+        if (line.size() == 1) {
+        	std::cout << "found new line" <<std::endl;
+        }
+
         //extract ID -- there is an issue before "ID:" is found in multiple lines"
-        if (line.find("ID:") != std::string::npos) {
+        if (line.find("ID:") != std::string::npos && line.find("SURFID:") != 0) {
             
-            std::cout << line << std::endl;
-            std::cout << line.substr(3) <<std::endl;
+            //std::cout << line << std::endl;
+
             int id = std::stoi(line.substr(3));
             /*
             getline(file, line);
