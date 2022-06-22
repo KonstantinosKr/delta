@@ -33,7 +33,7 @@ delta::core::data::ParticleRecord::ParticleRecord(delta::world::structure::Objec
 	{
 		this->_isMesh = false;
 		_bbox = { object.getMinBoundaryVertex()[0], object.getMinBoundaryVertex()[1], object.getMinBoundaryVertex()[2],
-							object.getMaxBoundaryVertex()[0], object.getMaxBoundaryVertex()[1], object.getMaxBoundaryVertex()[2]};
+				  object.getMaxBoundaryVertex()[0], object.getMaxBoundaryVertex()[1], object.getMaxBoundaryVertex()[2]};
 	
 	}	else {
 		this->_isMesh = true;
@@ -51,13 +51,13 @@ delta::core::data::ParticleRecord::ParticleRecord(delta::world::structure::Objec
 		this->_avgMeshSize = object.getMesh().getAvgMeshSize();
   	
 		std::array<iREAL,3> minVertex = object.getMesh().computeBoundaryMinVertex();
-  	std::array<iREAL,3> maxVertex = object.getMesh().computeBoundaryMaxVertex();
+		std::array<iREAL,3> maxVertex = object.getMesh().computeBoundaryMaxVertex();
 		
 		_bbox = {	minVertex[0], minVertex[1], minVertex[2],
-							maxVertex[0], maxVertex[1], maxVertex[2]};
+					maxVertex[0], maxVertex[1], maxVertex[2]};
 		
 		object.computeInertia(_material, _mass, _centreOfMass.data(), _inertia.data());
-  	object.computeInverseInertia(_inertia.data(), _inverse.data(), object.getIsObstacle());
+		object.computeInverseInertia(_inertia.data(), _inverse.data(), object.getIsObstacle());
 	} 
 	
   this->_globalParticleID = object.getGlobalParticleId();

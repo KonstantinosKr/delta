@@ -59,7 +59,7 @@ void delta::core::io::writeGeometryToVTKVTK(
     unstructuredGrid->SetPoints(points);
     unstructuredGrid->GetPointData()->SetVectors(direction);
     unstructuredGrid->GetPointData()->SetScalars(radius);
-    //unstructuredGrid->GetPointData()->SetScalars(epsilon);
+    unstructuredGrid->GetPointData()->SetScalars(epsilon);
 
     vtkSmartPointer<vtkXMLUnstructuredGridWriter> writer = vtkSmartPointer<vtkXMLUnstructuredGridWriter>::New();
     writer->SetFileName(filename.c_str());
@@ -70,7 +70,7 @@ void delta::core::io::writeGeometryToVTKVTK(
 
 void delta::core::io::writeGridGeometryToVTKVTK(
     std::string 					path,
-    int 						step,
+    int 							step,
     std::vector<std::array<iREAL, 6>> boundary)
 {
     std::string filename = path + "grid_" + std::to_string(step) + ".vtu";
@@ -224,8 +224,8 @@ void delta::core::io::writeGridGeometryToVTKVTK(
 }
 
 void delta::core::io::writeGeometryToVTK(
-    std::string 							path,
-    int 								step,
+    std::string 									path,
+    int 											step,
     std::vector<delta::core::data::ParticleRecord>& geometries)
 {
   char iter[100];
@@ -306,8 +306,8 @@ void delta::core::io::writeGeometryToVTK(
 }
 
 void delta::core::io::writeGridGeometryToVTK(
-    std::string 					path,
-    int 						step,
+    std::string 						path,
+    int 								step,
     std::vector<std::array<iREAL, 6>> 	boundary)
 {
   char iter[100];
@@ -367,7 +367,7 @@ void delta::core::io::writeGridGeometryToVTK(
 
   int numberOfLines     = numberOfBoundaries*12;
   int cellPointers      = numberOfLines*3;
-  int cellNumber 	= numberOfLines;
+  int cellNumber 		= numberOfLines;
 
   fprintf(fp,"\nCELLS %i %i\n", cellNumber, cellPointers);
 

@@ -342,7 +342,9 @@ CONSTANT:	0
 CONSTANT:	-10
 */
 
-void delta::core::io::readmbfcp(std::string filename) {
+void delta::core::io::readmbfcp(std::string 									filename,
+								std::vector<delta::world::structure::Object>& 	objects,
+								iREAL 											epsilon) {
     std::ifstream file(filename);
     if (file.is_open()) {
         std::cout << "Opened: " << filename << std::endl;
@@ -406,7 +408,7 @@ void delta::core::io::readmbfcp(std::string filename) {
             CONSTANT:	0
             CONSTANT:	-10
             */
-            std::cout << line;	
+            //std::cout << line;
             getline(file, line);
             getline(file, line);
             int bulk_materials = std::stoi(line.substr(15));
@@ -479,58 +481,62 @@ void delta::core::io::readmbfcp(std::string filename) {
 
         //extract paragraph (group of lines split by \n\n
 
-        //std::cout << line.size() << std::endl;
-
         //extract ID -- there is an issue before "ID:" is found in multiple lines"
         if (line.find("ID:") != std::string::npos && line.find("SURFID:") != 0) {
             
-            std::cout << line << std::endl;
+            //std::cout << line << std::endl;
 
             int id = std::stoi(line.substr(3));
-            std::cout << id << std::endl;
+            //std::cout << id << std::endl;
             getline(file, line);
 
             std::string label = line.substr(6);
-            std::remove(label.begin(), label.end(), ' ');
-            std::cout << label << std::endl;
+            label.erase(std::remove(label.begin(), label.end(), ' '), label.end());
+            label.erase(std::remove(label.begin(), label.end(), '\t'), label.end());
 
             getline(file, line);
             std::string kinematics = line.substr(11);
-            std::remove(kinematics.begin(), kinematics.end(), ' ');
-            std::cout << kinematics << std::endl;
-
+            kinematics.erase(std::remove(kinematics.begin(), kinematics.end(), ' '), kinematics.end());
+            kinematics.erase(std::remove(kinematics.begin(), kinematics.end(), '\t'), kinematics.end());
 
             getline(file, line);
             std::string bulk_material = line.substr(14);
-            std::remove(bulk_material.begin(), bulk_material.end(), ' ');
-            std::cout << bulk_material << std::endl;
+            bulk_material.erase(std::remove(bulk_material.begin(), bulk_material.end(), ' '), bulk_material.end());
+            bulk_material.erase(std::remove(bulk_material.begin(), bulk_material.end(), '\t'), bulk_material.end());
 
             getline(file, line);
             int shapes = std::stoi(line.substr(7));
 
             getline(file, line);
 
-            std::cout << line << std::endl;
+            //std::cout << line << std::endl;
             if (line.find("SPHERES:") != std::string::npos) {
                 getline(file, line);
                 std::cout << line << std::endl;
 
-                std::string x = line.substr(8, 4);
-                //std::cout << x << std::endl;
-                std::string y = line.substr(14, 4);
-                //std::cout << y << std::endl;
-                std::string z = line.substr(20, 4);
-                //std::cout << z << std::endl;
+                iREAL x = std::stod(line.substr(8, 4));
+                iREAL y = std::stod(line.substr(14, 4));
+                iREAL z = std::stod(line.substr(20, 4));
+
+                std::cout << x << "|" << y << "|" << z <<"|"<< std::endl;
 
                 getline(file, line);
-                std::cout << line << std::endl;
-
                 std::string radius = line.substr(8, 4);
+                iREAL rad = std::stod(radius);
                 //std::cout << radius << std::endl;
+
+
+                std::array<iREAL, 3> centreArray = {x, y, z};
+                std::array<iREAL, 3> linear = {0.0, 0.0, 0.0};
+
+                delta::world::structure::Object object("sphere", rad, id, centreArray, delta::geometry::material::MaterialType::WOOD, false, false, true, epsilon, linear, {0,0,0});
+                objects.push_back(object);
+
 
             } else if(line.find("VERTEXES:") != std::string::npos) {
             
             }
+
 
 
         }

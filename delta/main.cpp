@@ -11,15 +11,16 @@ using namespace std;
 int main(int argc, const char *argv[]) {
 
 	delta::core::Delta delta;
-	delta::core::io::readmbfcp("../input/hopper.mbfcp");
-
-	return 0;
 	std::vector<delta::world::structure::Object> particles;
+
 	bool isSphere = true;
 	int meshDensity = 20;
 	iREAL epsilon = 0.038;
 
+
+	delta::core::io::readmbfcp("../input/hopper.mbfcp", particles, epsilon);
 	//delta::world::scenarios::twoParticlesCrashDiagonal(particles, isSphere, meshDensity, epsilon);
+
 
 	/////////////////////////////////////////////////////////////////////////
 	delta::core::data::Meta::Simulation simMeta;
@@ -35,9 +36,10 @@ int main(int argc, const char *argv[]) {
 
 	auto _deltaEngine = delta::core::Engine(particles, boundary, simMeta);
 
-	for (int ii = 0; ii < 10; ii++) {
+	for (int ii = 0; ii < 1; ii++) {
 		_deltaEngine.iterate();
 	}
+
 
 	//delta::core::io::readVTKLegacy();
 

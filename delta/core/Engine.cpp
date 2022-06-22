@@ -155,8 +155,8 @@ void delta::core::Engine::hyperContacts(
 void delta::core::Engine::iterate()
 {
   delta::core::Engine::plot("../output/");
-  delta::core::Engine::contactDetection();
-  delta::core::Engine::deriveForces();
+  //delta::core::Engine::contactDetection();
+  //delta::core::Engine::deriveForces();
   delta::core::Engine::updatePosition();
 	
   _state.update();
@@ -576,6 +576,6 @@ void delta::core::Engine::plot(std::string path)
   if(_plot == delta::core::data::Meta::Plot::EveryIteration)
   {
 	delta::core::io::writeGeometryToVTKVTK(path, _state.getCurrentStepIteration(), _data.getAll());
-	delta::core::io::writeGridGeometryToVTKVTK(path, _state.getCurrentStepIteration(), _data.getGeometryGrid());
+	//delta::core::io::writeGridGeometryToVTKVTK(path, _state.getCurrentStepIteration(), _data.getGeometryGrid());
   }
 }

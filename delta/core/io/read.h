@@ -18,7 +18,7 @@
 #include <cmath>
 
 #include "../../geometry/structure/Mesh.h"
-
+#include "../../world/scenario/scenarios.h"
 
 #include <vtkUnstructuredGridReader.h>
 #include <vtkUnstructuredGrid.h>
@@ -32,9 +32,9 @@ namespace delta {
 	  	  void readVTKLegacy();
 
 	  	  void parseModelGridSchematics(
-				std::string 														fileName,
+				std::string 							fileName,
 				std::vector<std::vector<std::string>> 	&componentGrid,
-				std::vector<std::string>								&componentSeq);
+				std::vector<std::string>				&componentSeq);
 
 	  	  delta::geometry::mesh::Mesh* readVTKGeometry(char* fileName);
 
@@ -44,7 +44,7 @@ namespace delta {
 
 	  	  delta::geometry::mesh::Mesh* readPartGeometry(std::string fileName);
 
-	  	  void readmbfcp(std::string filename);
+	  	  void readmbfcp(std::string filename, std::vector<delta::world::structure::Object>& objects, iREAL epsilon);
 	  }
 	}
 }

@@ -18,11 +18,11 @@ void delta::world::scenarios::hopper(
 	std::vector<delta::world::structure::Object>&	coarse,
 	std::vector<delta::world::structure::Object>&	insitu,
 	iREAL 											centre[3],
-	int 												xzcuts,
-	int 												ycuts,
+	int 											xzcuts,
+	int 											ycuts,
 	bool 											uniform,
 	bool 											isSphere,
-	int 												meshDensity,
+	int 											meshDensity,
 	iREAL 											epsilon)
 {
   //////////////////////////////////////////////////////
@@ -228,7 +228,7 @@ void delta::world::scenarios::rotateParticle(
 void delta::world::scenarios::twoParticlesCrash(
 	std::vector<delta::world::structure::Object>& 	coarseObjects,
 	bool 											isSphere,
-	int 												meshDensity,
+	int 											meshDensity,
 	iREAL 											epsilon)
 {
   //////////////////////////////////////////////////////
@@ -242,7 +242,7 @@ void delta::world::scenarios::twoParticlesCrash(
   {
   delta::world::structure::Object objectA(
 	  "sphere", 0.01, 0, centreArray,
-	  delta::geometry::material::MaterialType::WOOD, false, false, true,epsilon, linear, {0,0,0});
+	  delta::geometry::material::MaterialType::WOOD, false, false, true, epsilon, linear, {0,0,0});
   coarseObjects.push_back(objectA);
 
   centreArray[0] = 0.8;
