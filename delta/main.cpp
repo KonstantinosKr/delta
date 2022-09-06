@@ -17,11 +17,10 @@ int main(int argc, const char *argv[]) {
 	int meshDensity = 20;
 	iREAL epsilon = 0.038;
 
-
 	delta::core::io::readmbfcp("../input/hopper.mbfcp", particles, epsilon);
 	//delta::world::scenarios::twoParticlesCrashDiagonal(particles, isSphere, meshDensity, epsilon);
 
-
+	
 	/////////////////////////////////////////////////////////////////////////
 	delta::core::data::Meta::Simulation simMeta;
 
