@@ -22,8 +22,8 @@
  SOFTWARE.
  */
 
-#include <geometry/shape/hopper.h>
-#include "../operators/hull/hull.h"
+#include <delta/geometry/shape/hopper.h>
+#include "delta/geometry/operators/hull/hull.h"
 
 void delta::geometry::hardcoded::generateInnerHopper(
 		iREAL  center[3],

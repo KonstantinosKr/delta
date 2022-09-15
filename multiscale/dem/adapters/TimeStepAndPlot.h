@@ -44,12 +44,10 @@ class dem::adapters::TimeStepAndPlot {
     typedef mappings::Collision Mapping0;
     typedef mappings::MoveParticles Mapping1;
     typedef mappings::Plot Mapping2;
-    typedef adapters::TimeStepAndPlot2VTKGridVisualiser_3 Mapping3;
 
      Mapping0  _map2Collision;
      Mapping1  _map2MoveParticles;
      Mapping2  _map2Plot;
-     Mapping3  _map2TimeStepAndPlot2VTKGridVisualiser_3;
 
 
   public:

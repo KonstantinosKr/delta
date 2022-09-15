@@ -40,10 +40,8 @@ namespace dem {
 class dem::adapters::PlotData {
   private:
     typedef mappings::Plot Mapping0;
-    typedef adapters::PlotData2VTKGridVisualiser_1 Mapping1;
 
      Mapping0  _map2Plot;
-     Mapping1  _map2PlotData2VTKGridVisualiser_1;
 
 
   public:

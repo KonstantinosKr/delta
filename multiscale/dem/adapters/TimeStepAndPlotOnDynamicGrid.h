@@ -46,13 +46,11 @@ class dem::adapters::TimeStepAndPlotOnDynamicGrid {
     typedef mappings::Collision Mapping1;
     typedef mappings::MoveParticles Mapping2;
     typedef mappings::Plot Mapping3;
-    typedef adapters::TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4 Mapping4;
 
      Mapping0  _map2AdoptGrid;
      Mapping1  _map2Collision;
      Mapping2  _map2MoveParticles;
      Mapping3  _map2Plot;
-     Mapping4  _map2TimeStepAndPlotOnDynamicGrid2VTKGridVisualiser_4;
 
 
   public:

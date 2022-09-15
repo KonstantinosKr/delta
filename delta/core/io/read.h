@@ -20,10 +20,10 @@
 #include "../../geometry/structure/Mesh.h"
 #include "../../world/scenario/scenarios.h"
 
-#include <vtkUnstructuredGridReader.h>
+/*#include <vtkUnstructuredGridReader.h>
 #include <vtkUnstructuredGrid.h>
 #include <vtkSmartPointer.h>
-
+*/
 
 namespace delta {
 	namespace core {

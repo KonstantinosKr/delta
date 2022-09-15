@@ -42,11 +42,9 @@ class dem::adapters::CreateGridAndPlot {
   private:
     typedef mappings::CreateGrid Mapping0;
     typedef mappings::Plot Mapping1;
-    typedef adapters::CreateGridAndPlot2VTKGridVisualiser_2 Mapping2;
 
      Mapping0  _map2CreateGrid;
      Mapping1  _map2Plot;
-     Mapping2  _map2CreateGridAndPlot2VTKGridVisualiser_2;
 
 
   public:

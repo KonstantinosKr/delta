@@ -7,7 +7,7 @@
 #include "world/scenario/scenarios.h"
 
 using namespace std;
-
+/*
 int main(int argc, const char *argv[]) {
 
 	delta::core::Delta delta;
@@ -44,3 +44,4 @@ int main(int argc, const char *argv[]) {
 
 	cout << "hello master" << endl;
 }
+*/

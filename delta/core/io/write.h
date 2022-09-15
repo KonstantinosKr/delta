@@ -17,7 +17,7 @@
 #include "../../core/data/ParticleRecord.h"
 #include "../../geometry/structure/Mesh.h"
 #include "../../world/structure/Object.h"
-
+/*
 #include <vtkSmartPointer.h>
 #include <vtkTetra.h>
 #include <vtkLine.h>
@@ -42,6 +42,7 @@
 #include <vtkPolyDataNormals.h>
 #include <vtkFloatArray.h>
 #include <vtkMath.h>
+*/
 #include <string>
 
 namespace delta {

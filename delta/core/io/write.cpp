@@ -6,7 +6,7 @@
  */
 
 #include "write.h"
-
+/*
 void delta::core::io::writeGeometryToVTKVTK(
     std::string                                                             path,
     int                                                                     step,
@@ -222,7 +222,7 @@ void delta::core::io::writeGridGeometryToVTKVTK(
     writer->Write();
 
 }
-
+*/
 void delta::core::io::writeGeometryToVTK(
     std::string 									path,
     int 											step,

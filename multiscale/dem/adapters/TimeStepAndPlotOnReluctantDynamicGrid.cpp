@@ -6,7 +6,6 @@ peano::CommunicationSpecification   dem::adapters::TimeStepAndPlotOnReluctantDyn
     &  _map2ReluctantlyAdoptGrid.communicationSpecification()
     &  _map2MoveParticles.communicationSpecification()
     &  _map2Plot.communicationSpecification()
-    &  _map2TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3.communicationSpecification()
 
   ;
 }
@@ -17,7 +16,6 @@ peano::MappingSpecification   dem::adapters::TimeStepAndPlotOnReluctantDynamicGr
     &  _map2ReluctantlyAdoptGrid.touchVertexLastTimeSpecification(level)
     &  _map2MoveParticles.touchVertexLastTimeSpecification(level)
     &  _map2Plot.touchVertexLastTimeSpecification(level)
-    &  _map2TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3.touchVertexLastTimeSpecification(level)
 
   ;
 }
@@ -28,7 +26,6 @@ peano::MappingSpecification   dem::adapters::TimeStepAndPlotOnReluctantDynamicGr
     &  _map2ReluctantlyAdoptGrid.touchVertexFirstTimeSpecification(level)
     &  _map2MoveParticles.touchVertexFirstTimeSpecification(level)
     &  _map2Plot.touchVertexFirstTimeSpecification(level)
-    &  _map2TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3.touchVertexFirstTimeSpecification(level)
 
   ;
 }
@@ -39,7 +36,6 @@ peano::MappingSpecification   dem::adapters::TimeStepAndPlotOnReluctantDynamicGr
     &  _map2ReluctantlyAdoptGrid.enterCellSpecification(level)
     &  _map2MoveParticles.enterCellSpecification(level)
     &  _map2Plot.enterCellSpecification(level)
-    &  _map2TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3.enterCellSpecification(level)
 
   ;
 }
@@ -50,7 +46,6 @@ peano::MappingSpecification   dem::adapters::TimeStepAndPlotOnReluctantDynamicGr
     &  _map2ReluctantlyAdoptGrid.leaveCellSpecification(level)
     &  _map2MoveParticles.leaveCellSpecification(level)
     &  _map2Plot.leaveCellSpecification(level)
-    &  _map2TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3.leaveCellSpecification(level)
 
   ;
 }
@@ -61,7 +56,6 @@ peano::MappingSpecification   dem::adapters::TimeStepAndPlotOnReluctantDynamicGr
     &  _map2ReluctantlyAdoptGrid.ascendSpecification(level)
     &  _map2MoveParticles.ascendSpecification(level)
     &  _map2Plot.ascendSpecification(level)
-    &  _map2TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3.ascendSpecification(level)
 
   ;
 }
@@ -72,7 +66,6 @@ peano::MappingSpecification   dem::adapters::TimeStepAndPlotOnReluctantDynamicGr
     &  _map2ReluctantlyAdoptGrid.descendSpecification(level)
     &  _map2MoveParticles.descendSpecification(level)
     &  _map2Plot.descendSpecification(level)
-    &  _map2TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3.descendSpecification(level)
 
   ;
 }
@@ -119,7 +112,6 @@ void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid::createHangingVertex(
   _map2ReluctantlyAdoptGrid.createHangingVertex(fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
   _map2MoveParticles.createHangingVertex(fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
   _map2Plot.createHangingVertex(fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
-  _map2TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3.createHangingVertex(fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
 
 
 }
@@ -137,7 +129,6 @@ void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid::destroyHangingVertex(
   _map2ReluctantlyAdoptGrid.destroyHangingVertex(fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
   _map2MoveParticles.destroyHangingVertex(fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
   _map2Plot.destroyHangingVertex(fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
-  _map2TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3.destroyHangingVertex(fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
 
 }
 
@@ -154,7 +145,6 @@ void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid::createInnerVertex(
   _map2ReluctantlyAdoptGrid.createInnerVertex(fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
   _map2MoveParticles.createInnerVertex(fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
   _map2Plot.createInnerVertex(fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
-  _map2TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3.createInnerVertex(fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
 
 }
 
@@ -171,7 +161,6 @@ void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid::createBoundaryVertex(
   _map2ReluctantlyAdoptGrid.createBoundaryVertex( fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
   _map2MoveParticles.createBoundaryVertex( fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
   _map2Plot.createBoundaryVertex( fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
-  _map2TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3.createBoundaryVertex( fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
 
 }
 
@@ -188,7 +177,6 @@ void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid::destroyVertex(
   _map2ReluctantlyAdoptGrid.destroyVertex( fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
   _map2MoveParticles.destroyVertex( fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
   _map2Plot.destroyVertex( fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
-  _map2TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3.destroyVertex( fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
 
 }
 
@@ -205,7 +193,6 @@ void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid::createCell(
   _map2ReluctantlyAdoptGrid.createCell( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
   _map2MoveParticles.createCell( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
   _map2Plot.createCell( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
-  _map2TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3.createCell( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
 
 }
 
@@ -222,7 +209,6 @@ void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid::destroyCell(
   _map2ReluctantlyAdoptGrid.destroyCell( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
   _map2MoveParticles.destroyCell( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
   _map2Plot.destroyCell( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
-  _map2TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3.destroyCell( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
 
 }
 
@@ -444,7 +430,6 @@ void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid::touchVertexFirstTime(
   _map2ReluctantlyAdoptGrid.touchVertexFirstTime( fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
   _map2MoveParticles.touchVertexFirstTime( fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
   _map2Plot.touchVertexFirstTime( fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
-  _map2TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3.touchVertexFirstTime( fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
 
 }
 
@@ -461,7 +446,6 @@ void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid::touchVertexLastTime(
   _map2ReluctantlyAdoptGrid.touchVertexLastTime( fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
   _map2MoveParticles.touchVertexLastTime( fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
   _map2Plot.touchVertexLastTime( fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
-  _map2TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3.touchVertexLastTime( fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
 
 }
 
@@ -478,7 +462,6 @@ void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid::enterCell(
   _map2ReluctantlyAdoptGrid.enterCell( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
   _map2MoveParticles.enterCell( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
   _map2Plot.enterCell( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
-  _map2TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3.enterCell( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
 
 }
 
@@ -495,7 +478,6 @@ void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid::leaveCell(
   _map2ReluctantlyAdoptGrid.leaveCell( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
   _map2MoveParticles.leaveCell( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
   _map2Plot.leaveCell( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
-  _map2TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3.leaveCell( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
 
 }
 
@@ -506,7 +488,6 @@ void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid::beginIteration(
   _map2ReluctantlyAdoptGrid.beginIteration( solverState );
   _map2MoveParticles.beginIteration( solverState );
   _map2Plot.beginIteration( solverState );
-  _map2TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3.beginIteration( solverState );
 
 }
 
@@ -517,7 +498,6 @@ void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid::endIteration(
   _map2ReluctantlyAdoptGrid.endIteration( solverState );
   _map2MoveParticles.endIteration( solverState );
   _map2Plot.endIteration( solverState );
-  _map2TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3.endIteration( solverState );
 
 }
 
@@ -535,7 +515,6 @@ void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid::descend(
   _map2ReluctantlyAdoptGrid.descend( fineGridCells, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell );
   _map2MoveParticles.descend( fineGridCells, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell );
   _map2Plot.descend( fineGridCells, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell );
-  _map2TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3.descend( fineGridCells, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell );
 
 }
 
@@ -551,6 +530,5 @@ void dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid::ascend(
   _map2ReluctantlyAdoptGrid.ascend( fineGridCells, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell );
   _map2MoveParticles.ascend( fineGridCells, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell );
   _map2Plot.ascend( fineGridCells, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell );
-  _map2TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3.ascend( fineGridCells, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell );
 
 }

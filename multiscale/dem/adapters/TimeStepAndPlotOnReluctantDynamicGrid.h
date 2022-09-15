@@ -44,12 +44,10 @@ class dem::adapters::TimeStepAndPlotOnReluctantDynamicGrid {
     typedef mappings::ReluctantlyAdoptGrid Mapping0;
     typedef mappings::MoveParticles Mapping1;
     typedef mappings::Plot Mapping2;
-    typedef adapters::TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3 Mapping3;
 
      Mapping0  _map2ReluctantlyAdoptGrid;
      Mapping1  _map2MoveParticles;
      Mapping2  _map2Plot;
-     Mapping3  _map2TimeStepAndPlotOnReluctantDynamicGrid2VTKGridVisualiser_3;
 
 
   public:

@@ -1,11 +1,11 @@
-#include <geometry/shape/cube.h>
-#include <geometry/shape/granulate.h>
-#include <geometry/shape/graphite.h>
-#include <geometry/shape/hopper.h>
-#include "../structure/Object.h"
+#include <delta/geometry/shape/cube.h>
+#include <delta/geometry/shape/granulate.h>
+#include <delta/geometry/shape/graphite.h>
+#include <delta/geometry/shape/hopper.h>
+#include "delta/world/structure/Object.h"
 
 #include <stdio.h>
-#include "../../core/algo.h"
+#include "delta//core/algo.h"
 
 delta::world::structure::Object::Object()
 {

@@ -148,7 +148,7 @@ void delta::core::io::readScenarioSpecification(std::string fileName)
 {
 
 }
-
+/*
 std::vector<delta::geometry::mesh::Mesh> delta::core::io::readGeometry(std::string fileName)
 {
   Assimp::Importer importer;
@@ -212,9 +212,9 @@ std::vector<delta::geometry::mesh::Mesh> delta::core::io::readGeometry(std::stri
         int idxC = mesh->mFaces[f_i].mIndices[index+2];
         std::array<int, 3> triangle = {idxA, idxB, idxC};
 
-        /*std::cout << uniqueVertices[idxA][0] << " " << uniqueVertices[idxA][1] << " " << uniqueVertices[idxA][2] << std::endl;
-        std::cout << uniqueVertices[idxB][0] << " " << uniqueVertices[idxB][1] << " " << uniqueVertices[idxB][2] << std::endl;
-        std::cout << uniqueVertices[idxC][0] << " " << uniqueVertices[idxC][1] << " " << uniqueVertices[idxC][2] << std::endl;*/
+        //std::cout << uniqueVertices[idxA][0] << " " << uniqueVertices[idxA][1] << " " << uniqueVertices[idxA][2] << std::endl;
+        //std::cout << uniqueVertices[idxB][0] << " " << uniqueVertices[idxB][1] << " " << uniqueVertices[idxB][2] << std::endl;
+        //std::cout << uniqueVertices[idxC][0] << " " << uniqueVertices[idxC][1] << " " << uniqueVertices[idxC][2] << std::endl;
 
         //#pragma omp critical
         triangleFaces.push_back(triangle);
@@ -232,7 +232,8 @@ std::vector<delta::geometry::mesh::Mesh> delta::core::io::readGeometry(std::stri
 
   return meshVector;
 }
-
+*/
+/*
 delta::geometry::mesh::Mesh* delta::core::io::readPartGeometry(std::string fileName)
 {
   Assimp::Importer importer;
@@ -297,8 +298,8 @@ delta::geometry::mesh::Mesh* delta::core::io::readPartGeometry(std::string fileN
     }
   }
   return new delta::geometry::mesh::Mesh(triangleFaces, uniqueVertices);
-}
-
+}*/
+/*
 void delta::core::io::readVTKLegacy() {
 
     // Get all data from the file
@@ -315,6 +316,7 @@ void delta::core::io::readVTKLegacy() {
         std::cout << "output has " << output->GetNumberOfPoints() << " points." << std::endl;
     }
 }
+*/
 
 /*
  *

@@ -575,7 +575,7 @@ void delta::core::Engine::plot(std::string path)
 {
   if(_plot == delta::core::data::Meta::Plot::EveryIteration)
   {
-	delta::core::io::writeGeometryToVTKVTK(path, _state.getCurrentStepIteration(), _data.getAll());
+	//delta::core::io::writeGeometryToVTKVTK(path, _state.getCurrentStepIteration(), _data.getAll());
 	//delta::core::io::writeGridGeometryToVTKVTK(path, _state.getCurrentStepIteration(), _data.getGeometryGrid());
   }
 }

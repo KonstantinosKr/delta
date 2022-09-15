@@ -5,14 +5,15 @@
  *      Author: konstantinos
  */
 
-#include <geometry/shape/hopper.h>
+
 #include "scenarios.h"
 #include "configuration.h"
-#include "../../geometry/shape/graphite.h"
-#include "../../geometry/shape/cube.h"
-#include "../../geometry/shape/granulate.h"
-#include "../../geometry/structure/Mesh.h"
-#include "../../geometry/material.h"
+#include "delta/geometry/shape/graphite.h"
+#include "delta/geometry/shape/cube.h"
+#include "delta/geometry/shape/granulate.h"
+#include "delta/geometry/structure/Mesh.h"
+#include "delta/geometry/material.h"
+#include "delta/geometry/shape/hopper.h"
 
 void delta::world::scenarios::hopper(
 	std::vector<delta::world::structure::Object>&	coarse,
@@ -115,7 +116,7 @@ void delta::world::scenarios::helicopter(
 	std::vector<delta::world::structure::Object>& 	coarseObjects,
 	iREAL 											epsilon)
 {
-  delta::geometry::mesh::Mesh *rotorMesh = delta::core::io::readPartGeometry("../input/Rotor.stl");
+  /*delta::geometry::mesh::Mesh *rotorMesh = delta::core::io::readPartGeometry("../input/Rotor.stl");
   delta::geometry::mesh::Mesh *bodyMesh = delta::core::io::readPartGeometry("../input/Body.stl");
   delta::geometry::mesh::Mesh *tailRotorMesh = delta::core::io::readPartGeometry("../input/TailRotor.stl");
 
@@ -147,13 +148,14 @@ void delta::world::scenarios::helicopter(
   coarseObjects.push_back(rotor);
   coarseObjects.push_back(body);
   coarseObjects.push_back(tailRotor);
+  */
 }
 
 void delta::world::scenarios::kaikoura(
 	std::vector<delta::world::structure::Object>& 	coarseObjects,
 	iREAL 											epsilon)
 {
-  delta::geometry::mesh::Mesh *kaikoura = delta::core::io::readPartGeometry("../input/KaikouraUlrichetal.stl");
+  /*delta::geometry::mesh::Mesh *kaikoura = delta::core::io::readPartGeometry("../input/KaikouraUlrichetal.stl");
 
   std::array<iREAL, 3> centre 	= {0.5, 0.5, 0.5};
   std::array<iREAL, 3> linear 	= {0.0, 0.0, 0.0};
@@ -164,13 +166,14 @@ void delta::world::scenarios::kaikoura(
 								  delta::geometry::material::MaterialType::WOOD,
 								  false, false, true, epsilon, linear, angular);
 
-  coarseObjects.push_back(kaikouraObject);
+  coarseObjects.push_back(kaikouraObject);*/
 }
 
 void delta::world::scenarios::turbine(
 	std::vector<delta::world::structure::Object>& 	coarseObjects,
 	iREAL 											epsilon)
 {
+  /*
   delta::geometry::mesh::Mesh *meshA = delta::core::io::readPartGeometry("../input/turbine.stl");
 
   std::array<iREAL, 3> 					centre 	= {0.5, 0.5, 0.43};
@@ -196,6 +199,7 @@ void delta::world::scenarios::turbine(
 								  false, false, true, epsilon, linear, angular);
 
   coarseObjects.push_back(turbineB);
+  */
 }
 
 void delta::world::scenarios::rotateParticle(
