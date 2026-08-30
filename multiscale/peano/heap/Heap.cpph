@@ -1,0 +1,640 @@
+#include <limits>
+#include <memory.h> 
+
+
+#include "tarch/Assertions.h"
+#include "tarch/services/ServiceRepository.h"
+#include "tarch/services/ServiceFactory.h"
+
+
+#include "peano/performanceanalysis/Analysis.h"
+#include "peano/performanceanalysis/ScorePMacros.h"
+
+#include "tarch/multicore/Lock.h"
+
+#include "peano/datatraversal/TaskSet.h"
+
+
+template <class Data, class MasterWorkerExchanger, class JoinForkExchanger, class NeighbourDataExchanger>
+tarch::logging::Log peano::heap::Heap<Data, MasterWorkerExchanger, JoinForkExchanger, NeighbourDataExchanger>::_log("peano::heap::Heap");
+
+
+template <class Data, class MasterWorkerExchanger, class JoinForkExchanger, class NeighbourDataExchanger>
+tarch::multicore::BooleanSemaphore  peano::heap::Heap<Data, MasterWorkerExchanger, JoinForkExchanger, NeighbourDataExchanger>::_recycleAndDeleteSemaphore;
+
+
+
+template <class Data, class MasterWorkerExchanger, class JoinForkExchanger, class NeighbourDataExchanger>
+peano::heap::Heap<Data, MasterWorkerExchanger, JoinForkExchanger, NeighbourDataExchanger>::Heap()
+  : _heapData(), _deletedHeapIndices(), _recycledHeapIndices(), _nextIndex(0)
+  #ifdef Parallel
+  , _neighbourDataExchangerMetaDataTag(tarch::parallel::Node::reserveFreeTag("heap[meta-data,neighbour]"))
+  , _neighbourDataExchangerDataTag(tarch::parallel::Node::reserveFreeTag("heap[data,neighbour]"))
+  , _masterWorkerExchanger("master-worker-exchanger", tarch::parallel::Node::reserveFreeTag("heap[meta-data,master-worker]"), tarch::parallel::Node::reserveFreeTag("heap[data,master-worker]"))
+  , _joinForkExchanger("join/fork-exchanger", tarch::parallel::Node::reserveFreeTag("heap[meta-data,join/fork]"), tarch::parallel::Node::reserveFreeTag("heap[data,join/fork]"))
+  , _neighbourDataExchanger()
+  #endif
+  ,_maximumNumberOfHeapEntries(0)
+  ,_numberOfHeapAllocations(0)
+  ,_numberOfHeapFrees(0)
+  ,_name("<heap name not set>")
+{
+  #ifdef Parallel
+  if (Data::Datatype==0) {
+    Data::initDatatype();
+  }
+  if(peano::heap::records::MetaInformation::Datatype==0) {
+    peano::heap::records::MetaInformation::initDatatype();
+  }
+  #endif
+
+  tarch::services::ServiceRepository::getInstance().addService( this, "peano::heap::Heap<Data, MasterWorkerExchanger, JoinForkExchanger, NeighbourDataExchanger>" );
+  registerHeap( this );
+}
+
+
+template <class Data, class MasterWorkerExchanger, class JoinForkExchanger, class NeighbourDataExchanger>
+peano::heap::Heap<Data, MasterWorkerExchanger, JoinForkExchanger, NeighbourDataExchanger>::~Heap() {
+  deleteAllData();
+}
+
+
+template <class Data, class MasterWorkerExchanger, class JoinForkExchanger, class NeighbourDataExchanger>
+void peano::heap::Heap<Data, MasterWorkerExchanger, JoinForkExchanger, NeighbourDataExchanger>::logContentToWarningDevice() {
+  for(typename HeapContainer::const_iterator i = _heapData.begin(); i != _heapData.end(); i++) {
+    for (typename HeapEntries::const_iterator j = i->second->begin(); j!=i->second->end(); j++) {
+      logWarning( "plotContentToWarningDevice()", j->toString() );
+    }
+  }
+}
+
+
+
+template <class Data, class MasterWorkerExchanger, class JoinForkExchanger, class NeighbourDataExchanger>
+void peano::heap::Heap<Data, MasterWorkerExchanger, JoinForkExchanger, NeighbourDataExchanger>::deleteAllData() {
+  for(typename HeapContainer::iterator i = _heapData.begin(); i != _heapData.end(); i++) {
+    assertionMsg((*i).second != 0, _name << ": Null-pointer was stored in heap data map.");
+    delete (*i).second;
+  }
+  _heapData.clear();
+
+  #ifdef Parallel
+  tarch::multicore::Lock lock(_neighbourDataMapSemaphore);
+  for (auto& p: _neighbourDataExchanger) {
+    p.second->shutdown();
+    delete p.second;
+  }
+
+  _neighbourDataExchanger.clear();
+  #endif
+}
+
+
+template <class Data, class MasterWorkerExchanger, class JoinForkExchanger, class NeighbourDataExchanger>
+void peano::heap::Heap<Data, MasterWorkerExchanger, JoinForkExchanger, NeighbourDataExchanger>::plotStatistics() const {
+  if(_name != "") {
+    logInfo("plotStatistics()", "Statistics for " << _name);
+  }
+  logInfo("plotStatistics()", "size of heap: " << _heapData.size() << " entries" );
+  logInfo("plotStatistics()", "deleted but not reassigned heap indices: " << _deletedHeapIndices.size() );
+  logInfo("plotStatistics()", "marked to be recycled but not reassigned heap indices: " << _recycledHeapIndices.size() );
+
+  logInfo("plotStatistics()", "maximum number of allocated heap entries: " << _maximumNumberOfHeapEntries );
+  logInfo("plotStatistics()", "number of heap allocations: " << _numberOfHeapAllocations );
+  logInfo("plotStatistics()", "number of heap frees: " << _numberOfHeapFrees );
+
+  #ifdef Parallel
+  _masterWorkerExchanger.plotStatistics();
+  _joinForkExchanger.plotStatistics();
+
+  for (auto& p: _neighbourDataExchanger) {
+    p.second->plotStatistics();
+  }
+  #endif
+}
+
+
+template <class Data, class MasterWorkerExchanger, class JoinForkExchanger, class NeighbourDataExchanger>
+void peano::heap::Heap<Data, MasterWorkerExchanger, JoinForkExchanger, NeighbourDataExchanger>::clearStatistics() {
+  _maximumNumberOfHeapEntries   = 0;
+  _numberOfHeapAllocations      = 0;
+  _numberOfHeapFrees            = 0;
+
+  #ifdef Parallel
+  _masterWorkerExchanger.clearStatistics();
+  _joinForkExchanger.clearStatistics();
+
+  tarch::multicore::Lock neighbourLock(_neighbourDataMapSemaphore);
+  for (auto& p: _neighbourDataExchanger) {
+    p.second->clearStatistics();
+  }
+  #endif
+}
+
+
+template <class Data, class MasterWorkerExchanger, class JoinForkExchanger, class NeighbourDataExchanger>
+peano::heap::Heap<Data, MasterWorkerExchanger, JoinForkExchanger, NeighbourDataExchanger>& peano::heap::Heap<Data, MasterWorkerExchanger, JoinForkExchanger, NeighbourDataExchanger>::getInstance() {
+  static peano::heap::Heap<Data, MasterWorkerExchanger, JoinForkExchanger, NeighbourDataExchanger> instance;
+  return instance;
+}
+
+
+template <class Data, class MasterWorkerExchanger, class JoinForkExchanger, class NeighbourDataExchanger>
+void peano::heap::Heap<Data, MasterWorkerExchanger, JoinForkExchanger, NeighbourDataExchanger>::reserveHeapEntriesForRecycling(int numberOfEntries) {
+  tarch::multicore::Lock lock(_recycleAndDeleteSemaphore);
+
+  for (int i=0; i<numberOfEntries; i++) {
+    _recycledHeapIndices.insert( _nextIndex );
+
+    std::vector<Data>* newData = new (std::nothrow) std::vector<Data>();
+    if (newData==nullptr) {
+      logError( "reserveHeapEntriesForRecycling(int)", "memory allocation for recycle entry failed. Terminate" );
+    }
+    _heapData.insert( typename HeapContainer::value_type(_nextIndex,newData) );
+
+    assertion( _heapData.find(_nextIndex) != _heapData.end() );
+    
+    logDebug( "reserveHeapEntriesForRecycling(int)", "inserted recycle index " << _nextIndex << " manually" );
+
+    _nextIndex++;
+  }
+  lock.free();
+}
+
+
+template <class Data, class MasterWorkerExchanger, class JoinForkExchanger, class NeighbourDataExchanger>
+bool peano::heap::Heap<Data, MasterWorkerExchanger, JoinForkExchanger, NeighbourDataExchanger>::areRecycleEntriesAvailable() const {
+  tarch::multicore::Lock lock(_recycleAndDeleteSemaphore);
+  bool result = !_recycledHeapIndices.empty();
+  lock.free();
+  return result;
+}
+
+
+template <class Data, class MasterWorkerExchanger, class JoinForkExchanger, class NeighbourDataExchanger>
+void peano::heap::Heap<Data, MasterWorkerExchanger, JoinForkExchanger, NeighbourDataExchanger>::createDataForIndex(int wantedIndex, int numberOfEntries, int initialCapacity) {
+  logTraceInWith3Arguments( "createDataForIndex()", wantedIndex, numberOfEntries, initialCapacity );
+
+  assertion2(numberOfEntries >= 0, numberOfEntries, initialCapacity);
+  assertion2(initialCapacity==0 || initialCapacity>=numberOfEntries, numberOfEntries, initialCapacity);
+
+  tarch::multicore::Lock lock(_recycleAndDeleteSemaphore);
+  _deletedHeapIndices.erase(wantedIndex);
+  _recycledHeapIndices.erase(wantedIndex);
+
+  if (_nextIndex<=wantedIndex){
+    _nextIndex = wantedIndex+1;
+  }
+
+  assertion3(_heapData.count(wantedIndex)==0, "heap entry does exist already", wantedIndex, _name );
+  std::vector<Data>* newData = new (std::nothrow) std::vector<Data>(numberOfEntries);
+  if (newData==nullptr) {
+    logError( "createDataForIndex(int,int,int)", "memory allocation of " << numberOfEntries << " entries failed. Terminate" );
+  }
+  _heapData.insert( typename HeapContainer::value_type(wantedIndex,newData) );
+  if (initialCapacity>0) {
+    getData(wantedIndex).reserve(initialCapacity);
+  }
+
+  assertionMsg(_heapData.count(wantedIndex)==1, "insertion of heap data not successful.");
+  assertion(wantedIndex >= 0);
+
+  _numberOfHeapAllocations += 1;
+
+  if(static_cast<int>(_heapData.size()) > _maximumNumberOfHeapEntries) {
+    _maximumNumberOfHeapEntries = static_cast<int>(_heapData.size());
+  }
+
+  lock.free();
+
+  logTraceOut( "createDataForIndex()" );
+}
+
+
+template <class Data, class MasterWorkerExchanger, class JoinForkExchanger, class NeighbourDataExchanger>
+int peano::heap::Heap<Data, MasterWorkerExchanger, JoinForkExchanger, NeighbourDataExchanger>::createData(int numberOfEntries, int initialCapacity, Allocation allocation) {
+  logTraceInWith2Arguments( "createData(int,int,Allocation)", numberOfEntries, initialCapacity );
+
+  assertion2(numberOfEntries >= 0, numberOfEntries, initialCapacity);
+  assertion2(initialCapacity==0 || initialCapacity>=numberOfEntries, numberOfEntries, initialCapacity);
+
+  tarch::multicore::Lock lock(_recycleAndDeleteSemaphore);
+
+  int index;
+  bool allocateNewEntry;
+  if ( _recycledHeapIndices.empty() && allocation==Allocation::UseOnlyRecycledEntries) {
+    logTraceOutWith1Argument( "createData(int,int,Allocation)", "not served" );
+    logWarning( "createData(int,int,Allocation)", "was not able to create data with argument Allocation::UseOnlyRecycledEntries as no recycled entries have been available" );
+    lock.free();
+    return -1;
+  }
+
+  if ( !_recycledHeapIndices.empty() && allocation!=Allocation::DoNotUseAnyRecycledEntry ) {
+    index = *_recycledHeapIndices.begin();
+    allocateNewEntry = false;
+    _recycledHeapIndices.erase(index);
+    assertionMsg(
+      _heapData.count(index)==1,
+      "recycled heap entry " << index << " of heap " << _name << 
+      " seems not to exist. Next free entry would have been " << *_recycledHeapIndices.begin()
+    );
+  }
+  else if (!_deletedHeapIndices.empty() ){
+    index = *_deletedHeapIndices.begin();
+    allocateNewEntry = true;
+    _deletedHeapIndices.erase(index);
+    assertionMsg(_heapData.count(index)==0, "heap entry of heap " + _name + " does exist already.");
+  }
+  else {
+    index = _nextIndex;
+    allocateNewEntry = true;
+    _nextIndex++;
+    assertionMsg(_heapData.count(index)==0, "heap entry of heap " + _name + " does exist already.");
+  }
+
+  if (allocateNewEntry) {
+    std::vector<Data>* newData = new (std::nothrow) std::vector<Data>(numberOfEntries);
+    if (newData==nullptr) {
+      logError( "createData(int,int,Allocation)", "memory allocation of " << numberOfEntries << " entries failed. Terminate" );
+    }
+    _heapData.insert( typename HeapContainer::value_type(index,newData) );
+  }
+  else {
+    getData(index).resize(numberOfEntries);
+  }
+  
+  //
+  // According to several webpage (https://stackoverflow.com/questions/23502291/is-shrink-to-fit-the-proper-way-of-reducing-the-capacity-a-stdvector-to-its)
+  // this causes all kind of problems and doesn't work anyway.
+  //
+  //_heapData[index]->shrink_to_fit();
+
+  if (initialCapacity>0) {
+    getData(index).reserve(initialCapacity);
+  }
+
+  assertion5(
+    _heapData.count(index)==1,
+    allocateNewEntry, numberOfEntries, initialCapacity, peano::heap::toString(allocation), _name
+  );
+  assertion(index >= 0);
+
+  _numberOfHeapAllocations += 1;
+
+  if(static_cast<int>(_heapData.size()) > _maximumNumberOfHeapEntries) {
+    _maximumNumberOfHeapEntries = static_cast<int>(_heapData.size());
+  }
+  lock.free();
+
+  logTraceOutWith2Arguments("createData(int,int,Allocation)", index, _numberOfHeapAllocations);
+  return index;
+}
+
+
+template <class Data, class MasterWorkerExchanger, class JoinForkExchanger, class NeighbourDataExchanger>
+std::vector<Data>& peano::heap::Heap<Data, MasterWorkerExchanger, JoinForkExchanger, NeighbourDataExchanger>::getData(int index) {
+  #ifdef Asserts
+  std::string message = "Trying to get heap data for unknown index. Has the index been initialized correctly?";
+  #endif
+
+  assertion4(_heapData.count(index)==1, _name, message, index, _heapData.size());
+
+  #if defined(SharedTBB)
+  typename HeapContainer::accessor result;
+  _heapData.find(result,index);
+  return *(result->second);
+  #else
+  assertionMsg(_heapData[index] != 0, _name << ": Null-pointer was stored in heap data map");
+  return *(_heapData[index]);
+  #endif
+}
+
+
+template <class Data, class MasterWorkerExchanger, class JoinForkExchanger, class NeighbourDataExchanger>
+const std::vector<Data>& peano::heap::Heap<Data, MasterWorkerExchanger, JoinForkExchanger, NeighbourDataExchanger>::getData(int index) const {
+  #ifdef Asserts
+  std::string message = "Trying to get heap data for unknown index. Has the index been initialized correctly?";
+  #endif
+  assertion4(_heapData.find(index) != _heapData.end(), _name, message, index, _heapData.size());
+  assertionMsg(_heapData[index] != 0, _name << ": Null-pointer was stored in heap data map");
+  return *(_heapData[index]);
+}
+
+
+template <class Data, class MasterWorkerExchanger, class JoinForkExchanger, class NeighbourDataExchanger>
+void peano::heap::Heap<Data, MasterWorkerExchanger, JoinForkExchanger, NeighbourDataExchanger>::moveData( int toIndex, int fromIndex ) {
+  assertion4(_heapData.find(toIndex) != _heapData.end(), _name, toIndex, fromIndex, _heapData.size());
+  assertion4(_heapData.find(fromIndex) != _heapData.end(), _name, toIndex, fromIndex, _heapData.size());
+
+  _heapData[toIndex]->insert( _heapData[toIndex]->end(), _heapData[fromIndex]->begin(), _heapData[fromIndex]->end() );
+  _heapData[fromIndex]->clear();
+}
+
+
+template <class Data, class MasterWorkerExchanger, class JoinForkExchanger, class NeighbourDataExchanger>
+void peano::heap::Heap<Data, MasterWorkerExchanger, JoinForkExchanger, NeighbourDataExchanger>::addData( int index, const HeapEntries& entries ) {
+  assertion3(_heapData.find(index) != _heapData.end(), _name, index, _heapData.size());
+
+  _heapData[index]->insert( _heapData[index]->end(), entries.begin(), entries.end() );
+}
+
+
+template <class Data, class MasterWorkerExchanger, class JoinForkExchanger, class NeighbourDataExchanger>
+void peano::heap::Heap<Data, MasterWorkerExchanger, JoinForkExchanger, NeighbourDataExchanger>::addData( int index, const Data&  entry ) {
+  assertion3(_heapData.find(index) != _heapData.end(), _name, index, _heapData.size());
+
+  _heapData[index]->push_back(entry);
+}
+
+
+template <class Data, class MasterWorkerExchanger, class JoinForkExchanger, class NeighbourDataExchanger>
+bool peano::heap::Heap<Data, MasterWorkerExchanger, JoinForkExchanger, NeighbourDataExchanger>::isValidIndex(int index) const {
+  return _heapData.count(index)==1;
+}
+
+
+template <class Data, class MasterWorkerExchanger, class JoinForkExchanger, class NeighbourDataExchanger>
+void peano::heap::Heap<Data, MasterWorkerExchanger, JoinForkExchanger, NeighbourDataExchanger>::deleteData(int index, bool recycle) {
+  logTraceInWith2Arguments("deleteData(int)", _name, index);
+
+  #ifdef Asserts
+  std::string message = "Trying to get heap data for unknown index. Has the index been initialized correctly?";
+  #endif
+  assertion4(_heapData.count(index)==1, _name, message, index, _heapData.size());
+
+  tarch::multicore::Lock lock(_recycleAndDeleteSemaphore);
+
+  if (recycle) {
+    getData(index).clear();
+    _recycledHeapIndices.insert(index);
+  }
+  else {
+    getData(index).clear();
+    delete &getData(index);
+    _heapData.erase(index);
+
+    _deletedHeapIndices.insert(index);
+  }
+
+  _numberOfHeapFrees++;
+  lock.free();
+
+  logTraceOut("deleteData(int)");
+}
+
+
+template <class Data, class MasterWorkerExchanger, class JoinForkExchanger, class NeighbourDataExchanger>
+int peano::heap::Heap<Data, MasterWorkerExchanger, JoinForkExchanger, NeighbourDataExchanger>::getNumberOfAllocatedEntries() const {
+  return _heapData.size();
+}
+
+
+template <class Data, class MasterWorkerExchanger, class JoinForkExchanger, class NeighbourDataExchanger>
+void peano::heap::Heap<Data, MasterWorkerExchanger, JoinForkExchanger, NeighbourDataExchanger>::restart() {
+  deleteAllData();
+}
+
+
+template <class Data, class MasterWorkerExchanger, class JoinForkExchanger, class NeighbourDataExchanger>
+void peano::heap::Heap<Data, MasterWorkerExchanger, JoinForkExchanger, NeighbourDataExchanger>::shutdown() {
+  deleteAllData();
+}
+
+
+template <class Data, class MasterWorkerExchanger, class JoinForkExchanger, class NeighbourDataExchanger>
+void peano::heap::Heap<Data, MasterWorkerExchanger, JoinForkExchanger, NeighbourDataExchanger>::setName(std::string name) {
+  _name = name;
+}
+
+
+template <class Data, class MasterWorkerExchanger, class JoinForkExchanger, class NeighbourDataExchanger>
+void peano::heap::Heap<Data, MasterWorkerExchanger, JoinForkExchanger, NeighbourDataExchanger>::createBuffersManually( int communicationRank ) {
+  #ifdef Parallel
+  tarch::multicore::Lock lock(_neighbourDataMapSemaphore);
+  _neighbourDataExchanger.emplace(
+    std::pair<int, NeighbourDataExchanger*>(
+      communicationRank,
+      new NeighbourDataExchanger("heap-neighbour-" + _name,_neighbourDataExchangerMetaDataTag,_neighbourDataExchangerDataTag,communicationRank)
+    )
+  );
+  #endif
+}
+
+
+template <class Data, class MasterWorkerExchanger, class JoinForkExchanger, class NeighbourDataExchanger>
+void peano::heap::Heap<Data, MasterWorkerExchanger, JoinForkExchanger, NeighbourDataExchanger>::sendData(
+  const std::vector< Data >&                    data,
+  int                                           toRank,
+  const tarch::la::Vector<DIMENSIONS, double>&  position,
+  int                                           level,
+  MessageType                                   messageType
+) {
+  SCOREP_USER_REGION("peano::heap::Heap::sendData()", SCOREP_USER_REGION_TYPE_FUNCTION)
+  logTraceInWith5Arguments( "sendData(...)", _name, toRank, position, level, data.size() );
+
+  #ifdef Parallel
+  switch (messageType) {
+    case MessageType::NeighbourCommunication:
+      if (_neighbourDataExchanger.count(toRank)==0) {
+        tarch::multicore::Lock lock(_neighbourDataMapSemaphore);
+        _neighbourDataExchanger.emplace(
+          std::pair<int, NeighbourDataExchanger*>(
+            toRank,
+            new NeighbourDataExchanger("heap-neighbour-"+_name,_neighbourDataExchangerMetaDataTag,_neighbourDataExchangerDataTag,toRank)
+          )
+        );
+        _neighbourDataExchanger.at(toRank)->startToSendData(false);
+      }
+      _neighbourDataExchanger.at(toRank)->sendData(data.data(),data.size(),position,level);
+      break;
+    case MessageType::ForkOrJoinCommunication:
+      _joinForkExchanger.sendData(data.data(),data.size(),toRank,position,level);
+      break;
+    case MessageType::MasterWorkerCommunication:
+      _masterWorkerExchanger.sendData(data.data(),data.size(),toRank,position,level);
+      break;
+  }
+  #endif
+
+  logTraceOut( "sendData(...)" );
+}
+
+
+template <class Data, class MasterWorkerExchanger, class JoinForkExchanger, class NeighbourDataExchanger>
+void peano::heap::Heap<Data, MasterWorkerExchanger, JoinForkExchanger, NeighbourDataExchanger>::sendData(
+  int                                           index,
+  int                                           toRank,
+  const tarch::la::Vector<DIMENSIONS, double>&  position,
+  int                                           level,
+  MessageType                                   messageType
+) {
+  logTraceInWith5Arguments( "sendData(...)", _name, index, toRank, position, level );
+
+  sendData( getData(index), toRank, position, level, messageType );
+
+  logTraceOutWith1Argument( "sendData(...)", getData(index).size() );
+}
+
+
+template <class Data, class MasterWorkerExchanger, class JoinForkExchanger, class NeighbourDataExchanger>
+std::vector< Data > peano::heap::Heap<Data, MasterWorkerExchanger, JoinForkExchanger, NeighbourDataExchanger>::receiveData(
+  int                                           fromRank,
+  const tarch::la::Vector<DIMENSIONS, double>&  position,
+  int                                           level,
+  MessageType                                   messageType
+) {
+  #ifdef Parallel
+  switch (messageType) {
+    case MessageType::NeighbourCommunication:
+      assertion5( _neighbourDataExchanger.count(fromRank)==1, fromRank, position, level, "tried to receive heap data from neighbour but never sent heap data to this neighbour", toString() );
+      return _neighbourDataExchanger.at(fromRank)->receiveData(position,level);
+      break;
+    case MessageType::ForkOrJoinCommunication:
+      return _joinForkExchanger.receiveData(fromRank,position,level);
+      break;
+    case MessageType::MasterWorkerCommunication:
+      return _masterWorkerExchanger.receiveData(fromRank,position,level);
+      break;
+  }
+  return std::vector< Data >();
+  #endif
+  return std::vector< Data >();
+}
+
+
+
+template <class Data, class MasterWorkerExchanger, class JoinForkExchanger, class NeighbourDataExchanger>
+int peano::heap::Heap<Data, MasterWorkerExchanger, JoinForkExchanger, NeighbourDataExchanger>::receiveData(
+  int                                           index,
+  int                                           fromRank,
+  const tarch::la::Vector<DIMENSIONS, double>&  position,
+  int                                           level,
+  MessageType                                   messageType
+) {
+  const std::vector< Data >  receivedData = receiveData(fromRank, position, level, messageType);
+  std::vector< Data >&       localData    = getData(index);
+  localData.insert( localData.end(), receivedData.begin(), receivedData.end() );
+  return static_cast<int>( receivedData.size() );
+}
+
+
+
+
+template <class Data, class MasterWorkerExchanger, class JoinForkExchanger, class NeighbourDataExchanger>
+void peano::heap::Heap<Data, MasterWorkerExchanger, JoinForkExchanger, NeighbourDataExchanger>::receiveDanglingMessages() {
+  SCOREP_USER_REGION("peano::heap::Heap::receiveDanglingMessages()", SCOREP_USER_REGION_TYPE_FUNCTION)
+
+  #ifdef Parallel
+  tarch::multicore::Lock lock(_neighbourDataMapSemaphore);
+  for (auto& p: _neighbourDataExchanger) {
+    p.second->receiveDanglingMessages();
+  }
+  lock.free();
+
+  _masterWorkerExchanger.receiveDanglingMessages();
+  _joinForkExchanger.receiveDanglingMessages();
+  #endif
+}
+
+
+template <class Data, class MasterWorkerExchanger, class JoinForkExchanger, class NeighbourDataExchanger>
+std::string peano::heap::Heap<Data, MasterWorkerExchanger, JoinForkExchanger, NeighbourDataExchanger>::toString() const {
+  std::ostringstream msg;
+
+  msg << "(name=" << _name
+      << ",heap-map-size=" << _heapData.size()
+      << ",no-of-delted-heap-indices=" << _deletedHeapIndices.size()
+      << ",no-of-recycled-heap-indices=" << _recycledHeapIndices.size()
+      << ",next-index=" << _nextIndex
+      << ",maximum-number-of-heap-entries=" << _maximumNumberOfHeapEntries
+      << ",number-of-heap-allocations=" << _numberOfHeapAllocations
+      << ",number-of-heap-frees=" << _numberOfHeapFrees
+      #ifdef Parallel
+      << ",no-of-data-exchangers=" << _neighbourDataExchanger.size()
+      << ",neighbour-meta-data-exchanger-tag=" << _neighbourDataExchangerMetaDataTag
+      << ",neighbour-data-exchanger-tag" << _neighbourDataExchangerDataTag
+      #endif
+      << ")";
+
+  return msg.str();
+}
+
+
+template <class Data, class MasterWorkerExchanger, class JoinForkExchanger, class NeighbourDataExchanger>
+void peano::heap::Heap<Data, MasterWorkerExchanger, JoinForkExchanger, NeighbourDataExchanger>::startToSendSynchronousData() {
+  logTraceInWith1Argument( "startToSendSynchronousData(bool)", _name );
+
+  SCOREP_USER_REGION("peano::heap::Heap::startToSendSynchronousData()", SCOREP_USER_REGION_TYPE_FUNCTION)
+
+  #ifdef Parallel
+  _masterWorkerExchanger.startToSendData();
+  _joinForkExchanger.startToSendData();
+  #endif
+
+  logTraceOut( "startToSendSynchronousData(bool)" );
+}
+
+
+template <class Data, class MasterWorkerExchanger, class JoinForkExchanger, class NeighbourDataExchanger>
+void peano::heap::Heap<Data, MasterWorkerExchanger, JoinForkExchanger, NeighbourDataExchanger>::startToSendBoundaryData(bool isTraversalInverted) {
+  logTraceInWith1Argument( "startToSendBoundaryData(bool)", _name );
+
+  SCOREP_USER_REGION("peano::heap::Heap::startToSendBoundaryData()", SCOREP_USER_REGION_TYPE_FUNCTION)
+
+  #ifdef Parallel
+  peano::performanceanalysis::Analysis::getInstance().beginToPrepareAsynchronousHeapDataExchange();
+
+  for (auto& p: _neighbourDataExchanger) {
+    p.second->startToSendData(isTraversalInverted);
+  }
+
+  peano::performanceanalysis::Analysis::getInstance().endToPrepareAsynchronousHeapDataExchange();
+  #endif
+
+  logTraceOut( "startToSendBoundaryData(bool)" );
+}
+
+
+template <class Data, class MasterWorkerExchanger, class JoinForkExchanger, class NeighbourDataExchanger>
+void peano::heap::Heap<Data, MasterWorkerExchanger, JoinForkExchanger, NeighbourDataExchanger>::finishedToSendSynchronousData() {
+  logTraceInWith1Argument( "finishedToSendSynchronousData()", _name );
+
+  SCOREP_USER_REGION("peano::heap::Heap::finishedToSendSynchronousData()", SCOREP_USER_REGION_TYPE_FUNCTION)
+
+  #ifdef Parallel
+  peano::performanceanalysis::Analysis::getInstance().beginToReleaseSynchronousHeapData();
+
+  _masterWorkerExchanger.finishedToSendData();
+  _joinForkExchanger.finishedToSendData();
+
+  peano::performanceanalysis::Analysis::getInstance().endToReleaseSynchronousHeapData();
+  #endif
+
+  logTraceOut( "finishedToSendSynchronousData()" );
+}
+
+
+template <class Data, class MasterWorkerExchanger, class JoinForkExchanger, class NeighbourDataExchanger>
+void peano::heap::Heap<Data, MasterWorkerExchanger, JoinForkExchanger, NeighbourDataExchanger>::finishedToSendBoundaryData(bool isTraversalInverted) {
+  logTraceInWith1Argument( "finishedToSendBoundaryData()", _name );
+
+  SCOREP_USER_REGION("peano::heap::Heap::finishedToSendBoundaryData()", SCOREP_USER_REGION_TYPE_FUNCTION)
+
+  #ifdef Parallel
+  for (auto& p: _neighbourDataExchanger) {
+    p.second->finishedToSendData(isTraversalInverted);
+  }
+  #endif
+
+  logTraceOut( "finishedToSendBoundaryData()" );
+}
+
+
+template <class Data, class MasterWorkerExchanger, class JoinForkExchanger, class NeighbourDataExchanger>
+bool peano::heap::Heap<Data, MasterWorkerExchanger, JoinForkExchanger, NeighbourDataExchanger>::validateThatIncomingJoinBuffersAreEmpty() {
+  #ifdef Parallel
+  return _joinForkExchanger.validateThatIncomingJoinBuffersAreEmpty();
+  #else
+  return true;
+  #endif
+}

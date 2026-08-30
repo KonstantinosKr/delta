@@ -1,0 +1,59 @@
+// This file is part of the Peano project. For conditions of distribution and
+// use, please see the copyright notice at www.peano-framework.org
+
+
+#include "peano/utils/Globals.h"
+
+
+Packed-Type: int;
+
+
+Constant: DIMENSIONS hint-value 4;
+
+
+class  peano::grid::tests::records::TestState { 
+  /**
+   * Statistics. All of this information is prolongated bottom-up.
+   */
+  persistent parallelise double minMeshWidth[DIMENSIONS];
+  persistent parallelise double maxMeshWidth[DIMENSIONS];
+  persistent parallelise double numberOfInnerVertices;
+  persistent parallelise double numberOfBoundaryVertices;
+  persistent parallelise double numberOfOuterVertices;
+  persistent parallelise double numberOfInnerCells;
+  persistent parallelise double numberOfOuterCells;
+
+  persistent parallelise int    maxLevel;
+  
+  persistent packed parallelise bool hasRefined;
+  persistent packed parallelise bool hasTriggeredRefinementForNextIteration;
+  persistent packed parallelise bool hasErased;
+  persistent packed parallelise bool hasTriggeredEraseForNextIteration;
+  persistent packed parallelise bool hasChangedVertexOrCellState;
+
+  persistent parallelise bool   isTraversalInverted;
+  
+  #ifdef Parallel
+  enum LoadBalancingState {
+    NoRebalancing,
+    ForkTriggered,
+    Forking,
+    JoinTriggered,
+    Joining,
+    JoinWithMasterTriggered,
+    JoiningWithMaster,
+    HasJoinedWithMaster,
+    IsNewWorkerDueToForkOfExistingDomain
+  };
+  
+  persistent LoadBalancingState  loadRebalancingState;
+
+  /**
+   * There is no need to exchange this piece of data, as we it is set due to 
+   * the repository state.
+   */  
+  persistent packed bool             reduceStateAndCell;
+
+  discard packed parallelise bool    hasWorkerWithWorker;
+  #endif
+};

@@ -1,0 +1,52 @@
+#include "peano/utils/Loop.h"
+#include "tarch/parallel/Node.h"
+
+
+template <class Vertex>
+void peano::parallel::AdjacencyListAspect<Vertex>::replaceAdjancyEntriesOfVerticesOfOneCellWithDifferentRank(
+  int                                   newRank,
+  Vertex*                               vertices,
+  const peano::grid::VertexEnumerator&  enumerator
+) {
+  dfor2(k)
+    vertices[ enumerator(k) ].setAdjacentRank(TWO_POWER_D-1-kScalar,newRank);
+  enddforx
+}
+
+
+
+template <class Vertex>
+template <class State>
+bool peano::parallel::AdjacencyListAspect<Vertex>::isRemote(
+  const Vertex&              vertex,
+  const State&               state,
+  bool                       considerForkingNodesToBeRemote,
+  bool                       considerJoiningNodesToBeRemote
+) {
+  bool result = true;
+
+  for( int i=0; i<TWO_POWER_D; i++) {
+    const int currentRank = vertex._vertexData.getAdjacentRanks(i);
+    result &= (currentRank != tarch::parallel::Node::getInstance().getRank())
+      && (!state.isForkTriggeredForRank(currentRank))
+      && (considerForkingNodesToBeRemote || !state.isForkingRank(currentRank))
+      && (considerJoiningNodesToBeRemote || !state.isJoiningRank(currentRank));
+  }
+
+  return result;
+}
+
+
+template <class Vertex>
+std::set<int> peano::parallel::AdjacencyListAspect<Vertex>::getAdjacentRemoteRanks(const Vertex& vertex) {
+  std::set<int> result;
+  for (int i=0; i<TWO_POWER_D; i++) {
+    if (
+      vertex._vertexData.getAdjacentRanks(i) != tarch::parallel::Node::getInstance().getRank() &&
+      vertex._vertexData.getAdjacentRanks(i) != peano::parallel::UndefinedNeighbour
+    ) {
+      result.insert(vertex._vertexData.getAdjacentRanks(i));
+    }
+  }
+  return result;
+}

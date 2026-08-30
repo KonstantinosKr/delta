@@ -1,0 +1,173 @@
+#include "peano/grid/aspects/VertexStateAnalysis.h"
+
+
+
+template <class Vertex>
+bool peano::grid::aspects::VertexStateAnalysis::doesOneVertexCarryRefinementFlag(
+  Vertex                                       fineGridVertices[FOUR_POWER_D],
+  const peano::grid::VertexEnumerator&                 fineGridVerticesEnumerator,
+  typename Vertex::Records::RefinementControl  whichFlag
+) {
+  bool result = false;
+  dfor2(k)
+    result |=
+      fineGridVertices[fineGridVerticesEnumerator(k)].getRefinementControl()==whichFlag;
+  enddforx
+  return result;
+}
+
+
+template <class Vertex>
+bool peano::grid::aspects::VertexStateAnalysis::doesNoVertexCarryRefinementFlag(
+  Vertex                                       fineGridVertices[FOUR_POWER_D],
+  const peano::grid::VertexEnumerator&                 fineGridVerticesEnumerator,
+  typename Vertex::Records::RefinementControl  whichFlag
+) {
+  bool result = true;
+  dfor2(k)
+    result &=
+      fineGridVertices[fineGridVerticesEnumerator(k)].getRefinementControl()!=whichFlag;
+  enddforx
+  return result;
+}
+
+
+template <class Vertex>
+bool peano::grid::aspects::VertexStateAnalysis::doAllVerticesCarryRefinementFlag(
+  Vertex                                                 fineGridVertices[FOUR_POWER_D],
+  const peano::grid::VertexEnumerator&  fineGridVerticesEnumerator,
+  typename Vertex::Records::RefinementControl            whichFlag
+) {
+  bool result = true;
+  dfor2(k)
+    result &=
+      fineGridVertices[fineGridVerticesEnumerator(k)].getRefinementControl()==whichFlag;
+  enddforx
+  return result;
+}
+
+
+template <class Vertex>
+bool peano::grid::aspects::VertexStateAnalysis::doAllNonHangingVerticesCarryRefinementFlag(
+  Vertex                                                 fineGridVertices[FOUR_POWER_D],
+  const peano::grid::VertexEnumerator&  fineGridVerticesEnumerator,
+  typename Vertex::Records::RefinementControl            whichFlag
+) {
+  bool result = true;
+  dfor2(k)
+    result &=
+      (
+        fineGridVertices[fineGridVerticesEnumerator(k)].isHangingNode() ||
+        fineGridVertices[fineGridVerticesEnumerator(k)].getRefinementControl()==whichFlag
+      );
+  enddforx
+  return result;
+}
+
+
+template <class Vertex>
+bool peano::grid::aspects::VertexStateAnalysis::isOneVertexOutsideDomain(
+  Vertex*                               vertices,
+  const peano::grid::VertexEnumerator&  verticesEnumerator
+) {
+  bool result = false;
+  dfor2(k)
+    result |= vertices[ verticesEnumerator(k) ].isOutside();
+  enddforx
+  return result;
+}
+
+
+template <class Vertex>
+bool peano::grid::aspects::VertexStateAnalysis::areAllVerticesOutsideDomain(
+  Vertex                                       fineGridVertices[FOUR_POWER_D],
+  const peano::grid::VertexEnumerator&         fineGridVerticesEnumerator
+) {
+  bool result = true;
+  dfor2(k)
+    result &=
+      fineGridVertices[fineGridVerticesEnumerator(k)].isOutside();
+  enddforx
+  return result;
+}
+
+
+template <class Vertex>
+bool peano::grid::aspects::VertexStateAnalysis::isOneVertexBoundary(
+  Vertex*                               vertices,
+  const peano::grid::VertexEnumerator&  verticesEnumerator
+) {
+  bool result = false;
+  dfor2(k)
+    result |= vertices[ verticesEnumerator(k) ].isBoundary();
+  enddforx
+  return result;
+}
+
+
+
+template <class Vertex>
+bool peano::grid::aspects::VertexStateAnalysis::areAllVerticesInsideDomain(
+  Vertex*                               vertices,
+  const peano::grid::VertexEnumerator&  verticesEnumerator
+) {
+  bool result = true;
+  dfor2(k)
+    result &= vertices[ verticesEnumerator(k) ].isInside();
+  enddforx
+  return result;
+}
+
+
+template <class Vertex>
+bool peano::grid::aspects::VertexStateAnalysis::isOneVertexHanging(
+  Vertex*                                                vertices,
+  const peano::grid::VertexEnumerator&  verticesEnumerator
+) {
+  bool oneVertexIsHanging = false;
+  dfor2(k)
+    oneVertexIsHanging |= vertices[ verticesEnumerator(k) ].isHangingNode();
+  enddforx
+  return oneVertexIsHanging;
+}
+
+
+#ifdef Parallel
+template <class Vertex>
+std::bitset<NUMBER_OF_VERTICES_PER_ELEMENT> peano::grid::aspects::VertexStateAnalysis::whichPersistentVerticesAreAdjacentToRank(
+  int                                                    rank,
+  Vertex*                                                vertices,
+  const peano::grid::VertexEnumerator&  verticesEnumerator
+) {
+  logTraceInWith2Arguments( "whichPersistentVerticesAreAdjacentToRank(...)", rank, verticesEnumerator.toString() );
+  std::bitset<NUMBER_OF_VERTICES_PER_ELEMENT> result(0);
+  dfor2(k)
+    logDebug(
+      "whichPersistentVerticesAreAdjacentToRank(...)",
+      "vertex " << kScalar << " is adjacent: " << vertices[verticesEnumerator(k)].isAdjacentToDomainOf(rank)
+      << "; vertex=" << vertices[verticesEnumerator(k)].toString()
+    );
+    result.set(
+      kScalar,
+      !vertices[verticesEnumerator(k)].isHangingNode() &&
+      vertices[verticesEnumerator(k)].isAdjacentToDomainOf(rank)
+    );
+  enddforx
+  logTraceOutWith1Argument( "whichPersistentVerticesAreAdjacentToRank(...)", result );
+  return result;
+}
+#endif
+
+
+template <class Vertex>
+std::bitset<NUMBER_OF_VERTICES_PER_ELEMENT> peano::grid::aspects::VertexStateAnalysis::whichVerticesArePersistent(
+  int                                   rank,
+  Vertex*                               vertices,
+  const peano::grid::VertexEnumerator&  verticesEnumerator
+) {
+  std::bitset<NUMBER_OF_VERTICES_PER_ELEMENT> result(0);
+  dfor2(k)
+    result.set(kScalar,!vertices[verticesEnumerator(k)].isHangingNode());
+  enddforx
+  return result;
+}

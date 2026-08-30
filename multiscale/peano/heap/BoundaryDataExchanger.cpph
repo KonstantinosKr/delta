@@ -1,0 +1,704 @@
+#include "tarch/Assertions.h"
+#include "tarch/compiler/CompilerSpecificSettings.h"
+#include "peano/utils/PeanoOptimisations.h"
+#include "peano/datatraversal/TaskSet.h"
+#include "peano/performanceanalysis/ScorePMacros.h"
+#include "tarch/multicore/Lock.h"
+#include "tarch/multicore/RecursiveLock.h"
+#include "tarch/multicore/MulticoreDefinitions.h"
+#include "tarch/services/Service.h"
+#include "tarch/parallel/Node.h"
+
+
+template<class Data, class SendReceiveTaskType, class VectorContainer>
+tarch::logging::Log  peano::heap::BoundaryDataExchanger<Data,SendReceiveTaskType,VectorContainer>::_log( "peano::heap::BoundaryDataExchanger" );
+
+
+template<class Data, class SendReceiveTaskType, class VectorContainer>
+peano::heap::BoundaryDataExchanger<Data,SendReceiveTaskType,VectorContainer>::BoundaryDataExchanger():
+  _identifier( "created-by-standard-constructor"),
+  _metaDataTag(-1),
+  _dataTag(-1),
+  _rank(-1),
+  _numberOfSentMessages(-1),
+  _numberOfSentRecords(-1),
+  _numberOfReceivedMessages(-1),
+  _numberOfReceivedRecords(-1),
+  _currentReceiveBuffer(-1),
+  _readDeployBufferInReverseOrder(false),
+  _wasTraversalInvertedThroughoutLastSendReceiveTraversal(false)
+  #ifdef Asserts
+  ,_isCurrentlySending(false)
+  #endif
+{
+  #if defined(MPIHeapUsesItsOwnThread) and defined(MultipleThreadsMayTriggerMPICalls) and defined(SharedMemoryParallelisation)
+  disconnectBackgroundThread();
+  #endif
+
+  assertion5( _sendTasks.empty(),       _sendTasks.size(),       _identifier, _metaDataTag, _dataTag, _rank );
+  assertion5( _receiveTasks[0].empty(), _receiveTasks[0].size(), _identifier, _metaDataTag, _dataTag, _rank );
+  assertion5( _receiveTasks[1].empty(), _receiveTasks[1].size(), _identifier, _metaDataTag, _dataTag, _rank );
+}
+
+
+template<class Data, class SendReceiveTaskType, class VectorContainer>
+peano::heap::BoundaryDataExchanger<Data,SendReceiveTaskType,VectorContainer>::BoundaryDataExchanger(
+  const std::string& identifier,
+  int metaDataTag,
+  int dataTag,
+  int rank
+):
+  _identifier(identifier),
+  _metaDataTag(metaDataTag),
+  _dataTag(dataTag),
+  _rank(rank),
+  _numberOfSentMessages(0),
+  _numberOfSentRecords(0),
+  _numberOfReceivedMessages(0),
+  _numberOfReceivedRecords(0),
+  _currentReceiveBuffer(0),
+  _readDeployBufferInReverseOrder(false),
+  _wasTraversalInvertedThroughoutLastSendReceiveTraversal(false)
+  #ifdef Asserts
+  ,_isCurrentlySending(false)
+  #endif
+  {
+  #if defined(MPIHeapUsesItsOwnThread) and defined(MultipleThreadsMayTriggerMPICalls) and defined(SharedMemoryParallelisation)
+  disconnectBackgroundThread();
+  #endif
+
+  assertion5( _sendTasks.empty(),       _sendTasks.size(),       _identifier, _metaDataTag, _dataTag, _rank );
+  assertion5( _receiveTasks[0].empty(), _receiveTasks[0].size(), _identifier, _metaDataTag, _dataTag, _rank );
+  assertion5( _receiveTasks[1].empty(), _receiveTasks[1].size(), _identifier, _metaDataTag, _dataTag, _rank );
+}
+
+
+template<class Data, class SendReceiveTaskType, class VectorContainer>
+void peano::heap::BoundaryDataExchanger<Data,SendReceiveTaskType,VectorContainer>::terminateBackgroundThread() {
+  #if defined(MPIHeapUsesItsOwnThread) and defined(MultipleThreadsMayTriggerMPICalls) and defined(SharedMemoryParallelisation)
+  tarch::multicore::Lock lock(_backgroundThreadSemaphore);
+  if (_backgroundThread != nullptr) {
+    _backgroundThread->terminate();
+  }
+  #endif
+}
+
+
+template<class Data, class SendReceiveTaskType, class VectorContainer>
+void peano::heap::BoundaryDataExchanger<Data,SendReceiveTaskType,VectorContainer>::disconnectBackgroundThread() {
+  #if defined(MPIHeapUsesItsOwnThread) and defined(MultipleThreadsMayTriggerMPICalls) and defined(SharedMemoryParallelisation)
+  tarch::multicore::Lock lock(_backgroundThreadSemaphore);
+  _backgroundThread = nullptr;
+  #endif
+}
+
+
+template<class Data, class SendReceiveTaskType, class VectorContainer>
+void peano::heap::BoundaryDataExchanger<Data,SendReceiveTaskType,VectorContainer>::shutdown() {
+  #if defined(MPIHeapUsesItsOwnThread) and defined(MultipleThreadsMayTriggerMPICalls) and defined(SharedMemoryParallelisation)
+  terminateBackgroundThread();
+  disconnectBackgroundThread();
+  assertion( _backgroundThread == nullptr );
+  #endif
+
+  assertion5( _sendTasks.empty(),       _sendTasks.size(),       _identifier, _metaDataTag, _dataTag, _rank );
+  assertion5( _receiveTasks[0].empty(), _receiveTasks[0].size(), _identifier, _metaDataTag, _dataTag, _rank );
+  assertion5( _receiveTasks[1].empty(), _receiveTasks[1].size(), _identifier, _metaDataTag, _dataTag, _rank );
+}
+
+
+template<class Data, class SendReceiveTaskType, class VectorContainer>
+peano::heap::BoundaryDataExchanger<Data,SendReceiveTaskType,VectorContainer>::~BoundaryDataExchanger() {
+  shutdown();
+}
+
+
+template<class Data, class SendReceiveTaskType, class VectorContainer>
+void peano::heap::BoundaryDataExchanger<Data,SendReceiveTaskType,VectorContainer>::startToSendData(bool isTraversalInverted) {
+  SCOREP_USER_REGION("peano::heap::BoundaryDataExchanger::startToSendData()", SCOREP_USER_REGION_TYPE_FUNCTION)
+
+  logTraceInWith1Argument( "startToSendData(bool)", isTraversalInverted );
+
+  #if defined(MPIHeapUsesItsOwnThread) and defined(MultipleThreadsMayTriggerMPICalls) and defined(SharedMemoryParallelisation)
+  terminateBackgroundThread();
+  #endif
+
+  tarch::multicore::RecursiveLock lock( tarch::services::Service::receiveDanglingMessagesSemaphore );
+
+  assertion(_currentReceiveBuffer>=0);
+  assertion(_currentReceiveBuffer<=1);
+  assertionMsg(_receiveTasks[1-_currentReceiveBuffer].empty(), "finishedToSendData() has not been called before and deploy buffer thus is not empty. Check whether allHeapsFinishedToSendBoundaryData() on AbstractHeap has been invoked or your mappings delegate heap management to kernel. If finish is called, this error pops up if we you don't pick up messages sent to a rank in the iteration before");
+
+  assertion3(!_isCurrentlySending, _identifier, _rank, "call once per traversal" );
+
+  #ifdef Asserts
+  _isCurrentlySending = true;
+  #endif
+
+  const int numberOfSentMessages = getNumberOfSentMessages();
+
+  releaseSentMessages();
+
+  waitUntilNumberOfReceivedNeighbourMessagesEqualsNumberOfSentMessages(numberOfSentMessages);
+
+  releaseReceivedNeighbourMessagesRequests();
+
+  assertion3(
+    _receiveTasks[0].empty() || _receiveTasks[1].empty(),
+    _receiveTasks[0].size(),
+    _receiveTasks[1].size(),
+    _currentReceiveBuffer
+  );
+
+  _readDeployBufferInReverseOrder = _wasTraversalInvertedThroughoutLastSendReceiveTraversal != isTraversalInverted;
+
+  switchReceiveAndDeployBuffer(numberOfSentMessages);
+
+  postprocessStartToSendData();
+
+  lock.free();
+
+  #if defined(MPIHeapUsesItsOwnThread) and defined(MultipleThreadsMayTriggerMPICalls) and defined(SharedMemoryParallelisation)
+  disconnectBackgroundThread();
+  #endif
+
+  logTraceOut( "startToSendData(bool)" );
+}
+
+
+
+template <class Data, class SendReceiveTaskType, class VectorContainer>
+void peano::heap::BoundaryDataExchanger<Data,SendReceiveTaskType,VectorContainer>::waitUntilNumberOfReceivedNeighbourMessagesEqualsNumberOfSentMessages(
+  int numberOfMessagesSentThisIteration
+) {
+  logTraceInWith2Arguments( "waitUntilNumberOfReceivedNeighbourMessagesEqualsNumberOfSentMessages()", _rank, numberOfMessagesSentThisIteration );
+
+  const clock_t  timeOutWarning          = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
+  const clock_t  timeOutShutdown         = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
+  bool           triggeredTimeoutWarning = false;
+
+  while (static_cast<int>(_receiveTasks[_currentReceiveBuffer].size()) < numberOfMessagesSentThisIteration ) {
+    if (
+       tarch::parallel::Node::getInstance().isTimeOutWarningEnabled() &&
+       (clock()>timeOutWarning) &&
+       (!triggeredTimeoutWarning)
+    ) {
+       tarch::parallel::Node::getInstance().writeTimeOutWarning(
+         "peano::heap::BoundaryDataExchanger::waitUntilNumberOfReceivedNeighbourMessagesEqualsNumberOfSentMessages",
+         "waitUntilNumberOfReceivedMessagesEqualsNumberOfSentMessages()", _rank,
+         _metaDataTag, numberOfMessagesSentThisIteration - _receiveTasks[_currentReceiveBuffer].size()
+       );
+
+       triggeredTimeoutWarning = true;
+    }
+    if (
+       tarch::parallel::Node::getInstance().isTimeOutDeadlockEnabled() &&
+       (clock()>timeOutShutdown)
+    ) {
+       tarch::parallel::Node::getInstance().triggerDeadlockTimeOut(
+         "peano::heap::BoundaryDataExchanger::waitUntilNumberOfReceivedNeighbourMessagesEqualsNumberOfSentMessages",
+         "waitUntilNumberOfReceivedNeighbourMessagesEqualsNumberOfSentMessages()", _rank,
+         _metaDataTag, numberOfMessagesSentThisIteration - _receiveTasks[_currentReceiveBuffer].size()
+       );
+    }
+
+    tarch::parallel::Node::getInstance().receiveDanglingMessages();
+  }
+
+  logTraceOutWith2Arguments( "waitUntilNumberOfReceivedNeighbourMessagesEqualsNumberOfSentMessages()", _identifier, _receiveTasks[_currentReceiveBuffer].size() );
+}
+
+
+template<class Data, class SendReceiveTaskType, class VectorContainer>
+void peano::heap::BoundaryDataExchanger<Data,SendReceiveTaskType,VectorContainer>::releaseSentMessages() {
+  // I do compile the class even without Parallel as I've written some unit tests. In turn,
+  // I thus have to manually mask out routines that require -DParallel.
+  #ifdef Parallel
+  logTraceInWith1Argument( "releaseSentMessages()", _sendTasks.size() );
+
+  logInfo( "releaseSentMessages()", "release the " << _sendTasks.size() << " send task(s) for rank " << _rank <<
+	" on exchanger " << _identifier );
+
+  for(typename std::list<SendReceiveTaskType >::iterator i = _sendTasks.begin(); i != _sendTasks.end(); ++i) {
+    const clock_t  timeOutWarning          = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
+    const clock_t  timeOutShutdown         = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
+    bool           triggeredTimeoutWarning = false;
+
+    while ( !i->hasCommunicationCompleted() ) {
+      // deadlock aspect
+      if (
+         tarch::parallel::Node::getInstance().isTimeOutWarningEnabled() &&
+         (clock()>timeOutWarning) &&
+         (!triggeredTimeoutWarning)
+      ) {
+         tarch::parallel::Node::getInstance().writeTimeOutWarning(
+           "peano::heap::SynchronousDataExchanger",
+           "finishedToSendData()", i->getRank(),-1,i->getMetaInformation().getLength()
+         );
+         triggeredTimeoutWarning = true;
+      }
+      if (
+         tarch::parallel::Node::getInstance().isTimeOutDeadlockEnabled() &&
+         (clock()>timeOutShutdown)
+      ) {
+         std::ostringstream msg;
+         msg << "metaDataTag=" << _metaDataTag;
+         msg << ",dataTag=" << _dataTag;
+         tarch::parallel::Node::getInstance().triggerDeadlockTimeOut(
+           "peano::heap::SynchronousDataExchanger",
+           "finishedToSendData()", i->getRank(),
+           -1,
+           i->getMetaInformation().getLength(), msg.str()
+         );
+      }
+      tarch::parallel::Node::getInstance().receiveDanglingMessages();
+    }
+
+    i->freeMemory();
+  }
+
+  _sendTasks.clear();
+
+  logTraceOutWith2Arguments( "releaseSentMessages()", _numberOfSentMessages, _numberOfSentRecords );
+  #endif
+}
+
+
+template<class Data, class SendReceiveTaskType, class VectorContainer>
+void peano::heap::BoundaryDataExchanger<Data,SendReceiveTaskType,VectorContainer>::finishedToSendData(bool isTraversalInverted) {
+  logTraceInWith1Argument( "finishedToSendData(bool)", isTraversalInverted );
+
+  assertion3(_isCurrentlySending, _identifier, _rank, "call once per traversal" );
+  #ifdef Asserts
+  _isCurrentlySending = false;
+  #endif
+
+  _wasTraversalInvertedThroughoutLastSendReceiveTraversal = isTraversalInverted;
+
+  tarch::multicore::RecursiveLock lock( tarch::services::Service::receiveDanglingMessagesSemaphore );
+  postprocessFinishedToSendData();
+
+  logTraceOut( "finishedToSendData(bool)" );
+}
+
+
+template<class Data, class SendReceiveTaskType, class VectorContainer>
+bool peano::heap::BoundaryDataExchanger<Data,SendReceiveTaskType,VectorContainer>::receiveDanglingMessages() {
+  // I do compile the class even without Parallel as I've written some unit tests. In turn,
+  // I thus have to manually mask out routines that require -DParallel.
+  #ifdef Parallel
+  SCOREP_USER_REGION("peano::heap::BoundaryDataExchanger::receiveDanglingMessages()", SCOREP_USER_REGION_TYPE_FUNCTION)
+
+  tarch::multicore::RecursiveLock lock( tarch::services::Service::receiveDanglingMessagesSemaphore );
+
+  #ifdef MPIProgressionReliesOnMPITest
+  for(auto& p: _sendTasks) {
+	p.hasCommunicationCompleted();
+//      if (progressFlag) {
+//        p._metaInformation.setLength(0);
+//        p.freeMemory();
+//      }
+  }
+  for(auto& p: _receiveTasks[_currentReceiveBuffer]) {
+	p.hasCommunicationCompleted();
+      // It is absolute catastrophic to set the length to 0 here manually as
+      // the RLE exchanger will evaluate exactly this length later on.
+      //
+      //if (progressFlag) {
+      //  p._metaInformation.setLength(0);
+      //}
+  }
+  #endif
+
+
+  bool result = false;
+  if (probeMPIQueues()) {
+    int        flag   = 1;
+    while (flag) {
+      int  result = MPI_Iprobe(
+        _rank,
+        _metaDataTag,
+        tarch::parallel::Node::getInstance().getCommunicator(),
+        &flag, MPI_STATUS_IGNORE
+      );
+      if (result!=MPI_SUCCESS) {
+        logError(
+          "receiveDanglingMessages()",
+          "probing for messages failed: " << tarch::parallel::MPIReturnValueToString(result)
+        );
+      }
+      if (flag) {
+        logTraceInWith1Argument( "receiveDanglingMessages(...)", _metaDataTag );
+
+        result = true;
+
+        SendReceiveTaskType receiveTask;
+
+        receiveTask.setRank( _rank );
+        receiveTask.getMetaInformation().receive(_rank, _metaDataTag, true, SendReceiveTaskType::MetaInformation::ExchangeMode::Blocking);
+
+        _numberOfReceivedMessages += 1;
+        _numberOfSentRecords      += receiveTask.getMetaInformation().getLength();
+
+        handleAndQueueReceivedTask( receiveTask );
+
+        logTraceOutWith1Argument( "receiveDanglingMessages(...)", receiveTask._metaInformation.toString() );
+
+        #ifdef ReceiveDanglingMessagesReceivesAtMostOneMessageAtATime
+        flag = 0;
+        #endif
+      }
+    }
+  }
+  return result;
+  #else
+  return false;
+  #endif
+}
+
+
+template<class Data, class SendReceiveTaskType, class VectorContainer>
+void peano::heap::BoundaryDataExchanger<Data,SendReceiveTaskType,VectorContainer>::sendData(
+  const Data* const                                    data,
+  int                                                  count,
+  const tarch::la::Vector<DIMENSIONS, double>&         position,
+  int                                                  level
+) {
+  assertion5( _isCurrentlySending, _identifier, count, position, level, "forgot to call startToSendBoundaryData on heap?" );
+
+  SendReceiveTaskType sendTask;
+  sendTask.setRank( _rank );
+  #ifdef Asserts
+  //Set debug information
+  sendTask.getMetaInformation().setPosition(position);
+  sendTask.getMetaInformation().setLevel(level);
+  #endif
+
+  logDebug("sendData", "sending data at " << position << " to Rank " << _rank << " with tag " << _dataTag  );
+
+  sendTask.getMetaInformation().setLength(count);
+
+  tarch::multicore::RecursiveLock lock( tarch::services::Service::receiveDanglingMessagesSemaphore );
+  handleAndQueueSendTask( sendTask, data );
+
+  _numberOfSentMessages += 1;
+  _numberOfSentRecords  += count;
+
+  #if defined(MPIHeapUsesItsOwnThread) and defined(MultipleThreadsMayTriggerMPICalls) and defined(SharedMemoryParallelisation)
+  if (_backgroundThread==nullptr) {
+    tarch::multicore::Lock lock(_backgroundThreadSemaphore);
+    _backgroundThread = new BackgroundThread(this);
+    peano::datatraversal::TaskSet spawnTask(_backgroundThread,peano::datatraversal::TaskSet::TaskType::BackgroundMPIReceiveTask);
+  }
+  #endif
+}
+
+
+template<class Data, class SendReceiveTaskType, class VectorContainer>
+VectorContainer  peano::heap::BoundaryDataExchanger<Data,SendReceiveTaskType,VectorContainer>::receiveData(
+  const tarch::la::Vector<DIMENSIONS, double>&  position,
+  int                                           level
+) {
+  logTraceInWith4Arguments( "receiveData(...)", _identifier, _rank, position, level );
+
+  assertion( _currentReceiveBuffer>=0 );
+  assertion( _currentReceiveBuffer<=1 );
+
+  const int currentDeployBuffer = 1-_currentReceiveBuffer;
+  typename std::list<SendReceiveTaskType >::iterator readElement = _readDeployBufferInReverseOrder ? --_receiveTasks[currentDeployBuffer].end() : _receiveTasks[currentDeployBuffer].begin();
+
+  assertion2( _receiveTasks[currentDeployBuffer].size()>0, tarch::parallel::Node::getInstance().getRank(), "if the neighbour data buffer is empty, you have perhaps forgotten to call releaseMessages() on the heap in the traversal before" );
+
+  #ifdef Asserts
+  if ( heapStoresVertexSpatialDataForValidation() ) {
+    assertion10(
+      readElement->fits(position,level) | !dataExchangerCommunicatesInBackground(),
+      _readDeployBufferInReverseOrder,
+      level,  position,
+      _receiveTasks[currentDeployBuffer].front().getMetaInformation().toString(),
+      _receiveTasks[currentDeployBuffer].back().getMetaInformation().toString(),
+      tarch::parallel::Node::getInstance().getRank(),
+      _rank,
+      _identifier,
+      dataExchangerCommunicatesInBackground(),
+      "if _readDeployBufferInReverseOrder: take back() element"
+    );
+
+    const int numberOfElementsOfThisEntry = readElement->getMetaInformation().getLength();
+    assertion3(numberOfElementsOfThisEntry >= 0, position, level, numberOfElementsOfThisEntry);
+    assertion3(readElement->data()!=0 || numberOfElementsOfThisEntry==0, position, level, numberOfElementsOfThisEntry);
+  }
+  #endif
+
+  const VectorContainer result(readElement->data(), readElement->data()+readElement->getMetaInformation().getLength());
+
+  readElement->freeMemory();
+  _receiveTasks[currentDeployBuffer].erase(readElement);
+
+  logTraceOutWith1Argument( "receiveData(...)", result.size() );
+  return result;
+}
+
+
+template<class Data, class SendReceiveTaskType, class VectorContainer>
+void peano::heap::BoundaryDataExchanger<Data,SendReceiveTaskType,VectorContainer>::plotStatistics() const {
+  logInfo(
+    "plotStatistics()",
+    "records sent by " << _identifier << " to " << _rank << " on tag " << _metaDataTag << ": " << _numberOfSentRecords
+  );
+
+  logInfo(
+    "plotStatistics()",
+    "messages sent by " << _identifier << " to " << _rank << " on tag " << _metaDataTag << ": " << _numberOfSentMessages
+  );
+
+  logInfo(
+    "plotStatistics()",
+    "records received by " << _identifier << " to " << _rank << " on tag " << _metaDataTag << ": " << _numberOfReceivedRecords
+  );
+
+  logInfo(
+    "plotStatistics()",
+    "messages received by " << _identifier << " to " << _rank << " on tag " << _metaDataTag << ": " << _numberOfReceivedMessages
+  );
+
+  logInfo(
+    "plotStatistics()",
+    "current send queue of " << _identifier << " holds " << _sendTasks.size() << " message(s)"
+  );
+
+  logInfo(
+    "plotStatistics()",
+    "current receive buffer of " << _identifier << " holds " << _receiveTasks[_currentReceiveBuffer].size() << " message(s)"
+  );
+
+  logInfo(
+    "plotStatistics()",
+    "current deploy buffer of " << _identifier << " holds " << _receiveTasks[1-_currentReceiveBuffer].size() << " message(s)"
+  );
+}
+
+
+template<class Data, class SendReceiveTaskType, class VectorContainer>
+void peano::heap::BoundaryDataExchanger<Data,SendReceiveTaskType,VectorContainer>::clearStatistics() {
+  _numberOfSentMessages     = 0;
+  _numberOfSentRecords      = 0;
+  _numberOfReceivedMessages = 0;
+  _numberOfReceivedRecords  = 0;
+}
+
+
+template <class Data, class SendReceiveTaskType, class VectorContainer>
+void peano::heap::BoundaryDataExchanger<Data,SendReceiveTaskType,VectorContainer>::releaseReceivedNeighbourMessagesRequests() {
+  // I do compile the class even without Parallel as I've written some unit tests. In turn,
+  // I thus have to manually mask out routines that require -DParallel.
+  #ifdef Parallel
+  logTraceIn( "releaseReceivedNeighbourMessagesRequests()" );
+
+  bool allMessageCommunicationsAreFinished = !dataExchangerCommunicatesInBackground();
+
+  const clock_t  timeOutWarning          = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
+  const clock_t  timeOutShutdown         = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
+  bool           triggeredTimeoutWarning = false;
+
+  logInfo(
+    "releaseReceivedNeighbourMessagesRequests()",
+	"check all " << _receiveTasks[_currentReceiveBuffer].size() << " messages that we started to receive from rank " << _rank <<
+	" through exchanger " << _identifier
+  );
+  while (!allMessageCommunicationsAreFinished) {
+    allMessageCommunicationsAreFinished = true;
+
+    logDebug( "releaseReceivedNeighbourMessagesRequests()", "check all " << _receiveTasks[_currentReceiveBuffer].size() << " messages from rank " << _rank );
+
+    for (auto& p: _receiveTasks[_currentReceiveBuffer]) {
+      allMessageCommunicationsAreFinished &= p.hasDataExchangeFinished();
+    }
+
+    // deadlock aspect
+    if (
+       tarch::parallel::Node::getInstance().isTimeOutWarningEnabled() &&
+       (clock()>timeOutWarning) &&
+       (!triggeredTimeoutWarning)
+    ) {
+       tarch::parallel::Node::getInstance().writeTimeOutWarning(
+         "peano::heap::BoundaryDataExchanger",
+         "releaseReceivedMessagesRequests()", -1,
+         _metaDataTag, -1
+       );
+       triggeredTimeoutWarning = true;
+    }
+    if (
+       tarch::parallel::Node::getInstance().isTimeOutDeadlockEnabled() &&
+       (clock()>timeOutShutdown)
+    ) {
+       tarch::parallel::Node::getInstance().triggerDeadlockTimeOut(
+         "peano::heap::BoundaryDataExchanger",
+         "releaseReceivedMessagesRequests()", -1,
+         _metaDataTag, -1
+       );
+    }
+
+    // @see Remark on overtaking messages in switchReceiveAndDeployBuffer()
+    //      It explains that this line has to be commented out.
+    // tarch::parallel::Node::getInstance().receiveDanglingMessages();
+  }
+
+  logTraceOut( "releaseReceivedNeighbourMessagesRequests()" );
+  #endif
+}
+
+
+template <class Data, class SendReceiveTaskType, class VectorContainer>
+void peano::heap::BoundaryDataExchanger<Data,SendReceiveTaskType,VectorContainer>::switchReceiveAndDeployBuffer(int numberOfMessagesSentThisIteration) {
+  assertion(_receiveTasks[1-_currentReceiveBuffer].empty());
+
+  tarch::multicore::RecursiveLock lock( tarch::services::Service::receiveDanglingMessagesSemaphore );
+
+  _currentReceiveBuffer = 1-_currentReceiveBuffer;
+
+  const int sizeOfNewDeployBuffer = static_cast<int>(_receiveTasks[1-_currentReceiveBuffer].size());
+  assertion(sizeOfNewDeployBuffer>=numberOfMessagesSentThisIteration);
+
+  if (numberOfMessagesSentThisIteration < sizeOfNewDeployBuffer) {
+    logDebug(
+      "switchReceiveAndDeployBuffer(int)",
+      "have to copy back " << sizeOfNewDeployBuffer-numberOfMessagesSentThisIteration <<
+      " message(s) from the deploy buffer to the receive buffer or rank " << _rank <<
+      ", as " << numberOfMessagesSentThisIteration <<
+      " message(s) have been sent out while " << sizeOfNewDeployBuffer << " have been received"
+    );
+
+    typename std::list<SendReceiveTaskType >::iterator p = _receiveTasks[1-_currentReceiveBuffer].begin();
+    std::advance(p, numberOfMessagesSentThisIteration);
+
+    _receiveTasks[_currentReceiveBuffer].insert(
+      _receiveTasks[_currentReceiveBuffer].begin(),
+      p,
+      _receiveTasks[1-_currentReceiveBuffer].end()
+    );
+    _receiveTasks[1-_currentReceiveBuffer].erase(
+      p,
+      _receiveTasks[1-_currentReceiveBuffer].end()
+    );
+
+    for (
+      typename std::list<SendReceiveTaskType >::const_iterator it = _receiveTasks[_currentReceiveBuffer].begin();
+      it != _receiveTasks[_currentReceiveBuffer].end();
+      it++
+    ) {
+      logDebug( "switchReceiveAndDeployBuffer(int)", "transferred element (now in receive buffer): " << it->toString() );
+    }
+
+    for (
+      typename std::list<SendReceiveTaskType >::const_iterator it = _receiveTasks[1-_currentReceiveBuffer].begin();
+      it != _receiveTasks[1-_currentReceiveBuffer].end();
+      it++
+    ) {
+      logDebug( "switchReceiveAndDeployBuffer(int)", "remaining deploy element: " << it->toString() );
+    }
+  }
+  else {
+    logDebug(
+      "switchReceiveAndDeployBuffer(int)",
+      "number of received messages from rank " << _rank << " equals number of sent messages: " << numberOfMessagesSentThisIteration
+    );
+  }
+
+  assertionEquals( static_cast<int>(_receiveTasks[1-_currentReceiveBuffer].size()), numberOfMessagesSentThisIteration);
+}
+
+
+template <class Data, class SendReceiveTaskType, class VectorContainer>
+peano::heap::BoundaryDataExchanger<Data,SendReceiveTaskType,VectorContainer>::BackgroundThread::BackgroundThread(BoundaryDataExchanger*  boundaryDataExchanger):
+  _boundaryDataExchanger(boundaryDataExchanger),
+  _state(State::Running) {
+}
+
+
+template <class Data, class SendReceiveTaskType, class VectorContainer>
+peano::heap::BoundaryDataExchanger<Data,SendReceiveTaskType,VectorContainer>::BackgroundThread::~BackgroundThread() {
+}
+
+
+template <class Data, class SendReceiveTaskType, class VectorContainer>
+std::string peano::heap::BoundaryDataExchanger<Data,SendReceiveTaskType,VectorContainer>::BackgroundThread::toString(State state) {
+  switch (state) {
+    case State::Running:
+      return "running";
+    case State::Terminate:
+      return "terminate";
+    case State::Suspended:
+      return "suspended";
+  }
+
+  return "<undef>";
+}
+
+
+template <class Data, class SendReceiveTaskType, class VectorContainer>
+bool peano::heap::BoundaryDataExchanger<Data,SendReceiveTaskType,VectorContainer>::BackgroundThread::operator()() {
+  #if !defined(MPIHeapUsesItsOwnThread) and defined(MultipleThreadsMayTriggerMPICalls) and defined(SharedMemoryParallelisation)
+  assertionMsg( false, "not never enter this operator" );
+  #endif
+
+  // The locking is done within receiveDangling Messages
+  //tarch::multicore::RecursiveLock lock( tarch::services::Service::receiveDanglingMessagesSemaphore );
+  bool result = true;
+
+  static int counter = 0;
+  static int CallsInBetweenTwoReceives = IprobeEveryKIterations;
+  counter++;
+
+  if (counter>CallsInBetweenTwoReceives) {
+    counter = 0;
+
+    tarch::multicore::Lock stateLock( _semaphore );
+    State state = _state;
+    stateLock.free();
+
+    switch (state) {
+      case State::Running:
+        {
+          if ( _boundaryDataExchanger->receiveDanglingMessages() and CallsInBetweenTwoReceives>IprobeEveryKIterations ) {
+            CallsInBetweenTwoReceives--;
+          }
+          else {
+            CallsInBetweenTwoReceives++;
+          }
+
+          #if defined(MPIHeapUsesItsOwnThread) and defined(MultipleThreadsMayTriggerMPICalls) and defined(SharedMemoryParallelisation)
+          if (
+            (CallsInBetweenTwoReceives>2*IprobeEveryKIterations)
+            or
+            (_boundaryDataExchanger->_sendTasks.size() < _boundaryDataExchanger->_receiveTasks[_boundaryDataExchanger->_currentReceiveBuffer].size())
+          ) {
+            _boundaryDataExchanger->terminateBackgroundThread();
+            _boundaryDataExchanger->disconnectBackgroundThread();
+            logDebug( "operator()()", "decided to kill myself" );
+          }
+          #endif
+        }
+        break;
+      case State::Terminate:
+        result = false;
+        break;
+    }
+  }
+
+  return result;
+}
+
+
+template <class Data, class SendReceiveTaskType, class VectorContainer>
+std::string peano::heap::BoundaryDataExchanger<Data,SendReceiveTaskType,VectorContainer>::BackgroundThread::toString() const {
+  return toString(_state);
+}
+
+
+template <class Data, class SendReceiveTaskType, class VectorContainer>
+void peano::heap::BoundaryDataExchanger<Data,SendReceiveTaskType,VectorContainer>::BackgroundThread::terminate() {
+  tarch::multicore::Lock stateLock( _semaphore );
+  _state = State::Terminate;
+}
+

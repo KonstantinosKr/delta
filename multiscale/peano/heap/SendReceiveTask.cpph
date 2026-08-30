@@ -1,0 +1,238 @@
+#include "tarch/la/VectorCompare.h"
+#include "peano/utils/PeanoOptimisations.h"
+
+
+template <class Data>
+tarch::logging::Log  peano::heap::SendReceiveTask<Data>::_log( "peano::heap::SendReceiveTask<Data>" );
+
+
+template <class Data>
+peano::heap::SendReceiveTask<Data>::SendReceiveTask():
+  #ifdef Parallel
+  _request( MPI_REQUEST_NULL ),
+  #endif
+  _rank(-1),
+  _data(0),
+  _dataExchangeHasCompleted(false) {
+}
+
+
+template<class Data>
+bool peano::heap::SendReceiveTask<Data>::hasDataExchangeFinished() {
+  #ifdef Parallel
+  if (!_dataExchangeHasCompleted) {
+    int finishedWait;
+    if(_metaInformation.getLength() > 0 and _data!=nullptr ) {
+      MPI_Test(&(_request), &finishedWait, MPI_STATUS_IGNORE);
+      _dataExchangeHasCompleted |= finishedWait!=0;
+      return _dataExchangeHasCompleted;
+    }
+  }
+  return true;
+  #else
+  return true;
+  #endif
+}
+
+
+template<class Data>
+Data* peano::heap::SendReceiveTask<Data>::data() {
+  return _data;
+}
+
+
+template<class Data>
+const Data* peano::heap::SendReceiveTask<Data>::data() const {
+  return _data;
+}
+
+
+template<class Data>
+int peano::heap::SendReceiveTask<Data>::getRank() const {
+  return _rank;
+}
+
+//  _metaInformation.send(_rank, tag, true, MetaInformation::ExchangeMode::NonblockingWithPollingLoopOverTests);
+//  _metaInformation.receive(_rank, tag, true, MetaInformation::ExchangeMode::Blocking);
+
+
+template<class Data>
+typename peano::heap::SendReceiveTask<Data>::MetaInformation& peano::heap::SendReceiveTask<Data>::getMetaInformation() {
+  return _metaInformation;
+}
+
+
+template<class Data>
+typename peano::heap::SendReceiveTask<Data>::MetaInformation  peano::heap::SendReceiveTask<Data>::getMetaInformation() const {
+  return _metaInformation;
+}
+
+
+
+template<class Data>
+bool peano::heap::SendReceiveTask<Data>::hasCommunicationCompleted() {
+  #ifdef Parallel
+  if ( _metaInformation.getLength()==0  or _data==nullptr ) {
+    return true;
+  }
+  else {
+	int finishedWait;
+    assertion1(_data!=nullptr, toString() );
+    MPI_Test(&(_request), &finishedWait, MPI_STATUS_IGNORE);
+    return finishedWait;
+  }
+  #else
+  return true;
+  #endif
+}
+
+
+template<class Data>
+void peano::heap::SendReceiveTask<Data>::setRank(int value) {
+  _rank = value;
+}
+
+
+template<class Data>
+bool peano::heap::SendReceiveTask<Data>::fits(
+  const tarch::la::Vector<DIMENSIONS, double>&  position,
+  int                                           level
+) const {
+  #ifdef Asserts
+  const double tolerance =
+    tarch::la::NUMERICAL_ZERO_DIFFERENCE *
+    std::max(
+      1.0, std::max( 
+        tarch::la::maxAbs(_metaInformation.getPosition()), tarch::la::maxAbs(position)
+      )
+    );
+  
+  return
+    (_metaInformation.getLevel() == -1) ||
+    (
+      _metaInformation.getLevel() == level &&
+      tarch::la::equals(_metaInformation.getPosition(), position, tolerance)
+    );
+  #else
+  return true;
+  #endif
+}
+
+
+template<class Data>
+void peano::heap::SendReceiveTask<Data>::setInvalid() {
+   #if defined(Asserts)
+  _metaInformation.setLevel(-1);
+  #endif
+  _metaInformation.setLength(0);
+  _data = nullptr;
+}
+
+
+template <class Data>
+void peano::heap::SendReceiveTask<Data>::freeMemory() {
+  if (_freeDataPointer && _metaInformation.getLength()>0) {
+    delete[] _data;
+  }
+  _metaInformation.setLength(0);
+}
+
+
+
+template <class Data>
+void peano::heap::SendReceiveTask<Data>::sendDataDirectlyFromBuffer(const Data* const data) {
+  assertion( _metaInformation.getLength()>0 );
+  assertion( _data==0 );
+
+  _freeDataPointer = false;
+  _data            = const_cast< Data* >( data );
+}
+
+
+template <class Data>
+void peano::heap::SendReceiveTask<Data>::wrapData(const Data* const data) {
+  assertion( _metaInformation.getLength()>0 );
+  assertion( _data==0 );
+
+  _freeDataPointer = true;
+
+  _data = new (std::nothrow) Data[_metaInformation.getLength()];
+  if (_data==nullptr) {
+    logError( "wrapData(DataVectorType)", "memory allocation failed. Terminate" );
+    exit(-1);
+  }
+  for (int i=0; i<static_cast<int>( _metaInformation.getLength() ); i++) {
+    _data[i] = data[i];
+  }
+}
+
+
+template <class Data>
+void peano::heap::SendReceiveTask<Data>::triggerSend(int tag) {
+  assertion( _data!=nullptr );
+  assertion( _metaInformation.getLength()>0 );
+  
+  #if defined(Parallel)
+  const int result = MPI_Isend(
+    _data, _metaInformation.getLength(), Data::Datatype, _rank,
+    tag,
+    tarch::parallel::Node::getInstance().getCommunicator(), &_request
+  );
+
+  if ( result != MPI_SUCCESS ) {
+    logError(
+      "triggerSend(int)", "failed to send heap data to node "
+      << _rank << ": " << tarch::parallel::MPIReturnValueToString(result)
+    );
+  }
+  #endif
+}
+
+
+template <class Data>
+void peano::heap::SendReceiveTask<Data>::triggerReceive(int tag) {
+  assertion( _rank >= 0 );
+  assertion( _data==0 );
+  
+  #if defined(Parallel)
+  logTraceInWith2Arguments( "triggerReceive(int)", tag, _metaInformation.toString() );
+  _data = new (std::nothrow) Data[ _metaInformation.getLength() ];
+  if (_data==nullptr) {
+    logError( "triggerReceive(int)", "memory allocation failed. Terminate" );
+    exit(-1);
+  }
+
+  #if defined(NonblockingHeapDataReceives)
+  const int  result = MPI_Irecv(
+    _data, _metaInformation.getLength(), Data::Datatype,
+    _rank, tag, tarch::parallel::Node::getInstance().getCommunicator(),
+    &_request
+  );
+  #else
+  const int  result = MPI_Recv(
+    _data, _metaInformation.getLength(), Data::Datatype,
+    _rank, tag, tarch::parallel::Node::getInstance().getCommunicator(),
+	MPI_STATUS_IGNORE
+  );
+  _request = MPI_REQUEST_NULL;
+  #endif
+
+  if ( result != MPI_SUCCESS ) {
+    logError(
+      "triggerReceive()",
+      "failed to receive heap data from node "
+      << _rank << ": " << tarch::parallel::MPIReturnValueToString(result)
+    );
+  }
+
+  logTraceOut( "triggerReceive(int)" );
+  #endif
+}
+
+
+template <class Data>
+std::string peano::heap::SendReceiveTask<Data>::toString() const {
+  std::ostringstream out;
+  out << "(" << _metaInformation.toString() << ",rank=" << _rank << ",data=" << (_data==nullptr ? "no" : "yes") << ")";
+  return out.str();
+}

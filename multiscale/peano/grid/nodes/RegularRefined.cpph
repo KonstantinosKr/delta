@@ -1,0 +1,513 @@
+#include "tarch/Assertions.h"
+#include "peano/utils/Loop.h"
+
+#include "peano/stacks/Stacks.h"
+
+#include "peano/grid/aspects/CellPeanoCurve.h"
+#include "peano/grid/aspects/CellLocalPeanoCurve.h"
+
+#include "peano/grid/nodes/tasks/InitialiseVertexEnumeratorsOnRegularRefinedPatch.h"
+#include "peano/grid/nodes/tasks/InvokeEnterCell.h"
+#include "peano/grid/nodes/tasks/InvokeLeaveCell.h"
+
+#include "peano/grid/nodes/tasks/LoadCellsOnRegularRefinedPatch.h"
+#include "peano/grid/nodes/tasks/LoadVerticesOnRegularRefinedPatch.h"
+#include "peano/grid/nodes/tasks/StoreCellsOnRegularRefinedPatch.h"
+#include "peano/grid/nodes/tasks/StoreVerticesOnRegularRefinedPatch.h"
+#include "peano/grid/nodes/tasks/Ascend.h"
+#include "peano/grid/nodes/tasks/Descend.h"
+
+#include "peano/datatraversal/autotuning/Oracle.h"
+
+#include "peano/datatraversal/TaskSet.h"
+
+template <class Vertex, class Cell, class State, class VertexStack, class CellStack, class EventHandle>
+tarch::logging::Log peano::grid::nodes::RegularRefined<Vertex,Cell,State,VertexStack,CellStack,EventHandle>::_log( "peano::grid::nodes::RegularRefined" );
+
+
+template <class Vertex, class Cell, class State, class VertexStack, class CellStack, class EventHandle>
+peano::grid::nodes::RegularRefined<Vertex,Cell,State,VertexStack,CellStack,EventHandle>::RegularRefined(
+  VertexStack&                vertexStack,
+  CellStack&                  cellStack,
+  EventHandle&                eventHandle,
+  peano::geometry::Geometry&  geometry,
+  peano::grid::RegularGridContainer<Vertex,Cell>&  regularGridContainer
+):
+  Base(vertexStack,cellStack,eventHandle,geometry),
+  _regularGridContainer( regularGridContainer) {
+}
+
+
+template <class Vertex, class Cell, class State, class VertexStack, class CellStack, class EventHandle>
+peano::grid::nodes::RegularRefined<Vertex,Cell,State,VertexStack,CellStack,EventHandle>::~RegularRefined() {
+}
+
+
+template <class Vertex, class Cell, class State, class VertexStack, class CellStack, class EventHandle>
+bool peano::grid::nodes::RegularRefined<Vertex,Cell,State,VertexStack,CellStack,EventHandle>::isRegularSubtreeAvailable( int requestedHeight ) {
+  logTraceInWith1Argument( "isRegularSubtreeAvailable(int)", requestedHeight );
+
+  const bool result = _regularGridContainer.isRegularSubtreeAvailable(requestedHeight);
+
+  logTraceOutWith1Argument( "isRegularSubtreeAvailable(int)", result );
+  return result;
+}
+
+
+template <class Vertex, class Cell, class State, class VertexStack, class CellStack, class EventHandle>
+void peano::grid::nodes::RegularRefined<Vertex,Cell,State,VertexStack,CellStack,EventHandle>::traverse(
+  State&                                    state,
+  Cell&                                     fineGridCell,
+  Vertex                                    fineGridVertices[FOUR_POWER_D],
+  const SingleLevelEnumerator&              fineGridVerticesEnumerator,
+  Cell&                                     coarseGridCell,
+  Vertex                                    coarseGridVertices[FOUR_POWER_D],
+  const SingleLevelEnumerator&              coarseGridVerticesEnumerator,
+  const tarch::la::Vector<DIMENSIONS,int>&  fineGridPositionOfCell
+) {
+  logTraceInWith6Arguments( "traverse(...)", state, fineGridCell, fineGridVerticesEnumerator.toString(), coarseGridCell, coarseGridVerticesEnumerator.toString(), fineGridPositionOfCell );
+
+  dfor2(k)
+    assertion1( 
+      fineGridVerticesEnumerator.getCellFlags() > peano::grid::Leaf
+      ||
+      fineGridCell.rootsPersistentRegularSubtree(), 
+      toString(fineGridVerticesEnumerator.getCellFlags()) 
+    );
+    assertion5(
+      fineGridVerticesEnumerator.getCellFlags() == fineGridVertices[ fineGridVerticesEnumerator(k) ].getAdjacentCellsHeightOfPreviousIteration()
+      ||
+      fineGridCell.rootsPersistentRegularSubtree(), 
+      toString(fineGridVerticesEnumerator.getCellFlags()),
+      toString(fineGridVertices[ fineGridVerticesEnumerator(k) ].getAdjacentCellsHeightOfPreviousIteration()),
+      fineGridVerticesEnumerator.getVertexPosition(),
+      fineGridVerticesEnumerator.toString(),
+      fineGridVertices[ fineGridVerticesEnumerator(k) ].toString()
+    );
+    //
+    // Should be refined, but it may happen that another adjacent cell has triggered a refine, i.e. the
+    // vertex is set to erase triggered.
+    //
+    assertion6(
+      fineGridVertices[ fineGridVerticesEnumerator(k) ].getRefinementControl()==Vertex::Records::Refined ||
+      fineGridVertices[ fineGridVerticesEnumerator(k) ].getRefinementControl()==Vertex::Records::EraseTriggered,
+      fineGridVertices[ fineGridVerticesEnumerator(k) ].toString(),
+      toString(fineGridVerticesEnumerator.getCellFlags()),
+      toString(fineGridVertices[ fineGridVerticesEnumerator(k) ].getAdjacentCellsHeightOfPreviousIteration()),
+      fineGridVerticesEnumerator.getVertexPosition(),
+      fineGridVerticesEnumerator.toString(),
+      fineGridVertices[ fineGridVerticesEnumerator(k) ].toString()
+    );
+  enddforx
+
+  const peano::utils::LoopDirection  TopLevelLoopDirection = peano::grid::aspects::CellPeanoCurve::getLoopDirection(fineGridCell,state.isTraversalInverted());
+  
+  peano::grid::CellFlags  TreeDepth;
+  if (fineGridCell.rootsPersistentRegularSubtree()) {
+    _regularGridContainer.switchToStoredRegularSubgrid( fineGridCell.getPersistentRegularSubtreeIndex() );
+    
+    TreeDepth = _regularGridContainer.getVertexEnumerator( 0 ).getCellFlags();
+
+    //peano::grid::nodes::tasks::InitialiseVertexEnumeratorsOnRegularRefinedPatch<Vertex,Cell>
+    //  initialiseVertexEnumeratorsTask( fineGridVerticesEnumerator, _regularGridContainer );
+    
+    peano::grid::nodes::tasks::InvokeEnterCell<Vertex,Cell,State,EventHandle>
+      invokeEnterCellTask( state, fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridCell, coarseGridVertices, coarseGridVerticesEnumerator, fineGridPositionOfCell, Base::_eventHandle );
+
+    invokeEnterCellTask();
+    
+    //auto grainSize = peano::datatraversal::autotuning::Oracle::getInstance().parallelise(
+    //    2,
+    //    peano::datatraversal::autotuning::MethodTrace::CallEnterCellAndInitialiseEnumeratorsOnRegularStationaryGrid
+    //  );
+
+    //peano::datatraversal::TaskSet(
+    // / initialiseVertexEnumeratorsTask,
+    //  invokeEnterCellTask,
+    //  grainSize.getGrainSize()>0
+    //);
+    //grainSize.parallelSectionHasTerminated();
+  }
+  else {
+    TreeDepth = fineGridVerticesEnumerator.getCellFlags();
+    
+    peano::grid::nodes::tasks::InitialiseVertexEnumeratorsOnRegularRefinedPatch<Vertex,Cell>
+      initialiseVertexEnumeratorsTask( fineGridVerticesEnumerator, _regularGridContainer );
+
+    peano::grid::nodes::tasks::InvokeEnterCell<Vertex,Cell,State,EventHandle>
+      invokeEnterCellTask( state, fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridCell, coarseGridVertices, coarseGridVerticesEnumerator, fineGridPositionOfCell, Base::_eventHandle );
+
+    auto grainSize = peano::datatraversal::autotuning::Oracle::getInstance().parallelise(
+        2,
+        peano::datatraversal::autotuning::MethodTrace::CallEnterCellAndInitialiseEnumeratorsOnRegularStationaryGrid
+      );
+
+    peano::datatraversal::TaskSet(
+      initialiseVertexEnumeratorsTask,
+      invokeEnterCellTask,
+	  peano::datatraversal::TaskSet::TaskType::IsTaskAndRunImmediately,
+	  peano::datatraversal::TaskSet::TaskType::TriggerEvents,
+      grainSize.getGrainSize()>0
+    );
+    grainSize.parallelSectionHasTerminated();
+  }
+
+
+  #if defined(SharedMemoryParallelisation)
+    assertion2(
+      fineGridCell.getNumberOfStoresToOutputStack()==0,
+      fineGridCell.toString(),
+      fineGridVerticesEnumerator.toString()
+    );
+    assertion2(
+      fineGridCell.getNumberOfLoadsFromInputStack()==0,
+      fineGridCell.toString(),
+      fineGridVerticesEnumerator.toString()
+    );
+
+    const int sizeOfInputStackBeforeDescend  = Base::_vertexStack.sizeOfInputStack();
+    const int sizeOfOutputStackBeforeDescend = Base::_vertexStack.sizeOfOutputStack();
+  #endif
+
+  int numberOfVerticesInRegularSubtree = 0;
+  for (int l=1; l<=TreeDepth; l++) {
+    numberOfVerticesInRegularSubtree += tarch::la::volume(_regularGridContainer.getNumberOfVertices(l) );
+  }
+
+  #if defined(SharedMemoryParallelisation)
+    Base::_vertexStack.growOutputStackByAtLeastNElements( numberOfVerticesInRegularSubtree );
+  #endif
+
+  Base::validatePositionOfVertices(fineGridVertices,fineGridVerticesEnumerator);
+
+  typedef peano::grid::nodes::tasks::LoadCellsOnRegularRefinedPatch<Vertex,Cell,CellStack>        LoadCellsTask;
+  typedef peano::grid::nodes::tasks::LoadVerticesOnRegularRefinedPatch<Vertex,Cell,VertexStack>   LoadVerticesTask;
+  typedef peano::grid::nodes::tasks::StoreCellsOnRegularRefinedPatch<Vertex,Cell,CellStack>       StoreCellsTask;
+  typedef peano::grid::nodes::tasks::StoreVerticesOnRegularRefinedPatch<Vertex,Cell,VertexStack>  StoreVerticesTask;
+  typedef peano::grid::nodes::tasks::Ascend<Vertex,Cell,State,EventHandle>                        AscendTask;
+  typedef peano::grid::nodes::tasks::Descend<Vertex,Cell,State,EventHandle>                       DescendTask;
+
+  const bool readTreeIsStoredPersistently = fineGridCell.rootsPersistentRegularSubtree();
+  if (readTreeIsStoredPersistently) {
+    logDebug( "traverse(...)", "loaded tree is held persistently=" << fineGridCell.toString() << ", depth=" << TreeDepth  ); 
+    dfor2(k)
+      logDebug( "traverse(...)", "- vertex " << fineGridVertices[ fineGridVerticesEnumerator(k) ].toString() );
+    enddforx
+    logDebug( "traverse(...)", "- cell " << fineGridCell.toString() );
+
+    _regularGridContainer.copyRootNodeDataIntoRegularPatch(fineGridCell,fineGridVertices,fineGridVerticesEnumerator);
+
+    const bool pipelineTasks = false;
+    LoadVerticesTask    loadVerticesTask(
+      state.isTraversalInverted(), _regularGridContainer, Base::_vertexStack, pipelineTasks,
+      LoadVerticesTask::DoNotSplitAndHandleOnlyPatchBoundary
+    );
+    loadVerticesTask();
+
+    DescendTask         descendTask(       TreeDepth, state, Base::_eventHandle, _regularGridContainer, pipelineTasks );
+    descendTask();
+  }
+  else {
+    logDebug( "traverse(...)", "loaded tree is not held persistently=" << fineGridCell.toString() << ", depth=" << TreeDepth ); 
+    dfor2(k)
+      logDebug( "traverse(...)", "- vertex " << fineGridVertices[ fineGridVerticesEnumerator(k) ].toString() );
+    enddforx
+    logDebug( "traverse(...)", "- cell " << fineGridCell.toString() );
+    
+    _regularGridContainer.copyRootNodeDataIntoRegularPatch(fineGridCell,fineGridVertices,fineGridVerticesEnumerator);
+
+    auto PipelineTasks = peano::datatraversal::autotuning::Oracle::getInstance().parallelise(
+      TreeDepth,
+      peano::datatraversal::autotuning::MethodTrace::PipelineDescendTask
+    );
+
+    if (PipelineTasks.runsParallel()) {
+      auto SplitLoadVerticesTask =
+          peano::datatraversal::autotuning::Oracle::getInstance().parallelise(
+            numberOfVerticesInRegularSubtree,
+            peano::datatraversal::autotuning::MethodTrace::SplitLoadVerticesTaskOnRegularStationaryGrid
+          );
+
+      LoadCellsTask       loadCellsTask(     TopLevelLoopDirection, TreeDepth, state.isTraversalInverted(), _regularGridContainer, Base::_cellStack, PipelineTasks.runsParallel() );
+      LoadVerticesTask    loadVerticesTask(
+        state.isTraversalInverted(), _regularGridContainer, Base::_vertexStack, PipelineTasks.runsParallel(),
+	      transformOracleResult(SplitLoadVerticesTask.getGrainSize(),TreeDepth, numberOfVerticesInRegularSubtree)
+      );
+      DescendTask         descendTask(       TreeDepth, state, Base::_eventHandle, _regularGridContainer, PipelineTasks.runsParallel() );
+
+      peano::datatraversal::TaskSet(
+        loadCellsTask,
+        loadVerticesTask,
+        descendTask,
+		peano::datatraversal::TaskSet::TaskType::LoadCells,
+		peano::datatraversal::TaskSet::TaskType::LoadVertices,
+		peano::datatraversal::TaskSet::TaskType::TriggerEvents,
+        PipelineTasks.runsParallel()
+      );
+
+      SplitLoadVerticesTask.parallelSectionHasTerminated();
+    }
+    else {
+      LoadCellsTask       loadCellsTask(     TopLevelLoopDirection, TreeDepth, state.isTraversalInverted(), _regularGridContainer, Base::_cellStack, PipelineTasks.runsParallel());
+      loadCellsTask();
+
+      auto SplitLoadVerticesTask =
+          peano::datatraversal::autotuning::Oracle::getInstance().parallelise(
+            numberOfVerticesInRegularSubtree,
+            peano::datatraversal::autotuning::MethodTrace::SplitLoadVerticesTaskOnRegularStationaryGrid
+          );
+      LoadVerticesTask    loadVerticesTask(
+        state.isTraversalInverted(), _regularGridContainer, Base::_vertexStack, PipelineTasks.runsParallel(),
+        transformOracleResult(SplitLoadVerticesTask.getGrainSize(),TreeDepth, numberOfVerticesInRegularSubtree)
+      );
+
+      loadVerticesTask();
+
+      #if defined(SharedMemoryParallelisation)
+      while (
+        SplitLoadVerticesTask.runsParallel() &&
+        !_regularGridContainer.isLevelInitialised(TreeDepth)
+      ) {
+   	    peano::datatraversal::TaskSet::waitForLoadVerticesTask();
+      }
+      #endif
+      SplitLoadVerticesTask.parallelSectionHasTerminated();
+
+      DescendTask         descendTask(       TreeDepth, state, Base::_eventHandle, _regularGridContainer, PipelineTasks.runsParallel() );
+      descendTask();
+    }
+
+    PipelineTasks.parallelSectionHasTerminated();
+  }
+
+  #if defined(PersistentRegularSubtrees) && defined(SharedMemoryParallelisation)
+  auto TryToRetainRegularSubtreePersistently = peano::datatraversal::autotuning::Oracle::getInstance().parallelise(
+    TreeDepth+1,
+    peano::datatraversal::autotuning::MethodTrace::HoldPersistentRegularSubgrid
+  );
+  bool       retainRegularSubtreePersistently            = readTreeIsStoredPersistently | TryToRetainRegularSubtreePersistently.runsParallel();
+  #elif defined(PersistentRegularSubtrees)
+  bool       retainRegularSubtreePersistently            = true;
+  #else
+  bool       retainRegularSubtreePersistently            = false;
+  #endif
+
+  if (retainRegularSubtreePersistently || readTreeIsStoredPersistently)  {
+    AscendTask ascendTask(TreeDepth, state, Base::_eventHandle, _regularGridContainer );
+    ascendTask();
+    
+    if (
+      !ascendTask.treeRemainsStatic()
+      && 
+      readTreeIsStoredPersistently
+    ) {
+      state.informAboutFailedRefineOrEraseBecauseOfPersistentSubtrees(TreeDepth);
+    }
+
+    const bool persistentSubtreeRemainsPersistent = 
+      retainRegularSubtreePersistently
+      && 
+      ascendTask.treeRemainsStatic() 
+      && 
+      state.storeRegularSubtreesPersistently(TreeDepth);
+    if (persistentSubtreeRemainsPersistent) {
+      retainRegularSubtreePersistently = true;
+
+      dfor2(k)
+        _regularGridContainer.getVertex(0,kScalar).setIsParentingRegularPersistentSubgridFlag();
+      enddforx
+
+      const bool pipelineTasks = false;
+      StoreVerticesTask   storeVerticesTask(
+        state.isTraversalInverted(), _regularGridContainer, Base::_vertexStack, pipelineTasks,
+        StoreVerticesTask::DoNotSplitAndHandleOnlyPatchBoundary
+      );
+      storeVerticesTask();
+
+      #ifdef SharedMemoryParallelisation
+      logDebug( "operator()()", "wait until all store processes have terminated" );
+      while (!StoreVerticesTask::haveAllStoreVerticesTasksTerminated()) {
+        peano::datatraversal::TaskSet::waitForStoreVerticesTask();
+      }
+      #endif
+
+      _regularGridContainer.copyRootNodeDataFromRegularPatch(fineGridCell,fineGridVertices,fineGridVerticesEnumerator);
+      fineGridCell.updatePersistentRegularSubtreeIndex( _regularGridContainer.keepCurrentRegularSubgrid() );
+
+      logDebug( "traverse(...)", "retained regular subtree=" << fineGridCell.toString() << ", depth=" << TreeDepth ); 
+      dfor2(k)
+        logDebug( "traverse(...)", "- vertex " << fineGridVertices[ fineGridVerticesEnumerator(k) ].toString() );
+      enddforx
+      logDebug( "traverse(...)", "- cell " << fineGridCell.toString() );
+    }
+    else {
+      retainRegularSubtreePersistently = false;
+
+      const bool pipelineTasks = false;
+      StoreVerticesTask   storeVerticesTask(
+        state.isTraversalInverted(), _regularGridContainer, Base::_vertexStack, pipelineTasks,
+        StoreVerticesTask::PersistentSubtreeIsDrained
+      );
+      storeVerticesTask();
+
+      #ifdef SharedMemoryParallelisation
+      logDebug( "operator()()", "wait until all store processes have terminated" );
+      while (!StoreVerticesTask::haveAllStoreVerticesTasksTerminated()) {
+        peano::datatraversal::TaskSet::waitForStoreVerticesTask();
+      }
+      #endif
+
+      StoreCellsTask      storeCellsTask( TopLevelLoopDirection, TreeDepth, state.isTraversalInverted(), _regularGridContainer, Base::_cellStack, pipelineTasks );
+      storeCellsTask();
+
+      _regularGridContainer.copyRootNodeDataFromRegularPatch(fineGridCell,fineGridVertices,fineGridVerticesEnumerator);
+      fineGridCell.updatePersistentRegularSubtreeIndex(NoPersistentRegularSubtree);
+
+      dfor2(k)
+        fineGridVertices[ fineGridVerticesEnumerator(k) ].invalidateAdjacentCellInformation();
+      enddforx
+
+      logDebug( "traverse(...)", "drained existing persistent regular subtree=" << fineGridCell.toString() << ", depth=" << TreeDepth ); 
+      dfor2(k)
+        logDebug( "traverse(...)", "- vertex " << fineGridVertices[ fineGridVerticesEnumerator(k) ].toString() );
+      enddforx
+      logDebug( "traverse(...)", "- cell " << fineGridCell.toString() );
+    }
+  }
+  else {
+    auto PipelineTasks = peano::datatraversal::autotuning::Oracle::getInstance().parallelise(
+      TreeDepth,
+      peano::datatraversal::autotuning::MethodTrace::PipelineAscendTask
+    );
+    
+    if (PipelineTasks.runsParallel()) {
+      auto SplitStoreVerticesTask =
+        peano::datatraversal::autotuning::Oracle::getInstance().parallelise(
+          numberOfVerticesInRegularSubtree,
+          peano::datatraversal::autotuning::MethodTrace::SplitStoreVerticesTaskOnRegularStationaryGrid
+        );
+
+      StoreCellsTask      storeCellsTask(    TopLevelLoopDirection, TreeDepth, state.isTraversalInverted(), _regularGridContainer, Base::_cellStack, true );
+      StoreVerticesTask   storeVerticesTask(
+        state.isTraversalInverted(), _regularGridContainer, Base::_vertexStack, PipelineTasks.runsParallel(),
+        transformOracleResult( SplitStoreVerticesTask.getGrainSize(), TreeDepth, numberOfVerticesInRegularSubtree )
+      );
+      AscendTask          ascendTask(        TreeDepth, state, Base::_eventHandle, _regularGridContainer );
+
+      peano::datatraversal::TaskSet(
+        ascendTask,
+        storeVerticesTask,
+        storeCellsTask,
+		peano::datatraversal::TaskSet::TaskType::TriggerEvents,
+		peano::datatraversal::TaskSet::TaskType::StoreVertices,
+		peano::datatraversal::TaskSet::TaskType::StoreCells,
+        PipelineTasks.runsParallel() 
+      );
+
+      #ifdef SharedMemoryParallelisation
+      logDebug( "operator()()", "wait until all store processes have terminated" );
+      while (!StoreVerticesTask::haveAllStoreVerticesTasksTerminated()) {
+        peano::datatraversal::TaskSet::waitForStoreVerticesTask();
+      }
+      #endif
+
+      SplitStoreVerticesTask.parallelSectionHasTerminated();
+    }
+    else {
+      AscendTask ascendTask(TreeDepth, state, Base::_eventHandle, _regularGridContainer );
+      ascendTask();
+
+      auto SplitStoreVerticesTask =
+        peano::datatraversal::autotuning::Oracle::getInstance().parallelise(
+          numberOfVerticesInRegularSubtree,
+          peano::datatraversal::autotuning::MethodTrace::SplitStoreVerticesTaskOnRegularStationaryGrid
+        );
+      StoreVerticesTask   storeVerticesTask(
+        state.isTraversalInverted(), _regularGridContainer, Base::_vertexStack, PipelineTasks.runsParallel(),
+        transformOracleResult( SplitStoreVerticesTask.getGrainSize(), TreeDepth, numberOfVerticesInRegularSubtree )
+      );
+      storeVerticesTask();
+
+      #ifdef SharedMemoryParallelisation
+      logDebug( "operator()()", "wait until all store processes have terminated" );
+      while (!StoreVerticesTask::haveAllStoreVerticesTasksTerminated()) {
+        peano::datatraversal::TaskSet::waitForStoreVerticesTask();
+      }
+      #endif
+
+      SplitStoreVerticesTask.parallelSectionHasTerminated();
+
+      StoreCellsTask      storeCellsTask( TopLevelLoopDirection, TreeDepth, state.isTraversalInverted(), _regularGridContainer, Base::_cellStack, PipelineTasks.runsParallel() );
+      storeCellsTask();
+    }
+
+    PipelineTasks.parallelSectionHasTerminated();
+
+    _regularGridContainer.copyRootNodeDataFromRegularPatch(fineGridCell,fineGridVertices,fineGridVerticesEnumerator);
+    fineGridCell.updatePersistentRegularSubtreeIndex(NoPersistentRegularSubtree);
+
+    #if defined(SharedMemoryParallelisation)
+    const int verticesReadFromInputStack = sizeOfInputStackBeforeDescend          - Base::_vertexStack.sizeOfInputStack();
+    const int verticesStoredToOuputStack = Base::_vertexStack.sizeOfOutputStack() - sizeOfOutputStackBeforeDescend;
+    
+    fineGridCell.setInputOutputStackAccessStatistics(verticesReadFromInputStack,verticesStoredToOuputStack);
+    
+    assertionEquals2( fineGridCell.getNumberOfStoresToOutputStack(), verticesReadFromInputStack, verticesStoredToOuputStack, fineGridCell.toString() );
+    assertionEquals2( fineGridCell.getNumberOfLoadsFromInputStack(), verticesStoredToOuputStack, verticesReadFromInputStack, fineGridCell.toString() );
+    
+    #if defined(Dim2) && !defined(PersistentRegularSubtrees)
+    assertion4(
+         fineGridCell.getNumberOfStoresToOutputStack()==3*3 // have already visited two edges, two edges are free
+      || fineGridCell.getNumberOfStoresToOutputStack()==3*4 // have touched only one edge
+      || fineGridCell.getNumberOfStoresToOutputStack()==3*2 // have touched three edges
+      || fineGridCell.getNumberOfStoresToOutputStack()==3*3+9*9
+      || fineGridCell.getNumberOfStoresToOutputStack()==3*4+9*10
+      || fineGridCell.getNumberOfStoresToOutputStack()==3*2+9*8
+      || fineGridCell.getNumberOfStoresToOutputStack()==3*3+9*9+27*27
+      || fineGridCell.getNumberOfStoresToOutputStack()==3*4+9*10+27*28
+      || fineGridCell.getNumberOfStoresToOutputStack()==3*2+9*8+27*26
+      || fineGridCell.getNumberOfStoresToOutputStack()> 3*4+9*10+27*28,
+      fineGridCell.toString(),
+      TreeDepth,
+      verticesReadFromInputStack,
+      verticesStoredToOuputStack
+    );
+    
+    assertion4(
+         fineGridCell.getNumberOfLoadsFromInputStack()==3*3             // 9   have not yet visited two edges
+      || fineGridCell.getNumberOfLoadsFromInputStack()==3*4             // 12
+      || fineGridCell.getNumberOfLoadsFromInputStack()==3*2             // 6
+      || fineGridCell.getNumberOfLoadsFromInputStack()==3*3+9*9         // 90
+      || fineGridCell.getNumberOfLoadsFromInputStack()==3*4+9*10        // 102
+      || fineGridCell.getNumberOfLoadsFromInputStack()==3*2+9*8         // 78
+      || fineGridCell.getNumberOfLoadsFromInputStack()==3*3+9*9+27*27
+      || fineGridCell.getNumberOfLoadsFromInputStack()==3*4+9*10+27*28  // 3612
+      || fineGridCell.getNumberOfLoadsFromInputStack()==3*2+9*8+27*26
+      || fineGridCell.getNumberOfLoadsFromInputStack()> 3*4+9*10+27*28, // 3612
+      fineGridCell.toString(),
+      TreeDepth,
+      verticesReadFromInputStack,
+      verticesStoredToOuputStack
+    );
+    #endif
+    #endif    
+
+    logDebug( "traverse(...)", "stored non-persistent subtree non-persistently=" << fineGridCell.toString() << ", depth=" << TreeDepth ); 
+    dfor2(k)
+      logDebug( "traverse(...)", "- vertex " << fineGridVertices[ fineGridVerticesEnumerator(k) ].toString() );
+    enddforx
+    logDebug( "traverse(...)", "- cell " << fineGridCell.toString() );
+  }
+
+  #if defined(PersistentRegularSubtrees) && defined(SharedMemoryParallelisation)
+  TryToRetainRegularSubtreePersistently.parallelSectionHasTerminated();
+  #endif
+
+  Base::validatePositionOfVertices(fineGridVertices,fineGridVerticesEnumerator);
+
+  peano::grid::nodes::tasks::InvokeLeaveCell<Vertex,Cell,State,EventHandle>
+    invokeLeaveCellTask( state, fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridCell, coarseGridVertices, coarseGridVerticesEnumerator, fineGridPositionOfCell, Base::_eventHandle );
+  invokeLeaveCellTask();
+    
+  logTraceOut( "traverse(...)" );
+}

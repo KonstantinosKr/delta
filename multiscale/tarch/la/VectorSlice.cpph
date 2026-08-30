@@ -1,0 +1,35 @@
+template<int SizeLhs, int SizeRhs, typename Scalar>
+tarch::la::Vector<SizeLhs,Scalar> tarch::la::slice(const tarch::la::Vector<SizeRhs,Scalar>& vector, int fromIndex, int stride) {
+  tarch::la::Vector<SizeLhs,Scalar> result;
+
+  assertion5(fromIndex>=0,fromIndex, SizeLhs, SizeRhs, stride, vector.toString());
+  assertion5(fromIndex+(SizeLhs-1)*stride<SizeRhs,fromIndex, SizeLhs, SizeRhs, stride, vector.toString());
+
+  #ifdef CompilerICC
+  #pragma ivdep
+  #endif
+  for (int i=0; i<SizeLhs; i++) {
+    result(i) = vector(fromIndex+i*stride);
+  }
+
+  return result;
+}
+
+
+template<int SizeLhs, int SizeRhs, typename Scalar>
+void tarch::la::slice(
+  tarch::la::Vector<SizeLhs,Scalar>&        toVector,
+  const tarch::la::Vector<SizeRhs,Scalar>&  fromVector,
+  int                                       fromIndexInToVector,
+  int                                       strideInToVector
+) {
+  assertion6(fromIndexInToVector>=0, SizeLhs, SizeRhs, toVector.toString(), fromVector.toString(), fromIndexInToVector, strideInToVector);
+  assertion6(fromIndexInToVector+(SizeRhs-1)*strideInToVector<SizeLhs, SizeLhs, SizeRhs, toVector.toString(), fromVector.toString(), fromIndexInToVector, strideInToVector);
+
+  #ifdef CompilerICC
+  #pragma ivdep
+  #endif
+  for (int i=0; i<SizeRhs; i++) {
+    toVector(fromIndexInToVector+i*strideInToVector) = fromVector(i);
+  }
+}

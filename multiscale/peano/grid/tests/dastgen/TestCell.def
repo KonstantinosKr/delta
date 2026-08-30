@@ -1,0 +1,103 @@
+// This file is part of the Peano project. For conditions of distribution and
+// use, please see the copyright notice at www.peano-framework.org
+  
+
+#include "peano/utils/Globals.h"
+#include "tarch/multicore/MulticoreDefinitions.h"
+
+
+Packed-Type: int;
+
+
+Constant: DIMENSIONS hint-value 4;
+Constant: DIMENSIONS_TIMES_TWO hint-value 8;
+
+
+class  peano::grid::tests::records::TestCell { 
+  enum State {
+      /**
+       * The element corresponds to a leaf cell, that  might be refined
+       * during the iteration. If a leaf transforms into a refined spacetree
+       * node, all the operations for a refined cell are called instead of the
+       * leaf operations. Otherwise enterElement() and leaveElement() is called
+       * for the leaf node.
+       */
+      Leaf,
+      /**
+       * Identifies a refined spacetree node. Please see
+       * grid::MockGridEventHandle for a detailed description what operation
+       * squence is triggered for a refined node.
+       */
+      Refined,
+      /**
+       * Corresponds to the spacetree root. Usually, one should not use this
+       * flag. If an initialisation or a shutdown has to be done for every
+       * iteration, use the beginTraversal() and endTraversal() operation.
+       */
+      Root
+  };
+
+  /**
+   * A cell is inside if it is completely inside the (compact/closed) 
+   * computational domain. If the computational domain boundary cuts the cell, 
+   * it is outside. 
+   */
+  persistent packed bool  isInside;
+
+
+  /**
+   * Defines the state of the event. In the release mode, the state has to be
+   * exchanged, too. Otherwise, it is impossible for the algorithm to merge
+   * subdomains.
+   */
+  persistent parallelise packed State state;
+  
+  #ifdef Debug
+  persistent parallelise int level;
+  #endif
+
+  /**
+   * Defines whether this event belongs to an even column, row, plate etc.
+   * There is no need to exchange this data throughout the iterations or 
+   * even a join.
+   */
+  persistent packed bool evenFlags[DIMENSIONS];
+
+  /**
+   * Identifies when the corresponding face is touched again. Negative values
+   * mean, this face has been touched before, positive values say this face
+   * will be touched later on.
+   * There is no need to exchange this data throughout the iterations or 
+   * even a join.
+   *
+   * @todo Hier muessen Symbolische Konstanten DIMENSIONS_TIMES_TWO verwendet
+   *       werden statt dieser festen Konstanten
+   * @todo Hier sollte ein packed stehen!
+   */
+  persistent short int accessNumber[DIMENSIONS_TIMES_TWO] from -8 to 8;
+
+  
+  #ifdef Parallel
+  /**
+   * Identifies who's in charge of this cell.   
+   */
+  persistent int     responsibleRank;
+  persistent double  nodeWorkload;
+  persistent double  localWorkload;
+  persistent double  totalWorkload;
+  persistent parallelise double  maxWorkload;
+  persistent parallelise double  minWorkload;
+  persistent parallelise bool subtreeHoldsWorker;
+  persistent packed bool         cellIsAForkCandidate;
+  
+  #endif
+  
+  #ifdef SharedMemoryParallelisation
+  persistent int     numberOfLoadsFromInputStream;
+  persistent int     numberOfStoresToOutputStream;
+  #endif
+
+  #ifdef PersistentRegularSubtrees
+  persistent int     persistentRegularSubtreeIndex;
+  #endif
+};

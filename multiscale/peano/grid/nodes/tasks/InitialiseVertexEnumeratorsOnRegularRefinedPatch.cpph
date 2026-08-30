@@ -1,0 +1,36 @@
+template <class Vertex, class Cell>
+tarch::logging::Log  peano::grid::nodes::tasks::InitialiseVertexEnumeratorsOnRegularRefinedPatch<Vertex,Cell>::_log( "peano::grid::nodes::tasks::InitialiseVertexEnumeratorsOnRegularRefinedPatch" );
+
+
+template <class Vertex, class Cell>
+peano::grid::nodes::tasks::InitialiseVertexEnumeratorsOnRegularRefinedPatch<Vertex,Cell>::InitialiseVertexEnumeratorsOnRegularRefinedPatch(
+  const SingleLevelEnumerator&                                      fineGridVerticesEnumerator,
+  peano::grid::RegularGridContainer<Vertex,Cell>&  regularGridContainer
+):
+  _fineGridVerticesEnumerator(fineGridVerticesEnumerator),
+  _regularGridContainer(regularGridContainer) {
+}
+
+
+template <class Vertex, class Cell>
+bool peano::grid::nodes::tasks::InitialiseVertexEnumeratorsOnRegularRefinedPatch<Vertex,Cell>::operator()() {
+  logTraceInWith1Argument( "initialiseVertexEnumerators(...)", _fineGridVerticesEnumerator.toString() );
+
+  const int TreeDepth = _fineGridVerticesEnumerator.getCellFlags();
+  for (int i=0; i<=TreeDepth; i++) {
+    _regularGridContainer.setVertexEnumerator(
+      i,
+      UnrolledLevelEnumerator(
+        _fineGridVerticesEnumerator.getCellSize(),
+        _fineGridVerticesEnumerator.getVertexPosition(),
+        _fineGridVerticesEnumerator.getLevel(),
+        TreeDepth,
+        i
+      )
+    );
+  }
+
+  logTraceOut( "initialiseVertexEnumerators(...)" );
+
+  return false;
+}

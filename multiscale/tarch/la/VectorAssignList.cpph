@@ -1,0 +1,58 @@
+#include <sstream>
+
+
+
+template<int Size, typename Scalar>
+tarch::la::VectorAssignList<Size,Scalar> tarch::la::assignList (
+  Vector<Size,Scalar>& vector
+) {
+  return VectorAssignList<Size,Scalar>( vector );
+}
+
+
+template<int Size, typename Scalar>
+tarch::la::VectorAssignList<Size,Scalar>::VectorAssignList(Vector<Size,Scalar>& vector):
+  _vector(vector), _index(0) {
+}
+
+
+template<int Size, typename Scalar>
+tarch::la::VectorAssignList<Size,Scalar>::VectorAssignList(
+  Vector<Size,Scalar>& vector,
+  int                  index
+):
+  _vector(vector),
+  _index(index) {
+}
+
+
+template<int Size, typename Scalar>
+tarch::la::VectorAssignList<Size,Scalar>::~VectorAssignList() {
+  assertion1WithExplanation( _index==Size, toString(), "list assigned to vector with v=v1,v2,v3,...,vn is too short" );
+}
+
+
+template<int Size, typename Scalar>
+tarch::la::VectorAssignList<Size,Scalar>&  tarch::la::VectorAssignList<Size,Scalar>::operator=(const Scalar&  toAssign) {
+  assertion1WithExplanation( _index < Size, toString(), "list assigned to vector with v=v1,v2,v3,...,vn is too long" );
+  _vector(_index) = toAssign;
+  _index ++;
+  return *this;
+}
+
+
+template<int Size, typename Scalar>
+tarch::la::VectorAssignList<Size,Scalar>&  tarch::la::VectorAssignList<Size,Scalar>::operator, (const Scalar&  toAssign) {
+  assertion1 ( _index < Size, toString() );
+  _vector(_index) = toAssign;
+  _index ++;
+  return *this;
+}
+
+
+template<int Size, typename Scalar>
+std::string tarch::la::VectorAssignList<Size,Scalar>::toString() const {
+  std::ostringstream out;
+  out << "(index=" << _index << ",vector=" << _vector.toString() << ")";
+  return out.str();
+}

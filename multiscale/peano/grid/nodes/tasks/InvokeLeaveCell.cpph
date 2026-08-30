@@ -1,0 +1,57 @@
+template < class Vertex, class Cell, class State, class EventHandle>
+tarch::logging::Log peano::grid::nodes::tasks::InvokeLeaveCell< Vertex, Cell, State, EventHandle >::_log( "peano::grid::nodes::tasks::InvokeLeaveCell" );
+
+
+template < class Vertex, class Cell, class State, class EventHandle>
+peano::grid::nodes::tasks::InvokeLeaveCell< Vertex, Cell, State, EventHandle >::InvokeLeaveCell(
+  State&                                                      state,
+  Cell&                                                       fineGridCell,
+  Vertex* const                                               fineGridVertices,
+  const peano::grid::SingleLevelEnumerator&  fineGridVerticesEnumerator,
+  Cell&                                                       coarseGridCell,
+  Vertex* const                                               coarseGridVertices,
+  const peano::grid::SingleLevelEnumerator&  coarseGridVerticesEnumerator,
+  const tarch::la::Vector<DIMENSIONS,int>&                    fineGridPositionOfCell,
+  EventHandle&                                                eventHandle
+):
+  _state(state),
+  _fineGridCell(fineGridCell),
+  _fineGridVertices(fineGridVertices),
+  _fineGridVerticesEnumerator(fineGridVerticesEnumerator),
+  _coarseGridCell(coarseGridCell),
+  _coarseGridVertices(coarseGridVertices),
+  _coarseGridVerticesEnumerator(coarseGridVerticesEnumerator),
+  _fineGridPositionOfCell(fineGridPositionOfCell),
+  _eventHandle(eventHandle) {
+}
+
+
+template < class Vertex, class Cell, class State, class EventHandle>
+bool peano::grid::nodes::tasks::InvokeLeaveCell< Vertex, Cell, State, EventHandle >::operator()() {
+  #ifdef Parallel
+  const bool invokeEvent = _fineGridCell.isInside() && !_fineGridCell.isRemote(_state,true,true);
+  #else
+  const bool invokeEvent = _fineGridCell.isInside();
+  #endif
+
+  // According to the specification, only refined cells where all adjacent
+  // vertices are refined are to be excluded. This check is rather expensive,
+  // so I do that simple one.
+  const int  level = _fineGridCell.isRefined() ? _fineGridVerticesEnumerator.getLevel() : -_fineGridVerticesEnumerator.getLevel();
+  const bool InvokeEventAccordingToSpecification =
+    _eventHandle.leaveCellSpecification(level).manipulates != peano::MappingSpecification::Nop;
+
+  if (invokeEvent && InvokeEventAccordingToSpecification) {
+    _eventHandle.leaveCell(
+      _fineGridCell,
+      _fineGridVertices,
+      _fineGridVerticesEnumerator,
+      _coarseGridVertices,
+      _coarseGridVerticesEnumerator,
+      _coarseGridCell,
+      _fineGridPositionOfCell
+    );
+  }
+
+  return false;
+}

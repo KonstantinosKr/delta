@@ -1,0 +1,162 @@
+#include "peano/utils/Globals.h"
+#include "peano/stacks/Stacks.h"
+#include "tarch/compiler/CompilerSpecificSettings.h"
+#include "peano/utils/PeanoOptimisations.h"
+
+
+template <class Cell>
+bool peano::grid::aspects::CellLocalPeanoCurve::isFaceTouched(const Cell& cell, int faceNumber, bool isTraversalInverted) {
+  assertion3( faceNumber>=0, cell.toString(), faceNumber, isTraversalInverted );
+  assertion3( faceNumber<2*DIMENSIONS, cell.toString(), faceNumber, isTraversalInverted );
+  return (cell._cellData.getAccessNumber(faceNumber) < 0) ^ isTraversalInverted;
+}
+
+
+#if defined(CacheActionSets)
+template <class Cell>
+const peano::datatraversal::ActionSetTraversal& peano::grid::aspects::CellLocalPeanoCurve::getWriteVertexSequence( const Cell& cell, bool isTraversalInverted, bool parallelIfPossible ) {
+  const int key = getUniqueKey(cell._cellData.getAccessNumber(), cell._cellData.getEvenFlags(), isTraversalInverted, parallelIfPossible );
+  assertion( key>=0 );
+
+  if (cachedEntriesForWriteVertexSequence.count(key)==0) {
+    cachedEntriesForWriteVertexSequence[
+      getUniqueKey(cell._cellData.getAccessNumber(), cell._cellData.getEvenFlags(), isTraversalInverted, true )
+    ] = new peano::datatraversal::ActionSetTraversal(
+      createParallelWriteVertexSequence(cell._cellData.getAccessNumber(), cell._cellData.getEvenFlags(), isTraversalInverted)
+    );
+
+    cachedEntriesForWriteVertexSequence[
+      getUniqueKey(cell._cellData.getAccessNumber(), cell._cellData.getEvenFlags(), !isTraversalInverted, true )
+    ] = new peano::datatraversal::ActionSetTraversal(
+      createParallelWriteVertexSequence(cell._cellData.getAccessNumber(), cell._cellData.getEvenFlags(), !isTraversalInverted)
+    );
+
+    cachedEntriesForWriteVertexSequence[
+      getUniqueKey(cell._cellData.getAccessNumber(), cell._cellData.getEvenFlags(), isTraversalInverted, false )
+    ] = new peano::datatraversal::ActionSetTraversal(
+      createSequentialWriteVertexSequence(cell._cellData.getAccessNumber(), cell._cellData.getEvenFlags(), isTraversalInverted)
+    );
+
+    cachedEntriesForWriteVertexSequence[
+      getUniqueKey(cell._cellData.getAccessNumber(), cell._cellData.getEvenFlags(), !isTraversalInverted, false )
+    ] = new peano::datatraversal::ActionSetTraversal(
+      createSequentialWriteVertexSequence(cell._cellData.getAccessNumber(), cell._cellData.getEvenFlags(), !isTraversalInverted)
+    );
+  }
+
+  return *cachedEntriesForWriteVertexSequence[key];
+}
+
+
+template <class Cell>
+const peano::datatraversal::ActionSetTraversal& peano::grid::aspects::CellLocalPeanoCurve::getWriteVertexSequenceForStaticSubtree( const Cell& cell, bool isTraversalInverted, bool parallelIfPossible ) {
+  const int key = getUniqueKey(cell._cellData.getAccessNumber(), cell._cellData.getEvenFlags(), isTraversalInverted, parallelIfPossible );
+  assertion( key>=0 );
+  assertion( cachedEntriesForWriteVertexSequence.count(key)==1 );
+  return *cachedEntriesForWriteVertexSequence[key];
+}
+#else
+template <class Cell>
+peano::datatraversal::ActionSetTraversal
+peano::grid::aspects::CellLocalPeanoCurve::getWriteVertexSequence(
+  const Cell& cell, bool isTraversalInverted, bool parallelIfPossible
+) {
+  #if defined(SharedMemoryParallelisation)
+  if (parallelIfPossible) {
+    return createParallelWriteVertexSequence(cell._cellData.getAccessNumber(), cell._cellData.getEvenFlags(), isTraversalInverted);
+  }
+  else {
+    return createSequentialWriteVertexSequence(cell._cellData.getAccessNumber(), cell._cellData.getEvenFlags(), isTraversalInverted);
+  }
+  #else
+  return createSequentialWriteVertexSequence(cell._cellData.getAccessNumber(), cell._cellData.getEvenFlags(), isTraversalInverted);
+  #endif
+}
+
+
+template <class Cell>
+peano::datatraversal::ActionSetTraversal
+peano::grid::aspects::CellLocalPeanoCurve::getWriteVertexSequenceForStaticSubtree(
+  const Cell& cell, bool isTraversalInverted, bool parallelIfPossible
+) {
+  return getWriteVertexSequence(cell,isTraversalInverted,parallelIfPossible);
+}
+#endif
+
+
+
+
+#if defined(CacheActionSets)
+template <class Cell>
+const peano::datatraversal::ActionSetTraversal& peano::grid::aspects::CellLocalPeanoCurve::getReadVertexSequence( const Cell& cell, bool isTraversalInverted, bool parallelIfPossible ) {
+  const int key = getUniqueKey(cell._cellData.getAccessNumber(), cell._cellData.getEvenFlags(), isTraversalInverted, parallelIfPossible );
+  assertion( key>=0 );
+
+  if (cachedEntriesForReadVertexSequence.count(key)==0) {
+    cachedEntriesForReadVertexSequence[
+      getUniqueKey(cell._cellData.getAccessNumber(), cell._cellData.getEvenFlags(), isTraversalInverted, true )
+    ] = new peano::datatraversal::ActionSetTraversal(
+      createParallelReadVertexSequence(cell._cellData.getAccessNumber(), cell._cellData.getEvenFlags(), isTraversalInverted)
+    );
+
+    cachedEntriesForReadVertexSequence[
+      getUniqueKey(cell._cellData.getAccessNumber(), cell._cellData.getEvenFlags(), !isTraversalInverted, true )
+    ] = new peano::datatraversal::ActionSetTraversal(
+      createParallelReadVertexSequence(cell._cellData.getAccessNumber(), cell._cellData.getEvenFlags(), !isTraversalInverted)
+    );
+
+    cachedEntriesForReadVertexSequence[
+      getUniqueKey(cell._cellData.getAccessNumber(), cell._cellData.getEvenFlags(), isTraversalInverted, false )
+    ] = new peano::datatraversal::ActionSetTraversal(
+      createSequentialReadVertexSequence(cell._cellData.getAccessNumber(), cell._cellData.getEvenFlags(), isTraversalInverted)
+    );
+
+    cachedEntriesForReadVertexSequence[
+      getUniqueKey(cell._cellData.getAccessNumber(), cell._cellData.getEvenFlags(), !isTraversalInverted, false )
+    ] = new peano::datatraversal::ActionSetTraversal(
+      createSequentialReadVertexSequence(cell._cellData.getAccessNumber(), cell._cellData.getEvenFlags(), !isTraversalInverted)
+    );
+  }
+
+  return *cachedEntriesForReadVertexSequence[key];
+}
+
+
+
+template <class Cell>
+const peano::datatraversal::ActionSetTraversal& peano::grid::aspects::CellLocalPeanoCurve::getReadVertexSequenceForStaticSubtree( const Cell& cell, bool isTraversalInverted, bool parallelIfPossible ) {
+  const int key = getUniqueKey(cell._cellData.getAccessNumber(), cell._cellData.getEvenFlags(), isTraversalInverted, parallelIfPossible );
+  assertion( key>=0 );
+  assertionEquals1( cachedEntriesForReadVertexSequence.count(key), 1, key);
+  return *cachedEntriesForReadVertexSequence[key];
+}
+#else
+template <class Cell>
+peano::datatraversal::ActionSetTraversal
+peano::grid::aspects::CellLocalPeanoCurve::getReadVertexSequence(
+  const Cell& cell,
+  bool isTraversalInverted,
+  bool parallelIfPossible
+) {
+  #if defined(SharedMemoryParallelisation)
+  if (parallelIfPossible) {
+    return createParallelReadVertexSequence(cell._cellData.getAccessNumber(), cell._cellData.getEvenFlags(), isTraversalInverted);
+  }
+  else {
+    return createSequentialReadVertexSequence(cell._cellData.getAccessNumber(), cell._cellData.getEvenFlags(), isTraversalInverted);
+  }
+  #else
+  return createSequentialReadVertexSequence(cell._cellData.getAccessNumber(), cell._cellData.getEvenFlags(), isTraversalInverted);
+  #endif
+}
+
+template <class Cell>
+peano::datatraversal::ActionSetTraversal
+peano::grid::aspects::CellLocalPeanoCurve::getReadVertexSequenceForStaticSubtree(
+  const Cell& cell,
+  bool isTraversalInverted,
+  bool parallelIfPossible
+) {
+  return getReadVertexSequence(cell,isTraversalInverted,parallelIfPossible);
+}
+#endif

@@ -1,0 +1,74 @@
+#include "peano/grid/nodes/Constants.h"
+#include "peano/grid/nodes/loops/CallEnterCellLoopBodyOnRegularRefinedPatch.h"
+
+
+template <class Vertex, class Cell, class State, class EventHandle>
+tarch::logging::Log peano::grid::nodes::loops::CallTouchVertexFirstTimeLoopBodyOnRegularRefinedPatch<Vertex,Cell,State,EventHandle>::_log( "peano::grid::nodes::loops::CallTouchVertexFirstTimeLoopBodyOnRegularRefinedPatch" );
+
+
+template <class Vertex, class Cell, class State, class EventHandle>
+peano::grid::nodes::loops::CallTouchVertexFirstTimeLoopBodyOnRegularRefinedPatch<Vertex,Cell,State,EventHandle>::CallTouchVertexFirstTimeLoopBodyOnRegularRefinedPatch(
+  EventHandle&                                     eventHandle,
+  peano::grid::RegularGridContainer<Vertex,Cell>&  regularGridContainer,
+  int                                              level
+):
+  _level(level),
+  _eventHandle(eventHandle),
+  _threadLocalEventHandle(eventHandle),
+  _regularGridContainer(regularGridContainer),
+  _fineGridEnumerator(_regularGridContainer.getVertexEnumerator(level)),
+  _coarseGridEnumerator(_regularGridContainer.getVertexEnumerator(level-1)) {
+}
+
+
+template <class Vertex, class Cell, class State, class EventHandle>
+peano::grid::nodes::loops::CallTouchVertexFirstTimeLoopBodyOnRegularRefinedPatch<Vertex,Cell,State,EventHandle>::CallTouchVertexFirstTimeLoopBodyOnRegularRefinedPatch(
+  const CallTouchVertexFirstTimeLoopBodyOnRegularRefinedPatch& copy
+):
+  _level(copy._level),
+  _eventHandle(copy._eventHandle),
+  _threadLocalEventHandle(copy._eventHandle),
+  _regularGridContainer(copy._regularGridContainer),
+  _fineGridEnumerator(copy._fineGridEnumerator),
+  _coarseGridEnumerator(copy._coarseGridEnumerator) {
+}
+
+
+template <class Vertex, class Cell, class State, class EventHandle>
+void peano::grid::nodes::loops::CallTouchVertexFirstTimeLoopBodyOnRegularRefinedPatch<Vertex,Cell,State,EventHandle>::mergeIntoMasterThread() const {
+  tarch::multicore::Lock lock(peano::grid::nodes::tasks::Descend<Vertex,Cell,State,EventHandle>::_semaphore);
+
+  #if defined(SharedMemoryParallelisation)
+  _eventHandle.mergeWithWorkerThread( _threadLocalEventHandle );
+  #endif
+}
+
+
+template <class Vertex, class Cell, class State, class EventHandle>
+void peano::grid::nodes::loops::CallTouchVertexFirstTimeLoopBodyOnRegularRefinedPatch<Vertex,Cell,State,EventHandle>::operator() (const tarch::la::Vector<DIMENSIONS, int>&  i) {
+  logDebug( "callTouchVertexFirstTime(...)", "study vertex at " << i << " on level " << _level );
+
+  tarch::la::Vector<DIMENSIONS,int> offsetOfCoarseGridEnumerator;
+  tarch::la::Vector<DIMENSIONS,int> positionWithinNextCoarserCell;
+
+  computePositionRelativeToNextCoarserLevelFromFineGridVertexPosition(i,offsetOfCoarseGridEnumerator,positionWithinNextCoarserCell);
+
+  _fineGridEnumerator.setOffset(i);
+  _coarseGridEnumerator.setOffset(offsetOfCoarseGridEnumerator);
+
+  const int fineGridVertexIndex = _fineGridEnumerator.lineariseVertexIndex(i);
+  const int coarseGridCellIndex = _coarseGridEnumerator.lineariseCellIndex(offsetOfCoarseGridEnumerator);
+
+  Vertex& currentVertex = _regularGridContainer.getVertex(_level,fineGridVertexIndex);
+  if (!currentVertex.isOutside()  && !_regularGridContainer.isReadFromTemporaryStack(_level,fineGridVertexIndex) ) {
+    _threadLocalEventHandle.touchVertexFirstTime(
+      currentVertex,
+      _fineGridEnumerator.getVertexPosition(),
+      _fineGridEnumerator.getCellSize(),
+      _regularGridContainer.getVertex(_level-1),
+      _coarseGridEnumerator,
+      _regularGridContainer.getCell(_level-1,coarseGridCellIndex),
+      positionWithinNextCoarserCell
+    );
+  }
+}

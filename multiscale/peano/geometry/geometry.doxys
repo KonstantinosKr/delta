@@ -1,0 +1,25 @@
+/**
+
+ @dir "geometry"
+ 
+ Peano relies on a geometry class to identify what the computational domain 
+ looks like. However, Peano itself provides only one geometry - the hexahedron.
+ More sophisticated geometries are not part of the kernel. Besides this single 
+ geometry, some helpers complete the namespace.
+
+ Peano grids look similar to the two illustrations below that both resolve 
+ a sphere.
+ 
+ \image html grid-sphere-coarse.png
+ \image html grid-sphere-fine.png
+ 
+ Interesting about these illustrations is the fact that they illustrate how 
+ Peano grids grow towards the real geometry. A Peano cell is inside if and only 
+ if it is completely inside a real geometry. As a result, Peano grids grow from 
+ inside towards the real geometry boundary. This might imply that a vertex is a 
+ boundary or even an outer vertex, while at the same time the same vertex on a 
+ one step finer level is inside the domain.   
+
+ */
+ 
+ 

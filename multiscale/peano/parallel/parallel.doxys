@@ -1,0 +1,38 @@
+/**
+
+ @dir "Parallelisation"
+ 
+ This directory holds all the classes that are needed to run the Peano grids 
+ in parallel due to MPI.  
+ 
+ !!! Creating the DaStGen Messages
+ 
+ The parallelisation relies on a couple of 
+ DaStGen messages to communicate with its neighbours. To (re-)generate these 
+ messages, change into the directory containing the $src$ directory and type in 
+ \code
+ java -jar pdt/lib/DaStGen.jar --plugin PeanoSnippetGenerator --naming PeanoNameTranslator src/peano/parallel/dastgen/ForkMessage.def          src/peano/parallel/messages 
+ java -jar pdt/lib/DaStGen.jar --plugin PeanoSnippetGenerator --naming PeanoNameTranslator src/peano/parallel/dastgen/LoadBalancingMessage.def src/peano/parallel/messages 
+ java -jar pdt/lib/DaStGen.jar --plugin PeanoSnippetGenerator --naming PeanoNameTranslator src/peano/parallel/dastgen/WorkerEntry.def          src/peano/parallel/loadbalancing 
+ \endcode
+ 
+ 
+ !!! Tuning the MPI Settings
+ 
+ Peano's MPI parallelisation is particularly sensitive to the choice of buffer 
+ sizes for the boundary data exchange. The code collects always N messages, 
+ before it tries to send these messages in the background of a spacetree sweep. 
+ If N is too small, the message exchange overhead and latency harm the 
+ performance. If N is too big, the buffer might not become full, and then the 
+ N'<N messages are exchanged at the end of the traversal which introduces an 
+ explicit communication phase in each iteration. This communication phase harms 
+ the performance often, as then all nodes compete for bandwidth resources. 
+ 
+ To find out whether all data is sent in the background, study the info output 
+ of peano::parallel::SendReceiveBufferPool::releaseMessages(). If the 
+ time spent in this routine is close to zero, then you don't have a significant 
+ data exchange phase at the end of the sweep and you can try to increase your 
+ buffer size. 
+   
+ */
+ 

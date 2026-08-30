@@ -1,0 +1,77 @@
+template <class Cell>
+peano::stacks::CellSTDStack<Cell>::CellSTDStack():
+  _inputStackNumber(0) {
+}
+
+
+template <class Cell>
+peano::stacks::CellSTDStack<Cell>::~CellSTDStack() {
+}
+
+
+template <class Cell>
+Cell peano::stacks::CellSTDStack<Cell>::pop(int stackNumber) {
+  assertionEquals(stackNumber, peano::stacks::Constants::InOutStack);
+  assertion1(!_stack[_inputStackNumber].isEmpty(), stackNumber);
+  return _stack[_inputStackNumber].pop();
+}
+
+
+template <class Cell>
+void peano::stacks::CellSTDStack<Cell>::push( int stackNumber, const Cell& cell ) {
+  assertionEquals(stackNumber, peano::stacks::Constants::InOutStack);
+  _stack[1-_inputStackNumber].push(cell.getRecords());
+}
+
+
+template <class Cell>
+int peano::stacks::CellSTDStack<Cell>::sizeOfInputStack() const {
+  return static_cast<int>(_stack[_inputStackNumber].size());
+}
+
+
+template <class Cell>
+int peano::stacks::CellSTDStack<Cell>::sizeOfOutputStack() const {
+  return static_cast<int>(_stack[1-_inputStackNumber].size());
+}
+
+
+template <class Cell>
+bool peano::stacks::CellSTDStack<Cell>::isInputStackEmpty() const {
+  return _stack[_inputStackNumber].isEmpty();
+}
+
+
+template <class Cell>
+bool peano::stacks::CellSTDStack<Cell>::isOutputStackEmpty() const {
+  return _stack[1-_inputStackNumber].isEmpty();
+}
+
+
+template <class Cell>
+void peano::stacks::CellSTDStack<Cell>::clear() {
+  _stack[_inputStackNumber].clear();
+  _stack[1-_inputStackNumber].clear();
+}
+
+
+template <class Cell>
+void peano::stacks::CellSTDStack<Cell>::flipInputAndOutputStack() {
+  assertion( isInputStackEmpty() );
+  _inputStackNumber = 1-_inputStackNumber;
+}
+
+
+template <class Cell>
+template <class Vertex>
+void peano::stacks::CellSTDStack<Cell>::writeToCheckpoint( peano::grid::Checkpoint<Vertex,Cell>& checkpoint ) const {
+  assertionMsg( false, "not implemented yet" );
+}
+
+
+
+template <class Cell>
+template <class Vertex>
+void peano::stacks::CellSTDStack<Cell>::readFromCheckpoint( const peano::grid::Checkpoint<Vertex,Cell>& checkpoint ) {
+  assertionMsg( false, "not implemented yet" );
+}

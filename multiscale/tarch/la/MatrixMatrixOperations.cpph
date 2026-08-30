@@ -1,0 +1,130 @@
+template<int Rows, int Cols, int X, typename Scalar>
+tarch::la::Matrix<Rows,Cols,Scalar> tarch::la::multiply (
+  const Matrix<Rows,X,Scalar>& lhs,
+  const Matrix<X,Cols,Scalar>& rhs
+) {
+  Matrix<Rows,Cols,Scalar> result = 0;
+
+  for (int i=0; i < Rows; i++) {
+    for (int j=0; j < Cols; j++) {
+      for (int k=0; k < X; k++) {
+        result(i,j) += lhs(i,k) * rhs(k,j);
+      }
+    }
+  }
+
+  return result;
+}
+
+
+template<int Rows, int Cols, int X, typename Scalar>
+tarch::la::Matrix<Rows,Cols,Scalar> tarch::la::multiplyComponents (
+  const Matrix<Rows,X,Scalar>& lhs,
+  const Matrix<X,Cols,Scalar>& rhs
+) {
+  Matrix<Rows,Cols,Scalar> result;
+
+  for (int i=0; i < Rows; i++) {
+    for (int j=0; j < Cols; j++) {
+      result(i,j) = lhs(i,j) * rhs(i,j);
+    }
+  }
+
+  return result;
+}
+
+
+
+template<int Rows, int Cols, int X, typename Scalar>
+tarch::la::Matrix<Rows,Cols,Scalar> tarch::la::operator*(
+  const Matrix<Rows,X,Scalar>& lhs,
+  const Matrix<X,Cols,Scalar>& rhs
+) {
+  return multiply(lhs,rhs);
+}
+
+
+template<int Rows, int Cols, typename Scalar>
+bool tarch::la::operator== (
+  const Matrix<Rows,Cols,Scalar>& lhs,
+  const Matrix<Rows,Cols,Scalar>& rhs
+) {
+  for (int i=0; i < Rows; i++) {
+    for (int j=0; j < Cols; j++) {
+      if (lhs(i,j) != rhs(i,j)) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+
+
+template<int Rows, int Cols, typename Scalar>
+bool tarch::la::equals (
+  const Matrix<Rows,Cols,Scalar>&  lhs,
+  const Matrix<Rows,Cols,Scalar>&  rhs,
+  const Scalar&                    tolerance 
+) {
+  for (int i=0; i < Rows; i++) {
+    for (int j=0; j < Cols; j++) {
+      if (!equals(lhs(i,j), rhs(i,j), tolerance)) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+
+template<int Rows, int Cols, typename Scalar>
+tarch::la::Matrix<Rows,Cols,Scalar> tarch::la::operator+ (
+  const Matrix<Rows,Cols,Scalar>&  lhs,
+  const Matrix<Rows,Cols,Scalar>&  rhs
+) {
+  tarch::la::Matrix<Rows,Cols,Scalar> result;
+  #ifdef CompilerICC
+  #pragma ivdep
+  #endif
+  for (int i=0; i < Rows; i++) {
+    for (int j=0; j < Cols; j++) {
+      result(i,j) = lhs(i,j) + rhs(i,j);
+    }
+  }
+  return result;
+}
+
+
+template<int Rows, int Cols, typename Scalar>
+tarch::la::Matrix<Rows,Cols,Scalar> tarch::la::operator- (
+  const Matrix<Rows,Cols,Scalar>&  lhs,
+  const Matrix<Rows,Cols,Scalar>&  rhs
+) {
+  tarch::la::Matrix<Rows,Cols,Scalar> result;
+  #ifdef CompilerICC
+  #pragma ivdep
+  #endif
+  for (int i=0; i < Rows; i++) {
+    for (int j=0; j < Cols; j++) {
+      result(i,j) = lhs(i,j) - rhs(i,j);
+    }
+  }
+  return result;
+}
+
+
+template<int Rows, int Cols, typename Scalar>
+std::pair<int,int> tarch::la::equalsReturnIndex (
+  const Matrix<Rows,Cols,Scalar>& lhs,
+  const Matrix<Rows,Cols,Scalar>& rhs,
+  const Scalar&                   tolerance
+  ){
+  std::pair<int,int> result;
+  for (int i=0; i < Rows; i++) {
+    for (int j=0; j < Cols; j++) {
+      if(  std::abs(lhs(i,j) - rhs(i,j))>tolerance) return std::pair<int,int>(i,j);
+    }
+  }
+  return std::pair<int,int>(-1,-1);
+}

@@ -1,0 +1,68 @@
+#include "peano/grid/nodes/Constants.h"
+
+
+template <class Vertex, class Cell, class State, class EventHandle>
+tarch::logging::Log peano::grid::nodes::loops::CallLeaveCellLoopBodyOnRegularRefinedPatch<Vertex,Cell,State,EventHandle>::_log( "peano::grid::nodes::loops::CallLeaveCellLoopBodyOnRegularRefinedPatch" );
+
+
+#ifdef Parallel
+#include <set>
+
+#include "peano/parallel/SendReceiveBufferPool.h"
+#endif
+
+
+template <class Vertex, class Cell, class State, class EventHandle>
+peano::grid::nodes::loops::CallLeaveCellLoopBodyOnRegularRefinedPatch<Vertex,Cell,State,EventHandle>::CallLeaveCellLoopBodyOnRegularRefinedPatch(
+  EventHandle&  eventHandle,
+  peano::grid::RegularGridContainer<Vertex,Cell>&  regularGridContainer,
+  int                                              level
+):
+  _level(level),
+  _eventHandle(eventHandle),
+  _threadLocalEventHandle(eventHandle),
+  _regularGridContainer(regularGridContainer),
+  _fineGridEnumerator(_regularGridContainer.getVertexEnumerator(level)),
+  _coarseGridEnumerator(_regularGridContainer.getVertexEnumerator(level-1)) {
+}
+
+
+template <class Vertex, class Cell, class State, class EventHandle>
+void peano::grid::nodes::loops::CallLeaveCellLoopBodyOnRegularRefinedPatch<Vertex,Cell,State,EventHandle>::mergeIntoMasterThread() const {
+  tarch::multicore::Lock lock(peano::grid::nodes::tasks::Ascend<Vertex,Cell,State,EventHandle>::_semaphore);
+
+  #if defined(SharedMemoryParallelisation)
+  _eventHandle.mergeWithWorkerThread( _threadLocalEventHandle );
+  #endif
+}
+
+
+template <class Vertex, class Cell, class State, class EventHandle>
+void peano::grid::nodes::loops::CallLeaveCellLoopBodyOnRegularRefinedPatch<Vertex,Cell,State,EventHandle>::operator() (const tarch::la::Vector<DIMENSIONS, int>& i) {
+  logDebug( "operator(...)", "study vertex at " << i << " on level " << _level );
+
+  tarch::la::Vector<DIMENSIONS,int> offsetOfCoarseGridEnumerator;
+  tarch::la::Vector<DIMENSIONS,int> positionWithinNextCoarserCell;
+
+  computePositionRelativeToNextCoarserLevelFromFineGridCellPosition(i,offsetOfCoarseGridEnumerator,positionWithinNextCoarserCell);
+
+  _fineGridEnumerator.setOffset(i);
+  _coarseGridEnumerator.setOffset(offsetOfCoarseGridEnumerator);
+
+  const int fineGridCellIndex   = _fineGridEnumerator.lineariseCellIndex(i);
+  const int coarseGridCellIndex = _coarseGridEnumerator.lineariseCellIndex(offsetOfCoarseGridEnumerator);
+
+  Cell& currentCell = _regularGridContainer.getCell(_level,fineGridCellIndex);
+
+  if (currentCell.isInside()) {
+    _threadLocalEventHandle.leaveCell(
+      currentCell,
+      _regularGridContainer.getVertex(_level),
+      _fineGridEnumerator,
+      _regularGridContainer.getVertex(_level-1),
+      _coarseGridEnumerator,
+      _regularGridContainer.getCell(_level-1,coarseGridCellIndex),
+       positionWithinNextCoarserCell
+    );
+  }
+}

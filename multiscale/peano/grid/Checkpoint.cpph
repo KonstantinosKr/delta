@@ -1,0 +1,480 @@
+#include <fstream>
+#include <sstream>
+
+#include "peano/utils/PeanoOptimisations.h"
+#include "tarch/Assertions.h"
+#include "tarch/compiler/CompilerSpecificSettings.h"
+#include "peano/utils/PeanoOptimisations.h"
+
+template <class Vertex, class Cell>
+const std::string peano::grid::Checkpoint<Vertex,Cell>::StandardFilenameExtension = "peano-checkpoint";
+
+
+template <class Vertex, class Cell>
+tarch::logging::Log peano::grid::Checkpoint<Vertex,Cell>::_log( "peano::grid::Checkpoint" );
+
+
+template <class Vertex, class Cell>
+const char peano::grid::Checkpoint<Vertex,Cell>::CheckpointFileEntrySeparator = ';';
+
+
+template <class Vertex, class Cell>
+const std::string peano::grid::Checkpoint<Vertex,Cell>::CheckpointFileHeader = "peano-checkpoint";
+
+
+template <class Vertex, class Cell>
+const std::string peano::grid::Checkpoint<Vertex,Cell>::CheckpointFileValueMapEntriesKeyword = "checkpoint.value-map-entries";
+
+
+template <class Vertex, class Cell>
+const std::string peano::grid::Checkpoint<Vertex,Cell>::CheckpointFileVertexEntriesKeyword = "checkpoint.vertex-entries";
+
+
+template <class Vertex, class Cell>
+const std::string peano::grid::Checkpoint<Vertex,Cell>::CheckpointFileCellEntriesKeyword = "checkpoint.cell-entries";
+
+
+template <class Vertex, class Cell>
+const std::string peano::grid::Checkpoint<Vertex,Cell>::ValueKeyIsPacked = "compile-flag.packed";
+
+
+template <class Vertex, class Cell>
+const std::string peano::grid::Checkpoint<Vertex,Cell>::ValueKeyIsDebug = "compile-flag.debug";
+
+
+template <class Vertex, class Cell>
+const std::string peano::grid::Checkpoint<Vertex,Cell>::ValueKeyIsParallel = "compile-flag.parallel";
+
+
+template <class Vertex, class Cell>
+const std::string peano::grid::Checkpoint<Vertex,Cell>::ValueKeyIsAsserts = "compile-flag.asserts";
+
+
+template <class Vertex, class Cell>
+const std::string peano::grid::Checkpoint<Vertex,Cell>::ValueKeyIsPersistentRecords = "compile-flag.persistent-records";
+
+
+template <class Vertex, class Cell>
+peano::grid::Checkpoint<Vertex,Cell>::Checkpoint():
+  _valueMap(),
+  _vertexContainer(),
+  _cellContainer(),
+  _isValid(true) {
+  createBuiltInValueMapEntries();
+}
+
+
+template <class Vertex, class Cell>
+void peano::grid::Checkpoint<Vertex,Cell>::readFromFile( const std::string& fullQualifiedFileName ) {
+  logTraceInWith1Argument( "readFromFile()", fullQualifiedFileName );
+
+  std::ifstream in(fullQualifiedFileName.c_str(),std::ios::binary);
+  if ( in ) {
+    ValueMap::size_type  numberOfValueMapEntries = readCheckpointHeader(in);
+    readValueMap(numberOfValueMapEntries,in);
+    readVertices(getNumberOfVertices(), in);
+    readCells(getNumberOfCells(), in);
+  }
+
+  _isValid = in.is_open();
+  in.close();
+
+  if (!_isValid) {
+    logError( "readFromFile(string)", "an undefined error occured while parsing the input stream" );
+  }
+
+  logTraceOut( "readFromFile()" );
+}
+
+
+template <class Vertex, class Cell>
+void peano::grid::Checkpoint<Vertex,Cell>::createBuiltInValueMapEntries() {
+  #ifdef Parallel
+  storeValueAsBool(ValueKeyIsParallel,true);
+  #else
+  storeValueAsBool(ValueKeyIsParallel,false);
+  #endif
+
+  #ifdef StoreOnlyPersistentAttributes
+  storeValueAsBool(ValueKeyIsPersistentRecords,true);
+  #else
+  storeValueAsBool(ValueKeyIsPersistentRecords,false);
+  #endif
+
+  #ifdef PackedRecords
+  storeValueAsBool(ValueKeyIsPacked,true);
+  #else
+  storeValueAsBool(ValueKeyIsPacked,false);
+  #endif
+
+  #ifdef Debug
+  storeValueAsBool(ValueKeyIsDebug,true);
+  #else
+  storeValueAsBool(ValueKeyIsDebug,false);
+  #endif
+}
+
+
+template <class Vertex, class Cell>
+peano::grid::Checkpoint<Vertex,Cell>::ValueMap::size_type peano::grid::Checkpoint<Vertex,Cell>::readCheckpointHeader(std::istream& in) {
+  std::string          header;
+  ValueMap::size_type  numberOfValueMapEntries;
+
+  header = readStringEntryFromInputStream(in);
+  if (header!=CheckpointFileHeader || !in) {
+    logError( "Checkpoint(string)", "checkpoint has invalid header: " << header );
+    return 0;
+  }
+
+  header = readStringEntryFromInputStream(in);
+  if (header!=CheckpointFileValueMapEntriesKeyword || !in) {
+    logError( "Checkpoint(string)", "checkpoint has invalid header for value map entries: " << header );
+    return 0;
+  }
+  in >> numberOfValueMapEntries;
+  skipEntrySeparatorInInputStream(in);
+  if (!in) {
+    logError( "Checkpoint(string)", "checkpoint has invalid number of map entries: " << numberOfValueMapEntries );
+    return 0;
+  }
+
+  header = readStringEntryFromInputStream(in);
+  if (header!=CheckpointFileVertexEntriesKeyword || !in) {
+    logError( "Checkpoint(string)", "checkpoint has invalid header for vertex entries: " << header );
+    return 0;
+  }
+  int tmp;
+  in >> tmp;
+  _vertexContainer.resize(tmp);
+  skipEntrySeparatorInInputStream(in);
+  if (!in) {
+    logError( "Checkpoint(string)", "checkpoint has invalid number of vertex entries: " << numberOfValueMapEntries );
+    return 0;
+  }
+
+  header = readStringEntryFromInputStream(in);
+  if (header!=CheckpointFileCellEntriesKeyword || !in) {
+    logError( "Checkpoint(string)", "checkpoint has invalid header for cell entries: " << header );
+    return 0;
+  }
+  in >> tmp;
+  _cellContainer.resize(tmp);
+  skipEntrySeparatorInInputStream(in);
+  if (!in) {
+    logError( "Checkpoint(string)", "checkpoint has invalid number of cell entries: " << numberOfValueMapEntries );
+    return 0;
+  }
+
+  return numberOfValueMapEntries;
+}
+
+
+template <class Vertex, class Cell>
+void peano::grid::Checkpoint<Vertex,Cell>::readValueMap(const typename ValueMap::size_type& numberOfValueMapEntries, std::istream& in) {
+  logTraceIn( "readValueMap()" );
+  for (ValueMap::size_type i=0; i<numberOfValueMapEntries; i++) {
+    std::string key   = readStringEntryFromInputStream(in);
+    std::string value = readStringEntryFromInputStream(in);
+    logDebug( "Checkpoint(string)", "got (key,value)=(" << key << "," << value << ")" );
+    storeValueAsString(key,value);
+  }
+  logTraceOut( "readValueMap()" );
+}
+
+
+template <class Vertex, class Cell>
+int peano::grid::Checkpoint<Vertex,Cell>::getNumberOfVertices() const {
+  return static_cast<int>(_vertexContainer.size());
+}
+
+
+template <class Vertex, class Cell>
+int peano::grid::Checkpoint<Vertex,Cell>::getNumberOfCells() const {
+  return static_cast<int>(_cellContainer.size());
+}
+
+
+template <class Vertex, class Cell>
+void peano::grid::Checkpoint<Vertex,Cell>::writeVertices(std::ostream& out) const {
+  for (typename VertexContainer::const_iterator p=_vertexContainer.begin(); p<_vertexContainer.end(); p++) {
+    out.write((char *)&(*p), sizeof(Vertex));
+  }
+}
+
+
+template <class Vertex, class Cell>
+void peano::grid::Checkpoint<Vertex,Cell>::writeCells(std::ostream& out) const {
+  for (typename CellContainer::const_iterator p=_cellContainer.begin(); p<_cellContainer.end(); p++) {
+    out.write((char *)&(*p), sizeof(Cell));
+  }
+}
+
+
+template <class Vertex, class Cell>
+void peano::grid::Checkpoint<Vertex,Cell>::readVertices(const typename VertexContainer::size_type& numberOfVertexEntries, std::istream& in) {
+  for (typename VertexContainer::size_type i=0; i<numberOfVertexEntries; i++) {
+    Vertex myVertex;
+    in.read((char *)&myVertex, sizeof(Vertex));
+    _vertexContainer[i]=myVertex;
+  }
+}
+
+
+template <class Vertex, class Cell>
+void peano::grid::Checkpoint<Vertex,Cell>::readCells(const typename CellContainer::size_type& numberOfCellEntries, std::istream& in) {
+  for (typename CellContainer::size_type i=0; i<numberOfCellEntries; i++) {
+    Cell myCell;
+    in.read((char *)&myCell, sizeof(Cell));
+    _cellContainer[i]=myCell;
+  }
+}
+
+
+template <class Vertex, class Cell>
+peano::grid::Checkpoint<Vertex,Cell>::~Checkpoint() {
+}
+
+
+template <class Vertex, class Cell>
+std::string peano::grid::Checkpoint<Vertex,Cell>::readStringEntryFromInputStream(std::istream& in) {
+  char inputBuffer[80];
+  int  inputBufferPosition = -1;
+
+  do {
+    inputBufferPosition++;
+    in >> inputBuffer[inputBufferPosition];
+  }
+  while (inputBuffer[inputBufferPosition]!=CheckpointFileEntrySeparator);
+
+  inputBuffer[inputBufferPosition] = '\0';
+  return std::string(inputBuffer);
+}
+
+
+template <class Vertex, class Cell>
+void peano::grid::Checkpoint<Vertex,Cell>::skipEntrySeparatorInInputStream(std::istream& in) {
+  char separator;
+  in >> separator;
+
+  if (separator!=CheckpointFileEntrySeparator) {
+    logError( "skipEntrySeparatorInInputStream(std::istream)", "syntax error: expected '" << CheckpointFileEntrySeparator << "' but got '" << separator << "'");
+  }
+}
+
+
+template <class Vertex, class Cell>
+void peano::grid::Checkpoint<Vertex,Cell>::writeCheckpointHeader(std::ostream& out) const {
+  out << CheckpointFileHeader << CheckpointFileEntrySeparator;
+  out << CheckpointFileValueMapEntriesKeyword << CheckpointFileEntrySeparator << _valueMap.size()        << CheckpointFileEntrySeparator;
+  out << CheckpointFileVertexEntriesKeyword  << CheckpointFileEntrySeparator << _vertexContainer.size()  << CheckpointFileEntrySeparator;
+  out << CheckpointFileCellEntriesKeyword    << CheckpointFileEntrySeparator << _cellContainer.size()    << CheckpointFileEntrySeparator;
+}
+
+
+template <class Vertex, class Cell>
+void peano::grid::Checkpoint<Vertex,Cell>::writeValueMap(std::ostream& out) const {
+  for (ValueMap::const_iterator p0=_valueMap.begin(); p0!=_valueMap.end(); p0++) {
+    out << p0->first << CheckpointFileEntrySeparator << p0->second << CheckpointFileEntrySeparator;
+  }
+}
+
+
+template <class Vertex, class Cell>
+void peano::grid::Checkpoint<Vertex,Cell>::writeToFile( const std::string& fullQualifiedFileName ) const {
+  std::ofstream out;
+  out.open(fullQualifiedFileName.c_str(),std::ios::binary);
+
+  if ( out ) {
+    writeCheckpointHeader(out);
+    writeValueMap(out);
+    writeVertices(out);
+    writeCells(out);
+  }
+
+  out.close();
+}
+
+
+template <class Vertex, class Cell>
+void peano::grid::Checkpoint<Vertex,Cell>::storeValueAsString(const std::string& valueKey, const std::string& value) {
+  logTraceInWith2Arguments("storeValueAsString", valueKey, value);
+  if ( _valueMap.find(valueKey) != _valueMap.end() ) {
+    logError( "storeValue(string,string)", "value " << value << " with Key " << valueKey << " already written to checkpoint" );
+    _isValid = false;
+  }
+  else {
+    logDebug( "storeValueAsString(string,string)", "stored (key=\"" << valueKey << "\",value=\"" << value << "\")" );
+    _valueMap[valueKey] = value;
+  }
+  logTraceOut("storeValueAsString");
+}
+
+
+template <class Vertex, class Cell>
+void peano::grid::Checkpoint<Vertex,Cell>::storeValueAsInt(const std::string& valueKey, int value) {
+  std::ostringstream stringValue;
+  stringValue << value;
+  storeValueAsString(valueKey,stringValue.str());
+}
+
+
+template <class Vertex, class Cell>
+void peano::grid::Checkpoint<Vertex,Cell>::storeValueAsBool(const std::string& valueKey, bool value) {
+  std::ostringstream stringValue;
+  stringValue << value;
+  storeValueAsString(valueKey,stringValue.str());
+}
+
+
+template <class Vertex, class Cell>
+void peano::grid::Checkpoint<Vertex,Cell>::storeValueAsDouble(const std::string& valueKey, double value) {
+  std::ostringstream stringValue;
+  stringValue << value;
+  storeValueAsString(valueKey,stringValue.str());
+}
+
+
+template <class Vertex, class Cell>
+bool peano::grid::Checkpoint<Vertex,Cell>::hasValue(const std::string& valueKey) const {
+  return _valueMap.count(valueKey)>0;
+}
+
+
+template <class Vertex, class Cell>
+std::string peano::grid::Checkpoint<Vertex,Cell>::getValueAsString(const std::string& valueKey) const {
+  logTraceInWith1Argument( "getValueAsString()", valueKey );
+  if ( _valueMap.count(valueKey)==0 ) {
+    logError( "getValue(string,string)", "value with Key " << valueKey << " not hold by checkpoint" );
+    logTraceOut( "getValueAsString()" );
+    return "";
+  }
+  else {
+    logTraceOutWith1Argument( "getValueAsString()", _valueMap.find(valueKey)->second );
+    return _valueMap.find(valueKey)->second;
+  }
+}
+
+
+
+template <class Vertex, class Cell>
+bool peano::grid::Checkpoint<Vertex,Cell>::getValueAsBool(const std::string& valueKey) const {
+  std::istringstream inputStream( getValueAsString(valueKey) );
+  bool result;
+  if (inputStream>>result) {
+    return result;
+  }
+  else {
+    logError( "getValueAsBool()", "invalid or no entry for key " << valueKey << " stored in checkpoint: " << getValueAsString(valueKey) );
+    return false;
+  }
+}
+
+
+template <class Vertex, class Cell>
+int peano::grid::Checkpoint<Vertex,Cell>::getValueAsInt(const std::string& valueKey) const {
+  std::istringstream inputStream( getValueAsString(valueKey) );
+  int result;
+  if (inputStream>>result) {
+    return result;
+  }
+  else {
+    logError( "getValueAsInt()", "invalid or no entry for key " << valueKey << " stored in checkpoint: " << getValueAsString(valueKey) );
+    return -1;
+  }
+}
+
+
+template <class Vertex, class Cell>
+double peano::grid::Checkpoint<Vertex,Cell>::getValueAsDouble(const std::string& valueKey) const {
+  std::istringstream inputStream( getValueAsString(valueKey) );
+  double result;
+  if (inputStream>>result) {
+    return result;
+  }
+  else {
+    logError( "getValueAsDouble()", "invalid or no entry for key " << valueKey << " stored in checkpoint: " << getValueAsString(valueKey) );
+    return 0.0;
+  }
+}
+
+
+template <class Vertex, class Cell>
+void peano::grid::Checkpoint<Vertex,Cell>::storeVertex( const Vertex& vertex ) {
+  _vertexContainer.push_back(vertex);
+}
+
+
+template <class Vertex, class Cell>
+Vertex peano::grid::Checkpoint<Vertex,Cell>::getVertex(const typename VertexContainer::size_type & i) const {
+  assertion( !_vertexContainer.empty() );
+  assertion( i<_vertexContainer.size() );
+  return _vertexContainer[i];
+}
+
+
+template <class Vertex, class Cell>
+void peano::grid::Checkpoint<Vertex,Cell>::storeCell( const Cell& cell ) {
+  _cellContainer.push_back(cell);
+}
+
+
+template <class Vertex, class Cell>
+Cell peano::grid::Checkpoint<Vertex,Cell>::getCell(const typename CellContainer::size_type & i) const {
+  assertion( !_cellContainer.empty() );
+  assertion( i<_cellContainer.size() );
+  return _cellContainer[i];
+}
+
+
+template <class Vertex, class Cell>
+bool peano::grid::Checkpoint<Vertex,Cell>::isValid() const {
+  #ifdef Parallel
+  if (!hasValue(ValueKeyIsParallel) || getValueAsBool(ValueKeyIsParallel)!=true) {
+    logError( "isValid(...)", "entry " << ValueKeyIsParallel << " in config file is either missing or has different value than the one written to the checkpoint" );
+    return false;
+  }
+  #else
+  if (!hasValue(ValueKeyIsParallel) || getValueAsBool(ValueKeyIsParallel)!=false) {
+    logError( "isValid(...)", "entry " << ValueKeyIsParallel << " in config file is either missing or has different value than the one written to the checkpoint" );
+    return false;
+  }
+  #endif
+
+  #ifdef StoreOnlyPersistentAttributes
+  if (!hasValue(ValueKeyIsPersistentRecords) || getValueAsBool(ValueKeyIsPersistentRecords)!=true) {
+    logError( "isValid(...)", "entry " << ValueKeyIsPersistentRecords << " in config file is either missing or has different value than the one written to the checkpoint" );
+    return false;
+  }
+  #else
+  if (!hasValue(ValueKeyIsPersistentRecords) || getValueAsBool(ValueKeyIsPersistentRecords)!=false) {
+    logError( "isValid(...)", "entry " << ValueKeyIsPersistentRecords << " in config file is either missing or has different value than the one written to the checkpoint" );
+    return false;
+  }
+  #endif
+
+  #ifdef PackedRecords
+  if (!hasValue(ValueKeyIsPacked) || getValueAsBool(ValueKeyIsPacked)!=true) {
+    logError( "isValid(...)", "entry " << ValueKeyIsPacked << " in config file is either missing or has different value than the one written to the checkpoint" );
+    return false;
+  }
+  #else
+  if (!hasValue(ValueKeyIsPacked) || getValueAsBool(ValueKeyIsPacked)!=false) {
+    logError( "isValid(...)", "entry " << ValueKeyIsPacked << " in config file is either missing or has different value than the one written to the checkpoint" );
+    return false;
+  }
+  #endif
+
+  #ifdef Debug
+  if (!hasValue(ValueKeyIsDebug) || getValueAsBool(ValueKeyIsDebug)!=true) {
+    logError( "isValid(...)", "entry " << ValueKeyIsDebug << " in config file is either missing or has different value than the one written to the checkpoint" );
+    return false;
+  }
+  #else
+  if (!hasValue(ValueKeyIsDebug) || getValueAsBool(ValueKeyIsDebug)!=false) {
+    logError( "isValid(...)", "entry " << ValueKeyIsDebug << " in config file is either missing or has different value than the one written to the checkpoint" );
+    return false;
+  }
+  #endif
+
+  return _isValid;
+}

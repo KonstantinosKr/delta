@@ -1,0 +1,44 @@
+/**
+
+ @dir "Nodes"
+
+ The nodes represent the tree, and, hence, within these classes the whole grid 
+ management is implemented. To make them suitable for aggressive optimization, 
+ the node objects themself are stateless, and the whole thing equals a flyweight
+ pattern: The traversal holds one instance of each node type and the recursive 
+ traversal is realised only due to the operation arguments.
+
+ !!! Common Interface
+
+|| Operation                   || Semantics 
+|  loadVertices                |  Load the vertices from the input stream. 
+|                              |  Call touchVertexFirstTime() and createVertices() if appropriate.
+|  traverse                    |  Trigger the createCell() if appropriate.
+|                              |  Call enterCell(). 
+|                              |  Step down recursively if appropriate. 
+|                              |  Call leaveCell().
+|                              |  Trigger the destroyCell() if appropriate.
+|  storeVertices               |  Store the vertices to the output stream.
+|                              |  Call touchVertexLastTime() and destroyVertex() if appropriate.
+
+
+
+ !!! Implementation Details
+  
+  Within all subclasses the operations and attributes of the super class should 
+  be referenced using
+  @code
+  Event<type arguments>::
+  @endcode
+  , since some compilers need a two phase name lookup to associate elements of
+  super classes to sub classes. Omitting the super type prefix might not cause
+  errors on some platforms, nevertheless e.g. gcc 3.4 does not accept it. See
+  http://groups.google.com/group/comp.lang.c++/browse_frm/thread/7b1863222072b340/b75b5b2de84a0a1a%23b75b5b2de84a0a1a
+  for more details.
+ 
+ 
+  @author Tobias Weinzierl
+  @version $Revision: 1.67 $
+
+ */
+ 

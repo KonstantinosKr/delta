@@ -1,0 +1,182 @@
+template <int D>
+tarch::logging::Log tarch::multicore::dForRange<D>::_log( "tarch::multicore::dForRange" );
+
+
+template <int D>
+tarch::multicore::dForRange<D>::dForRange():
+  _grainSize(-1),
+  _interleaving(-1) {
+}
+
+
+template <int D>
+tarch::multicore::dForRange<D>::dForRange(const dForRange<D>& range):
+  _offset( range._offset),
+  _range( range._range ),
+  _grainSize( range._grainSize ),
+  _interleaving( range._interleaving ) {
+  logTraceInWith1Argument( "dForRange(dForRange)", range.toString() );
+  assertion3( _grainSize>0, _offset, _range, _grainSize );
+  logTraceOut( "dForRange(dForRange)" );
+}
+
+
+template <int D>
+tarch::multicore::dForRange<D>::dForRange( const tarch::la::Vector<D,int>&  offset, const tarch::la::Vector<D,int>&  range, int grainSize, int interleaving ):
+  _offset(offset),
+  _range(range),
+  _grainSize(grainSize),
+  _interleaving(interleaving) {
+  logTraceInWith2Arguments( "dForRange(...)", range, grainSize );
+  for (int d=0; d<D; d++) {
+    assertion3( range(d)>=1, toString(), range, grainSize );
+  }
+  assertion3( interleaving>=1, toString(), range, grainSize );
+  logTraceOut( "dForRange(...)" );
+}
+
+
+template <int D>
+tarch::la::Vector<D,int> tarch::multicore::dForRange<D>::operator()(const tarch::la::Vector<D,int>& range) const {
+  #ifdef Asserts
+  for (int d=0; d<D; d++) {
+    assertion2(range(d)>=0,range,toString());
+    assertion2(range(d)<_range(d),range,toString());
+  }
+  #endif
+  return _offset + range * _interleaving;
+}
+
+
+template <int D>
+std::vector< tarch::multicore::dForRange<D> >  tarch::multicore::dForRange<D>::getMinimalRanges() const {
+  if ( (_grainSize==1) and (D==1) ) {
+    std::vector< dForRange<D> > result;
+    result.reserve( tarch::la::volume(_range) );
+    for (int i=0; i<_range(0); i++) {
+      result.push_back( dForRange<D>(_offset + i*_interleaving,1,1,_interleaving) );
+    }
+    return result;
+  }
+  else if ( (_grainSize==1) and (D==2) ) {
+    std::vector< dForRange<D> > result;
+    result.reserve( tarch::la::volume(_range) );
+    for (int i0=0; i0<_range(0); i0++)
+    for (int i1=0; i1<_range(1); i1++) {
+      result.push_back( dForRange<D>(_offset,1,1,_interleaving) );
+      result.back()._offset(0) += i0 * _interleaving;
+      result.back()._offset(1) += i1 * _interleaving;
+    }
+    return result;
+  }
+  else if ( (_grainSize==1) and (D==3) ) {
+    std::vector< dForRange<D> > result;
+    result.reserve( tarch::la::volume(_range) );
+    for (int i0=0; i0<_range(0); i0++)
+    for (int i1=0; i1<_range(1); i1++)
+    for (int i2=0; i2<_range(2); i2++) {
+      result.push_back( dForRange<D>(_offset,1,1,_interleaving) );
+      result.back()._offset(0) += i0 * _interleaving;
+      result.back()._offset(1) += i1 * _interleaving;
+      result.back()._offset(2) += i2 * _interleaving;
+    }
+    return result;
+  }
+  else if ( (_grainSize==1) and (D==4) ) {
+    std::vector< dForRange<D> > result;
+    result.reserve( tarch::la::volume(_range) );
+    for (int i0=0; i0<_range(0); i0++)
+    for (int i1=0; i1<_range(1); i1++)
+    for (int i2=0; i2<_range(2); i2++)
+    for (int i3=0; i3<_range(3); i3++) {
+      result.push_back( dForRange<D>(_offset,1,1,_interleaving) );
+      result.back()._offset(0) += i0 * _interleaving;
+      result.back()._offset(1) += i1 * _interleaving;
+      result.back()._offset(2) += i2 * _interleaving;
+      result.back()._offset(3) += i3 * _interleaving;
+    }
+    return result;
+  }
+  else {
+    std::vector< dForRange<D> > result;
+    result.reserve( tarch::la::volume(_range)/_grainSize+1);
+    result.push_back(*this);
+    int i=0;
+    while (i<static_cast<int>(result.size())) {
+      while ( result[i].isDivisible() ) {
+        result.push_back( result[i].split() );
+      }
+      i++;
+    }
+
+    return result;
+  }
+}
+
+
+template <int D>
+std::string tarch::multicore::dForRange<D>::toString( const std::vector< dForRange<D> >& ranges ) {
+  std::ostringstream msg;
+  msg << "(";
+  for (auto p: ranges) {
+    msg << p.toString();
+  }
+  msg << ")";
+  return msg.str();
+}
+
+
+template <int D>
+tarch::multicore::dForRange<D>   tarch::multicore::dForRange<D>::split() {
+  tarch::multicore::dForRange<D> result(*this);
+
+  // actual shrink
+  int splitAlongDimension = tarch::la::indexMax(_range);
+  int oldRangeSizeAlongDimension = _range(splitAlongDimension);
+  _range(splitAlongDimension) =  oldRangeSizeAlongDimension / 2;
+
+  // move
+  result._range(splitAlongDimension)  = oldRangeSizeAlongDimension   - _range(splitAlongDimension);
+  result._offset(splitAlongDimension) = _offset(splitAlongDimension) + _range(splitAlongDimension) * _interleaving;
+
+  return result;
+}
+
+
+template <int D>
+bool tarch::multicore::dForRange<D>::empty() const {
+  logTraceIn( "empty()" );
+  bool result = tarch::la::volume(_range)==0;
+  assertion( !isDivisible() || !result );
+  logTraceOutWith1Argument( "empty()", result );
+  return result;
+}
+
+
+template <int D>
+bool tarch::multicore::dForRange<D>::isDivisible() const {
+  logTraceInWith1Argument( "isDivisible()", toString() );
+  bool result = tarch::la::volume(_range) > _grainSize;
+  logTraceOutWith1Argument( "isDivisible()", result );
+  return result;
+}
+
+
+template <int D>
+std::string tarch::multicore::dForRange<D>::toString() const {
+  std::ostringstream msg;
+  msg << "(range:" << _range << ",offset:" << _offset << ",grain-size:" << _grainSize << ",interleaving=" << _interleaving << ")";
+  return msg.str();
+}
+
+
+template <int D>
+tarch::la::Vector<D,int> tarch::multicore::dForRange<D>::getOffset() const {
+  return _offset;
+}
+
+
+template <int D>
+tarch::la::Vector<D,int> tarch::multicore::dForRange<D>::getRange() const {
+  return _range;
+}

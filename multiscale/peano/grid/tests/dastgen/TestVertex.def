@@ -1,0 +1,90 @@
+// This file is part of the Peano project. For conditions of distribution and
+// use, please see the copyright notice at www.peano-framework.org
+
+
+#include "peano/utils/Globals.h"
+
+
+Packed-Type: int;
+
+
+
+Constant: DIMENSIONS hint-value 4;
+Constant: TWO_POWER_D;
+
+
+class peano::grid::tests::records::TestVertex { 
+  enum InsideOutsideDomain {
+    Inside, Boundary, Outside
+  };
+
+  enum RefinementControl {
+    Unrefined,Refined,RefinementTriggered,
+    Refining,EraseTriggered,Erasing,RefineDueToJoinThoughWorkerIsAlreadyErasing,
+    EnforceRefinementTriggered
+  };
+
+  persistent parallelise packed bool               isHangingNode;
+  persistent parallelise packed RefinementControl  refinementControl;
+
+  /**
+   * This field holds information about the adjacent cells and their 
+   * descendants. 
+   * 
+   * !!! Update process
+   *
+   * - touchVertexFirstTime: 
+   *   - Copy information to temporary attribute adjacentCellsHeightOfPreviousIteration.
+   *   - if it is part of the parallel boundary, set to -2
+   *   - if it has transient refinement state, set to -3
+   *   - otherwise set to +inf
+   * - vertex.refine() or delete(): Reset attribute to -3 (that is very pessimistic, but holds for the time being).
+   * - Modify vertex's parallel adjacency information: Reset attribute to -3 (that is very pessimistic, but holds for the time being).
+   * - Modify vertex's inside/outside flag: Reset attribute to -3 (that is very pessimistic, but holds for the time being). 
+   * - enterCell: If geometry is not stationary, set maximumSubtreeHeightOfPreviousIteration of all adjacent vertices to -3.
+   * - touchVertexLastTime:
+   *   - For each coarse grid vertex
+   *     - tmp = fine attribute >= 0 ? fine attribute+1 : fine attribute
+   *     - if (coarse-value != +inf && tmp>0) tmp = coarse-value==tmp ?  tmp : -1
+   *     - coarse-value = min( tmp, coarse-value)
+   *
+   * !!! Flag semantics
+   *
+   * The flag is valid in-between two iterations. See CellFlags.h for further 
+   * information on the exact semantics.  
+   */
+  persistent int  adjacentCellsHeight                     from -4 to 64;
+  discard    int  adjacentCellsHeightOfPreviousIteration  from -4 to 64;
+
+  /**
+   * @todo Should be TWO_POWER_D as upper limit, but doesn't matter here as it
+   * is a non-persistent field anyway.
+   *
+   * Has to be exchanged to ensure data consistency. 
+   */  
+  discard parallelise int numberOfAdjacentRefinedCells;
+
+  /**
+   * A vertex is outside, if all @f$ 2^d @f$ adjacent cells are outside. In this
+   * case, no events are called for it. 
+   */
+  #ifdef Asserts
+  persistent packed parallelise InsideOutsideDomain  insideOutsideDomain;
+  persistent parallelise double                      x[DIMENSIONS];
+  persistent parallelise int                         level;
+  #endif
+
+  #ifndef Asserts
+  persistent packed InsideOutsideDomain insideOutsideDomain;
+  #endif
+  
+  #ifdef Parallel
+  persistent parallelise int    adjacentRanks[TWO_POWER_D];
+  persistent parallelise bool   adjacentSubtreeForksIntoOtherRank;
+  #endif
+
+  #ifdef PersistentRegularSubtrees
+  persistent parallelise bool          parentRegularPersistentSubgrid;
+  persistent parallelise bool          parentRegularPersistentSubgridInPreviousIteration;
+  #endif
+};

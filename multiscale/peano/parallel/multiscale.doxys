@@ -1,0 +1,47 @@
+/**
+
+ @page "Parallel Multiscale Workflow"
+
+ Peano splits up the global spacetree into multiple spacetrees, i.e. each MPI 
+ rank basically runs one Peano instance. The programming model follows the SPMD 
+ paradigm. The multiscale data exchange at the tree boundaries thus deserves 
+ special attention, while the data exchange at the domain boundaries is 
+ a straightforward Jacobi-style non-overlapping domain decomposition. 
+ 
+ We illustrate the workflow for a bottom-up cell data restriction. Top-down and 
+ vertex data exchange follows this pattern. In the example, we have two ranks (M 
+ and W). The cells are globally enumerated in the illustration to simplify the 
+ description. In Peano, no such global numbers are available. In the domain of 
+ node M, Cell 3 and all its children are deployed to W.  
+  
+ @image html Multiscale.png
+ 
+ The event flow then is as follows:
+ 
+ - W: Call leaveCell() for Cell 6. Besides the data of Cell 6, also the data of 
+   Cell 4 is passed. We can manipulate it.
+ - W: Call leaveCell() for Cell 5. Besides the data of Cell 5, also the data of 
+   Cell 4 is passed. We can manipulate it.
+ - W: Call leaveCell() for Cell 4. Besides the data of Cell 4, also the data of 
+   a supercell is passed. This data is virtual, as there is no parent cell on 
+   W, i.e. any restriction has no impact.
+ - W: Send Cell 4 and all its vertices back to master M. For this, we first call 
+   prepareSendToMaster(). 
+ - M now receives the data of cell 3.
+ - M invokes mergeWithMaster() for the copies of Cell 4 received. Besides the 
+   received data, mergeWithMaster() also is passed Cell 3 and Cell 1. Both, 
+   Cell 1 and 3 can be manipulated. 
+ - M does $not$ invoke leaveCell() for Cell 3, as Cell 3 is deployed to the 
+   worker. That implies that M is not responsible for this cell. 
+ - M continues to invoke leaveCell() for Cell 2.  
+   
+ Once a restriction for cell data is available, this restriction hence has to be 
+ invoked twice: On the one hand, we call it in leaveCell(). That is the operation 
+ working on a MPI rank. On the other hand, we call it in mergeWithMaster passing 
+ it the received copies of Cell 4 and Cell 1. That is the operation entering 
+ stage at the inter-node communication. 
+ 
+ 
+ 
+   
+ */

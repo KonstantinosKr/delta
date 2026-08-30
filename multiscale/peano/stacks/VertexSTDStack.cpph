@@ -1,0 +1,124 @@
+template <class Vertex>
+tarch::logging::Log peano::stacks::VertexSTDStack<Vertex>::_log( "peano::stacks::VertexSTDStack" );
+
+
+template <class Vertex>
+peano::stacks::VertexSTDStack<Vertex>::VertexSTDStack():
+  _currentInputStack(0){
+}
+
+
+template <class Vertex>
+peano::stacks::VertexSTDStack<Vertex>::~VertexSTDStack() {
+}
+
+
+template <class Vertex>
+Vertex peano::stacks::VertexSTDStack<Vertex>::pop(int stackNumber) {
+  logTraceInWith1Argument( "pop(int)", stackNumber );
+  logTraceOut( "pop(int)" );
+  if (stackNumber==peano::stacks::Constants::InOutStack) {
+    assertion1(!_inputOutputStack[_currentInputStack].isEmpty(),_currentInputStack);
+    return _inputOutputStack[_currentInputStack].pop();
+  }
+  else {
+    assertion1(!_temporaryStack[stackNumber].isEmpty(),stackNumber);
+    return _temporaryStack[stackNumber].pop();
+  }
+}
+
+
+template <class Vertex>
+typename peano::stacks::VertexSTDStack<Vertex>::PopBlockVertexStackView
+peano::stacks::VertexSTDStack<Vertex>::popBlockFromInputStack(int numberOfVertices) {
+  return _inputOutputStack[_currentInputStack].popBlockFromInputStack(numberOfVertices);
+}
+
+
+template <class Vertex>
+typename peano::stacks::VertexSTDStack<Vertex>::PushBlockVertexStackView
+peano::stacks::VertexSTDStack<Vertex>::pushBlockOnOutputStack(int numberOfVertices) {
+  return _inputOutputStack[1-_currentInputStack].pushBlockOnOutputStack(numberOfVertices);
+}
+
+
+template <class Vertex>
+void peano::stacks::VertexSTDStack<Vertex>::push( int stackNumber, const Vertex& vertex ) {
+  logTraceInWith2Arguments( "push(int,Vertex)", stackNumber, vertex );
+  if (stackNumber==peano::stacks::Constants::InOutStack) {
+    // @todo Join3
+    assertion1( vertex.getRefinementControl() != Vertex::Records::Refining, vertex );
+    assertion1( vertex.getRefinementControl() != Vertex::Records::Erasing, vertex );
+    #ifdef Parallel
+    assertion1( vertex.getRefinementControl() != Vertex::Records::RefineDueToJoinThoughWorkerIsAlreadyErasing, vertex );
+    #endif
+    _inputOutputStack[1-_currentInputStack].push(vertex.getRecords());
+  }
+  else {
+    _temporaryStack[stackNumber].push(vertex);
+  }
+  logTraceOut( "push(int,Vertex)" );
+}
+
+
+template <class Vertex>
+int peano::stacks::VertexSTDStack<Vertex>::sizeOfInputStack() const {
+  return static_cast<int>(_inputOutputStack[_currentInputStack].size());
+}
+
+
+template <class Vertex>
+int peano::stacks::VertexSTDStack<Vertex>::sizeOfOutputStack() const {
+  return static_cast<int>(_inputOutputStack[1-_currentInputStack].size());
+}
+
+
+template <class Vertex>
+bool peano::stacks::VertexSTDStack<Vertex>::isInputStackEmpty() const {
+  return _inputOutputStack[_currentInputStack].isEmpty();
+}
+
+
+template <class Vertex>
+bool peano::stacks::VertexSTDStack<Vertex>::isOutputStackEmpty() const {
+  return _inputOutputStack[1-_currentInputStack].isEmpty();
+}
+
+
+template <class Vertex>
+void peano::stacks::VertexSTDStack<Vertex>::clear() {
+  _inputOutputStack[0].clear();
+  _inputOutputStack[1].clear();
+  for (int i=0; i<NUMBER_OF_TEMPORARY_STACKS; i++) {
+	_temporaryStack[i].clear();
+  }
+}
+
+
+template <class Vertex>
+void peano::stacks::VertexSTDStack<Vertex>::flipInputAndOutputStack() {
+  logTraceInWith1Argument( "flipInputAndOutputStack()", sizeOfOutputStack() );
+  assertion2( isInputStackEmpty(), sizeOfInputStack(), Vertex(_inputOutputStack[_currentInputStack].top()).toString() );
+  _currentInputStack = 1-_currentInputStack;
+  logTraceOut( "flipInputAndOutputStack()" );
+}
+
+
+template <class Vertex>
+template <class Cell>
+void peano::stacks::VertexSTDStack<Vertex>::writeToCheckpoint( peano::grid::Checkpoint<Vertex,Cell>& checkpoint ) const {
+  assertionMsg( false, "not implemented yet" );
+}
+
+
+template <class Vertex>
+template <class Cell>
+void peano::stacks::VertexSTDStack<Vertex>::readFromCheckpoint( const peano::grid::Checkpoint<Vertex,Cell>& checkpoint ) {
+  assertionMsg( false, "not implemented yet" );
+}
+
+
+template <class Vertex>
+void peano::stacks::VertexSTDStack<Vertex>::growOutputStackByAtLeastNElements(int n) {
+  _inputOutputStack[1-_currentInputStack].growByAtLeastNElements(n);
+}

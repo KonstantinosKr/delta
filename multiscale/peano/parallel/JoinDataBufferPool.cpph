@@ -1,0 +1,173 @@
+#include "tarch/Assertions.h"
+#include "tarch/parallel/Node.h"
+
+#include "peano/utils/Globals.h"
+#include "peano/parallel/JoinDataBufferImplementation.h"
+
+#include "peano/utils/PeanoOptimisations.h"
+
+#include "peano/performanceanalysis/ScorePMacros.h"
+
+
+template <class Vertex>
+void peano::parallel::JoinDataBufferPool::createVertexBufferManually(bool isReceiveBuffer, int toRank) {
+  if (_map[toRank]._vertexBuffer==0) {
+    #ifdef ParallelExchangePackedRecordsThroughoutJoinsAndForks
+    typedef typename Vertex::Records::Packed  MPIDatatypeContainer;
+    #else
+    typedef typename Vertex::Records          MPIDatatypeContainer;
+    #endif
+    typedef JoinDataBufferImplementation< MPIDatatypeContainer > BufferType;
+
+    _map[toRank]._vertexBuffer = new BufferType(isReceiveBuffer, _bufferSize, MPIDatatypeContainer::FullDatatype, toRank, _vertexTag);
+    logDebug( "sendVertex(...)", "created vertex join buffer for rank " << toRank << ", is receive buffer=" << isReceiveBuffer );
+  }
+  else {
+    assertionEquals1(_map[toRank]._vertexBuffer->isReceiveBuffer(),isReceiveBuffer,_map[toRank]._vertexBuffer->toString());
+  }
+}
+
+
+template <class Vertex>
+void peano::parallel::JoinDataBufferPool::sendVertex( const Vertex& vertex, int toRank ) {
+  SCOREP_USER_REGION("peano::parallel::JoinDataBufferPool::sendVertex()", SCOREP_USER_REGION_TYPE_FUNCTION)
+
+  logTraceInWith2Arguments( "sendVertex(Vertex,int)", vertex.toString(), toRank );
+  assertion2( _map.count(toRank) == 0 || _map[toRank]._vertexBuffer==0 || !_map[toRank]._vertexBuffer->isReceiveBuffer(), toRank, tarch::parallel::Node::getInstance().getRank() );
+
+  createVertexBufferManually<Vertex>(false,toRank);
+
+  #ifdef ParallelExchangePackedRecordsThroughoutJoinsAndForks
+  typedef typename Vertex::Records::Packed  MPIDatatypeContainer;
+  #else
+  typedef typename Vertex::Records          MPIDatatypeContainer;
+  #endif
+  typedef JoinDataBufferImplementation< MPIDatatypeContainer > BufferType;
+
+  #if defined(ParallelExchangePackedRecordsThroughoutJoinsAndForks)
+  static_cast<BufferType*>(_map[toRank]._vertexBuffer)->send(vertex.getVertexData().convert());
+  #else
+  static_cast<BufferType*>(_map[toRank]._vertexBuffer)->send(vertex.getVertexData());
+  #endif
+
+  logTraceOut( "sendVertex(Vertex,int)" );
+}
+
+
+template <class Cell>
+void peano::parallel::JoinDataBufferPool::createCellBufferManually(bool isReceiveBuffer, int toRank) {
+  if (_map[toRank]._cellBuffer==0) {
+    #ifdef ParallelExchangePackedRecordsThroughoutJoinsAndForks
+    typedef typename Cell::Records::Packed  MPIDatatypeContainer;
+    #else
+    typedef typename Cell::Records          MPIDatatypeContainer;
+    #endif
+    typedef JoinDataBufferImplementation< MPIDatatypeContainer > BufferType;
+
+    _map[toRank]._cellBuffer  = new BufferType(isReceiveBuffer, _bufferSize, MPIDatatypeContainer::FullDatatype, toRank, _cellTag);
+    logDebug( "sendVertex(...)", "created cell join buffer for rank " << toRank << ", is receive buffer=" << isReceiveBuffer);
+  }
+  else {
+    assertionEquals1(_map[toRank]._cellBuffer->isReceiveBuffer(),isReceiveBuffer,_map[toRank]._cellBuffer->toString());
+  }
+
+  createCellMarkerBufferManually(isReceiveBuffer,toRank);
+}
+
+
+template <class Cell>
+void peano::parallel::JoinDataBufferPool::sendCell(
+  const Cell&                                         cell,
+  const std::bitset<NUMBER_OF_VERTICES_PER_ELEMENT>&  cellMarker,
+  int toRank
+) {
+  SCOREP_USER_REGION("peano::parallel::JoinDataBufferPool::sendCell()", SCOREP_USER_REGION_TYPE_FUNCTION)
+
+  logTraceInWith3Arguments( "sendCell(Cell,int,int)", cell.toString(), cellMarker, toRank );
+  assertion2( _map.count(toRank) == 0 || _map[toRank]._cellBuffer==0 || !_map[toRank]._cellBuffer->isReceiveBuffer(), toRank, tarch::parallel::Node::getInstance().getRank() );
+  assertion2( _map.count(toRank) == 0 || _map[toRank]._cellMarkerBuffer==0 || !_map[toRank]._cellMarkerBuffer->isReceiveBuffer(), toRank, tarch::parallel::Node::getInstance().getRank() );
+
+  createCellBufferManually<Cell>(false, toRank);
+
+  #ifdef ParallelExchangePackedRecordsThroughoutJoinsAndForks
+  typedef typename Cell::Records::Packed  MPIDatatypeContainer;
+  #else
+  typedef typename Cell::Records          MPIDatatypeContainer;
+  #endif
+
+  typedef JoinDataBufferImplementation< MPIDatatypeContainer >               CellBufferType;
+  typedef JoinDataBufferImplementation<int>                                  CellMarkerBufferType;
+
+  #if defined(ParallelExchangePackedRecordsThroughoutJoinsAndForks)
+  static_cast<CellBufferType*>(_map[toRank]._cellBuffer)->send(cell.getCellData().convert());
+  #else
+  static_cast<CellBufferType*>(_map[toRank]._cellBuffer)->send(cell.getCellData());
+  #endif
+
+  int cellMarkerAsInt =  static_cast<int>(cellMarker.to_ulong());
+  #if defined(Debug) && (defined(Dim2) || defined(Dim3) || defined(Dim4))
+  cellMarkerAsInt += cell.getLevel() * OffsetForAdditionalCellLevelEncoding;
+  #endif
+
+  static_cast<CellMarkerBufferType*>( _map[toRank]._cellMarkerBuffer)->send(cellMarkerAsInt);
+
+  logTraceOut( "sendCell(Cell,int,int)" );
+}
+
+
+template <class Vertex>
+Vertex peano::parallel::JoinDataBufferPool::getVertexFromStream(int fromRank) {
+  SCOREP_USER_REGION("peano::parallel::JoinDataBufferPool::getVertexFromStream()", SCOREP_USER_REGION_TYPE_FUNCTION)
+
+  logTraceInWith1Argument( "getVertexFromStream(int)", fromRank );
+  assertion2( _map.count(fromRank) == 0 || _map[fromRank]._vertexBuffer==0 || _map[fromRank]._vertexBuffer->isReceiveBuffer(), fromRank, tarch::parallel::Node::getInstance().getRank() );
+
+  #ifdef ParallelExchangePackedRecordsThroughoutJoinsAndForks
+  typedef typename Vertex::Records::Packed  MPIDatatypeContainer;
+  #else
+  typedef typename Vertex::Records          MPIDatatypeContainer;
+  #endif
+  typedef JoinDataBufferImplementation< MPIDatatypeContainer > BufferType;
+
+  createVertexBufferManually<Vertex>(true, fromRank);
+
+  MPIDatatypeContainer receivedData = static_cast<BufferType*>(_map[fromRank]._vertexBuffer)->getTopElement();
+  Vertex result;
+  #if defined(ParallelExchangePackedRecordsThroughoutJoinsAndForks)
+  result.setVertexData( receivedData.convert() );
+  #else
+  result.setVertexData( receivedData );
+  #endif
+
+  logTraceOutWith1Argument( "getVertexFromStream(int)", result );
+  return result;
+}
+
+
+template <class Cell>
+Cell peano::parallel::JoinDataBufferPool::getCellFromStream(int fromRank) {
+  SCOREP_USER_REGION("peano::parallel::JoinDataBufferPool::getCellFromStream()", SCOREP_USER_REGION_TYPE_FUNCTION)
+
+  logTraceInWith1Argument( "getCellFromStream(int)", fromRank );
+  assertion2( _map.count(fromRank) == 0 || _map[fromRank]._cellBuffer==0 || _map[fromRank]._cellBuffer->isReceiveBuffer(), fromRank, tarch::parallel::Node::getInstance().getRank() );
+
+  #ifdef ParallelExchangePackedRecordsThroughoutJoinsAndForks
+  typedef typename Cell::Records::Packed  MPIDatatypeContainer;
+  #else
+  typedef typename Cell::Records          MPIDatatypeContainer;
+  #endif
+  typedef JoinDataBufferImplementation< MPIDatatypeContainer > BufferType;
+
+  createCellBufferManually<Cell>(true, fromRank);
+
+  MPIDatatypeContainer receivedData = static_cast<BufferType*>(_map[fromRank]._cellBuffer)->getTopElement();
+  Cell result;
+  #if defined(ParallelExchangePackedRecordsThroughoutJoinsAndForks)
+  result.setCellData( receivedData.convert() );
+  #else
+  result.setCellData( receivedData );
+  #endif
+
+  logTraceOutWith1Argument( "getCellFromStream(int)", result );
+  return result;
+}

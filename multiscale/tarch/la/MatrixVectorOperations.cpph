@@ -1,0 +1,38 @@
+template<int Rows, int Cols, typename Scalar>
+tarch::la::Vector<Rows,Scalar> tarch::la::multiply(
+  const Matrix<Rows,Cols,Scalar>&  matrix,
+  const Vector<Cols,Scalar>&       vector
+) {
+  tarch::la::Vector<Rows,Scalar> result( Scalar(0) );
+  for (int i=0; i < Rows; i++) {
+    for (int j=0; j < Cols; j++) {
+      result(i) += matrix(i,j) * vector(j);
+    }
+  }
+  return result;
+}
+
+
+template<int Rows, int Cols, typename Scalar>
+tarch::la::Vector<Rows,Scalar> tarch::la::operator* (
+  const Matrix<Rows,Cols,Scalar>&  matrix,
+  const Vector<Cols,Scalar>&       vector
+) {
+  return multiply(matrix,vector);
+}
+
+
+template<int Size, typename Scalar>
+tarch::la::Matrix<Size,Size,Scalar> tarch::la::outerDot (
+  const Vector<Size,Scalar>&  lhs,
+  const Vector<Size,Scalar>&  rhs
+) {
+  tarch::la::Matrix<Size,Size,Scalar> result;
+  for (int i=0; i<Size; i++) {
+    for (int j=0; j<Size; j++) {
+      result(j,i) = lhs(j) * rhs(i);
+    }
+  }
+  return result;
+}
+

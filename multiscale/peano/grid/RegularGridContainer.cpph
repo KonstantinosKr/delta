@@ -1,0 +1,768 @@
+#include "tarch/Assertions.h"
+#include "peano/utils/Loop.h"
+#include "peano/grid/nodes/Constants.h"
+#include "tarch/multicore/Lock.h"
+ 
+
+#include <limits>
+
+
+
+template < class Vertex, class Cell >
+tarch::logging::Log peano::grid::RegularGridContainer<Vertex,Cell>::_log( "peano::grid::RegularGridContainer" );
+
+
+template < class Vertex, class Cell >
+tarch::multicore::BooleanSemaphore peano::grid::RegularGridContainer<Vertex,Cell>::_semaphore;
+
+
+template < class Vertex, class Cell >
+peano::grid::RegularGridContainer<Vertex,Cell>::RegularGridContainer():
+  _data(),
+  _freedSubtreeIndices(),
+  _activeRegularSubtree(0),
+  _maximumMemoryFootprintForTemporaryRegularGrid(std::numeric_limits<double>::max()) {
+  _data[_activeRegularSubtree]=std::vector<LevelData*>(0);
+}
+
+
+template < class Vertex, class Cell >
+void peano::grid::RegularGridContainer<Vertex,Cell>::setMaximumMemoryFootprintForTemporaryRegularGrids(double value) {
+  assertion( value>0.0 );
+  _maximumMemoryFootprintForTemporaryRegularGrid = value;
+}
+
+
+template < class Vertex, class Cell >
+peano::grid::RegularGridContainer<Vertex,Cell>::~RegularGridContainer() {
+  for (auto currentSubtree: _data) {
+    while (!currentSubtree.second.empty()) {
+      delete currentSubtree.second.back();
+      currentSubtree.second.pop_back();
+    }
+  }
+}
+
+
+template < class Vertex, class Cell >
+std::string peano::grid::RegularGridContainer<Vertex,Cell>::toString() const {
+  std::ostringstream result;
+
+  result << "(levels:" << _data.at(_activeRegularSubtree).size();
+  for (int i=0; i<static_cast<int>(_data.at(_activeRegularSubtree).size()); i++) {
+    result << ",level-" << i
+           << ":initialised=" << isLevelInitialised(i)
+           << ",uninitialised-patch-vertices:" << _data.at(_activeRegularSubtree)[i]->uninitalisedVertices
+           << ",uninitialised-patch-cells:"    << _data.at(_activeRegularSubtree)[i]->uninitalisedCells
+           << ",have-called-all-events:"       << _data.at(_activeRegularSubtree)[i]->haveCalledAllEventsOnThisLevel;
+  }
+  result << ")";
+
+  return result.str();
+}
+
+
+template < class Vertex, class Cell >
+void peano::grid::RegularGridContainer<Vertex,Cell>::haveReadVertices( const std::vector<int>& readsOfPatchesPerLevel ) {
+  tarch::multicore::Lock lock(_semaphore);
+
+  for (int level=0; level<static_cast<int>(readsOfPatchesPerLevel.size()); level++) {
+    assertion2( level>=0, level, toString() );
+    assertion2( level<static_cast<int>(_data.at(_activeRegularSubtree).size()), level, toString() );
+
+    _data.at(_activeRegularSubtree)[level]->uninitalisedVertices            -= readsOfPatchesPerLevel[level];
+    _data.at(_activeRegularSubtree)[level]->haveCalledAllEventsOnThisLevel   = false;
+
+    assertion2( _data.at(_activeRegularSubtree)[level]->uninitalisedVertices>=0, level, toString() );
+  }
+}
+
+
+template < class Vertex, class Cell >
+void peano::grid::RegularGridContainer<Vertex,Cell>::haveReadAllChildrenCellsOfOneRefinedNode( int level ) {
+  tarch::multicore::Lock lock(_semaphore);
+
+  assertion1( level>=0, toString() );
+  assertion1( level<static_cast<int>(_data.at(_activeRegularSubtree).size()), toString() );
+
+  _data.at(_activeRegularSubtree)[level]->uninitalisedCells              -= THREE_POWER_D;
+  _data.at(_activeRegularSubtree)[level]->haveCalledAllEventsOnThisLevel  = false;
+}
+
+
+template < class Vertex, class Cell >
+void peano::grid::RegularGridContainer<Vertex,Cell>::haveReadAllCells( int maxLevel ) {
+  tarch::multicore::Lock lock(_semaphore);
+
+  for (int level=0; level<=maxLevel; level++) {
+    _data.at(_activeRegularSubtree)[level]->uninitalisedCells                      = 0;
+    _data.at(_activeRegularSubtree)[level]->haveCalledAllEventsOnThisLevel         = false;
+  }
+}
+
+
+template < class Vertex, class Cell >
+void peano::grid::RegularGridContainer<Vertex,Cell>::haveStoredAllVertices( int maxLevel ) {
+  tarch::multicore::Lock lock(_semaphore);
+
+  for (int level=0; level<=maxLevel; level++) {
+    assertion( level>=0 );
+    assertion( level<static_cast<int>(_data.at(_activeRegularSubtree).size()));
+    assertion( _data.at(_activeRegularSubtree)[level]->uninitalisedVertices>=0 );
+
+    _data.at(_activeRegularSubtree)[level]->uninitalisedVertices = tarch::la::volume( getNumberOfVertices(level) );
+  }
+}
+
+
+template < class Vertex, class Cell >
+void peano::grid::RegularGridContainer<Vertex,Cell>::haveCalledAllEventsOnThisLevel( int level ) {
+  #if !defined(PersistentRegularSubtrees)
+  assertion2( isLevelInitialised(level), toString(), level );
+  #endif
+
+  tarch::multicore::Lock lock(_semaphore);
+
+  assertion2( level>0, level, toString() );
+  assertion2( !_data.at(_activeRegularSubtree)[level]->haveCalledAllEventsOnThisLevel, level, toString() );
+
+  _data.at(_activeRegularSubtree)[level]->haveCalledAllEventsOnThisLevel = true;
+}
+
+
+template < class Vertex, class Cell >
+void peano::grid::RegularGridContainer<Vertex,Cell>::haveStoredAllCells( int maxLevel ) {
+  tarch::multicore::Lock lock(_semaphore);
+
+  for (int level=0; level<=maxLevel; level++) {
+    assertion( level>=0 );
+    assertion( level<static_cast<int>(_data.at(_activeRegularSubtree).size()));
+    assertion( _data.at(_activeRegularSubtree)[level]->uninitalisedCells>=0 );
+
+    _data.at(_activeRegularSubtree)[level]->uninitalisedCells = tarch::la::volume( getNumberOfCells(level) );
+  }
+}
+
+
+template < class Vertex, class Cell >
+bool peano::grid::RegularGridContainer<Vertex,Cell>::areCellsOfLevelLoaded( int level ) const {
+  tarch::multicore::Lock lock(_semaphore);
+
+  assertion1( level>=0, level );
+
+  return level<static_cast<int>(_data.at(_activeRegularSubtree).size()) && _data.at(_activeRegularSubtree)[level]->uninitalisedCells==0;
+}
+
+
+template < class Vertex, class Cell >
+bool peano::grid::RegularGridContainer<Vertex,Cell>::isLevelInitialised( int level ) const {
+  tarch::multicore::Lock lock(_semaphore);
+
+  assertion( level>=0 );
+
+  return
+       (level<static_cast<int>(_data.at(_activeRegularSubtree).size()))
+    && (_data.at(_activeRegularSubtree)[level]->uninitalisedCells==0)
+    && (_data.at(_activeRegularSubtree)[level]->uninitalisedVertices==0);
+}
+
+
+template < class Vertex, class Cell >
+bool peano::grid::RegularGridContainer<Vertex,Cell>::areAllEventsOnThisLevelCalled( int level ) const {
+  tarch::multicore::Lock lock(_semaphore);
+  assertion2( level>0, level, toString() );
+  return level<static_cast<int>(_data.at(_activeRegularSubtree).size()) && _data.at(_activeRegularSubtree)[level]->haveCalledAllEventsOnThisLevel;
+}
+
+
+template < class Vertex, class Cell >
+void peano::grid::RegularGridContainer<Vertex,Cell>::endOfIteration() {
+  logTraceInWith1Argument( "endOfIteration()", _data.at(_activeRegularSubtree).size() );
+
+/*
+  if (!_data.at(_activeRegularSubtree).empty() && _data.at(_activeRegularSubtree).back()->usedPerTraversal==0) {
+    delete _data.at(_activeRegularSubtree).back();
+    _data.at(_activeRegularSubtree).pop_back();
+  }
+*/
+
+  int persistentlyStoredTrees = 0;
+  for (auto& p: _usedPerTraversal) {
+    logInfo( "endOfIteration()", "regular grid of height " << p.first << " used nonpersistently/persistently=" << p.second.first << "/" << p.second.second << " times" );
+    persistentlyStoredTrees += p.second.second;
+    p.second.first  = 0;
+    p.second.second = 0;
+  }
+  logInfo( "endOfIteration()", "max of concurrently held regular subgrids=" << _data.size() );
+  logInfo( "endOfIteration()", "last active tree index=" << _activeRegularSubtree );
+  logInfo( "endOfIteration()", "persistently held subgrids=" << persistentlyStoredTrees );
+  logInfo( "endOfIteration()", "no of freed subgrids (not reused yet)=" << _freedSubtreeIndices.size() );
+
+  assertionEquals(persistentlyStoredTrees,static_cast<int>(_data.size())-static_cast<int>(_freedSubtreeIndices.size())-1);
+
+  logTraceOutWith1Argument( "endOfIteration()", _data.at(_activeRegularSubtree).size() );
+}
+
+
+template < class Vertex, class Cell >
+void peano::grid::RegularGridContainer<Vertex,Cell>::validateInitialValuesUpToLevel( int level ) const {
+  for(int l=1; l<=level; l++) {
+    assertionEquals4( _data.at(_activeRegularSubtree)[l]->uninitalisedCells,    tarch::la::volume( getNumberOfCells(l) ), l, level, getNumberOfCells(l), toString() );
+    assertionEquals4( _data.at(_activeRegularSubtree)[l]->uninitalisedVertices, tarch::la::volume( getNumberOfVertices(l) ), l, level, getNumberOfCells(l), toString() );
+    assertion3( _data.at(_activeRegularSubtree)[l]->haveCalledAllEventsOnThisLevel, l, level, toString() );
+    assertion3( !isLevelInitialised(l), l, level, toString() );
+  }
+}
+
+
+template < class Vertex, class Cell >
+bool peano::grid::RegularGridContainer<Vertex,Cell>::isRegularSubtreeAvailable( int requestedHeight ) {
+  logTraceInWith1Argument( "isRegularSubtreeAvailable(int)", requestedHeight );
+
+  assertion1( requestedHeight>0, requestedHeight);
+
+  int additionalLevelsToAdd = requestedHeight - static_cast<int>(_data.at(_activeRegularSubtree).size()) + 1;
+  while (
+    additionalLevelsToAdd>0 &&
+    LevelData::getApproximateMemoryFootprint(static_cast<int>(_data.at(_activeRegularSubtree).size())) < _maximumMemoryFootprintForTemporaryRegularGrid
+  ) {
+    LevelData* newEntry = new LevelData();
+    if (newEntry->init(static_cast<int>(_data.at(_activeRegularSubtree).size()))) {
+      additionalLevelsToAdd--;
+      _data.at(_activeRegularSubtree).push_back(newEntry);
+    }
+    else {
+      additionalLevelsToAdd = -1;
+      delete newEntry;
+    }
+  }
+
+  const bool result = requestedHeight<=static_cast<int>(_data.at(_activeRegularSubtree).size())-1;
+
+  if (result) {
+    _usedPerTraversal[requestedHeight].first++;
+
+    validateInitialValuesUpToLevel( requestedHeight );
+  }
+  else {
+    logWarning( "isRegularSubtreeAvailable(int)", "tree of depth " << requestedHeight << " is not avaialable though requested" );
+  }
+
+  logTraceOutWith2Arguments( "isRegularSubtreeAvailable(int)", result, static_cast<int>(_data.at(_activeRegularSubtree).size()) );
+
+  return result;
+}
+
+
+template < class Vertex, class Cell >
+void peano::grid::RegularGridContainer<Vertex,Cell>::setVertexEnumerator(
+  int                             level,
+  const UnrolledLevelEnumerator&  enumerator
+) {
+  logTraceInWith2Arguments( "setVertexEnumerator(...)", level, enumerator.toString() );
+
+  validateThatRegularSubtreeIsAvailable(level);
+
+  _data.at(_activeRegularSubtree)[level]->enumerator = enumerator;
+
+  logTraceOut( "setVertexEnumerator(...)" );
+}
+
+
+template < class Vertex, class Cell >
+void peano::grid::RegularGridContainer<Vertex,Cell>::validateThatRegularSubtreeIsAvailable( int level ) const {
+  assertion1( level>=0, level );
+  assertion3( level<static_cast<int>(_data.at(_activeRegularSubtree).size()), level, static_cast<int>(_data.at(_activeRegularSubtree).size()), _activeRegularSubtree );
+
+  assertion( _data.at(_activeRegularSubtree)[level]->cell != 0 );
+  assertion( _data.at(_activeRegularSubtree)[level]->vertex != 0 );
+  assertion( _data.at(_activeRegularSubtree)[level]->counter != 0 );
+  assertion( _data.at(_activeRegularSubtree)[level]->isReadFromTemp != 0 );
+  assertion( _data.at(_activeRegularSubtree)[level]->isToBeWrittenToTemp != 0 );
+}
+
+
+template < class Vertex, class Cell >
+peano::grid::UnrolledLevelEnumerator& peano::grid::RegularGridContainer<Vertex,Cell>::getVertexEnumerator( int level ) {
+  logTraceInWith1Argument( "getVertexEnumerator(int)", level );
+
+  validateThatRegularSubtreeIsAvailable( level );
+
+  peano::grid::UnrolledLevelEnumerator& result = _data.at(_activeRegularSubtree)[level]->enumerator;
+
+  logTraceOutWith1Argument( "getVertexEnumerator(int)", result.toString() );
+
+  return result;
+}
+
+
+template < class Vertex, class Cell >
+const peano::grid::UnrolledLevelEnumerator& peano::grid::RegularGridContainer<Vertex,Cell>::getVertexEnumerator( int level ) const {
+  logTraceInWith1Argument( "getVertexEnumerator(int)", level );
+
+  validateThatRegularSubtreeIsAvailable( level );
+
+  const peano::grid::UnrolledLevelEnumerator& result = _data.at(_activeRegularSubtree)[level]->enumerator;
+
+  logTraceOutWith1Argument( "getVertexEnumerator(int)", result.toString() );
+
+  return result;
+}
+
+
+template < class Vertex, class Cell >
+void peano::grid::RegularGridContainer<Vertex,Cell>::setCell( int level, int cellIndex, const Cell& cell ) {
+  logTraceInWith3Arguments( "setCell(int,int,Cell)", level, cellIndex, cell.toString() );
+
+  validateThatRegularSubtreeIsAvailable( level );
+
+  _data.at(_activeRegularSubtree)[level]->cell[cellIndex] = cell;
+
+  logTraceOut( "setCell(int,int,Cell)" );
+}
+
+
+template < class Vertex, class Cell >
+Cell& peano::grid::RegularGridContainer<Vertex,Cell>::getCell( int level, int cellIndex ) {
+  logTraceInWith2Arguments( "getCell(int,int)", level, cellIndex );
+
+  validateThatRegularSubtreeIsAvailable( level );
+
+  Cell& result = _data.at(_activeRegularSubtree)[level]->cell[cellIndex];
+
+  logTraceOutWith1Argument( "getCell(int,int)", result.toString() );
+
+  return result;
+}
+
+
+template < class Vertex, class Cell >
+const Cell& peano::grid::RegularGridContainer<Vertex,Cell>::getCell( int level, int cellIndex ) const {
+  logTraceInWith2Arguments( "getCell(int,int)", level, cellIndex );
+
+  validateThatRegularSubtreeIsAvailable( level );
+
+  const Cell& result = _data.at(_activeRegularSubtree)[level]->cell[cellIndex];
+
+  logTraceOutWith1Argument( "getCell(int,int)", result.toString() );
+
+  return result;
+}
+
+
+template < class Vertex, class Cell >
+Cell* peano::grid::RegularGridContainer<Vertex,Cell>::getCell( int level ) {
+  validateThatRegularSubtreeIsAvailable( level );
+  #if defined(RegularGridContainerUsesSTDArrays)
+  return _data.at(_activeRegularSubtree)[level]->cell.data();
+  #else
+  return _data.at(_activeRegularSubtree)[level]->cell;
+  #endif
+}
+
+
+
+template < class Vertex, class Cell >
+int& peano::grid::RegularGridContainer<Vertex,Cell>::getCounter( int level, int vertexIndex ) {
+  logTraceInWith2Arguments( "getCounter(int,int)", level, vertexIndex );
+
+  validateThatRegularSubtreeIsAvailable( level );
+
+  int& result = _data.at(_activeRegularSubtree)[level]->counter[vertexIndex];
+
+  logTraceOutWith1Argument( "getCounter(int,int)", result );
+
+  return result;
+}
+
+
+template < class Vertex, class Cell >
+Vertex& peano::grid::RegularGridContainer<Vertex,Cell>::getVertex( int level, int vertexIndex ) {
+  logTraceInWith2Arguments( "getVertex(int,int)", level, vertexIndex );
+
+  validateThatRegularSubtreeIsAvailable( level );
+
+  Vertex& result = _data.at(_activeRegularSubtree)[level]->vertex[vertexIndex];
+
+  logTraceOutWith1Argument( "getVertex(int,int)", result );
+
+  return result;
+}
+
+
+template < class Vertex, class Cell >
+void peano::grid::RegularGridContainer<Vertex,Cell>::setVertex( int level, int vertexIndex, const Vertex&  vertex ) {
+  logTraceInWith3Arguments( "setVertex(int,int,Vertex)", level, vertexIndex, vertex.toString() );
+
+  validateThatRegularSubtreeIsAvailable( level );
+
+  _data.at(_activeRegularSubtree)[level]->vertex[vertexIndex] = vertex;
+
+  logTraceOut( "setVertex(int,int,Vertex)" );
+}
+
+
+template < class Vertex, class Cell >
+const Vertex& peano::grid::RegularGridContainer<Vertex,Cell>::getVertex( int level, int vertexIndex ) const {
+  logTraceInWith2Arguments( "getVertex(int,int)", level, vertexIndex );
+
+  validateThatRegularSubtreeIsAvailable( level );
+
+  const Vertex& result = _data.at(_activeRegularSubtree)[level]->vertex[vertexIndex];
+
+  logTraceOutWith1Argument( "getVertex(int,int)", result );
+
+  return result;
+}
+
+
+template < class Vertex, class Cell >
+Vertex* peano::grid::RegularGridContainer<Vertex,Cell>::getVertex( int level ) {
+  logTraceInWith1Argument( "getVertex(int)", level );
+
+  validateThatRegularSubtreeIsAvailable( level );
+
+  logTraceOut( "getVertex(int)");
+
+  #if defined(RegularGridContainerUsesSTDArrays)
+  return _data.at(_activeRegularSubtree)[level]->vertex.data();
+  #else
+  return _data.at(_activeRegularSubtree)[level]->vertex;
+  #endif
+}
+
+
+
+template < class Vertex, class Cell >
+void peano::grid::RegularGridContainer<Vertex,Cell>::setIsReadFromTemporaryStack( int level, int vertexIndex, bool value  ) {
+  logTraceInWith3Arguments( "setIsReadFromTemporaryStack(int,int,bool)", level, vertexIndex, value );
+
+  validateThatRegularSubtreeIsAvailable( level );
+
+  _data.at(_activeRegularSubtree)[level]->isReadFromTemp[vertexIndex] = value;
+
+  logTraceOut( "setIsReadFromTemporaryStack(int,int,bool)");
+}
+
+
+template < class Vertex, class Cell >
+void peano::grid::RegularGridContainer<Vertex,Cell>::setIsToBeWrittenToTemporaryStack( int level, int vertexIndex, bool value ) {
+  logTraceInWith3Arguments( "setIsToBeWrittenToTemporaryStack(int,int,bool)", level, vertexIndex, value );
+
+  validateThatRegularSubtreeIsAvailable( level );
+
+  _data.at(_activeRegularSubtree)[level]->isToBeWrittenToTemp[vertexIndex] = value;
+
+  logTraceOut( "setIsToBeWrittenToTemporaryStack(int,int,bool)");
+}
+
+
+template < class Vertex, class Cell >
+bool peano::grid::RegularGridContainer<Vertex,Cell>::isReadFromTemporaryStack( int level, int vertexIndex) const {
+  logTraceInWith2Arguments( "isReadFromTemporaryStack(int,int)", level, vertexIndex );
+
+  validateThatRegularSubtreeIsAvailable( level );
+
+  const bool result = _data.at(_activeRegularSubtree)[level]->isReadFromTemp[vertexIndex];
+
+  logTraceOutWith1Argument( "isReadFromTemporaryStack(int,int)", result );
+
+  return result;
+}
+
+
+template < class Vertex, class Cell >
+bool peano::grid::RegularGridContainer<Vertex,Cell>::isToBeWrittenToTemporaryStack( int level, int vertexIndex) const {
+  logTraceInWith2Arguments( "isToBeWrittenToTemporaryStack(int,int)", level, vertexIndex );
+
+  validateThatRegularSubtreeIsAvailable( level );
+
+  const bool result = _data.at(_activeRegularSubtree)[level]->isToBeWrittenToTemp[vertexIndex];
+
+  logTraceOutWith1Argument( "isToBeWrittenToTemporaryStack(int,int)", result );
+
+  return result;
+}
+
+
+template < class Vertex, class Cell >
+peano::grid::RegularGridContainer<Vertex,Cell>::LevelData::LevelData():
+  enumerator(0.0,0.0,0,1,1) {
+  #if defined(RegularGridContainerUsesPlainArrays) || defined(RegularGridContainerUsesRawArrays)
+  vertex = 0;
+  cell = 0;
+  counter = 0;
+  isReadFromTemp = 0;
+  isToBeWrittenToTemp = 0;
+  #endif
+}
+
+
+template < class Vertex, class Cell >
+peano::grid::RegularGridContainer<Vertex,Cell>::LevelData::~LevelData() {
+  freeHeap();
+}
+
+
+template < class Vertex, class Cell >
+tarch::la::Vector<DIMENSIONS,int> peano::grid::RegularGridContainer<Vertex,Cell>::getNumberOfCells( int level ) {
+  return tarch::la::Vector<DIMENSIONS,int>( tarch::la::aPowI(level,3) );
+}
+
+
+template < class Vertex, class Cell >
+tarch::la::Vector<DIMENSIONS,int> peano::grid::RegularGridContainer<Vertex,Cell>::getNumberOfVertices( int level ) {
+  return level==0 ? tarch::la::Vector<DIMENSIONS,int>(2) : tarch::la::Vector<DIMENSIONS,int>( tarch::la::aPowI(level,3)+1 );
+}
+
+
+template < class Vertex, class Cell >
+double peano::grid::RegularGridContainer<Vertex,Cell>::LevelData::getApproximateMemoryFootprint(int level) {
+  const int NumberOfCells    = tarch::la::volume( getNumberOfCells(level) );
+  const int NumberOfVertices = tarch::la::volume( getNumberOfVertices(level) );
+  return static_cast<double>(
+      NumberOfCells    * sizeof(Cell) +
+      NumberOfVertices * (sizeof(Vertex) + sizeof(int) + sizeof(bool) + sizeof(bool))
+    );
+}
+
+
+template < class Vertex, class Cell >
+bool peano::grid::RegularGridContainer<Vertex,Cell>::LevelData::init(
+  int level
+) {
+  logTraceInWith1Argument( "LevelData::init(int)", level );
+
+  const int NumberOfCells    = tarch::la::volume( getNumberOfCells(level) );
+  const int NumberOfVertices = tarch::la::volume( getNumberOfVertices(level) );
+
+  uninitalisedVertices                      = NumberOfVertices;
+  uninitalisedCells                         = NumberOfCells;
+  haveCalledAllEventsOnThisLevel            = true;
+
+  logDebug( "LevelData::init(int)", "no-of-vertices=" << NumberOfVertices << ", no-of-cells=" << NumberOfCells );
+
+  #if defined(RegularGridContainerUsesPlainArrays)
+  assertion(vertex==0);
+  assertion(cell==0);
+  assertion(counter==0);
+  assertion(isReadFromTemp==0);
+  assertion(isToBeWrittenToTemp==0);
+
+  vertex              = new (std::nothrow) Vertex[NumberOfVertices];
+  cell                = new (std::nothrow) Cell[NumberOfCells];
+  counter             = new (std::nothrow) int[NumberOfVertices];
+  isReadFromTemp      = new (std::nothrow) bool[NumberOfVertices];
+  isToBeWrittenToTemp = new (std::nothrow) bool[NumberOfVertices];
+
+  const bool IsValid = vertex!=0 && cell!=0 && counter!=0 && isReadFromTemp!=0 && isToBeWrittenToTemp!=0;
+  #elif defined(RegularGridContainerUsesRawArrays)
+  assertion(vertex==0);
+  assertion(cell==0);
+  assertion(counter==0);
+  assertion(isReadFromTemp==0);
+  assertion(isToBeWrittenToTemp==0);
+
+  assertion(rawVertex==0);
+  assertion(rawCell==0);
+  assertion(rawCounter==0);
+  assertion(rawIsReadFromTemp==0);
+  assertion(rawIsToBeWrittenToTemp==0);
+
+  rawVertex               = operator new [] (NumberOfVertices*sizeof(Vertex), std::nothrow);
+  rawCell                 = operator new [] (NumberOfCells   *sizeof(Cell),   std::nothrow);
+  rawCounter              = operator new [] (NumberOfVertices*sizeof(int),    std::nothrow);
+  rawIsReadFromTemp       = operator new [] (NumberOfVertices*sizeof(bool),   std::nothrow);
+  rawIsToBeWrittenToTemp  = operator new [] (NumberOfVertices*sizeof(bool),   std::nothrow);
+
+  vertex               = static_cast<Vertex*>(rawVertex);
+  cell                 = static_cast<Cell*>(rawCell);
+  counter              = static_cast<int*>(rawCounter);
+  isReadFromTemp       = static_cast<bool*>(rawIsReadFromTemp);
+  isToBeWrittenToTemp  = static_cast<bool*>(rawIsToBeWrittenToTemp);
+
+  const bool IsValid = rawVertex!=0 && rawCell!=0 && rawCounter!=0 && rawIsReadFromTemp!=0 && rawIsToBeWrittenToTemp!=0;
+  #elif defined(RegularGridContainerUsesSTDArrays)
+
+  bool IsValid = true;
+  try {
+    vertex.resize(NumberOfVertices,Vertex(typename Vertex::DoNotCallStandardConstructor()));
+    cell.resize(NumberOfCells,Cell(typename Cell::DoNotCallStandardConstructor()));
+    counter.resize(NumberOfVertices,peano::grid::nodes::CounterPersistentNode);
+    isReadFromTemp.resize(NumberOfVertices);
+    isToBeWrittenToTemp.resize(NumberOfVertices);
+  }
+  catch (std::bad_alloc) {
+    IsValid = false;
+  }
+  #endif
+
+  if (IsValid) {
+    #if defined(RegularGridContainerUsesPlainArrays) || defined(RegularGridContainerUsesRawArrays)
+    std::fill_n( counter, NumberOfVertices, peano::grid::nodes::CounterPersistentNode );
+    #endif
+  }
+  else {
+    freeHeap();
+  }
+
+  logTraceOutWith1Argument( "LevelData::init(int)", IsValid );
+
+  return IsValid;
+}
+
+
+template < class Vertex, class Cell >
+void peano::grid::RegularGridContainer<Vertex,Cell>::LevelData::freeHeap() {
+  #if defined(RegularGridContainerUsesPlainArrays)
+    if (vertex!=0) {
+      delete[] vertex;
+    }
+    if (cell!=0) {
+      delete[] cell;
+    }
+    if (counter!=0) {
+      delete[] counter;
+    }
+    if (isReadFromTemp!=0) {
+      delete[] isReadFromTemp;
+    }
+    if (isToBeWrittenToTemp!=0) {
+      delete[] isToBeWrittenToTemp;
+    }
+
+    vertex               = 0;
+    cell                 = 0;
+    counter              = 0;
+    isReadFromTemp       = 0;
+    isToBeWrittenToTemp  = 0;
+  #elif defined(RegularGridContainerUsesRawArrays)
+    if (rawVertex!=0) {
+      operator delete[] (rawVertex);
+    }
+    if (rawCell!=0) {
+      operator delete[] (rawCell);
+    }
+    if (rawCounter!=0) {
+      operator delete[] (rawCounter);
+    }
+    if (rawIsReadFromTemp!=0) {
+      operator delete[] (rawIsReadFromTemp);
+    }
+    if (rawIsToBeWrittenToTemp!=0) {
+      operator delete[] (rawIsToBeWrittenToTemp);
+    }
+
+    rawVertex               = 0;
+    rawCell                 = 0;
+    rawCounter              = 0;
+    rawIsReadFromTemp       = 0;
+    rawIsToBeWrittenToTemp  = 0;
+
+    vertex               = 0;
+    cell                 = 0;
+    counter              = 0;
+    isReadFromTemp       = 0;
+    isToBeWrittenToTemp  = 0;
+  #elif defined(RegularGridContainerUsesSTDArrays)
+    vertex.clear();
+    cell.clear();
+    counter.clear();
+    isReadFromTemp.clear();
+    isToBeWrittenToTemp.clear();
+  #endif
+}
+
+
+
+template < class Vertex, class Cell >
+void peano::grid::RegularGridContainer<Vertex,Cell>::copyRootNodeDataIntoRegularPatch(
+  const Cell&                               fineGridCell,
+  Vertex                                    fineGridVertices[FOUR_POWER_D],
+  const SingleLevelEnumerator&              fineGridVerticesEnumerator
+) {
+  logTraceIn( "copyRootNodeDataIntoRegularPatch(...)" );
+
+  validateThatRegularSubtreeIsAvailable(0);
+
+  setCell(0,0,fineGridCell);
+  dfor2(k)
+    setVertex(0,kScalar,fineGridVertices[ fineGridVerticesEnumerator(k) ]);
+  enddforx
+
+  logTraceOut( "copyRootNodeDataIntoRegularPatch(...)" );
+}
+
+
+
+template < class Vertex, class Cell >
+void peano::grid::RegularGridContainer<Vertex,Cell>::copyRootNodeDataFromRegularPatch(
+  Cell&                                     fineGridCell,
+  Vertex                                    fineGridVertices[FOUR_POWER_D],
+  const SingleLevelEnumerator&              fineGridVerticesEnumerator
+) const {
+  logTraceIn( "copyRootNodeDataFromRegularPatch(...)" );
+
+  validateThatRegularSubtreeIsAvailable(0);
+
+  fineGridCell = getCell(0,0);
+  dfor2(k)
+    fineGridVertices[ fineGridVerticesEnumerator(k) ] = getVertex(0,kScalar);
+  enddforx
+
+  logTraceOutWith1Argument( "copyRootNodeDataFromRegularPatch(...)", fineGridCell );
+}
+
+
+template < class Vertex, class Cell >
+bool peano::grid::RegularGridContainer<Vertex,Cell>::isCellAtPatchBoundaryWithinRegularSubtree(
+  const tarch::la::Vector<DIMENSIONS,int>&  offsetWithinPatch,
+  const int                                 currentLevel
+) const {
+  bool result = false;
+  for (int d=0; d<DIMENSIONS; d++) {
+    result |= offsetWithinPatch(d) == 0;
+    result |= offsetWithinPatch(d) == getVertexEnumerator(currentLevel).getCellsPerAxis()-1;
+  }
+  return result;
+}
+
+
+template < class Vertex, class Cell >
+int peano::grid::RegularGridContainer<Vertex,Cell>::keepCurrentRegularSubgrid() {
+  const int result = _activeRegularSubtree;
+
+  const int TreeDepth = getVertexEnumerator( 0 ).getCellFlags();
+  _usedPerTraversal[TreeDepth].second++;
+
+  if ( _freedSubtreeIndices.empty() ) {
+    int currentIndex = 0;
+    while ( _data.count(currentIndex)>0 ) {
+      currentIndex++;
+    }
+    _activeRegularSubtree = currentIndex;
+    _data.insert( std::pair<int, std::vector<LevelData*> >(_activeRegularSubtree,std::vector<LevelData*>() ) );
+  }
+  else {
+    _activeRegularSubtree = _freedSubtreeIndices.back();
+    _freedSubtreeIndices.pop_back();
+  }
+  return result;
+}
+
+
+template < class Vertex, class Cell >
+void peano::grid::RegularGridContainer<Vertex,Cell>::switchToStoredRegularSubgrid( int index ) {
+  assertion1( _data.count(index)==1, index);
+  _freedSubtreeIndices.push_back(_activeRegularSubtree);
+
+  _activeRegularSubtree = index;
+}
+
+
+template < class Vertex, class Cell >
+bool peano::grid::RegularGridContainer<Vertex,Cell>::holdsRegularSubgridsPersistently() const {
+  const bool result = _data.size() - _freedSubtreeIndices.size() > 1;
+  logDebug( "holdsRegularSubgridsPersistently()", "result=" << result );
+  return result;
+}

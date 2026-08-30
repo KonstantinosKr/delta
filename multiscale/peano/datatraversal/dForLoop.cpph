@@ -1,0 +1,163 @@
+#include "tarch/multicore/MulticoreDefinitions.h"
+#include "peano/utils/Loop.h"
+#include "peano/utils/Globals.h"
+#include "peano/utils/PeanoOptimisations.h"
+#include "peano/performanceanalysis/Analysis.h"
+
+#include <iostream>
+
+
+#include "tarch/multicore/Loop.h"
+
+
+#if defined(TBBInvade)
+#include "shminvade/SHMInvade.h"
+#endif
+
+
+template <class LoopBody>
+tarch::logging::Log peano::datatraversal::dForLoop<LoopBody>::_log( "peano::datatraversal::dForLoop" );
+
+
+template <class LoopBody>
+peano::datatraversal::dForLoop<LoopBody>::dForLoop(
+  const tarch::la::Vector<DIMENSIONS,int>&  range,
+  LoopBody&                                 body,
+  int                                       grainSize,
+  int                                       colouring,
+  bool                                      altersState
+) {
+  logTraceInWith3Arguments( "dForLoop(...)", range, grainSize, colouring );
+  assertion( grainSize >= 0 );
+  assertion( grainSize < tarch::la::volume(range) );
+
+  #if defined(SharedMemoryParallelisation)
+  if (grainSize==0) {
+    colouring = Serial;
+  }
+  if (colouring==Serial) {
+    runSequentially(range,body);
+  }
+  else if (colouring==NoColouring) {
+    runParallelWithoutColouring(range,body,grainSize,altersState);
+  }
+  else {
+    runParallelWithColouring(range,body,grainSize,colouring,altersState);
+  }
+  #else
+  runSequentially(range,body);
+  #endif
+
+  logTraceOut( "dForLoop(...)" );
+}
+
+
+
+template <class LoopBody>
+void peano::datatraversal::dForLoop<LoopBody>::runSequentially(
+  const tarch::la::Vector<DIMENSIONS,int>&  range,
+  LoopBody&                                 loopBody
+) {
+  const int rangeVolume = tarch::la::volume(range);
+  assertion1( tarch::la::volume(range)>0, range ); 
+  peano::performanceanalysis::Analysis::getInstance().changeConcurrencyLevel(0,rangeVolume);
+
+  dfor(i,range) {
+    loopBody(i);
+  }
+
+  peano::performanceanalysis::Analysis::getInstance().changeConcurrencyLevel(0,-rangeVolume);
+}
+
+
+template <class LoopBody>
+void peano::datatraversal::dForLoop<LoopBody>::runParallelWithoutColouring(
+  const tarch::la::Vector<DIMENSIONS,int>&  range,
+  LoopBody&                                 loopBody,
+  int                                       grainSize,
+  bool                                      altersState
+) {
+  peano::performanceanalysis::Analysis::getInstance().changeConcurrencyLevel(tarch::la::volume(range)/grainSize,tarch::la::volume(range));
+
+  if (!altersState) {
+    #if defined(TBBInvade)
+    shminvade::SHMInvade invade( grainSize>0 ? tarch::la::volume(range)/grainSize : 0 );
+    #endif
+
+    tarch::multicore::parallelFor(
+      tarch::multicore::dForRange<DIMENSIONS>( 0, range, grainSize, 1 ),
+	  loopBody
+    );
+
+    #if defined(TBBInvade)
+    invade.retreat();
+    #endif
+  }
+  else {
+    #if defined(TBBInvade)
+    shminvade::SHMInvade invade( grainSize > 0 ? tarch::la::volume(range)/grainSize : 0 );
+    #endif
+
+    tarch::multicore::parallelReduce(
+      tarch::multicore::dForRange<DIMENSIONS>( 0, range, grainSize, 1 ),
+	  loopBody
+    );
+
+    #if defined(TBBInvade)
+    invade.retreat();
+    #endif
+  }
+  
+  peano::performanceanalysis::Analysis::getInstance().changeConcurrencyLevel(-tarch::la::volume(range)/grainSize,-tarch::la::volume(range));
+}
+
+
+template <class LoopBody>
+void peano::datatraversal::dForLoop<LoopBody>::runParallelWithColouring(
+  const tarch::la::Vector<DIMENSIONS,int>&  range,
+  LoopBody&                                 loopBody,
+  int                                       grainSize,
+  int                                       colouring,
+  bool                                      altersState
+) {
+  assertion3(colouring>=2,range,grainSize,colouring);
+
+  peano::performanceanalysis::Analysis::getInstance().changeConcurrencyLevel(tarch::la::volume(range)/tarch::la::aPowI(DIMENSIONS,colouring)/grainSize,tarch::la::volume(range)/tarch::la::aPowI(DIMENSIONS,colouring));
+
+  dfor(k,colouring) {
+    tarch::la::Vector<DIMENSIONS,int> localRange = range;
+    for (int d=0; d<DIMENSIONS; d++) {
+      const int rangeModColouring = localRange(d)%colouring;
+      if (rangeModColouring!=0 && k(d)<rangeModColouring) {
+        localRange(d) = localRange(d) / colouring + 1;
+      }
+      else {
+        localRange(d) /= colouring;
+      }
+      assertion4( localRange(d)>=1, range, localRange, k, grainSize );
+    }
+
+    #if defined(TBBInvade)
+    shminvade::SHMInvade invade( grainSize>0 ? tarch::la::volume(localRange)/grainSize : 0 );
+    #endif
+
+    if (altersState) {
+      tarch::multicore::parallelReduce(
+    	tarch::multicore::dForRange<DIMENSIONS>( k, localRange, grainSize, colouring ),
+		loopBody
+      );
+    }
+    else {
+      tarch::multicore::parallelFor(
+    	tarch::multicore::dForRange<DIMENSIONS>( k, localRange, grainSize, colouring ),
+		loopBody
+      );
+    }
+      
+    #if defined(TBBInvade)
+    invade.retreat();
+    #endif
+  }
+  peano::performanceanalysis::Analysis::getInstance().changeConcurrencyLevel(-tarch::la::volume(range)/tarch::la::aPowI(DIMENSIONS,colouring)/grainSize,-tarch::la::volume(range)/tarch::la::aPowI(DIMENSIONS,colouring));
+}
+

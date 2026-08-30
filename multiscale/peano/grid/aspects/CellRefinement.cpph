@@ -1,0 +1,70 @@
+#include "peano/grid/SingleLevelEnumerator.h"
+#include "peano/grid/aspects/CellPeanoCurve.h"
+#include "tarch/Assertions.h"
+
+
+template <class Cell>
+void peano::grid::aspects::CellRefinement::refine(Cell& coarseGridCell, Cell fineGridCells[THREE_POWER_D]) {
+  logTraceInWith1Argument( "refine(Cell,Cell[],bool)", coarseGridCell.toString() );
+
+  if (coarseGridCell._cellData.getState() != Cell::Records::Root) {
+    assertion1(
+      coarseGridCell._cellData.getState() == Cell::Records::Leaf,
+      coarseGridCell
+    );
+    coarseGridCell._cellData.setState( Cell::Records::Refined );
+  }
+  assertion1(
+    coarseGridCell._cellData.getState() == Cell::Records::Root ||
+    coarseGridCell._cellData.getState() == Cell::Records::Refined,
+    coarseGridCell
+  );
+
+  refine(coarseGridCell,fineGridCells,tarch::la::Vector<DIMENSIONS,int>(0),DIMENSIONS-1);
+
+  logTraceOutWith1Argument( "refine(Cell,Cell[],bool)", coarseGridCell );
+}
+
+
+template <class Cell>
+void peano::grid::aspects::CellRefinement::refine(
+  const Cell&                        coarseGridCell,
+  Cell                               fineGridCells[THREE_POWER_D],
+  tarch::la::Vector<DIMENSIONS,int>  fineGridPosition,
+  int                                axis
+) {
+  if (axis == -1) {
+	  int arrayIndex            = peano::grid::SingleLevelEnumerator::lineariseCellIndex(fineGridPosition);
+	  fineGridCells[arrayIndex] = coarseGridCell;
+	  fineGridCells[arrayIndex]._cellData.setState(Cell::Records::Leaf);
+    fineGridCells[arrayIndex].switchToOutside();
+
+    #ifdef Debug
+    fineGridCells[arrayIndex].incLevel();
+    #endif
+
+	  logDebug( "refine(...)", "set fine grid cell at " << arrayIndex << ", i.e. " << fineGridPosition << " to " << fineGridCells[arrayIndex].toString() );
+  }
+  else {
+    assertion( axis >= 0 );
+    assertion( axis < DIMENSIONS );
+
+    Cell firstCell  = coarseGridCell;
+    Cell secondCell = coarseGridCell;
+    Cell thirdCell  = coarseGridCell;
+
+    peano::grid::aspects::CellPeanoCurve::setExitFace( firstCell, axis );
+    fineGridPosition(axis)= peano::grid::aspects::CellPeanoCurve::isTraversePositiveAlongAxis(coarseGridCell,axis,false)? 0:2;
+    refine(firstCell,fineGridCells,fineGridPosition,axis-1);
+
+    peano::grid::aspects::CellPeanoCurve::invertEvenFlag(secondCell,axis);
+    peano::grid::aspects::CellPeanoCurve::setEntryFace( secondCell, axis );
+    peano::grid::aspects::CellPeanoCurve::setExitFace( secondCell, axis );
+    fineGridPosition(axis)= 1;
+    refine(secondCell,fineGridCells,fineGridPosition,axis-1);
+
+    peano::grid::aspects::CellPeanoCurve::setEntryFace( thirdCell, axis );
+    fineGridPosition(axis)= peano::grid::aspects::CellPeanoCurve::isTraversePositiveAlongAxis(coarseGridCell,axis,false)? 2:0;
+    refine(thirdCell,fineGridCells,fineGridPosition,axis-1);
+  }
+}

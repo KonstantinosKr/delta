@@ -1,0 +1,349 @@
+#include "tarch/Assertions.h"
+#include "tarch/compiler/CompilerSpecificSettings.h"
+#include "peano/utils/PeanoOptimisations.h"
+
+
+template<class Data, class SendReceiveTaskType, class VectorContainer>
+tarch::logging::Log  peano::heap::AbstractAggregationBoundaryDataExchanger<Data,  SendReceiveTaskType,VectorContainer>::_log( "peano::heap::AbstractAggregationBoundaryDataExchanger" );
+
+
+
+template<class Data, class SendReceiveTaskType, class VectorContainer>
+peano::heap::AbstractAggregationBoundaryDataExchanger<Data,  SendReceiveTaskType,VectorContainer>::AbstractAggregationBoundaryDataExchanger():
+  BoundaryDataExchanger<Data,SendReceiveTaskType,VectorContainer>(),
+  _numberOfSentMessages(0) {
+}
+
+
+template<class Data, class SendReceiveTaskType, class VectorContainer>
+peano::heap::AbstractAggregationBoundaryDataExchanger<Data,  SendReceiveTaskType,VectorContainer>::AbstractAggregationBoundaryDataExchanger(
+  const std::string& identifier,
+  int metaDataTag, int dataTag,
+  int rank
+):
+  BoundaryDataExchanger<Data,SendReceiveTaskType,VectorContainer>(identifier,metaDataTag,dataTag,rank),
+  _numberOfSentMessages(0) {
+}
+
+
+template<class Data, class SendReceiveTaskType, class VectorContainer>
+peano::heap::AbstractAggregationBoundaryDataExchanger<Data,  SendReceiveTaskType,VectorContainer>::~AbstractAggregationBoundaryDataExchanger() {
+}
+
+
+template<class Data, class SendReceiveTaskType, class VectorContainer>
+bool peano::heap::AbstractAggregationBoundaryDataExchanger<Data,  SendReceiveTaskType,VectorContainer>::dataExchangerCommunicatesInBackground() const {
+  return true;
+}
+
+
+template<class Data, class SendReceiveTaskType, class VectorContainer>
+int peano::heap::AbstractAggregationBoundaryDataExchanger<Data,  SendReceiveTaskType,VectorContainer>::getNumberOfSentMessages() const {
+  return _numberOfSentMessages>0 ? 1 : 0;
+}
+
+
+template<class Data, class SendReceiveTaskType, class VectorContainer>
+void peano::heap::AbstractAggregationBoundaryDataExchanger<Data,  SendReceiveTaskType,VectorContainer>::postprocessStartToSendData() {
+  _numberOfSentMessages = 0;
+
+  assertion( Base::_sendTasks.empty() );
+
+  _aggregatedSendData.clear();
+  for (int i=0; i<getNumberOfHeaderEntries(); i++) {
+    _aggregatedSendData.push_back(0);
+  }
+
+  const int BufferToBeUnpacked = 1-Base::_currentReceiveBuffer;
+
+  assertion2( Base::_receiveTasks[BufferToBeUnpacked].size()<=1, Base::_receiveTasks[BufferToBeUnpacked].size(), Base::_currentReceiveBuffer );
+
+  if (Base::_receiveTasks[BufferToBeUnpacked].size()>0) {
+	// Take the single (aggregated) message, store it in a local variable
+	// and then clear the deploy buffer, as we'll put the messages as torn
+	// apart into this one.
+    SendReceiveTaskType localTask = Base::_receiveTasks[BufferToBeUnpacked].front();
+    Base::_receiveTasks[BufferToBeUnpacked].clear();
+
+    const int totalNumberOfMessages = getNumberOfMessages( localTask );
+
+    assertion9(
+      totalNumberOfMessages>0,
+	  totalNumberOfMessages,Base::_receiveTasks[BufferToBeUnpacked].size(),Base::_receiveTasks[1-BufferToBeUnpacked].size(),
+	  localTask.toString(),
+	  localTask.getMetaInformation().getLength(),
+	  static_cast<int>( localTask.data()[0] ),
+	  static_cast<int>( localTask.data()[1] ),
+	  static_cast<int>( localTask.data()[2] ),
+	  static_cast<int>( localTask.data()[3] )
+	);
+
+    int index = getNumberOfHeaderEntries();
+
+    #ifdef Asserts
+    logInfo( "postprocessStartToSendData(...)",
+      "found one big message(s) from rank " << Base::_rank << " in local deploy queue which encodes " <<
+	  totalNumberOfMessages << " message(s). There's " << Base::_receiveTasks[1-BufferToBeUnpacked].size() << " big message(s) remaining in the receive queue"
+    );
+    #endif
+
+    for (int j=0; j<totalNumberOfMessages; j++) {
+      int sizeOfNextMessage = static_cast<int>(localTask.data()[index]);
+  	  index++;
+  	  assertion(sizeOfNextMessage>=0);
+
+      Base::_receiveTasks[BufferToBeUnpacked].push_back( SendReceiveTaskType() );
+
+      if (sizeOfNextMessage>0) {
+        logInfo( "postprocessStartToSendData(...)", "create message with " << sizeOfNextMessage << " entries. First data entry is " << localTask.data()[index] << " from input entry " << index );
+        Base::_receiveTasks[BufferToBeUnpacked].back().getMetaInformation().setLength(sizeOfNextMessage);
+        Base::_receiveTasks[BufferToBeUnpacked].back().wrapData( &(localTask.data()[index]) );
+        index += sizeOfNextMessage;
+      }
+      else {
+        logInfo( "postprocessStartToSendData(...)", "create empty message" );
+        Base::_receiveTasks[BufferToBeUnpacked].back().getMetaInformation().setLength(0);
+      }
+
+      logDebug( "postprocessStartToSendData(...)", "message terminating after " <<
+        index << " entries did contain " << sizeOfNextMessage << " data entries"
+      );
+    }
+
+    #ifdef Asserts
+    logInfo( "postprocessStartToSendData(...)", "decomposed message into " << Base::_receiveTasks[BufferToBeUnpacked].size() << " deploy message(s)" );
+    #endif
+
+    // Ensure that we have got exactly the right number of messages in the
+    // deploy queue
+    assertionEquals(static_cast<int>(Base::_receiveTasks[BufferToBeUnpacked].size()), totalNumberOfMessages);
+
+    // We are done, so free the memory of the aggregated message. It is now
+    // extracted/torn apart completely.
+    localTask.freeMemory();
+  }
+  else {
+    #ifdef Asserts
+    logInfo( "postprocessStartToSendData(...)",
+      "no received data has been found in deploy queue. There are " << Base::_receiveTasks[1-BufferToBeUnpacked].size() << " big message(s) remaining in the receive queue"
+    );
+    #endif
+  }
+}
+
+
+template<class Data, class SendReceiveTaskType, class VectorContainer>
+void peano::heap::AbstractAggregationBoundaryDataExchanger<Data,  SendReceiveTaskType,VectorContainer>::postprocessFinishedToSendData() {
+  // I do compile the class even without Parallel as I've written some unit tests. In turn,
+  // I thus have to manually mask out routines that require -DParallel.
+  #ifdef Parallel
+  assertion( Base::_sendTasks.empty() );
+
+  if ( static_cast<int>(_aggregatedSendData.size())<=getNumberOfHeaderEntries()) {
+    logDebug( "postprocessFinishedToSendData()",
+      "do not sent out any aggregated message as no sends had been triggered"
+    );
+  }
+  else {
+    logDebug( "postprocessFinishedToSendData()",
+      "send out one big message to rank " << Base::_rank << " which aggregates " << _numberOfSentMessages <<
+	  " message(s) and has " << _aggregatedSendData.size() << " entries in total"
+    );
+
+    assertion(_numberOfSentMessages>=0);
+    setAggregatedMessageHeader();
+
+    Base::_sendTasks.push_back( SendReceiveTaskType() );
+
+    Base::_sendTasks.back().getMetaInformation().setLength( _aggregatedSendData.size() );
+    Base::_sendTasks.back().setRank( Base::_rank );
+    if (!_aggregatedSendData.empty()) {
+      Base::_sendTasks.back().sendDataDirectlyFromBuffer( _aggregatedSendData.data() );
+      Base::_sendTasks.back().triggerSend(Base::_dataTag);
+    }
+    Base::_sendTasks.back().getMetaInformation().send(Base::_rank, Base::_metaDataTag, true, SendReceiveTaskType::MetaInformation::ExchangeMode::NonblockingWithPollingLoopOverTests);
+  }
+  #endif
+}
+
+
+template<class Data, class SendReceiveTaskType, class VectorContainer>
+void peano::heap::AbstractAggregationBoundaryDataExchanger<Data,  SendReceiveTaskType,VectorContainer>::handleAndQueueReceivedTask( const SendReceiveTaskType&  receivedTask ) {
+  #ifdef Asserts
+  logInfo( "handleAndQueueReceivedTask()",
+    "received message from rank " << Base::_rank << " which contains " << receivedTask.getMetaInformation().getLength() << " entries in total. Enqueue to receive actual data behind envelope"
+  );
+  #endif
+
+  Base::_receiveTasks[Base::_currentReceiveBuffer].push_back( receivedTask );
+  if (Base::_receiveTasks[Base::_currentReceiveBuffer].back().getMetaInformation().getLength() > 0) {
+    Base::_receiveTasks[Base::_currentReceiveBuffer].back().triggerReceive(Base::_dataTag);
+  }
+}
+
+
+template<class Data, class SendReceiveTaskType, class VectorContainer>
+void peano::heap::AbstractAggregationBoundaryDataExchanger<Data, SendReceiveTaskType,VectorContainer>::handleAndQueueSendTask(
+  const SendReceiveTaskType&   sendTask,
+  const Data* const            data
+) {
+  logTraceIn( "handleAndQueueSendTask(...)" );
+
+  _numberOfSentMessages++;
+
+  assertion( Base::_sendTasks.empty() );
+
+  logDebug(
+     "handleAndQueueReceivedTask(...)", "attach " << _numberOfSentMessages << "th message to aggregated data. Message carries " <<
+	 sendTask.getMetaInformation().getLength() << " entries. Aggregated message so far has " << _aggregatedSendData.size() << " entries");
+
+  assertion( sendTask.getMetaInformation().getLength()<std::numeric_limits<Data>::max()/2 );
+
+  _aggregatedSendData.push_back(static_cast<Data>(sendTask.getMetaInformation().getLength()));
+
+  for (int i=0; i<sendTask.getMetaInformation().getLength(); i++) {
+    _aggregatedSendData.push_back(data[i]);
+  }
+
+  logTraceOut( "handleAndQueueSendTask(...)" );
+}
+
+
+
+
+//
+// ==================
+//        char
+// ==================
+//
+
+template<class SendReceiveTaskType, class VectorContainer >
+peano::heap::AggregationBoundaryDataExchanger<char, SendReceiveTaskType,VectorContainer>::AggregationBoundaryDataExchanger():
+  Base() {
+}
+
+
+template<class SendReceiveTaskType, class VectorContainer >
+peano::heap::AggregationBoundaryDataExchanger<char, SendReceiveTaskType,VectorContainer>::AggregationBoundaryDataExchanger(const std::string& identifier, int metaDataTag, int dataTag, int rank):
+  Base(identifier, metaDataTag, dataTag, rank) {
+}
+
+
+template<class SendReceiveTaskType, class VectorContainer >
+int peano::heap::AggregationBoundaryDataExchanger<char, SendReceiveTaskType,VectorContainer>::getNumberOfHeaderEntries() {
+  return 4;
+}
+
+
+template<class SendReceiveTaskType, class VectorContainer >
+void peano::heap::AggregationBoundaryDataExchanger<char,  SendReceiveTaskType,VectorContainer>::setAggregatedMessageHeader() {
+  int base = 1;
+  int numberOfSentMessages = Base::_numberOfSentMessages;
+  for (int i=0; i<getNumberOfHeaderEntries(); i++) {
+    base *= std::numeric_limits<char>::max();
+    int value = numberOfSentMessages % base;
+    numberOfSentMessages -= value;
+    value /= (base/std::numeric_limits<char>::max());
+    Base::_aggregatedSendData[i] = static_cast< char >( value );
+    {
+      std::ostringstream conv;
+      conv << "header-byte[" << i << "]=" << static_cast<int>(Base::_aggregatedSendData[i]) << " for rank " << Base::_rank;
+      conv << " (file:" << __FILE__ << ",line:" << __LINE__ << ")";
+      Base::_log.debug( "postprocessFinishedToSendData()", conv.str() );
+    }
+  }
+}
+
+
+template<class SendReceiveTaskType, class VectorContainer >
+int  peano::heap::AggregationBoundaryDataExchanger<char,  SendReceiveTaskType,VectorContainer>::getNumberOfMessages( const SendReceiveTaskType& receivedTask ) {
+  int result = 0;
+  int base   = 1;
+  for (int i=0; i<getNumberOfHeaderEntries(); i++) {
+    int extractedData = static_cast<int>( receivedTask.data()[i] );
+    result += extractedData * base;
+    base *= std::numeric_limits<char>::max();
+    {
+      std::ostringstream conv;
+      conv << "header-byte[" << i << "]=" << static_cast<int>(receivedTask.data()[i]) << " added and obtained message count " <<
+        result << " for input from rank " << Base::_rank;
+      conv << " (file:" << __FILE__ << ",line:" << __LINE__ << ")";
+      Base::_log.debug( "postprocessStartToSendData()", conv.str() );
+    }
+  }
+  return result;
+}
+
+
+
+
+//
+// ==================
+//        int
+// ==================
+//
+template<class SendReceiveTaskType, class VectorContainer >
+peano::heap::AggregationBoundaryDataExchanger<int, SendReceiveTaskType,VectorContainer>::AggregationBoundaryDataExchanger():
+  Base() {
+}
+
+
+template<class SendReceiveTaskType, class VectorContainer >
+peano::heap::AggregationBoundaryDataExchanger<int, SendReceiveTaskType,VectorContainer>::AggregationBoundaryDataExchanger(const std::string& identifier, int metaDataTag, int dataTag, int rank):
+  Base(identifier, metaDataTag, dataTag, rank) {
+}
+
+
+template<class SendReceiveTaskType, class VectorContainer >
+int peano::heap::AggregationBoundaryDataExchanger<int, SendReceiveTaskType,VectorContainer>::getNumberOfHeaderEntries() {
+  return 1;
+}
+
+
+template<class SendReceiveTaskType, class VectorContainer >
+void peano::heap::AggregationBoundaryDataExchanger<int,  SendReceiveTaskType,VectorContainer>::setAggregatedMessageHeader() {
+  Base::_aggregatedSendData[0] = Base::_numberOfSentMessages;
+}
+
+
+template<class SendReceiveTaskType, class VectorContainer >
+int  peano::heap::AggregationBoundaryDataExchanger<int,  SendReceiveTaskType,VectorContainer>::getNumberOfMessages( const SendReceiveTaskType& receivedTask ) {
+  return receivedTask.data()[0];
+}
+
+
+
+
+//
+// ==================
+//       double
+// ==================
+//
+template<class SendReceiveTaskType, class VectorContainer >
+peano::heap::AggregationBoundaryDataExchanger<double, SendReceiveTaskType,VectorContainer>::AggregationBoundaryDataExchanger():
+  Base() {
+}
+
+
+template<class SendReceiveTaskType, class VectorContainer >
+peano::heap::AggregationBoundaryDataExchanger<double, SendReceiveTaskType,VectorContainer>::AggregationBoundaryDataExchanger(const std::string& identifier, int metaDataTag, int dataTag, int rank):
+  Base(identifier, metaDataTag, dataTag, rank) {
+}
+
+
+template<class SendReceiveTaskType, class VectorContainer >
+int peano::heap::AggregationBoundaryDataExchanger<double, SendReceiveTaskType,VectorContainer>::getNumberOfHeaderEntries() {
+  return 1;
+}
+
+
+template<class SendReceiveTaskType, class VectorContainer >
+void peano::heap::AggregationBoundaryDataExchanger<double,  SendReceiveTaskType,VectorContainer>::setAggregatedMessageHeader() {
+  Base::_aggregatedSendData[0] = Base::_numberOfSentMessages;
+}
+
+
+template<class SendReceiveTaskType, class VectorContainer >
+int  peano::heap::AggregationBoundaryDataExchanger<double,  SendReceiveTaskType,VectorContainer>::getNumberOfMessages( const SendReceiveTaskType& receivedTask ) {
+  return static_cast<int>( receivedTask.data()[0] );
+}

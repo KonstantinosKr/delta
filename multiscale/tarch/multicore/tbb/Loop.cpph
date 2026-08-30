@@ -1,0 +1,492 @@
+#include <tbb/spin_mutex.h>
+#include <tbb/parallel_reduce.h>
+#include <tbb/task_group.h>
+#include "tbb/partitioner.h"
+
+
+#include <bitset>
+
+
+#include "tarch/compiler/CompilerSpecificSettings.h"
+
+
+
+namespace {
+  /**
+   * Wrapper around my partitioner to suit TBB's signature requirements. The
+   * code results from
+   *
+   * https://www.threadingbuildingblocks.org/docs/help/reference/algorithms/partitioners.html
+   *
+   *
+   */
+  template <int D>
+  class TBBRange: public tarch::multicore::dForRange<D> {
+    public:
+	  TBBRange( const tarch::multicore::dForRange<D>& arg ):
+        tarch::multicore::dForRange<D>(arg) {
+	  }
+
+	  /**
+	   * TBB maps the splitting onto a special split constructor. So we
+	   * basically wrap a constructor around the base class' split()
+	   * operation.
+	   */
+	  TBBRange( tarch::multicore::dForRange<D>& arg, tbb::split& ):
+        tarch::multicore::dForRange<D>(arg.split()) {
+	  }
+
+	  /**
+	   * TBB has another naming convention than Peano, so we need a wrapper.
+	   */
+	  bool is_divisible() const {
+        return tarch::multicore::dForRange<D>::isDivisible();
+	  }
+  };
+}
+
+
+
+template <typename F>
+void tarch::multicore::parallelReduce(
+  const tarch::multicore::dForRange<1>&  range,
+  F&                                     function
+) {
+  #ifdef UseTBBsParallelForAndReduce
+  tbb::spin_mutex mutex;
+
+  tbb::parallel_reduce(
+ 	TBBRange<1>(range),
+	0,
+    [&](const TBBRange<1>& r, int a)->int {
+      F copyOfFunction(function);
+      for (int i0=0; i0<r.getRange()(0); i0++) {
+        tarch::la::Vector<1,int> loc;
+        loc = i0;
+        copyOfFunction(r(loc));
+      }
+
+      tbb::spin_mutex::scoped_lock lock(mutex);
+      copyOfFunction.mergeIntoMasterThread();
+      return 0;
+    },
+    [](int a, int b)->int {
+	  return 0;
+	},
+  	tbb::simple_partitioner()
+  );
+  #else
+  std::vector< dForRange<1> > ranges = range.getMinimalRanges();
+  tbb::spin_mutex mutex;
+  assertionEquals( static_cast<int>(ranges.size()), tarch::la::volume(range.getRange()) );
+
+  tbb::task_group g;
+  for(size_t i=0; i!=ranges.size(); ++i) {
+    g.run( [&,i]() {
+      F copyOfFunction(function);
+      for (int i0=0; i0<ranges[i].getRange()(0); i0++) {
+        tarch::la::Vector<1,int> loc;
+        loc = i0;
+        copyOfFunction(ranges[i](loc));
+      }
+      tbb::spin_mutex::scoped_lock lock(mutex);
+      copyOfFunction.mergeIntoMasterThread();
+    });
+  }
+  g.wait();
+  #endif
+}
+
+
+template <typename F>
+void tarch::multicore::parallelReduce(
+  const tarch::multicore::dForRange<2>&  range,
+  F&                                     function
+) {
+  #ifdef UseTBBsParallelForAndReduce
+//  std::vector< dForRange<4> > ranges = range.getMinimalRanges();
+  tbb::spin_mutex mutex;
+
+//  assertionEquals( static_cast<int>(ranges.size()), tarch::la::volume(range.getRange()) );
+
+  tbb::parallel_reduce(
+	TBBRange<2>(range),
+	0,
+    [&](const TBBRange<2>& r, int a)->int {
+      F copyOfFunction(function);
+        for (int i0=0; i0<r.getRange()(0); i0++)
+        for (int i1=0; i1<r.getRange()(1); i1++) {
+     	  tarch::la::Vector<2,int> loc;
+          loc = i0, i1;
+          copyOfFunction(r(loc));
+        }
+
+      tbb::spin_mutex::scoped_lock lock(mutex);
+      copyOfFunction.mergeIntoMasterThread();
+      return 0;
+    },
+	[](int a, int b)->int {
+      return 0;
+    },
+  	tbb::simple_partitioner()
+  );
+  #else
+  std::vector< dForRange<2> > ranges = range.getMinimalRanges();
+  tbb::spin_mutex mutex;
+  assertionEquals( static_cast<int>(ranges.size()), tarch::la::volume(range.getRange()) );
+
+  tbb::task_group g;
+  for(size_t i=0; i!=ranges.size(); ++i) {
+    g.run( [&,i]() {
+      F copyOfFunction(function);
+      for (int i0=0; i0<ranges[i].getRange()(0); i0++)
+      for (int i1=0; i1<ranges[i].getRange()(1); i1++) {
+        tarch::la::Vector<2,int> loc;
+        loc = i0, i1;
+        copyOfFunction(ranges[i](loc));
+      }
+      tbb::spin_mutex::scoped_lock lock(mutex);
+      copyOfFunction.mergeIntoMasterThread();
+    });
+  }
+  g.wait();
+  #endif
+}
+
+
+template <typename F>
+void tarch::multicore::parallelReduce(
+  const tarch::multicore::dForRange<3>&  range,
+  F&                                     function
+) {
+  #ifdef UseTBBsParallelForAndReduce
+  tbb::spin_mutex mutex;
+
+  tbb::parallel_reduce(
+	TBBRange<3>(range),
+	0,
+    [&](const TBBRange<3>& r, int a)->int {
+      F copyOfFunction(function);
+        for (int i0=0; i0<r.getRange()(0); i0++)
+        for (int i1=0; i1<r.getRange()(1); i1++)
+        for (int i2=0; i2<r.getRange()(2); i2++) {
+     	  tarch::la::Vector<3,int> loc;
+          loc = i0, i1, i2;
+          copyOfFunction(r(loc));
+        }
+
+      tbb::spin_mutex::scoped_lock lock(mutex);
+      copyOfFunction.mergeIntoMasterThread();
+      return 0;
+    },
+	[](int a, int b)->int {
+      return 0;
+    },
+  	tbb::simple_partitioner()
+  );
+  #else
+  std::vector< dForRange<3> > ranges = range.getMinimalRanges();
+  tbb::spin_mutex mutex;
+  assertionEquals( static_cast<int>(ranges.size()), tarch::la::volume(range.getRange()) );
+
+  tbb::task_group g;
+  for(size_t i=0; i!=ranges.size(); ++i) {
+    g.run( [&,i]() {
+      F copyOfFunction(function);
+      for (int i0=0; i0<ranges[i].getRange()(0); i0++)
+      for (int i1=0; i1<ranges[i].getRange()(1); i1++)
+      for (int i2=0; i2<ranges[i].getRange()(2); i2++) {
+        tarch::la::Vector<3,int> loc;
+        loc = i0, i1, i2;
+        copyOfFunction(ranges[i](loc));
+      }
+      tbb::spin_mutex::scoped_lock lock(mutex);
+      copyOfFunction.mergeIntoMasterThread();
+    });
+  }
+  g.wait();
+  #endif
+}
+
+
+template <typename F>
+void tarch::multicore::parallelReduce(
+  const tarch::multicore::dForRange<4>&  range,
+  F&                                     function
+) {
+  #ifdef UseTBBsParallelForAndReduce
+  tbb::spin_mutex mutex;
+
+  tbb::parallel_reduce(
+	TBBRange<4>(range),
+	0,
+    [&](const TBBRange<4>& r, int a)->int {
+      F copyOfFunction(function);
+        for (int i0=0; i0<r.getRange()(0); i0++)
+        for (int i1=0; i1<r.getRange()(1); i1++)
+        for (int i2=0; i2<r.getRange()(2); i2++)
+        for (int i3=0; i3<r.getRange()(3); i3++) {
+       	  tarch::la::Vector<4,int> loc;
+          loc = i0, i1, i2, i3;
+          copyOfFunction(r(loc));
+        }
+
+      tbb::spin_mutex::scoped_lock lock(mutex);
+      copyOfFunction.mergeIntoMasterThread();
+      return 0;
+    },
+	[](int a, int b)->int {
+      return 0;
+    },
+	tbb::simple_partitioner()
+  );
+  #else
+  std::vector< dForRange<4> > ranges = range.getMinimalRanges();
+  tbb::spin_mutex mutex;
+  assertionEquals( static_cast<int>(ranges.size()), tarch::la::volume(range.getRange()) );
+
+  tbb::task_group g;
+  for(size_t i=0; i!=ranges.size(); ++i) {
+    g.run( [&,i]() {
+      F copyOfFunction(function);
+      for (int i0=0; i0<ranges[i].getRange()(0); i0++)
+      for (int i1=0; i1<ranges[i].getRange()(1); i1++)
+      for (int i2=0; i2<ranges[i].getRange()(2); i2++)
+      for (int i3=0; i3<ranges[i].getRange()(3); i3++) {
+        tarch::la::Vector<4,int> loc;
+        loc = i0, i1, i2, i3;
+        copyOfFunction(ranges[i](loc));
+      }
+      tbb::spin_mutex::scoped_lock lock(mutex);
+      copyOfFunction.mergeIntoMasterThread();
+    });
+  }
+  g.wait();
+  #endif
+}
+
+
+template <typename F>
+void tarch::multicore::parallelFor(
+  const tarch::multicore::dForRange<1>&  range,
+  F&                                     function
+) {
+  #ifdef UseTBBsParallelForAndReduce
+  tbb::parallel_reduce(
+	 TBBRange<1>(range),
+     0,
+	 [&](const TBBRange<1>& r, int a)->int {
+     for (int i0=0; i0<r.getRange()(0); i0++) {
+        tarch::la::Vector<1,int> loc;
+        loc = i0;
+        function(r(loc));
+      }
+      return 0;
+    },
+	[](int a, int b)->int {
+      return 0;
+    },
+	tbb::simple_partitioner()
+  );
+  #else
+  std::vector< dForRange<1> > ranges = range.getMinimalRanges();
+
+  tbb::task_group g;
+  for(size_t i=0; i!=ranges.size(); ++i) {
+    g.run( [&,i]() {
+      for (int i0=0; i0<ranges[i].getRange()(0); i0++) {
+        tarch::la::Vector<1,int> loc;
+        loc = i0;
+        function(ranges[i](loc));
+      }
+    });
+  }
+  g.wait();
+  #endif
+}
+
+
+template <typename F>
+void tarch::multicore::parallelFor(
+  const tarch::multicore::dForRange<2>&  range,
+  F&                                     function
+) {
+// All the variants that are commented out either made TBB crash from time to
+// time as task context object had been destroyed, or they do not run in
+// parallel.
+/*
+  std::vector< dForRange<2> > ranges = range.getMinimalRanges();
+
+  tbb::task_group_context* myContext = new tbb::task_group_context;
+
+  tbb::parallel_for(
+    tbb::blocked_range<size_t>(0,ranges.size(),1),
+    [&](const tbb::blocked_range<size_t>& r) -> void {
+      for(size_t i=r.begin(); i!=r.end(); ++i) {
+        for (int i0=0; i0<ranges[i].getRange()(0); i0++)
+        for (int i1=0; i1<ranges[i].getRange()(1); i1++) {
+       	  tarch::la::Vector<2,int> loc;
+          loc(0) = i0;
+          loc(1) = i1;
+          function(ranges[i](loc));
+        }
+      }
+    },
+	tbb::simple_partitioner(), *myContext
+  );
+*/
+
+/*
+
+  tarch::la::Vector<2,int> loc;
+  for (int i0=0; i0<range.getRange()(0); i0++)
+  for (int i1=0; i1<range.getRange()(1); i1++) {
+    loc(0) = i0;
+    loc(1) = i1;
+    function(range(loc));
+  }
+*/
+
+/*
+  std::vector< dForRange<2> > ranges = range.getMinimalRanges();
+
+  for(size_t i=0; i!=ranges.size(); ++i) {
+    for (int i0=0; i0<ranges[i].getRange()(0); i0++)
+    for (int i1=0; i1<ranges[i].getRange()(1); i1++) {
+  	  tarch::la::Vector<2,int> loc;
+      loc(0) = i0;
+      loc(1) = i1;
+      function(ranges[i](loc));
+    }
+  }
+*/
+
+ #ifdef UseTBBsParallelForAndReduce
+  tbb::parallel_reduce(
+	TBBRange<2>(range),
+	0,
+    [&](const TBBRange<2>& r, int a)->int {
+      for (int i0=0; i0<r.getRange()(0); i0++)
+      for (int i1=0; i1<r.getRange()(1); i1++) {
+        tarch::la::Vector<2,int> loc;
+        loc = i0, i1;
+        function(r(loc));
+      }
+      return 0;
+    },
+	[](int a, int b)->int {
+      return 0;
+    },
+	tbb::simple_partitioner()
+  );
+  #else
+  std::vector< dForRange<2> > ranges = range.getMinimalRanges();
+
+  tbb::task_group g;
+  for(size_t i=0; i!=ranges.size(); ++i) {
+    g.run( [&,i]() {
+      for (int i0=0; i0<ranges[i].getRange()(0); i0++)
+      for (int i1=0; i1<ranges[i].getRange()(1); i1++) {
+        tarch::la::Vector<2,int> loc;
+        loc(0) = i0;
+        loc(1) = i1;
+        function(ranges[i](loc));
+      }
+    });
+  }
+  g.wait();
+  #endif
+}
+
+
+
+
+template <typename F>
+void tarch::multicore::parallelFor(
+  const tarch::multicore::dForRange<3>&  range,
+  F&                                     function
+) {
+  #ifdef UseTBBsParallelForAndReduce
+  tbb::parallel_reduce(
+	TBBRange<3>(range),
+	0,
+    [&](const TBBRange<3>& r, int a)->int {
+      for (int i0=0; i0<r.getRange()(0); i0++)
+      for (int i1=0; i1<r.getRange()(1); i1++)
+      for (int i2=0; i2<r.getRange()(2); i2++) {
+        tarch::la::Vector<3,int> loc;
+        loc = i0, i1, i2;
+        function(r(loc));
+      }
+      return 0;
+    },
+	[](int a, int b)->int {
+      return 0;
+    },
+	tbb::simple_partitioner()
+  );
+  #else
+  std::vector< dForRange<3> > ranges = range.getMinimalRanges();
+
+  tbb::task_group g;
+  for(size_t i=0; i!=ranges.size(); ++i) {
+    g.run( [&,i]() {
+      for (int i0=0; i0<ranges[i].getRange()(0); i0++)
+      for (int i1=0; i1<ranges[i].getRange()(1); i1++)
+      for (int i2=0; i2<ranges[i].getRange()(2); i2++) {
+        tarch::la::Vector<3,int> loc;
+        loc = i0, i1, i2;
+        function(ranges[i](loc));
+      }
+    });
+  }
+  g.wait();
+  #endif
+}
+
+
+
+template <typename F>
+void tarch::multicore::parallelFor(
+  const tarch::multicore::dForRange<4>&  range,
+  F&                                     function
+) {
+  #ifdef UseTBBsParallelForAndReduce
+  tbb::parallel_reduce(
+	TBBRange<4>(range),
+	0,
+    [&](const TBBRange<4>& r, int a)->int {
+      for (int i0=0; i0<r.getRange()(0); i0++)
+      for (int i1=0; i1<r.getRange()(1); i1++)
+      for (int i2=0; i2<r.getRange()(2); i2++)
+      for (int i3=0; i3<r.getRange()(3); i3++) {
+        tarch::la::Vector<4,int> loc;
+        loc = i0, i1, i2, i3;
+        function(r(loc));
+      }
+      return 0;
+    },
+	[](int a, int b)->int {
+      return 0;
+    },
+	tbb::simple_partitioner()
+  );
+  #else
+  std::vector< dForRange<4> > ranges = range.getMinimalRanges();
+
+  tbb::task_group g;
+  for(size_t i=0; i!=ranges.size(); ++i) {
+    g.run( [&,i]() {
+      for (int i0=0; i0<ranges[i].getRange()(0); i0++)
+      for (int i1=0; i1<ranges[i].getRange()(1); i1++)
+      for (int i2=0; i2<ranges[i].getRange()(2); i2++)
+      for (int i3=0; i3<ranges[i].getRange()(3); i3++) {
+        tarch::la::Vector<4,int> loc;
+        loc = i0, i1, i2, i3;
+        function(ranges[i](loc));
+      }
+    });
+  }
+  g.wait();
+  #endif
+}

@@ -1,0 +1,583 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448819"
+   height="1052.3622047"
+   id="svg3054"
+   version="1.1"
+   inkscape:version="0.48.0 r9654"
+   sodipodi:docname="regular-grid-parallelisation.svg">
+  <defs
+     id="defs3056" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.59086966"
+     inkscape:cx="126.51635"
+     inkscape:cy="479.30801"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1366"
+     inkscape:window-height="716"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata3059">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#e6e6e6;fill-opacity:1;stroke:#000000;stroke-width:1.0959295;stroke-opacity:1"
+       id="rect3062"
+       width="38.426899"
+       height="143.25174"
+       x="-86.742439"
+       y="27.740784"
+       transform="matrix(-0.00943608,-0.99995548,0.9999786,-0.00654146,0,0)" />
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="36.585426"
+       y="72.145493"
+       id="text3064"
+       sodipodi:linespacing="125%"
+       transform="matrix(0.99994864,-0.01013451,0.01013451,0.99994864,0,0)"><tspan
+         sodipodi:role="line"
+         id="tspan3066"
+         x="36.585426"
+         y="72.145493">load data of level 1</tspan></text>
+    <g
+       id="g4028"
+       transform="translate(-121.85428,54.15746)">
+      <rect
+         transform="matrix(-0.00785659,-0.99996914,0.99996914,-0.00785659,0,0)"
+         y="146.91949"
+         x="-86.557022"
+         height="143.81268"
+         width="38.426373"
+         id="rect3062-6"
+         style="fill:#e6e6e6;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-opacity:1" />
+      <text
+         transform="matrix(0.99994864,-0.01013451,0.01013451,0.99994864,0,0)"
+         sodipodi:linespacing="125%"
+         id="text3064-8"
+         y="72.195541"
+         x="155.68805"
+         style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         xml:space="preserve"><tspan
+           y="72.195541"
+           x="155.68805"
+           id="tspan3066-2"
+           sodipodi:role="line">load patch 1/9 of level 2</tspan></text>
+    </g>
+    <g
+       id="g4033"
+       transform="translate(-267.40246,106.6225)">
+      <rect
+         transform="matrix(-0.00785659,-0.99996914,0.99996914,-0.00785659,0,0)"
+         y="291.73697"
+         x="-86.557022"
+         height="151.08237"
+         width="38.426373"
+         id="rect3062-6-4"
+         style="fill:#e6e6e6;fill-opacity:1;stroke:#000000;stroke-width:1.02496326;stroke-opacity:1" />
+      <text
+         transform="matrix(0.99994864,-0.01013451,0.01013451,0.99994864,0,0)"
+         sodipodi:linespacing="125%"
+         id="text3064-8-2"
+         y="72.525436"
+         x="300.50513"
+         style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         xml:space="preserve"><tspan
+           y="72.525436"
+           x="300.50513"
+           id="tspan3066-2-7"
+           sodipodi:role="line">load patch 1/81 of level 3</tspan></text>
+    </g>
+    <g
+       id="g4038"
+       transform="translate(-419.72031,155.7027)">
+      <rect
+         transform="matrix(-0.00785659,-0.99996914,0.99996914,-0.00785659,0,0)"
+         y="444.1124"
+         x="-86.557022"
+         height="151.08237"
+         width="38.426373"
+         id="rect3062-6-4-7"
+         style="fill:#e6e6e6;fill-opacity:1;stroke:#000000;stroke-width:1.02496326;stroke-opacity:1" />
+      <text
+         transform="matrix(0.99994864,-0.01013451,0.01013451,0.99994864,0,0)"
+         sodipodi:linespacing="125%"
+         id="text3064-8-2-5"
+         y="72.872604"
+         x="452.88022"
+         style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         xml:space="preserve"><tspan
+           y="72.872604"
+           x="452.88022"
+           id="tspan3066-2-7-9"
+           sodipodi:role="line">load patch 2/81 of level 3</tspan></text>
+    </g>
+    <rect
+       style="fill:#e6e6e6;fill-opacity:1;stroke:#000000;stroke-width:1.02496326;stroke-opacity:1"
+       id="rect3062-6-4-7-4"
+       width="38.426373"
+       height="151.08237"
+       x="-325.32504"
+       y="21.650562"
+       transform="matrix(-0.00785659,-0.99996914,0.99996914,-0.00785659,0,0)" />
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="29.875517"
+       y="310.67758"
+       id="text3064-8-2-5-9"
+       sodipodi:linespacing="125%"
+       transform="matrix(0.99994864,-0.01013451,0.01013451,0.99994864,0,0)"><tspan
+         sodipodi:role="line"
+         id="tspan3066-2-7-9-0"
+         x="29.875517"
+         y="310.67758">load patch 9/81 of level 3</tspan></text>
+    <g
+       id="g4047"
+       transform="translate(-154.01028,52.465039)">
+      <rect
+         transform="matrix(-0.00785659,-0.99996914,0.99996914,-0.00785659,0,0)"
+         y="173.96843"
+         x="-325.3251"
+         height="151.08237"
+         width="38.426373"
+         id="rect3062-6-4-7-4-3"
+         style="fill:#e6e6e6;fill-opacity:1;stroke:#000000;stroke-width:1.02496326;stroke-opacity:1" />
+      <text
+         transform="matrix(0.99994864,-0.01013451,0.01013451,0.99994864,0,0)"
+         sodipodi:linespacing="125%"
+         id="text3064-8-2-5-9-9"
+         y="311.02457"
+         x="182.19298"
+         style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         xml:space="preserve"><tspan
+           y="311.02457"
+           x="182.19298"
+           id="tspan3066-2-7-9-0-2"
+           sodipodi:role="line">load patch 2/9 of level 2</tspan></text>
+    </g>
+    <g
+       id="g4052"
+       transform="translate(-336.7917,157.39512)">
+      <rect
+         transform="matrix(-0.00785659,-0.99996914,0.99996914,-0.00785659,0,0)"
+         y="360.9809"
+         x="-325.32504"
+         height="151.08237"
+         width="38.426373"
+         id="rect3062-6-4-7-4-3-4"
+         style="fill:#e6e6e6;fill-opacity:1;stroke:#000000;stroke-width:1.02496326;stroke-opacity:1" />
+      <text
+         transform="matrix(0.99994864,-0.01013451,0.01013451,0.99994864,0,0)"
+         sodipodi:linespacing="125%"
+         id="text3064-8-2-5-9-9-5"
+         y="311.45053"
+         x="369.20486"
+         style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         xml:space="preserve"><tspan
+           y="311.45053"
+           x="369.20486"
+           id="tspan3066-2-7-9-0-2-4"
+           sodipodi:role="line">load patch 9/9 of level 2</tspan></text>
+    </g>
+    <g
+       id="g4078"
+       transform="translate(-490.80198,203.09048)">
+      <rect
+         transform="matrix(-0.00785659,-0.99996914,0.99996914,-0.00785659,0,0)"
+         y="513.29877"
+         x="-325.32504"
+         height="156.6721"
+         width="38.426373"
+         id="rect3062-6-4-7-4-3-4-4"
+         style="fill:#e6e6e6;fill-opacity:1;stroke:#000000;stroke-width:1.04375184;stroke-opacity:1" />
+      <text
+         transform="matrix(0.99994864,-0.01013451,0.01013451,0.99994864,0,0)"
+         sodipodi:linespacing="125%"
+         id="text3064-8-2-5-9-9-5-1"
+         y="311.79752"
+         x="521.52234"
+         style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         xml:space="preserve"><tspan
+           y="311.79752"
+           x="521.52234"
+           id="tspan3066-2-7-9-0-2-4-8"
+           sodipodi:role="line">load patch 72/81 of level 3</tspan></text>
+    </g>
+    <g
+       id="g4083"
+       transform="translate(-646.50468,248.78583)">
+      <rect
+         transform="matrix(-0.00785659,-0.99996914,0.99996914,-0.00785659,0,0)"
+         y="670.43756"
+         x="-325.32504"
+         height="156.6721"
+         width="38.426373"
+         id="rect3062-6-4-7-4-3-4-4-0"
+         style="fill:#e6e6e6;fill-opacity:1;stroke:#000000;stroke-width:1.04375184;stroke-opacity:1" />
+      <text
+         transform="matrix(0.99994864,-0.01013451,0.01013451,0.99994864,0,0)"
+         sodipodi:linespacing="125%"
+         id="text3064-8-2-5-9-9-5-1-8"
+         y="312.15549"
+         x="678.66077"
+         style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         xml:space="preserve"><tspan
+           y="312.15549"
+           x="678.66077"
+           id="tspan3066-2-7-9-0-2-4-8-2"
+           sodipodi:role="line">load patch 73/81 of level 3</tspan></text>
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="69.695358"
+       y="272.15628"
+       id="text4043"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4045"
+         x="69.695358"
+         y="272.15628"
+         style="font-size:72px">...</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="64.66423"
+       y="416.23071"
+       id="text4043-6"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4045-2"
+         x="64.66423"
+         y="416.23071"
+         style="font-size:72px">...</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="32.155991"
+       y="768.03552"
+       id="text4088"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4090"
+         x="32.155991"
+         y="768.03552">Concurrency level of load is </tspan><tspan
+         sodipodi:role="line"
+         x="32.155991"
+         y="783.03552"
+         id="tspan4092">restricted by number of </tspan><tspan
+         sodipodi:role="line"
+         x="32.155991"
+         y="798.03552"
+         id="tspan4094">stacks, i.e. by 4 + 1 thread </tspan><tspan
+         sodipodi:role="line"
+         x="32.155991"
+         y="813.03552"
+         id="tspan4100">for the cell data. In practive</tspan><tspan
+         sodipodi:role="line"
+         x="32.155991"
+         y="828.03552"
+         id="tspan4404">threading doesn't pay off, as </tspan><tspan
+         sodipodi:role="line"
+         x="32.155991"
+         y="843.03552"
+         id="tspan4406">it is the memory that harms.</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="28.771151"
+       y="19.985605"
+       id="text4096"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4098"
+         x="28.771151"
+         y="19.985605">d=2</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:1, 3;stroke-dashoffset:0"
+       d="m 12.154524,93.374852 698.969716,0"
+       id="path4115"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:1, 3;stroke-dashoffset:0"
+       d="m 11.000736,483.70885 698.969724,0"
+       id="path4115-7"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="631.27289"
+       y="87.682434"
+       id="text4135"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4137"
+         x="631.27289"
+         y="87.682434">Level 1 loaded</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="626.05981"
+       y="476.1041"
+       id="text4135-7"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4137-8"
+         x="626.05981"
+         y="476.1041">Level 2 loaded</tspan></text>
+    <rect
+       style="fill:#00ffff;fill-opacity:1;stroke:#000000;stroke-width:2.43013786999999980;stroke-opacity:1"
+       id="rect3062-7"
+       width="188.84996"
+       height="143.32269"
+       x="-302.45743"
+       y="222.57236"
+       transform="matrix(-0.00192004,-0.99999816,0.99948358,-0.03213363,0,0)" />
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="230.50099"
+       y="128.76851"
+       id="text3064-5"
+       sodipodi:linespacing="125%"
+       transform="matrix(0.99994864,-0.01013451,0.01013451,0.99994864,0,0)"><tspan
+         sodipodi:role="line"
+         id="tspan3066-9"
+         x="230.50099"
+         y="128.76851">Call </tspan><tspan
+         sodipodi:role="line"
+         x="230.50099"
+         y="128.76851"
+         id="tspan4186">touchVertexFirstTime()</tspan><tspan
+         sodipodi:role="line"
+         x="230.50099"
+         y="143.76851"
+         id="tspan4184">for level 1.</tspan></text>
+    <rect
+       style="fill:#00ffff;fill-opacity:1;stroke:#000000;stroke-width:2.43013786999999980;stroke-opacity:1"
+       id="rect3062-7-2"
+       width="188.84996"
+       height="143.32269"
+       x="-702.75848"
+       y="225.18996"
+       transform="matrix(-0.00192004,-0.99999816,0.99948358,-0.03213363,0,0)" />
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="229.82967"
+       y="528.99847"
+       id="text3064-5-9"
+       sodipodi:linespacing="125%"
+       transform="matrix(0.99994864,-0.01013451,0.01013451,0.99994864,0,0)"><tspan
+         sodipodi:role="line"
+         id="tspan3066-9-5"
+         x="229.82967"
+         y="528.99847">Call </tspan><tspan
+         sodipodi:role="line"
+         x="229.82967"
+         y="543.99847"
+         id="tspan4186-9">touchVertexFirstTime()</tspan><tspan
+         sodipodi:role="line"
+         x="229.82967"
+         y="558.99847"
+         id="tspan4184-7">for level 2.</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:1, 3;stroke-dashoffset:0"
+       d="m 192.08974,306.14372 511.11103,0"
+       id="path4115-1"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="573.34937"
+       y="300.45129"
+       id="text4135-5"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4137-6"
+         x="573.34937"
+         y="300.45129">Vertices of level 1 done.</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:1, 3;stroke-dashoffset:0"
+       d="m 189.24353,705.91823 511.11103,0"
+       id="path4115-1-3"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="570.50317"
+       y="700.22583"
+       id="text4135-5-4"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4137-6-5"
+         x="570.50317"
+         y="700.22583">Vertices of level 1 done.</tspan></text>
+    <rect
+       style="fill:#ff8080;fill-opacity:1;stroke:#000000;stroke-width:3.16762471;stroke-opacity:1"
+       id="rect3062-7-5"
+       width="320.55396"
+       height="143.46182"
+       x="-671.52875"
+       y="407.04794"
+       transform="matrix(-0.00113117,-0.99999936,0.99851427,-0.0544908,0,0)" />
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="412.4357"
+       y="349.75079"
+       id="text3064-5-4"
+       sodipodi:linespacing="125%"
+       transform="matrix(0.99994864,-0.01013451,0.01013451,0.99994864,0,0)"><tspan
+         sodipodi:role="line"
+         x="412.4357"
+         y="349.75079"
+         id="tspan4184-3">Call enterCell() for </tspan><tspan
+         sodipodi:role="line"
+         x="412.4357"
+         y="364.75079"
+         id="tspan4300">level 1.</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.67855299;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:0.67855297, 2.0356589;stroke-dashoffset:0"
+       d="m 388.14093,662.50821 321.82952,0"
+       id="path4115-7-0"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="626.05981"
+       y="654.90344"
+       id="text4135-7-6"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4137-8-2"
+         x="626.05981"
+         y="654.90344">Level 1 done.</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 13.539365,737.57195 c 707.431815,0 707.431815,0 707.431815,0"
+       id="path4326"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="217.2946"
+       y="766.75757"
+       id="text4088-9"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="217.2946"
+         y="766.75757"
+         id="tspan4100-4">Concurrency level bounded</tspan><tspan
+         sodipodi:role="line"
+         x="217.2946"
+         y="781.75757"
+         id="tspan4367">by number of vertices on a </tspan><tspan
+         sodipodi:role="line"
+         x="217.2946"
+         y="796.75757"
+         id="tspan4369">given level.</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="405.7876"
+       y="764.60309"
+       id="text4088-9-5"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="405.7876"
+         y="764.60309"
+         id="tspan4100-4-2">Concurrency level bounded</tspan><tspan
+         sodipodi:role="line"
+         x="405.7876"
+         y="779.60309"
+         id="tspan4369-3">by number of cells on a </tspan><tspan
+         sodipodi:role="line"
+         x="405.7876"
+         y="794.60309"
+         id="tspan4400">level divided by the number</tspan><tspan
+         sodipodi:role="line"
+         x="405.7876"
+         y="809.60309"
+         id="tspan4402">of colours, i.e. 4.</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.02379596px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 253.86309,292.58514 C 252.17067,216.3064 252.17067,216.3064 252.17067,216.3064"
+       id="path4408"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 286.01908,292.46533 5.07727,-81.23619"
+       id="path4410"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.04767525px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 323.25234,292.96532 -1.69242,-81.73618"
+       id="path4412"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.02379596px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 262.31923,691.7464 c -1.69242,-76.27874 -1.69242,-76.27874 -1.69242,-76.27874"
+       id="path4408-0"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 294.47522,691.62659 5.07727,-81.23619"
+       id="path4410-9"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.04767525px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 331.70848,692.12658 330.01606,610.3904"
+       id="path4412-9"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.02379596px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 446.48402,644.35863 C 444.7916,568.07989 444.7916,568.07989 444.7916,568.07989"
+       id="path4408-0-8"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 478.64001,644.23882 5.07727,-81.23619"
+       id="path4410-9-9"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.04767525px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 515.87327,644.73881 -1.69242,-81.73618"
+       id="path4412-9-7"
+       inkscape:connector-curvature="0" />
+  </g>
+</svg>

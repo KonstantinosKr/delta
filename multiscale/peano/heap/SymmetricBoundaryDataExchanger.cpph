@@ -1,0 +1,127 @@
+#include "tarch/Assertions.h"
+#include "tarch/compiler/CompilerSpecificSettings.h"
+#include "peano/utils/PeanoOptimisations.h"
+
+
+template<class Data, bool CreateCopiesOfSentData, class SendReceiveTaskType, class VectorContainer>
+tarch::logging::Log  peano::heap::SymmetricBoundaryDataExchanger<Data,CreateCopiesOfSentData, SendReceiveTaskType,VectorContainer>::_log( "peano::heap::SymmetricBoundaryDataExchanger" );
+
+
+
+template<class Data, bool CreateCopiesOfSentData, class SendReceiveTaskType, class VectorContainer>
+peano::heap::SymmetricBoundaryDataExchanger<Data,CreateCopiesOfSentData, SendReceiveTaskType,VectorContainer>::SymmetricBoundaryDataExchanger():
+  BoundaryDataExchanger<Data,SendReceiveTaskType,VectorContainer>(),
+  _numberOfEmptyMessagesSinceLastNonEmptySendCall(-1),
+  _totalNumberOfSentMessagesThisTraversal(-1) {
+}
+
+
+template<class Data, bool CreateCopiesOfSentData, class SendReceiveTaskType, class VectorContainer>
+peano::heap::SymmetricBoundaryDataExchanger<Data,CreateCopiesOfSentData, SendReceiveTaskType,VectorContainer>::SymmetricBoundaryDataExchanger(
+  const std::string& identifier,
+  int metaDataTag, int dataTag,
+  int rank
+):
+  BoundaryDataExchanger<Data,SendReceiveTaskType,VectorContainer>(identifier,metaDataTag,dataTag,rank),
+  _numberOfEmptyMessagesSinceLastNonEmptySendCall(0),
+  _totalNumberOfSentMessagesThisTraversal(0) {
+}
+
+
+template<class Data, bool CreateCopiesOfSentData, class SendReceiveTaskType, class VectorContainer>
+peano::heap::SymmetricBoundaryDataExchanger<Data,CreateCopiesOfSentData, SendReceiveTaskType,VectorContainer>::~SymmetricBoundaryDataExchanger() {
+}
+
+
+template<class Data, bool CreateCopiesOfSentData, class SendReceiveTaskType, class VectorContainer>
+bool peano::heap::SymmetricBoundaryDataExchanger<Data,CreateCopiesOfSentData, SendReceiveTaskType,VectorContainer>::dataExchangerCommunicatesInBackground() const {
+  return true;
+}
+
+
+template<class Data, bool CreateCopiesOfSentData, class SendReceiveTaskType, class VectorContainer>
+int peano::heap::SymmetricBoundaryDataExchanger<Data,CreateCopiesOfSentData, SendReceiveTaskType,VectorContainer>::getNumberOfSentMessages() const {
+  assertion( static_cast<int>(Base::_sendTasks.size()) <= _totalNumberOfSentMessagesThisTraversal );
+  return _totalNumberOfSentMessagesThisTraversal;
+}
+
+
+template<class Data, bool CreateCopiesOfSentData, class SendReceiveTaskType, class VectorContainer>
+void peano::heap::SymmetricBoundaryDataExchanger<Data,CreateCopiesOfSentData, SendReceiveTaskType,VectorContainer>::handleEmptyMessagesInBetweenTwoRealSends() {
+  logTraceInWith1Argument( "handleEmptyMessagesInBetweenTwoRealSends()", _numberOfEmptyMessagesSinceLastNonEmptySendCall );
+
+  logDebug( "handleEmptyMessagesInBetweenTwoRealSends()", "insert " << _numberOfEmptyMessagesSinceLastNonEmptySendCall << " empty task(s) into receive queue");
+
+  assertion( _numberOfEmptyMessagesSinceLastNonEmptySendCall>=0 );
+
+  for (int i=0; i<_numberOfEmptyMessagesSinceLastNonEmptySendCall; i++) {
+    SendReceiveTaskType zeroLengthReceiveTask;
+    zeroLengthReceiveTask.setInvalid();
+    Base::_receiveTasks[Base::_currentReceiveBuffer].push_back( zeroLengthReceiveTask );
+  }
+
+  _numberOfEmptyMessagesSinceLastNonEmptySendCall = 0;
+  logTraceOut( "handleEmptyMessagesInBetweenTwoRealSends()" );
+}
+
+
+template<class Data, bool CreateCopiesOfSentData, class SendReceiveTaskType, class VectorContainer>
+void peano::heap::SymmetricBoundaryDataExchanger<Data,CreateCopiesOfSentData, SendReceiveTaskType,VectorContainer>::postprocessFinishedToSendData() {
+  handleEmptyMessagesInBetweenTwoRealSends();
+
+  assertion( _numberOfEmptyMessagesSinceLastNonEmptySendCall==0 );
+}
+
+
+template<class Data, bool CreateCopiesOfSentData, class SendReceiveTaskType, class VectorContainer>
+void peano::heap::SymmetricBoundaryDataExchanger<Data,CreateCopiesOfSentData, SendReceiveTaskType,VectorContainer>::handleAndQueueReceivedTask( const SendReceiveTaskType&  receivedTask ) {
+  assertionMsg( false, "should never be called" );
+}
+
+
+template<class Data, bool CreateCopiesOfSentData, class SendReceiveTaskType, class VectorContainer>
+void peano::heap::SymmetricBoundaryDataExchanger<Data,CreateCopiesOfSentData, SendReceiveTaskType,VectorContainer>::postprocessStartToSendData() {
+  _totalNumberOfSentMessagesThisTraversal = 0;
+}
+
+
+template<class Data, bool CreateCopiesOfSentData, class SendReceiveTaskType, class VectorContainer>
+void peano::heap::SymmetricBoundaryDataExchanger<Data,CreateCopiesOfSentData, SendReceiveTaskType,VectorContainer>::handleAndQueueSendTask(
+  const SendReceiveTaskType&     sendTask,
+  const Data* const              data
+) {
+  logTraceIn( "handleAndQueueSendTask(...)" );
+  _totalNumberOfSentMessagesThisTraversal++;
+
+  if (sendTask.getMetaInformation().getLength()==0) {
+    logDebug( "handleAndQueueSendTask(...)", "was told to send out empty message, so only memorise this data" );
+    _numberOfEmptyMessagesSinceLastNonEmptySendCall++;
+  }
+  else {
+    handleEmptyMessagesInBetweenTwoRealSends();
+
+    logDebug( "handleAndQueueSendTask(...)", "enqueue new receive task for rank " << sendTask._rank );
+    Base::_receiveTasks[Base::_currentReceiveBuffer].push_back( SendReceiveTaskType() );
+    Base::_receiveTasks[Base::_currentReceiveBuffer].back().getMetaInformation().setLength( sendTask.getMetaInformation().getLength() );
+    Base::_receiveTasks[Base::_currentReceiveBuffer].back().setRank( sendTask.getRank() );
+    #ifdef Asserts
+    //Set debug information
+    Base::_receiveTasks[Base::_currentReceiveBuffer].back().getMetaInformation().setPosition(sendTask.getMetaInformation().getPosition());
+    Base::_receiveTasks[Base::_currentReceiveBuffer].back().getMetaInformation().setLevel(sendTask.getMetaInformation().getLevel());
+    #endif
+    Base::_receiveTasks[Base::_currentReceiveBuffer].back().triggerReceive(Base::_dataTag);
+
+    logDebug( "handleAndQueueSendTask(...)", "push back send task, skip meta data send, but trigger data send" );
+    Base::_sendTasks.push_back(sendTask);
+
+    if (CreateCopiesOfSentData) {
+      Base::_sendTasks.back().wrapData(data);
+    }
+    else {
+      Base::_sendTasks.back().sendDataDirectlyFromBuffer(data);
+    }
+
+    Base::_sendTasks.back().triggerSend(Base::_dataTag);
+  }
+  logTraceOut( "handleAndQueueSendTask(...)" );
+}

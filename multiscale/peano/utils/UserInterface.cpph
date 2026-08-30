@@ -1,0 +1,27 @@
+template <class Vertex, class Cell, class State>
+void peano::utils::UserInterface::writeDatatypeStatistics() {
+  writeDatatypeStatisticsHeader();
+
+  std::ostringstream sizeOfCell;
+  std::ostringstream sizeOfVertex;
+  std::ostringstream sizeOfState;
+  std::ostringstream sizeOfPersistentCell;
+  std::ostringstream sizeOfPersistentVertex;
+
+  sizeOfCell << sizeof(Cell) << " byte(s) per cell";
+  sizeOfVertex << sizeof( Vertex ) << " byte(s) per vertex";
+  sizeOfState << sizeof( State ) << " byte(s) per state";
+
+  sizeOfPersistentCell   << sizeof(typename Cell::PersistentCell);
+  sizeOfPersistentVertex << sizeof(typename Vertex::PersistentVertex);
+  sizeOfPersistentCell   << " byte(s) per cell on in/out stream";
+  sizeOfPersistentVertex << " byte(s) per vertex on in/out stream";
+
+  _log.info( "writeDatatypeStatistics()", sizeOfCell.str() );
+  _log.info( "writeDatatypeStatistics()", sizeOfVertex.str() );
+  _log.info( "writeDatatypeStatistics()", sizeOfPersistentCell.str() );
+  _log.info( "writeDatatypeStatistics()", sizeOfPersistentVertex.str() );
+  _log.info( "writeDatatypeStatistics()", sizeOfState.str() );
+
+  writeDatatypeStatisticsTrailer();
+}

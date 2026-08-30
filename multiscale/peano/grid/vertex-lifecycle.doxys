@@ -1,0 +1,30 @@
+/**
+
+ @page "Vertex lifecycle"
+ 
+ The illustration below gives a typical vertex and cell lifecycle. 
+ 
+ \image html lifecycle.png 
+ 
+ - Peano loads vertices from an input stream and calls touchFirstTime() for 
+   them. If vertices or cells do not exist before, it creates them a priori.  
+ - Peano creates temporary vertices, i.e. hanging nodes, on-the-fly throughout 
+   the grid traversal. A hanging vertex at one spatial position might be 
+   created and destroyed multiple times throughout the traversal. 
+ - Whenever a cell event such as enterCell() is invoked, you can be 
+   sure that all the @f$ 2^d @f$ vertices are initialised, i.e. Peano has 
+   called either touchFirstTime() or createHangingVertex() before.
+ - The hanging vertex will be destroyed before the iteration terminates.
+ - Vertices are destroyed or written back to the output stream not before
+   leaveCell() has been called.
+   
+ While touchFirstTime() is called for both inner and boundary vertices, outer 
+ vertices are not taken into account. Neither are outer cells. For a 
+ description and more details on different geometries consult the 
+ peano::geometry documentation. Also, the second step of the Jacobi tutorial 
+ (see application::poisson) folder discuss the representation of a geometry 
+ by the grid, the different vertex states, and, thus, the implications for the 
+ events.   
+ 
+ */
+ 

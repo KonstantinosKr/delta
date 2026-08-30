@@ -1,0 +1,352 @@
+#include "tarch/compiler/CompilerSpecificSettings.h"
+#include "tarch/Assertions.h"
+
+
+template<int Size, typename Scalar>
+tarch::la::Vector<Size,Scalar>& tarch::la::operator+=(
+  Vector<Size,Scalar>&        lhs,
+  const Vector<Size,Scalar>&  rhs
+) {
+  #ifdef CompilerICC
+  #pragma forceinline recursive
+  #pragma ivdep
+  #endif
+  for ( int i=0; i < Size; i++ ) {
+    lhs(i) += rhs(i);
+  }
+  return lhs;
+}
+
+
+template<int Size, typename Scalar>
+tarch::la::Vector<Size,Scalar>& tarch::la::operator-= (
+  Vector<Size,Scalar>&        lhs,
+  const Vector<Size,Scalar>&  rhs
+) {
+  #ifdef CompilerICC
+  #pragma forceinline recursive
+  #pragma ivdep
+  #endif
+  for ( int i=0; i < Size; i++ ) {
+    lhs(i) -= rhs(i);
+  }
+  return lhs;
+}
+
+
+template<int Size, typename Scalar>
+tarch::la::Vector<Size,Scalar> tarch::la::operator+ (
+  const Vector<Size,Scalar>&  lhs,
+  const Vector<Size,Scalar>&  rhs
+) {
+  tarch::la::Vector<Size,Scalar> result;
+  #ifdef CompilerICC
+  #pragma forceinline recursive
+  #pragma ivdep
+  #endif
+  for ( int i=0; i < Size; i++ ) {
+    result(i) =  rhs(i) + lhs(i);
+  }
+  return result;
+}
+
+
+template<int Size, typename Scalar>
+tarch::la::Vector<Size,Scalar> tarch::la::operator- (
+  const Vector<Size,Scalar>&  lhs,
+  const Vector<Size,Scalar>&  rhs
+) {
+  tarch::la::Vector<Size,Scalar> result;
+  #ifdef CompilerICC
+  #pragma forceinline recursive
+  #pragma ivdep
+  #endif
+  for ( int i=0; i < Size; i++ ) {
+    result(i) =  lhs(i) - rhs(i);
+  }
+  return result;
+}
+
+
+template<int Size, typename Scalar>
+tarch::la::Vector<Size,Scalar> tarch::la::multiplyComponents (
+  const Vector<Size,Scalar>&  lhs,
+  const Vector<Size,Scalar>&  rhs
+) {
+  tarch::la::Vector<Size,Scalar> result;
+  #ifdef CompilerICC
+  #pragma forceinline recursive
+  #pragma ivdep
+  #endif
+  for ( int i=0; i < Size; i++ ) {
+    result(i) =  lhs(i) * rhs(i);
+  }
+  return result;
+}
+
+
+
+template<int Size, typename Scalar>
+tarch::la::Vector<Size,Scalar> tarch::la::max(
+  const Vector<Size,Scalar>&  lhs,
+  const Vector<Size,Scalar>&  rhs
+) {
+  tarch::la::Vector<Size,Scalar> result;
+  #ifdef CompilerICC
+  #pragma forceinline recursive
+  #pragma ivdep
+  #endif
+  for ( int i=0; i < Size; i++ ) {
+    result(i) =  std::max( lhs(i), rhs(i) );
+  }
+  return result;
+}
+
+
+template<int Size, typename Scalar>
+Scalar tarch::la::operator* (
+  const Vector<Size,Scalar>&  lhs,
+  const Vector<Size,Scalar>&  rhs
+) {
+  return innerDot(lhs, rhs);
+}
+
+
+template<int Size, typename Scalar>
+Scalar tarch::la::innerDot (
+  const Vector<Size,Scalar>&  lhs,
+  const Vector<Size,Scalar>&  rhs
+) {
+  Scalar result = lhs(0) * rhs(0);
+  for ( int i=1; i < Size; i++ ) {
+    result += lhs(i) * rhs(i);
+  }
+  return result;
+}
+
+
+template<int Size, typename Scalar>
+Scalar tarch::la::dot (
+  const Vector<Size,Scalar>&  lhs,
+  const Vector<Size,Scalar>&  rhs
+) {
+  return innerDot(lhs,rhs);
+}
+
+
+template<typename Scalar>
+tarch::la::Vector<3,Scalar> tarch::la::cross(
+  const Vector<3,Scalar>&  lhs,
+  const Vector<3,Scalar>&  rhs
+) {
+  Vector<3,Scalar>  result;
+
+  result(0) = lhs(1) * rhs(2) - lhs(2) * rhs(1);
+  result(1) = lhs(2) * rhs(0) - lhs(0) * rhs(2);
+  result(2) = lhs(0) * rhs(1) - lhs(1) * rhs(0);
+
+  return result;
+}
+
+
+template<int Size, typename Scalar>
+bool tarch::la::equals (
+  const Vector<Size,Scalar>&  lhs,
+  const Vector<Size,Scalar>&  rhs,
+  const Scalar                tolerance
+) {
+  for ( int i=0; i < Size; i++ ) {
+    if ( la::abs(lhs(i) - rhs(i)) > tolerance ) {
+      return false;
+    }
+  }
+  return true;
+}
+
+
+template<int Size, typename Scalar>
+bool tarch::la::firstGreater(
+  const Vector<Size,Scalar>&  lhs,
+  const Vector<Size,Scalar>&  rhs,
+  const Scalar                tolerance
+) {
+  for ( int i=0; i < Size; i++ ) {
+    if ( lhs(i) - rhs(i) > tolerance ) {
+      return true;
+    }
+    else if ( rhs(i) - lhs(i) > tolerance ) {
+      return false;
+    }
+  }
+  return false;
+}
+
+
+template<int Size, typename Scalar>
+bool tarch::la::oneGreater (
+  const Vector<Size,Scalar>&  lhs,
+  const Vector<Size,Scalar>&  rhs,
+  const Scalar                tolerance
+) {
+  for ( int i=0; i < Size; i++ ) {
+    if ( lhs(i) - rhs(i) > tolerance ) {
+      return true;
+    }
+  }
+  return false;
+}
+
+
+template<int Size, typename Scalar>
+bool tarch::la::oneGreaterEquals (
+  const Vector<Size,Scalar>&  lhs,
+  const Vector<Size,Scalar>&  rhs,
+  const Scalar                tolerance
+) {
+  for ( int i=0; i < Size; i++ ) {
+    if ( lhs(i) - rhs(i) >= - tolerance ) {
+      return true;
+    }
+  }
+  return false;
+}
+
+
+template<int Size, typename Scalar>
+bool tarch::la::allGreater (
+  const Vector<Size,Scalar>&  lhs,
+  const Vector<Size,Scalar>&  rhs,
+  const Scalar                tolerance
+) {
+  for ( int i=0; i < Size; i++ ) {
+    if ( lhs(i) - rhs(i) <= tolerance ) {
+      return false;
+    }
+  }
+  return true;
+}
+
+
+template<int Size, typename Scalar>
+bool tarch::la::allGreaterEquals (
+  const Vector<Size,Scalar>&  lhs,
+  const Vector<Size,Scalar>&  rhs,
+  const Scalar                tolerance
+) {
+  for ( int i=0; i < Size; i++ ) {
+    if ( lhs(i) - rhs(i) < -tolerance ) {
+      return false;
+    }
+  }
+  return true;
+}
+
+
+
+template<int Size, typename Scalar>
+bool tarch::la::allSmaller (
+  const Vector<Size,Scalar>&  lhs,
+  const Vector<Size,Scalar>&  rhs,
+  const Scalar                tolerance
+) {
+  for ( int i=0; i < Size; i++ ) {
+    if ( lhs(i) - rhs(i) >= tolerance ) {
+      return false;
+    }
+  }
+  return true;
+}
+
+
+template<int Size, typename Scalar>
+bool tarch::la::allSmallerEquals (
+  const Vector<Size,Scalar>&  lhs,
+  const Vector<Size,Scalar>&  rhs,
+  const Scalar                tolerance
+) {
+  for ( int i=0; i < Size; i++ ) {
+    if ( lhs(i) - rhs(i) > -tolerance ) {
+      return false;
+    }
+  }
+  return true;
+}
+
+
+template<int Size, typename Scalar>
+bool tarch::la::operator== (
+  const Vector<Size,Scalar>&  lhs,
+  const Vector<Size,Scalar>&  rhs
+) {
+  for (int i=0; i < Size; i++) {
+    if (lhs(i) != rhs(i)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+
+template<int Size, typename Scalar>
+bool tarch::la::operator!= (
+  const Vector<Size,Scalar>&  lhs,
+  const Vector<Size,Scalar>&  rhs
+) {
+  return !(lhs==rhs);
+}
+
+
+template<int Size, typename Scalar>
+int tarch::la::equalsReturnIndex(
+  const Vector<Size,Scalar>&  lhs,
+  const Vector<Size,Scalar>&  rhs,
+  const Scalar                tolerance
+){
+  for (int i=0; i < Size; i++) {
+    if(std::abs(lhs(i) - rhs(i)) > tolerance) return i;
+  }
+  return -1;
+}
+
+
+template<int Size>
+int tarch::la::equalsReturnIndex(
+  const Vector<Size,int>&  lhs,
+  const Vector<Size,int>&  rhs
+){
+  for (int i=0; i < Size; i++) {
+    if (lhs(i)!=rhs(i)) return i;
+  }
+  return -1;
+}
+
+
+template<int Size>
+int tarch::la::countEqualEntries (
+  const Vector<Size,int>&  lhs,
+  const Vector<Size,int>&  rhs
+) {
+  int result = 0;
+
+  for (int i=0; i<Size; i++) {
+    result += (lhs(i)==rhs(i)) ? 1 : 0;
+  }
+
+  return result;
+}
+
+
+template<int Size, typename Scalar>
+int tarch::la::countEqualEntries (
+  const Vector<Size,Scalar>&  lhs,
+  const Vector<Size,Scalar>&  rhs,
+  const Scalar  tolerance
+) {
+  int result = 0;
+
+  for (int i=0; i<Size; i++) {
+    result += ( equals( lhs(i),rhs(i),tolerance) ) ? 1 : 0;
+  }
+
+  return result;
+}

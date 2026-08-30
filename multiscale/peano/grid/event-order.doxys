@@ -1,0 +1,71 @@
+/**
+
+ @page "Order of cell events in serial code"
+ 
+  <h2> Descend process</h2>
+  
+  There is a detailed description on the order of the events on the page 
+  "The ascend process in the spacetree". See the webpages created from the 
+  sources or consult the file event-order.doxys.
+ 
+  We study an arbitrary @f$ 3^d @f$ cell patch. The following statements on the
+  (partial) event order hold:
+ 
+  - We assume that a refined parent cell is loaded, and enterCell() is called
+    as well as touchVertexFirstTime() for all adjacent vertices. We continue
+    to study the behaviour on the next finer level:
+  - touchVertexFirstTime() is called for each vertex.
+  - The refined node invokes descend() for the @f$ 3^d @f$ patch plus its parent.
+  - enterCell() is called for the @f$ 3^d @f$ fine patch cells.
+  - Recursion
+  - leaveCell() is called for the @f$ 3^d @f$ fine patch cells.
+  - The refined node invokes ascend() for the @f$ 3^d @f$ patch plus its parent.
+  - touchVertexLastTime() is invoked for those vertices that are not used anymore.
+ 
+  We note that enterCell() is called the @f$ 3^d @f$ times after descend is
+  invoked for the parent of these cells. If you plan to realise cell-based
+  operations, you can typically always realise them within descend or
+  enterCell (similar arguments hold the other way round for leaveCell and
+  ascend). enterCell can overwrite stuff from descend on the children. It does
+  not work the other way round.
+
+ <h2> Ascend process</h2>
+
+ Here's a short discussion of some cases of the ascend process:
+ 
+ @image html leaveCell-order.png
+ 
+ Lets assume that we leaveCell is called for the red cell. The red cell is 
+ refined. The Peano curve runs as denoted, i.e. somewhere later in the grid 
+ traversal, the automaton will process the blue cells. 
+ Then the following statements hold:
+ 
+ - leaveCell() has been called for all grey cells before.
+ - touchVertexLastTime() has been called for all yellow vertices, i.e. it has 
+   been called for all vertices that are completely inside the coarse red cell.  
+ - touchVertexLastTime() has been called for the green vertex as the curve runs
+   from left to right.
+ - touchVertexFirstTime() has been called for the dark blue vertex as the curve runs
+   from left to right. However, touchVertexLastTime() has not been called for this 
+   vertex.
+   
+ In general, as you don't know anything about the curve's meandering, you 
+ cannot say anything about whether vertices on the finer level that are on the 
+ boundary of the red cell have been completely processed.  
+ 
+ Also, as the automaton follows a depth-first tree traversal paradigm, you cannot 
+ say anything about the order of leaveCell() and enterCell() for cells that are 
+ not in a child-father or child-grandfather or ... relation. The blue cells in 
+ the illustration for example are here left (and probably also entered) after the 
+ red one has been processed. In the next iteration, this order might change. 
+ 
+ The mights and can from above stem from the fact that Peano sometimes reorders 
+ events to run more efficiently on shared memory systems. However, father-child 
+ relations are never violated, i.e. enterCell() for a coarse cell is always 
+ called before the finer cells contained within this coarse cell are visited. 
+ If leaveCell() on a refined cell is called, leaveCell() has been called before 
+ for all cells that are contained within this cell.      
+    
+
+ */
+ 

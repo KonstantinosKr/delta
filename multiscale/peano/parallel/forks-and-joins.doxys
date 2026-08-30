@@ -1,0 +1,49 @@
+/**
+
+ @page "Forks and Joins of Subtrees"
+ 
+ A decomposition of a Peano grid follows a two-step scheme.
+ 
+ @image html SplitProcess_concept.png
+ 
+ Throughout the steps down (i.e. not after the 
+ cell handling / this is a severe difference to the regular grid), the 
+ traversal checks whether the oracle tells it to fork. If it does, and if a 
+ patch, i.e. a @f$ 3^d @f$ set of cells, contains more than one local cell that 
+ is inside the domain
+ 
+ - the node tries to book a new worker from the node pool, 
+ - the oracle is told that we have forked once,
+ - the cell is assigned to the new worker (but still processed locally),
+ - and the adjacency lists of all vertices are updated and sent away with new 
+   adjacency information. 
+
+ @image html SplitProcess_spacetree_phase1.png
+
+ In the subsequent iteration all cells and all vertices that are adjacent to 
+ the new worker are forwarded to this worker. This way, I avoid the 
+ complicated reconstruction of the space-filling curve on the new worker.      
+
+ @image html SplitProcess_spacetree_phase2.png
+ 
+ As a result of the last step, several vertices are adjacent solely to remote 
+ ranks. These vertices are immediately coarsed and are not available anymore in 
+ a third iteration. 
+
+ @image html SplitProcess_spacetree_phase3.png
+ 
+ 
+ <h2> Further codes to study </h2>
+ 
+ As the fork/join mechanisms integrate into the tree traversal, there is no 
+ specialised code for it. It is simply a postprocessing step after a cell is
+ loaded. 
+ You find details on this at
+ 
+ @see peano::grid::nodes::Node::updateCellsParallelStateAfterLoadIfNodeIsJoiningWithWorker()
+ @see peano::grid::nodes::Node::updateCellsParallelStateAfterLoadForNewWorkerDueToForkOfExistingDomain()
+ 
+ 
+ 
+ */
+ 

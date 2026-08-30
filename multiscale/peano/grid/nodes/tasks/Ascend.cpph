@@ -1,0 +1,335 @@
+#include "peano/datatraversal/dForLoop.h"
+#include "peano/MappingSpecification.h"
+#include "peano/datatraversal/autotuning/Oracle.h"
+#include "peano/datatraversal/TaskSet.h"
+
+
+template <class Vertex, class Cell, class State, class EventHandle>
+tarch::logging::Log  peano::grid::nodes::tasks::Ascend<Vertex,Cell,State,EventHandle>::_log( "peano::grid::nodes::tasks::Ascend" );
+
+
+template <class Vertex, class Cell, class State, class EventHandle>
+tarch::multicore::BooleanSemaphore  peano::grid::nodes::tasks::Ascend<Vertex,Cell,State,EventHandle>::_semaphore;
+
+
+template <class Vertex, class Cell, class State, class EventHandle>
+peano::grid::nodes::tasks::Ascend<Vertex,Cell,State,EventHandle>::Ascend(
+  const int              treeDepth,
+  State&                 state,
+  EventHandle&           eventHandle,
+  RegularGridContainer&  gridContainer
+):
+  _treeDepth( treeDepth ),
+  _state(state),
+  _eventHandle( eventHandle ),
+  _gridContainer( gridContainer ),
+  _treeRemainsStatic( true ) {
+  assertion( treeDepth>=1 );
+}
+
+    
+template <class Vertex, class Cell, class State, class EventHandle>
+void peano::grid::nodes::tasks::Ascend<Vertex,Cell,State,EventHandle>::touchVerticesLastTime(int level) {
+  const int  passedLevel  = level == _treeDepth ? -level : level;
+  const bool runOperation =
+    (_eventHandle.touchVertexLastTimeSpecification(passedLevel).manipulates == peano::MappingSpecification::WholeTree) ||
+    (_eventHandle.touchVertexLastTimeSpecification(passedLevel).manipulates == peano::MappingSpecification::OnlyLeaves && level == _treeDepth);
+
+  if (runOperation) {
+    const tarch::la::Vector<DIMENSIONS,int> NumberOfVertices      = _gridContainer.getNumberOfVertices(level);
+
+    TouchVertexLastTimeLoopBody  touchVertexLastTimeLoopBody( _treeDepth, _eventHandle, _gridContainer, _treeRemainsStatic, level );
+
+    int  colouring   = -1;
+    int  problemSize = tarch::la::volume(NumberOfVertices);
+    switch (_eventHandle.touchVertexLastTimeSpecification(passedLevel).multithreading) {
+      case peano::MappingSpecification::Serial:
+        colouring = peano::datatraversal::dForLoop<TouchVertexLastTimeLoopBody>::Serial;
+        break;
+      case peano::MappingSpecification::AvoidCoarseGridRaces:
+      case peano::MappingSpecification::AvoidCoarseGridRacesWithoutInterGridDependencies:
+        colouring    = peano::datatraversal::dForLoop<TouchVertexLastTimeLoopBody>::SevenPowerDColouring;
+        problemSize /= SEVENTEEN_POWER_D;
+        break;
+      case peano::MappingSpecification::AvoidFineGridRaces:
+      case peano::MappingSpecification::AvoidFineGridRacesWithoutInterGridDependencies:
+        colouring    = peano::datatraversal::dForLoop<TouchVertexLastTimeLoopBody>::TwoPowerDColouring;
+        problemSize /= TWO_POWER_D;
+        break;
+      case peano::MappingSpecification::RunConcurrentlyOnFineGrid:
+      case peano::MappingSpecification::RunConcurrentlyOnFineGridWithoutInterGridDependencies:
+        colouring = peano::datatraversal::dForLoop<TouchVertexLastTimeLoopBody>::NoColouring;
+        break;
+    }
+    assertion( colouring>=0 );
+
+    if (
+      colouring==peano::datatraversal::dForLoop<TouchVertexLastTimeLoopBody>::Serial
+      ||
+      problemSize==0
+    ) {
+      peano::datatraversal::dForLoop<TouchVertexLastTimeLoopBody>(
+        NumberOfVertices,
+        touchVertexLastTimeLoopBody,
+        0,
+        peano::datatraversal::dForLoop<TouchVertexLastTimeLoopBody>::Serial,
+        true
+     );
+    }
+    else {
+      auto grainSize = peano::datatraversal::autotuning::Oracle::getInstance().parallelise(
+          problemSize,
+          peano::datatraversal::autotuning::MethodTrace::CallTouchLastTimeOnRegularStationaryGrid
+        );
+
+      peano::datatraversal::dForLoop<TouchVertexLastTimeLoopBody>(
+        NumberOfVertices,
+        touchVertexLastTimeLoopBody,
+        grainSize.getGrainSize(),
+        colouring,
+        true // last time may always alter the state due to vertex transitions
+      );
+
+      grainSize.parallelSectionHasTerminated();
+    }
+    
+    touchVertexLastTimeLoopBody.mergeIntoMasterThread();
+  }
+  else {
+    for (int i=0; i<tarch::la::volume(_gridContainer.getNumberOfVertices(level)); i++) {
+      TouchVertexLastTimeLoopBody::performVertexTransition(_gridContainer.getVertex(level,i),level,_treeDepth,_treeRemainsStatic);
+    }
+  }
+
+  _gridContainer.haveCalledAllEventsOnThisLevel(level);
+
+  #ifdef TrackGridStatistics
+  _state.incNumberOfInnerVertices( tarch::la::volume(_gridContainer.getNumberOfVertices(level)) );
+  _state.incNumberOfInnerCells( tarch::la::volume(_gridContainer.getNumberOfCells(level)) );
+  #endif
+}
+
+
+template <class Vertex, class Cell, class State, class EventHandle>
+void peano::grid::nodes::tasks::Ascend<Vertex,Cell,State,EventHandle>::leaveCells(int level) {
+  const int  passedLevel  = level == _treeDepth ? -level : level;
+  const bool runOperation =
+    (_eventHandle.leaveCellSpecification(passedLevel).manipulates == peano::MappingSpecification::WholeTree) ||
+    (_eventHandle.leaveCellSpecification(passedLevel).manipulates == peano::MappingSpecification::OnlyLeaves && level == _treeDepth);
+
+  if (runOperation) {
+    const tarch::la::Vector<DIMENSIONS,int> NumberOfCells = _gridContainer.getNumberOfCells(level);
+
+    LeaveCellLoopBody  leaveCellLoopBody( _eventHandle, _gridContainer, level );
+
+    int  colouring   = -1;
+    int  problemSize = tarch::la::volume(NumberOfCells);
+    switch (_eventHandle.leaveCellSpecification(passedLevel).multithreading) {
+      case peano::MappingSpecification::Serial:
+        colouring = peano::datatraversal::dForLoop<LeaveCellLoopBody>::Serial;
+        break;
+      case peano::MappingSpecification::AvoidCoarseGridRaces:
+      case peano::MappingSpecification::AvoidCoarseGridRacesWithoutInterGridDependencies:
+        colouring    = peano::datatraversal::dForLoop<LeaveCellLoopBody>::SixPowerDColouring;
+        problemSize /= SIX_POWER_D;
+        break;
+      case peano::MappingSpecification::AvoidFineGridRaces:
+      case peano::MappingSpecification::AvoidFineGridRacesWithoutInterGridDependencies:
+        colouring    = peano::datatraversal::dForLoop<LeaveCellLoopBody>::TwoPowerDColouring;
+        problemSize /= TWO_POWER_D;
+        break;
+      case peano::MappingSpecification::RunConcurrentlyOnFineGrid:
+      case peano::MappingSpecification::RunConcurrentlyOnFineGridWithoutInterGridDependencies:
+        colouring = peano::datatraversal::dForLoop<LeaveCellLoopBody>::NoColouring;
+        break;
+    }
+    assertion( colouring>=0 );
+
+
+    if (
+      colouring==peano::datatraversal::dForLoop<LeaveCellLoopBody>::Serial
+      ||
+      problemSize==0
+    ) {
+      peano::datatraversal::dForLoop<LeaveCellLoopBody> loop(
+        NumberOfCells,
+        leaveCellLoopBody,
+        0,
+        peano::datatraversal::dForLoop<LeaveCellLoopBody>::Serial,
+        true
+      );
+    }
+    else {
+      auto grainSize = peano::datatraversal::autotuning::Oracle::getInstance().parallelise(
+        problemSize,
+        peano::datatraversal::autotuning::MethodTrace::CallLeaveCellOnRegularStationaryGrid
+      );
+
+      peano::datatraversal::dForLoop<LeaveCellLoopBody> loop(
+        NumberOfCells,
+        leaveCellLoopBody,
+        grainSize.getGrainSize(),
+        colouring,
+        _eventHandle.leaveCellSpecification(passedLevel).altersState
+      );
+
+      grainSize.parallelSectionHasTerminated();
+    }
+    
+    leaveCellLoopBody.mergeIntoMasterThread();
+  }
+}
+
+
+template <class Vertex, class Cell, class State, class EventHandle>
+void peano::grid::nodes::tasks::Ascend<Vertex,Cell,State,EventHandle>::ascend(int fineGridLevel) {
+  const int  passedLevel  = fineGridLevel == _treeDepth ? -fineGridLevel : fineGridLevel;
+  const bool runOperation =
+    (_eventHandle.ascendSpecification(passedLevel).manipulates == peano::MappingSpecification::WholeTree) ||
+    (_eventHandle.ascendSpecification(passedLevel).manipulates == peano::MappingSpecification::OnlyLeaves && fineGridLevel == _treeDepth);
+
+  if (runOperation) {
+    const tarch::la::Vector<DIMENSIONS,int> NumberOfCoarseGridCells = _gridContainer.getNumberOfCells(fineGridLevel-1);
+
+    AscendLoopBody  ascendLoopBody(_eventHandle, _gridContainer, fineGridLevel-1 );
+
+    int  colouring   = -1;
+    int  problemSize = tarch::la::volume(NumberOfCoarseGridCells);
+    switch (_eventHandle.ascendSpecification(passedLevel).multithreading) {
+      case peano::MappingSpecification::Serial:
+        colouring = peano::datatraversal::dForLoop<AscendLoopBody>::Serial;
+        break;
+      case peano::MappingSpecification::AvoidCoarseGridRaces:
+        colouring    = peano::datatraversal::dForLoop<AscendLoopBody>::TwoPowerDColouring;
+        problemSize /= TWO_POWER_D;
+        break;
+      case peano::MappingSpecification::AvoidFineGridRaces:
+        assertionMsg( false, "ascend configuration peano::MappingSpecification::AvoidFineGridRaces not supported. You cannot avoid fine grid races, you can only avoid coarse grid races" );
+        break;
+      case peano::MappingSpecification::RunConcurrentlyOnFineGrid:
+        colouring = peano::datatraversal::dForLoop<AscendLoopBody>::NoColouring;
+        break;
+      default:
+        assertionMsg( false, "semantically meaningless" );
+        colouring = peano::datatraversal::dForLoop<AscendLoopBody>::Serial;
+        break;
+    }
+    assertion( colouring>=0 );
+
+    if (
+      colouring==peano::datatraversal::dForLoop<AscendLoopBody>::Serial
+      ||
+      problemSize==0
+    ) {
+      peano::datatraversal::dForLoop<AscendLoopBody> loop(
+        NumberOfCoarseGridCells,
+        ascendLoopBody,
+        0,
+        peano::datatraversal::dForLoop<AscendLoopBody>::Serial,
+        true
+      );
+    }
+    else {
+      auto grainSize = peano::datatraversal::autotuning::Oracle::getInstance().parallelise(
+        problemSize,
+        peano::datatraversal::autotuning::MethodTrace::AscendOnRegularStationaryGrid
+      );
+
+      peano::datatraversal::dForLoop<AscendLoopBody> loop(
+        NumberOfCoarseGridCells,
+        ascendLoopBody,
+        grainSize.getGrainSize(),
+        colouring,
+        _eventHandle.ascendSpecification(passedLevel).altersState
+      );
+
+      grainSize.parallelSectionHasTerminated();
+    }
+    
+    ascendLoopBody.mergeIntoMasterThread();
+  }
+}
+
+
+template <class Vertex, class Cell, class State, class EventHandle>
+bool peano::grid::nodes::tasks::Ascend<Vertex,Cell,State,EventHandle>::treeRemainsStatic() const {
+  return _treeRemainsStatic;
+}
+
+
+template <class Vertex, class Cell, class State, class EventHandle>
+bool peano::grid::nodes::tasks::Ascend<Vertex,Cell,State,EventHandle>::mayRunEventsOnMultipleLevelsInParallel(int levelOfTouchLastTime) const {
+  return _eventHandle.ascendSpecification(levelOfTouchLastTime).manipulates==MappingSpecification::Manipulates::Nop
+      && (
+        _eventHandle.touchVertexLastTimeSpecification(levelOfTouchLastTime).multithreading==MappingSpecification::Multithreading::AvoidCoarseGridRacesWithoutInterGridDependencies
+        ||
+        _eventHandle.touchVertexLastTimeSpecification(levelOfTouchLastTime).multithreading==MappingSpecification::Multithreading::AvoidFineGridRacesWithoutInterGridDependencies
+        ||
+        _eventHandle.touchVertexLastTimeSpecification(levelOfTouchLastTime).multithreading==MappingSpecification::Multithreading::RunConcurrentlyOnFineGridWithoutInterGridDependencies
+      );
+}
+
+
+template <class Vertex, class Cell, class State, class EventHandle>
+bool peano::grid::nodes::tasks::Ascend<Vertex,Cell,State,EventHandle>::operator() () {
+  _treeRemainsStatic = true;
+
+  for (int level=_treeDepth+1; level>=1; level--) {
+    if (level==1) {
+      ascend(level);
+      touchVerticesLastTime( level );
+    }
+    else if (level==_treeDepth+1) {
+      leaveCells(level-1);
+    }
+    else if (mayRunEventsOnMultipleLevelsInParallel(level)) {
+      auto grainSize = peano::datatraversal::autotuning::Oracle::getInstance().parallelise(
+        _treeDepth,
+        peano::datatraversal::autotuning::MethodTrace::DecomposeAscendIntoMultilevelTasks
+      );
+
+      peano::datatraversal::TaskSet runParallelTasks(
+        [&]() -> bool {
+          ascend(level);
+          touchVerticesLastTime( level );
+          return false;
+        },
+        [&]() -> bool {
+          leaveCells(level-1);
+          return false;
+        },
+		peano::datatraversal::TaskSet::TaskType::TriggerEvents,
+		peano::datatraversal::TaskSet::TaskType::TriggerEvents,
+        grainSize.runsParallel()
+      );
+    }
+    else {
+      ascend(level);
+      touchVerticesLastTime( level );
+      leaveCells(level-1);
+    }
+  }
+
+  if (_treeRemainsStatic) {
+    dfor2(i)
+      _gridContainer.getVertex(0,iScalar).setCurrentAdjacentCellsHeight(static_cast<peano::grid::CellFlags>(_treeDepth));
+    enddforx
+  }
+  else {
+    _state.updateRefinementHistoryBeforeStore(true,true);
+    dfor2(i)
+      _gridContainer.getVertex(0,iScalar).setCurrentAdjacentCellsHeight(peano::grid::NotStationary);
+    enddforx
+  }
+
+  #ifdef TrackGridStatistics
+  _state.incNumberOfInnerLeafCells( tarch::la::volume(_gridContainer.getNumberOfCells(_treeDepth)) );
+  _state.incNumberOfInnerLeafVertices( tarch::la::volume(_gridContainer.getNumberOfVertices(_treeDepth)) );
+  _state.updateInLeaf( 
+    _gridContainer.getVertexEnumerator(_treeDepth).getLevel(),
+    _gridContainer.getVertexEnumerator(_treeDepth).getCellSize()
+  );
+  #endif
+
+  return false;
+}

@@ -1,0 +1,61 @@
+<h2>Logical topology on MPI ranks</h2>
+
+<a href="_IMAGE_DIRECTORY_/topology.pdf"><img src="_IMAGE_DIRECTORY_/topology.png" /></a>
+
+
+<h2>Workload</h2>
+
+<h3>Workload per rank</h3>
+
+<a href="_IMAGE_DIRECTORY_/workload-per-rank.pdf"><img src="_IMAGE_DIRECTORY_/workload-per-rank.png" /></a>
+<a href="_IMAGE_DIRECTORY_/workload-per-rank.symlog.pdf"><img src="_IMAGE_DIRECTORY_/workload-per-rank.symlog.png" /></a>
+
+<p>
+  The filled region is the actual local work volume of a rank. It has to be 
+  smaller than the region of responsibility that might overlap the actual domain.
+  Rank 0 should deploy all of its work to other ranks and focus solely on load 
+  balancing and simulation administration, i.e. its filled region should be empty.
+  The vertical lines highlight those ranks with a particular high workload.
+  If you want to speed up your code, it might be reasonable to try to reduce the
+  load on these ranks or to make them benefit from multiple cores significiantly.
+</p>
+
+
+<h3>Workload per node</h3>
+
+<a href="_IMAGE_DIRECTORY_/workload-per-node.pdf"><img src="_IMAGE_DIRECTORY_/workload-per-node.png" /></a>
+<a href="_IMAGE_DIRECTORY_/workload-per-node.symlog.pdf"><img src="_IMAGE_DIRECTORY_/workload-per-node.symlog.png" /></a>
+
+<p>
+ The plots illustrate the aggregated work per compute node. A strong imbalance 
+ here on the one hand implies that the work itself is imbalanced - at least as 
+ long as we assume roughly the same number of ranks per node. On the other hand,
+ it suggests that we quickly might run into out of memory problems.
+</p>
+
+
+<h2>Domain decomposition</h2>
+
+<h3> Node-wisely </h3>
+
+<a href="_IMAGE_DIRECTORY_/dd.pdf"><img src="_IMAGE_DIRECTORY_/dd.png" /></a>
+
+
+<p>
+ This view is not available for d=3.
+</p>
+
+<h3> Level-wisely </h3>
+
+<a href="_IMAGE_DIRECTORY_/dd.level1.pdf"><img src="_IMAGE_DIRECTORY_/dd.level1.png" /></a>
+<a href="_IMAGE_DIRECTORY_/dd.level2.pdf"><img src="_IMAGE_DIRECTORY_/dd.level2.png" /></a>
+<a href="_IMAGE_DIRECTORY_/dd.level3.pdf"><img src="_IMAGE_DIRECTORY_/dd.level3.png" /></a>
+<a href="_IMAGE_DIRECTORY_/dd.level3.pdf"><img src="_IMAGE_DIRECTORY_/dd.level4.png" /></a>
+<a href="_IMAGE_DIRECTORY_/dd.level3.pdf"><img src="_IMAGE_DIRECTORY_/dd.level5.png" /></a>
+<a href="_IMAGE_DIRECTORY_/dd.level3.pdf"><img src="_IMAGE_DIRECTORY_/dd.level6.png" /></a>
+
+
+<p>
+  The gallery above illustrates the domain decomposition for up to the first six levels of the grid 
+  resolution. If finer levels are split up, too, you find further plots in the output directory.
+</p>

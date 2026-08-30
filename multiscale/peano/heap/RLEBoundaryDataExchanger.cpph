@@ -1,0 +1,136 @@
+#include "tarch/Assertions.h"
+#include "tarch/compiler/CompilerSpecificSettings.h"
+#include "peano/utils/PeanoOptimisations.h"
+
+
+template<class Data, bool CreateCopiesOfSentData, class SendReceiveTaskType, class VectorContainer>
+tarch::logging::Log  peano::heap::RLEBoundaryDataExchanger<Data,CreateCopiesOfSentData, SendReceiveTaskType,VectorContainer>::_log( "peano::heap::RLEBoundaryDataExchanger" );
+
+
+
+template<class Data, bool CreateCopiesOfSentData, class SendReceiveTaskType, class VectorContainer>
+peano::heap::RLEBoundaryDataExchanger<Data,CreateCopiesOfSentData, SendReceiveTaskType,VectorContainer>::RLEBoundaryDataExchanger():
+  BoundaryDataExchanger<Data,SendReceiveTaskType,VectorContainer>(),
+  _numberOfEmptyMessagesSinceLastNonEmptySendCall(-1),
+  _totalNumberOfSentMessagesThisTraversal(-1) {
+}
+
+
+template<class Data, bool CreateCopiesOfSentData, class SendReceiveTaskType, class VectorContainer>
+peano::heap::RLEBoundaryDataExchanger<Data,CreateCopiesOfSentData, SendReceiveTaskType,VectorContainer>::RLEBoundaryDataExchanger(
+  const std::string& identifier,
+  int metaDataTag, int dataTag,
+  int rank
+):
+  BoundaryDataExchanger<Data,SendReceiveTaskType,VectorContainer>(identifier,metaDataTag,dataTag,rank),
+  _numberOfEmptyMessagesSinceLastNonEmptySendCall(0),
+  _totalNumberOfSentMessagesThisTraversal(0) {
+}
+
+
+template<class Data, bool CreateCopiesOfSentData, class SendReceiveTaskType, class VectorContainer>
+peano::heap::RLEBoundaryDataExchanger<Data,CreateCopiesOfSentData, SendReceiveTaskType,VectorContainer>::~RLEBoundaryDataExchanger() {
+}
+
+
+template<class Data, bool CreateCopiesOfSentData, class SendReceiveTaskType, class VectorContainer>
+bool peano::heap::RLEBoundaryDataExchanger<Data,CreateCopiesOfSentData, SendReceiveTaskType,VectorContainer>::dataExchangerCommunicatesInBackground() const {
+  return true;
+}
+
+
+template<class Data, bool CreateCopiesOfSentData, class SendReceiveTaskType, class VectorContainer>
+int peano::heap::RLEBoundaryDataExchanger<Data,CreateCopiesOfSentData, SendReceiveTaskType,VectorContainer>::getNumberOfSentMessages() const {
+  assertion( static_cast<int>(Base::_sendTasks.size()) <= _totalNumberOfSentMessagesThisTraversal );
+  return _totalNumberOfSentMessagesThisTraversal;
+}
+
+
+template<class Data, bool CreateCopiesOfSentData, class SendReceiveTaskType, class VectorContainer>
+void peano::heap::RLEBoundaryDataExchanger<Data,CreateCopiesOfSentData, SendReceiveTaskType,VectorContainer>::sendAllCompressedEmptyMessages() {
+  assertion( _numberOfEmptyMessagesSinceLastNonEmptySendCall>=0 );
+  if (_numberOfEmptyMessagesSinceLastNonEmptySendCall>0) {
+    logTraceInWith1Argument( "sendAllCompressedEmptyMessages()", _numberOfEmptyMessagesSinceLastNonEmptySendCall );
+    SendReceiveTask<Data> zeroLengthReceiveTask;
+
+    zeroLengthReceiveTask.setRank( Base::_rank );
+    zeroLengthReceiveTask.getMetaInformation().setLength(-_numberOfEmptyMessagesSinceLastNonEmptySendCall);
+    //zeroLengthReceiveTask._data = 0;
+
+    zeroLengthReceiveTask.getMetaInformation().send(Base::_rank, Base::_metaDataTag, true, SendReceiveTaskType::MetaInformation::ExchangeMode::NonblockingWithPollingLoopOverTests);
+
+    _numberOfEmptyMessagesSinceLastNonEmptySendCall = 0;
+    logTraceOut( "sendAllCompressedEmptyMessages()" );
+  }
+}
+
+
+template<class Data, bool CreateCopiesOfSentData, class SendReceiveTaskType, class VectorContainer>
+void peano::heap::RLEBoundaryDataExchanger<Data,CreateCopiesOfSentData, SendReceiveTaskType,VectorContainer>::postprocessFinishedToSendData() {
+  sendAllCompressedEmptyMessages();
+
+  assertion( _numberOfEmptyMessagesSinceLastNonEmptySendCall==0 );
+}
+
+
+template<class Data, bool CreateCopiesOfSentData, class SendReceiveTaskType, class VectorContainer>
+void peano::heap::RLEBoundaryDataExchanger<Data,CreateCopiesOfSentData, SendReceiveTaskType,VectorContainer>::handleAndQueueReceivedTask( const SendReceiveTaskType&  receivedTask ) {
+  assertion2(receivedTask.getMetaInformation().getLength() != 0, receivedTask.getMetaInformation().getLength(), receivedTask.toString());
+  if(receivedTask.getMetaInformation().getLength() > 0) {
+    Base::_receiveTasks[Base::_currentReceiveBuffer].push_back( receivedTask );
+    Base::_receiveTasks[Base::_currentReceiveBuffer].back().triggerReceive(Base::_dataTag);
+    logDebug(
+      "handleAndQueueReceivedTask(...)",
+      "started to receive " << Base::_receiveTasks[Base::_currentReceiveBuffer].size() <<
+      "th message from rank " << receivedTask._rank << " with " << receivedTask._metaInformation.getLength() <<
+      " entries and data pointing to " << receivedTask._data
+    );
+  }
+  else {
+    for (int i=0; i<-receivedTask.getMetaInformation().getLength(); i++) {
+      SendReceiveTaskType zeroLengthReceiveTask;
+
+      zeroLengthReceiveTask.setInvalid();
+
+      Base::_receiveTasks[Base::_currentReceiveBuffer].push_back( zeroLengthReceiveTask );
+    }
+  }
+}
+
+
+template<class Data, bool CreateCopiesOfSentData, class SendReceiveTaskType, class VectorContainer>
+void peano::heap::RLEBoundaryDataExchanger<Data,CreateCopiesOfSentData, SendReceiveTaskType,VectorContainer>::postprocessStartToSendData() {
+  _totalNumberOfSentMessagesThisTraversal = 0;
+}
+
+
+template<class Data, bool CreateCopiesOfSentData, class SendReceiveTaskType, class VectorContainer>
+void peano::heap::RLEBoundaryDataExchanger<Data,CreateCopiesOfSentData, SendReceiveTaskType,VectorContainer>::handleAndQueueSendTask( 
+  const SendReceiveTaskType&     sendTask,
+  const Data* const              data
+) {
+  logTraceIn( "handleAndQueueSendTask(...)" );
+  _totalNumberOfSentMessagesThisTraversal++;
+
+  if (sendTask.getMetaInformation().getLength()==0) {
+    _numberOfEmptyMessagesSinceLastNonEmptySendCall++;
+  }
+  else {
+    sendAllCompressedEmptyMessages();
+
+    Base::_sendTasks.push_back(sendTask);
+
+    Base::_sendTasks.back().setRank( Base::_rank );
+    Base::_sendTasks.back().getMetaInformation().send(Base::_rank, Base::_metaDataTag, true, SendReceiveTaskType::MetaInformation::ExchangeMode::NonblockingWithPollingLoopOverTests);
+
+    if (CreateCopiesOfSentData) {
+      Base::_sendTasks.back().wrapData(data);
+    }
+    else {
+      Base::_sendTasks.back().sendDataDirectlyFromBuffer(data);
+    }
+    assertion2( Base::_sendTasks.back().getMetaInformation().getLength() > 0, Base::_sendTasks.back().getMetaInformation().getLength(), Base::_sendTasks.back().toString() );
+    Base::_sendTasks.back().triggerSend(Base::_dataTag);
+  }
+  logTraceOut( "handleAndQueueSendTask(...)" );
+}

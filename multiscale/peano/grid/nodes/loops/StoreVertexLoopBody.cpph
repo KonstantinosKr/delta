@@ -1,0 +1,454 @@
+#include "peano/grid/nodes/Constants.h"
+#include "peano/stacks/Stacks.h"
+#include "peano/geometry/GeometryHelper.h"
+#include "peano/parallel/AdjacencyList.h"
+
+
+template <class Vertex, class Cell, class State, class VertexStack, class EventHandle, int CellFlagsFromEnumerator >
+tarch::logging::Log peano::grid::nodes::loops::StoreVertexLoopBody<Vertex,Cell,State,VertexStack,EventHandle, CellFlagsFromEnumerator >::_log( "peano::grid::nodes::loops::StoreVertexLoopBody" );
+
+
+#ifdef Parallel
+#include <set>
+
+#include "peano/parallel/SendReceiveBufferPool.h"
+#endif
+
+
+template <class Vertex, class Cell, class State, class VertexStack, class EventHandle, int CellFlagsFromEnumerator >
+peano::grid::nodes::loops::StoreVertexLoopBody<Vertex,Cell,State,VertexStack,EventHandle, CellFlagsFromEnumerator >::StoreVertexLoopBody(
+  State&                                    state,
+  Vertex*                                   fineGridVertices,
+  const SingleLevelEnumerator&              fineGridVerticesEnumerator,
+  Cell&                                     coarseGridCell,
+  Vertex *                                  coarseGridVertices,
+  const SingleLevelEnumerator&              coarseGridVerticesEnumerator,
+  const tarch::la::Vector<DIMENSIONS,int>&  fineGridPositionOfCell,
+  int*                                      counter,
+  VertexStack&                              vertexStack,
+  EventHandle&                              eventHandle,
+  peano::geometry::Geometry&                geometry
+):
+  _state(state),
+  _fineGridVertices(fineGridVertices),
+  _fineGridVerticesEnumerator(fineGridVerticesEnumerator),
+  _coarseGridCell(coarseGridCell),
+  _coarseGridVertices(coarseGridVertices),
+  _coarseGridVerticesEnumerator(coarseGridVerticesEnumerator),
+  _fineGridPositionOfCell(fineGridPositionOfCell),
+  _counter(counter),
+  _vertexStack(vertexStack),
+  _eventHandle(eventHandle),
+  _geometry(geometry) {
+}
+
+
+template <class Vertex, class Cell, class State, class VertexStack, class EventHandle, int CellFlagsFromEnumerator >
+void peano::grid::nodes::loops::StoreVertexLoopBody<Vertex,Cell,State,VertexStack,EventHandle, CellFlagsFromEnumerator >::exchangeVerticesDueToParallelisation(
+  int positionInVertexArray,
+  const tarch::la::Vector<DIMENSIONS,int>& positionInLocalCell
+) {
+  logTraceInWith3Arguments( "exchangeVerticesDueToParallelisation(...)", positionInVertexArray, positionInLocalCell, _fineGridVertices[positionInVertexArray].toString() );
+
+  #ifdef Parallel
+  const bool IrregularStaticGrid = CellFlagsFromEnumerator>=peano::grid::StationaryButIrregular;
+  if (!IrregularStaticGrid) {
+    if (
+      _state.isJoiningWithWorker() &&
+      _fineGridVertices[positionInVertexArray].isAdjacentToRemoteRank()
+    ) {
+      const std::set<int> ranks = _fineGridVertices[positionInVertexArray].getAdjacentRemoteRanks();
+      for (
+        std::set<int>::const_iterator p = ranks.begin();
+        p != ranks.end();
+        p++
+      ) {
+        if ( _state.isJoiningRank(*p) ) {
+          _fineGridVertices[positionInVertexArray].replaceAdjancyEntriesOfRemoteRankWithLocalRank(*p);
+        }
+      }
+    }
+
+    if (
+      _fineGridVertices[positionInVertexArray].isAdjacentToRemoteRank() &&
+      !_state.isJoiningWithMaster()
+    ) {
+      if ( !_fineGridVertices[positionInVertexArray].isRemote( _state, true, false) ) {
+        const std::set<int> ranks = _fineGridVertices[positionInVertexArray].getAdjacentRemoteRanks();
+        for (
+          std::set<int>::const_iterator p = ranks.begin();
+          p != ranks.end();
+          p++
+        ) {
+          if (!_state.isForkTriggeredForRank(*p) && !_state.isJoiningRank(*p) ) {
+            Vertex copy = _fineGridVertices[positionInVertexArray];
+            _eventHandle.prepareSendToNeighbour(
+              copy,
+              *p,
+              _fineGridVerticesEnumerator.getVertexPosition(positionInLocalCell),
+              _fineGridVerticesEnumerator.getCellSize(),
+              _fineGridVerticesEnumerator.getLevel()
+            );
+            if ( _state.isJoinWithMasterTriggered() ) {
+              copy.replaceAdjancyEntriesOfLocalRankWithMaster();
+            }
+
+            logDebug("exchangeVerticesDueToParallelisation(...)", "vertex at position " << positionInLocalCell << " belongs to parallel boundary. Send " << copy.toString() << " to rank " << *p );
+            peano::parallel::SendReceiveBufferPool::getInstance().sendVertex(copy,*p,peano::parallel::SendReceiveBufferPool::LIFO);
+          }
+        }
+      }
+      else {
+        if ( !_fineGridVertices[positionInVertexArray].isOutside() ) {
+          _eventHandle.destroyVertex(
+            _fineGridVertices[positionInVertexArray],
+            _fineGridVerticesEnumerator.getVertexPosition(positionInLocalCell),
+            _fineGridVerticesEnumerator.getCellSize(),
+            _coarseGridVertices,
+            _coarseGridVerticesEnumerator,
+            _coarseGridCell,
+            _fineGridPositionOfCell + positionInLocalCell
+          );
+          _fineGridVertices[positionInVertexArray].switchToOutside();
+        }
+
+        if ( _fineGridVertices[positionInVertexArray].getRefinementControl()==Vertex::Records::Refined ) {
+          _fineGridVertices[positionInVertexArray].erase();
+        }
+
+        _fineGridVertices[positionInVertexArray].eliminateAllAdjacencyInformationThatIdentifiesNeitherWorkerNorMaster();
+
+        logDebug("exchangeVerticesDueToParallelisation(...)", "coarsed vertex as it is remote and deleted all adjacency information: " << _fineGridVertices[positionInVertexArray].toString() );
+      }
+    }
+  }
+  #endif
+
+  logTraceOutWith1Argument( "exchangeVerticesDueToParallelisation(...)", _fineGridVertices[positionInVertexArray].toString() );
+}
+
+
+template <class Vertex, class Cell, class State, class VertexStack, class EventHandle, int CellFlagsFromEnumerator >
+void peano::grid::nodes::loops::StoreVertexLoopBody<Vertex,Cell,State,VertexStack,EventHandle, CellFlagsFromEnumerator >::updateRefinementFlagsAndStoreVertexToOutputStream(
+  int positionInVertexArray,
+  const tarch::la::Vector<DIMENSIONS,int>& positionInLocalCell
+) {
+  logTraceInWith2Arguments( "updateRefinementFlagsAndStoreVertexToOutputStream(...)", positionInVertexArray, positionInLocalCell );
+
+  assertion2(
+    !_fineGridVertices[positionInVertexArray].isHangingNode(),
+    _fineGridVertices[positionInVertexArray].toString(),
+    positionInVertexArray
+  );
+
+  _fineGridVertices[positionInVertexArray].refineVertexIfItHasOnlyRefinedAdjacentCells();
+
+  bool hasTriggeredRefinementForNextIteration = _fineGridVertices[positionInVertexArray].getRefinementControl() == Vertex::Records::RefinementTriggered;
+  #ifdef Parallel
+  hasTriggeredRefinementForNextIteration |= _fineGridVertices[positionInVertexArray].getRefinementControl() == Vertex::Records::EnforceRefinementTriggered;
+  const bool hasTriggeredEraseForNextIteration = (
+      _fineGridVertices[positionInVertexArray].getRefinementControl() == Vertex::Records::EraseTriggered &&
+      !_fineGridVertices[positionInVertexArray].isRemote(_state,true,false)
+    );
+  #else
+  const bool hasTriggeredEraseForNextIteration = _fineGridVertices[positionInVertexArray].getRefinementControl() == Vertex::Records::EraseTriggered;
+  #endif
+
+  _state.updateRefinementHistoryBeforeStore(
+    hasTriggeredRefinementForNextIteration,
+    hasTriggeredEraseForNextIteration
+  );
+
+  _fineGridVertices[positionInVertexArray].updateTransientRefinementFlagsBeforeVertexIsStoredToOutputStack();
+  
+  #ifdef SharedMemoryParallelisation
+  _coarseGridCell.incrementStoreToOutputStackCounter();
+  #endif
+
+  _vertexStack.push(peano::stacks::Constants::InOutStack, _fineGridVertices[positionInVertexArray]);
+
+  logTraceOut( "updateRefinementFlagsAndStoreVertexToOutputStream(...)" );
+}
+
+
+template <class Vertex, class Cell, class State, class VertexStack, class EventHandle, int CellFlagsFromEnumerator >
+void peano::grid::nodes::loops::StoreVertexLoopBody<Vertex,Cell,State,VertexStack,EventHandle, CellFlagsFromEnumerator >::destroyPersistentNode(
+  int                                       positionInArray,
+  const tarch::la::Vector<DIMENSIONS,int>&  positionInLocalCell
+) {
+  assertion1( !_fineGridVertices[positionInArray].isHangingNode(), _fineGridVertices[positionInArray] );
+  assertionNumericalEquals1(_fineGridVertices[positionInArray].getX(), _fineGridVerticesEnumerator.getVertexPosition(positionInLocalCell), _fineGridVertices[positionInArray] );
+
+  #ifdef Parallel
+  const bool StudyVertex = !_fineGridVertices[positionInArray].isOutside() && !_fineGridVertices[positionInArray].isRemote(_state, true, true );
+  #else
+  const bool StudyVertex = !_fineGridVertices[positionInArray].isOutside();
+  #endif
+
+  if (StudyVertex) {
+    _eventHandle.destroyVertex(
+      _fineGridVertices[positionInArray],
+      _fineGridVerticesEnumerator.getVertexPosition(positionInLocalCell),
+      _fineGridVerticesEnumerator.getCellSize(),
+      _coarseGridVertices,
+      _coarseGridVerticesEnumerator,
+      _coarseGridCell,
+      _fineGridPositionOfCell + positionInLocalCell
+    );
+  }
+}
+
+
+template <class Vertex, class Cell, class State, class VertexStack, class EventHandle, int CellFlagsFromEnumerator >
+void peano::grid::nodes::loops::StoreVertexLoopBody<Vertex,Cell,State,VertexStack,EventHandle, CellFlagsFromEnumerator >::invokeStoreVertexEvent(int positionInArray, const tarch::la::Vector<DIMENSIONS,int>& positionInLocalCell) {
+  #ifdef Parallel
+  const bool InvokeEventForVertex = !_fineGridVertices[positionInArray].isOutside()  && !_fineGridVertices[positionInArray].isRemote(_state, true, true );
+  #else
+  const bool InvokeEventForVertex = !_fineGridVertices[positionInArray].isOutside();
+  #endif
+
+//  const bool InvokeEventAccordingToSpecification =
+//    (_threadLocalEventHandle.touchVertexLastTimeSpecification().manipulates == peano::MappingSpecification::WHOLE_TREE) ||
+//    (_threadLocalEventHandle.touchVertexLastTimeSpecification().manipulates == peano::MappingSpecification::ONLY_LEAVES && _fineGridVertices[positionInArray].getRefinementControl() != Vertex::Records::Refined);
+  const bool InvokeEventAccordingToSpecification = true;
+
+  if (InvokeEventForVertex && InvokeEventAccordingToSpecification) {
+    _eventHandle.touchVertexLastTime(
+      _fineGridVertices[positionInArray],
+      _fineGridVerticesEnumerator.getVertexPosition(positionInLocalCell),
+      _fineGridVerticesEnumerator.getCellSize(),
+      _coarseGridVertices,
+      _coarseGridVerticesEnumerator,
+      _coarseGridCell,
+      _fineGridPositionOfCell + positionInLocalCell
+    );
+  }
+}
+
+
+template <class Vertex, class Cell, class State, class VertexStack, class EventHandle, int CellFlagsFromEnumerator >
+void peano::grid::nodes::loops::StoreVertexLoopBody<Vertex,Cell,State,VertexStack,EventHandle, CellFlagsFromEnumerator >::destroyHangingNode(
+  int positionInVertexArray,
+  const tarch::la::Vector<DIMENSIONS,int>& positionInLocalCell
+) {
+  assertionNumericalEquals1(_fineGridVertices[positionInVertexArray].getX(), _fineGridVerticesEnumerator.getVertexPosition(positionInLocalCell), _fineGridVertices[positionInVertexArray] );
+
+  _eventHandle.destroyHangingVertex(
+    _fineGridVertices[positionInVertexArray],
+    _fineGridVerticesEnumerator.getVertexPosition(positionInLocalCell),
+    _fineGridVerticesEnumerator.getCellSize(),
+    _coarseGridVertices,
+    _coarseGridVerticesEnumerator,
+    _coarseGridCell,
+    _fineGridPositionOfCell + positionInLocalCell
+  );
+}
+
+
+template <class Vertex, class Cell, class State, class VertexStack, class EventHandle, int CellFlagsFromEnumerator >
+void peano::grid::nodes::loops::StoreVertexLoopBody<Vertex,Cell,State,VertexStack,EventHandle, CellFlagsFromEnumerator >::invalidateCoarseGridTreeHeightAttributesIfRefined(
+  int                                       positionInVertexArray,
+  const tarch::la::Vector<DIMENSIONS,int>&  positionInLocalCell
+) {
+  if (
+    _fineGridVertices[positionInVertexArray].getRefinementControl()          == Vertex::Records::Refining ||
+    _fineGridVertices[positionInVertexArray].getCurrentAdjacentCellsHeight() == peano::grid::NotStationaryDueToInvalidation
+  ) {
+    dfor2(k)
+      const bool takeThisCoarseVertexIntoAccount = peano::grid::SingleLevelEnumerator::doesCoarseGridVertexInfluenceFineGridVertex(k,positionInLocalCell+_fineGridPositionOfCell);
+
+      if (takeThisCoarseVertexIntoAccount) {
+        //_state.updateRefinementHistoryAfterLoad( true, false, false, false );
+        _coarseGridVertices[ _coarseGridVerticesEnumerator(k)].invalidateAdjacentCellInformation();
+      }
+    enddforx
+  }
+}
+
+
+template <class Vertex, class Cell, class State, class VertexStack, class EventHandle, int CellFlagsFromEnumerator >
+void peano::grid::nodes::loops::StoreVertexLoopBody<Vertex,Cell,State,VertexStack,EventHandle, CellFlagsFromEnumerator >::updateCoarseGridTreeHeightAttributes(int positionInVertexArray, const tarch::la::Vector<DIMENSIONS,int>&  positionInLocalCell) {
+  logTraceInWith3Arguments( "updateCoarseGridTreeHeightAttributes(int)", positionInVertexArray, positionInLocalCell, _fineGridVertices[positionInVertexArray].toString() );
+  const peano::grid::CellFlags originalAnalysedValue = _fineGridVertices[positionInVertexArray].getCurrentAdjacentCellsHeight();
+
+  dfor2(k)
+    const bool takeThisCoarseVertexIntoAccount = peano::grid::SingleLevelEnumerator::doesCoarseGridVertexInfluenceFineGridVertex(k,positionInLocalCell+_fineGridPositionOfCell);
+
+    if (takeThisCoarseVertexIntoAccount) {
+      peano::grid::CellFlags analysedValue               = originalAnalysedValue;
+
+      #ifdef Parallel
+      if (
+        _fineGridVertices[positionInVertexArray].isAdjacentSubtreeForksIntoOtherRankFlagSet()
+      ) {
+        logDebug( "updateCoarseGridTreeHeightAttributes(int)", "set remote flag of coarse vertex due to " << _fineGridVertices[positionInVertexArray].toString() );
+        _coarseGridVertices[ _coarseGridVerticesEnumerator(k)].setAdjacentSubtreeForksIntoOtherRankFlag();
+      }
+      #endif
+                
+      if (analysedValue>= peano::grid::Leaf) {
+        inc(analysedValue);
+        if (
+          (_coarseGridVertices[ _coarseGridVerticesEnumerator(k)].getCurrentAdjacentCellsHeight() != peano::grid::Undefined ) &&
+          (_coarseGridVertices[ _coarseGridVerticesEnumerator(k)].getCurrentAdjacentCellsHeight() != analysedValue)
+        ) {
+          analysedValue = peano::grid::StationaryButIrregular;
+        }
+      }
+
+      #ifdef Parallel
+      const bool restrictInformation = 
+       !_fineGridVertices[positionInVertexArray].isOutside() ||
+        _coarseGridVertices[ _coarseGridVerticesEnumerator(k)].isOutside() ||
+        _fineGridVertices[positionInVertexArray].isAdjacentToRemoteRank();
+      #else
+      const bool restrictInformation =
+        !_fineGridVertices[positionInVertexArray].isOutside() ||
+        _coarseGridVertices[ _coarseGridVerticesEnumerator(k)].isOutside();
+      #endif
+      if (restrictInformation) {
+        _coarseGridVertices[ _coarseGridVerticesEnumerator(k)].setCurrentAdjacentCellsHeight(analysedValue);
+        logDebug( "updateCoarseGridTreeHeightAttributes(int)", "updated coarse grid vertex " << k << " with " << analysedValue << " to " << _coarseGridVertices[ _coarseGridVerticesEnumerator(k)].toString() );
+      }
+      else {
+        logDebug( "updateCoarseGridTreeHeightAttributes(int)", "do not update coarse grid vertex " << k << " with " << analysedValue << " as outer vertices influence exclusively outer vertices" );
+      }
+      
+      if (
+        _fineGridVertices[positionInVertexArray].isParentingRegularPersistentSubgridInNewSweepAlreadySet()
+        &&
+        restrictInformation
+      ) {
+        _coarseGridVertices[ _coarseGridVerticesEnumerator(k)].setIsParentingRegularPersistentSubgridFlag();
+      }
+    }
+  enddforx
+
+  logTraceOut( "updateCoarseGridTreeHeightAttributes(int)" );
+}
+
+
+template <class Vertex, class Cell, class State, class VertexStack, class EventHandle, int CellFlagsFromEnumerator >
+void peano::grid::nodes::loops::StoreVertexLoopBody<Vertex,Cell,State,VertexStack,EventHandle, CellFlagsFromEnumerator >::operator() (const peano::datatraversal::Action& action) {
+  const int positionInArray = _fineGridVerticesEnumerator(action._cartesianPosition);
+
+  logTraceInWith4Arguments( "operator()", action._cartesianPosition, action._id, _counter[positionInArray], positionInArray);
+
+  validateVertexInArray( positionInArray, action._cartesianPosition );
+
+  _counter[positionInArray]--;
+  assertion( _counter[positionInArray]>=0 );
+
+  const bool RegularStaticGrid   = CellFlagsFromEnumerator>=peano::grid::Leaf;
+  const bool StaticGrid          = CellFlagsFromEnumerator>=peano::grid::StationaryButIrregular;
+
+  // These assertions hold for the load. They do not hold for the store, as a
+  // grid part might be static right now whereas some parts of it have been
+  // deployed to another rank, i.e. the next time they are not static anymore.
+  // assertion1( !_state.isInvolvedInJoinOrFork() || !RegularStaticGrid, _state.toString() );
+  // assertion1( !_state.isInvolvedInJoinOrFork() || !StaticGrid,        _state.toString() );
+
+  if (RegularStaticGrid) {
+    assertion(  !(_counter[positionInArray]==CounterHangingNode) );
+    assertion(  !(_counter[positionInArray]==CounterNewNodeRefineDueToJoinThoughWorkerIsAlreadyErasing) );
+    assertion(StaticGrid);
+  }
+  if (StaticGrid) {
+    assertion4(
+      !(_counter[positionInArray]==CounterNewNode        && action._id==peano::stacks::Constants::InOutStack),
+      toString(static_cast<peano::grid::CellFlags>(CellFlagsFromEnumerator)), _fineGridVerticesEnumerator.toString(), _fineGridVertices[positionInArray].toString(), counterToString(_counter[positionInArray] )
+    );
+    assertion4(
+      !(_counter[positionInArray]==CounterPersistentNodeDelete && action._id==peano::stacks::Constants::InOutStack),
+      toString(static_cast<peano::grid::CellFlags>(CellFlagsFromEnumerator)), _fineGridVerticesEnumerator.toString(), _fineGridVertices[positionInArray].toString(), counterToString(_counter[positionInArray] )
+    );
+    assertion4(
+      !(_counter[positionInArray]==CounterNewNode),
+      toString(static_cast<peano::grid::CellFlags>(CellFlagsFromEnumerator)), _fineGridVerticesEnumerator.toString(), _fineGridVertices[positionInArray].toString(), counterToString(_counter[positionInArray] )
+    );
+    assertion4(
+      !(_counter[positionInArray]==CounterPersistentNodeDelete),
+      toString(static_cast<peano::grid::CellFlags>(CellFlagsFromEnumerator)), _fineGridVerticesEnumerator.toString(), _fineGridVertices[positionInArray].toString(), counterToString(_counter[positionInArray] )
+    );
+    assertion4(
+      !(_counter[positionInArray]==CounterNewNodeRefineDueToJoinThoughWorkerIsAlreadyErasing),
+      toString(static_cast<peano::grid::CellFlags>(CellFlagsFromEnumerator)), _fineGridVerticesEnumerator.toString(), _fineGridVertices[positionInArray].toString(), counterToString(_counter[positionInArray] )
+    );
+  }
+
+  const bool CaseStorePersistentVertex =                       (_counter[positionInArray]==CounterPersistentNode && action._id==peano::stacks::Constants::InOutStack);
+  const bool CaseStoreNewVertex        = !StaticGrid        && (_counter[positionInArray]==CounterNewNode        && action._id==peano::stacks::Constants::InOutStack);
+  const bool CaseHangingNode           = !RegularStaticGrid && (_counter[positionInArray]==CounterHangingNode);
+  #ifdef Parallel
+  const bool CaseDeleteNode            = !StaticGrid        &&
+    (
+      (_counter[positionInArray]==CounterPersistentNodeDelete && action._id==peano::stacks::Constants::InOutStack) ||
+      (_counter[positionInArray]==CounterNewNodeRefineDueToJoinThoughWorkerIsAlreadyErasing && action._id==peano::stacks::Constants::InOutStack)
+    );
+  const bool CaseStoreOnTempStacks =
+      _counter[positionInArray]==CounterPersistentNode ||
+      ( !StaticGrid && _counter[positionInArray]==CounterNewNode) ||
+      ( !StaticGrid && _counter[positionInArray]==CounterNewNodeRefineDueToJoinThoughWorkerIsAlreadyErasing) ||
+      ( !StaticGrid && _counter[positionInArray]==CounterPersistentNodeDelete);
+  #else
+  const bool CaseDeleteNode        = !StaticGrid        && (_counter[positionInArray]==CounterPersistentNodeDelete && action._id==peano::stacks::Constants::InOutStack);
+  const bool CaseStoreOnTempStacks =
+      _counter[positionInArray]==CounterPersistentNode ||
+      ( !StaticGrid && _counter[positionInArray]==CounterNewNode) ||
+      ( !StaticGrid && _counter[positionInArray]==CounterPersistentNodeDelete);
+  #endif
+
+  if ( CaseStorePersistentVertex || CaseStoreNewVertex ) {
+    logDebug( "operator()", "vertex at " << positionInArray << " is a persistent vertex going to out stack: " << _fineGridVertices[positionInArray].toString() );
+    invokeStoreVertexEvent(positionInArray, action._cartesianPosition);
+    exchangeVerticesDueToParallelisation(positionInArray, action._cartesianPosition);
+    updateRefinementFlagsAndStoreVertexToOutputStream(positionInArray, action._cartesianPosition);
+    updateCoarseGridTreeHeightAttributes(positionInArray, action._cartesianPosition);
+  }
+  else if ( CaseHangingNode ) {
+    logDebug( "operator()", "vertex at " << positionInArray << " is a hanging vertex: " << _fineGridVertices[positionInArray].toString() );
+    destroyHangingNode(positionInArray, action._cartesianPosition);
+  }
+  else if ( CaseDeleteNode ) {
+    logDebug( "operator()", "vertex at " << positionInArray << " is a vertex that shall be deleted: " << _fineGridVertices[positionInArray].toString() << "; id=" << action._id << ", counter=" << _counter[positionInArray] << ", regular-static=" <<  RegularStaticGrid << ", static=" << StaticGrid << ", counter=" << counterToString(_counter[positionInArray]) );
+    destroyPersistentNode(positionInArray, action._cartesianPosition);
+  }
+  else if ( CaseStoreOnTempStacks ) {
+    logDebug( "operator()", "vertex at " << positionInArray << " is a vertex that shall be stored to a temporary stack: " << _fineGridVertices[positionInArray].toString() );
+    invalidateCoarseGridTreeHeightAttributesIfRefined(positionInArray, action._cartesianPosition);
+    updateCoarseGridTreeHeightAttributes(positionInArray, action._cartesianPosition);
+    _vertexStack.push(action._id, _fineGridVertices[positionInArray]);
+  }
+  else {
+    logDebug( "operator()", "vertex at " << positionInArray << " is not to be stored: " << _fineGridVertices[positionInArray].toString()  << "; id=" << action._id << ", counter=" << _counter[positionInArray] << ", regular-static=" <<  RegularStaticGrid << ", static=" << StaticGrid << ", counter=" << counterToString(_counter[positionInArray]) );
+  }
+
+  logTraceOutWith4Arguments( "operator()", action._cartesianPosition, action._id,  _fineGridVertices[positionInArray], _counter[positionInArray]);
+}
+
+
+template <class Vertex, class Cell, class State, class VertexStack, class EventHandle, int CellFlagsFromEnumerator >
+void peano::grid::nodes::loops::StoreVertexLoopBody<Vertex,Cell,State,VertexStack,EventHandle, CellFlagsFromEnumerator >::validateVertexInArray(
+  int                                       positionInVertexArray,
+  const tarch::la::Vector<DIMENSIONS,int>&  positionInLocalCell
+) const {
+  assertionEquals3(
+    _fineGridVertices[positionInVertexArray].getLevel(),
+    _fineGridVerticesEnumerator.getLevel(),
+    positionInVertexArray,
+    _fineGridVerticesEnumerator.toString(),
+    _fineGridVertices[positionInVertexArray].toString()
+  );
+  for (int d=0; d<DIMENSIONS; d++) {
+    assertionNumericalEquals7(
+      _fineGridVertices[positionInVertexArray].getX()(d), _fineGridVerticesEnumerator.getVertexPosition(positionInLocalCell)(d),
+      positionInVertexArray,
+      _fineGridVertices[positionInVertexArray].getX(),
+      positionInLocalCell,
+      _fineGridVerticesEnumerator.getVertexPosition(positionInLocalCell),
+      d,
+      _fineGridVerticesEnumerator.toString(),
+      _fineGridVertices[positionInVertexArray].toString()
+    );
+  }
+}

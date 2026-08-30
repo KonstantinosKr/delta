@@ -1,0 +1,114 @@
+#include "tarch/Assertions.h"
+
+
+template<int Size, typename Scalar>
+tarch::la::Vector<Size,Scalar>::Vector ():
+  _values() {
+}
+
+
+template<int Size, typename Scalar>
+tarch::la::Vector<Size,Scalar>::Vector(Scalar* values) {
+  for (int i=0; i<Size; i++) {
+    _values[i] = *(values+i);
+  }
+}
+
+
+template<int Size, typename Scalar>
+tarch::la::Vector<Size,Scalar>::Vector (Scalar value0, Scalar value1) {
+  assertion(Size==2);
+  _values[0] = value0;
+  _values[1] = value1;
+}
+
+
+template<int Size, typename Scalar>
+tarch::la::Vector<Size,Scalar>::Vector (Scalar value0, Scalar value1, Scalar value2) {
+  assertion(Size==3);
+  _values[0] = value0;
+  _values[1] = value1;
+  _values[2] = value2;
+}
+
+
+template<int Size, typename Scalar>
+tarch::la::Vector<Size,Scalar>&  tarch::la::Vector<Size,Scalar>::operator= (
+  const Vector<Size,Scalar>&  toAssign
+) {
+  assertion(this != &toAssign);
+  #ifdef CompilerICC
+  #pragma ivdep
+  #endif
+  for (int i=0; i<Size; i++) {
+    _values[i] = toAssign._values[i];
+  }
+  return *this;
+}
+
+
+template<int Size, typename Scalar>
+tarch::la::VectorAssignList<Size,Scalar> tarch::la::Vector<Size,Scalar>::operator=(
+  const Scalar& value
+) {
+  assertion(Size > 0);
+  _values[0] = value;
+  return VectorAssignList<Size,Scalar>(*this,1);
+}
+
+template<int Size, typename Scalar>
+tarch::la::Vector<Size,Scalar>::Vector (
+  const Vector<Size,Scalar>& toCopy
+):
+  _values() {
+  assertion(this != &toCopy);
+  #ifdef CompilerICC
+  #pragma ivdep
+  #endif
+  for (int i=0; i<Size; i++) {
+    _values[i] = toCopy._values[i];
+  }
+}
+
+
+template<int Size, typename Scalar>
+tarch::la::Vector<Size,Scalar>::Vector(
+  const Scalar& initialValue
+):
+  _values() {
+  for (int i=0; i < Size; i++) {
+    _values[i] = initialValue;
+  }
+}
+
+
+template<int Size, typename Scalar>
+int tarch::la::Vector<Size,Scalar>::size() const {
+  return Size;
+}
+
+
+template<int Size, typename Scalar>
+std::string tarch::la::Vector<Size,Scalar>::toString() const {
+  std::ostringstream os;
+  os << "[";
+  for ( int i=0; i < Size; i++ ) {
+    os << _values[i];
+    if ( i + 1 < Size ) {
+      os << ",";
+    }
+  }
+  os << "]";
+  return os.str();
+}
+
+
+template<int Size, typename Scalar>
+template <typename NewScalarType>
+tarch::la::Vector<Size,NewScalarType> tarch::la::Vector<Size,Scalar>::convertScalar() const {
+  tarch::la::Vector<Size,NewScalarType> result;
+  for ( int i=0; i < Size; i++ ) {
+    result[i] = _values[i];
+  }
+  return result;
+}

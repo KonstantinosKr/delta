@@ -1,0 +1,244 @@
+<h2>Logical topology on MPI ranks</h2>
+
+<a href="_IMAGE_DIRECTORY_/topology.pdf"><img src="_IMAGE_DIRECTORY_/topology.png" /></a>
+
+<p>
+  This plot is trivial/empty if you run without MPI or only one MPI rank.
+</p>
+
+<h2>Walltimes</h2>
+<a href="_IMAGE_DIRECTORY_/walltime.pdf"><img src="_IMAGE_DIRECTORY_/walltime.png" /></a>
+<a href="_IMAGE_DIRECTORY_/walltime.symlog.pdf"><img src="_IMAGE_DIRECTORY_/walltime.symlog.png" /></a>
+
+<p>
+ We plot the time per grid sweeps. Please note that the first time per grid sweep
+ usually is invalid as it lacks information when the performance analysis has been
+ switched on. We thus set it null manually.
+</p>
+
+<h2>Number of grid entities</h2>
+
+<h3>Inner leaf cells and total inner cells</h3>
+<a href="_IMAGE_DIRECTORY_/inner-leaf-cells.pdf"><img src="_IMAGE_DIRECTORY_/inner-leaf-cells.png" /></a>
+<a href="_IMAGE_DIRECTORY_/inner-cells.pdf"><img src="_IMAGE_DIRECTORY_/inner-cells.png" /></a>
+
+<p>
+ If the values here all are -1, you have compiled Peano without -DTrackGridStatistics. 
+</p>
+
+<h3>Outer leaf cells and total outer cells</h3>
+<a href="_IMAGE_DIRECTORY_/outer-leaf-cells.pdf"><img src="_IMAGE_DIRECTORY_/outer-leaf-cells.png" /></a>
+<a href="_IMAGE_DIRECTORY_/outer-cells.pdf"><img src="_IMAGE_DIRECTORY_/outer-cells.png" /></a>
+
+<p>
+ If the values here all are -1, you have compiled Peano without -DTrackGridStatistics. 
+</p>
+
+<h3>Max. memory demands for local cells</h3>
+<a href="_IMAGE_DIRECTORY_/local-cells.pdf"><img src="_IMAGE_DIRECTORY_/local-cells.png" /></a>
+
+<p>
+ These statistics are determined by the max. dynamic memory required. Peano relies on standard C++ vectors
+ which may grow but hardly ever shrink. If you see a massive imbalance here, it may not neccessarily mean
+ that you are ill-balanced. It might be that only temporarily some ranks have a very high cell count and thus
+ require data structures that are reasonably big. If some ranks see dramatically high cell counts, you have 
+ to build up your grid more carefully and re-balance more often.
+</p> 
+
+
+<h2>Workload</h2>
+
+<h3>Workload per rank</h3>
+
+<a href="_IMAGE_DIRECTORY_/workload-per-rank.pdf"><img src="_IMAGE_DIRECTORY_/workload-per-rank.png" /></a>
+<a href="_IMAGE_DIRECTORY_/workload-per-rank.symlog.pdf"><img src="_IMAGE_DIRECTORY_/workload-per-rank.symlog.png" /></a>
+
+<p>
+  The filled region is the actual local work volume of a rank. It has to be 
+  smaller than the region of responsibility that might overlap the actual domain.
+  Rank 0 should deploy all of its work to other ranks and focus solely on load 
+  balancing and simulation administration, i.e. its filled region should be empty.
+  The vertical lines highlight those ranks with a particular high workload.
+  If you want to speed up your code, it might be reasonable to try to reduce the
+  load on these ranks or to make them benefit from multiple cores significiantly.
+</p>
+
+<p>
+  This plot is trivial/empty if you run without MPI or only one MPI rank.
+</p>
+
+
+<h3>Workload per node</h3>
+
+<a href="_IMAGE_DIRECTORY_/workload-per-node.pdf"><img src="_IMAGE_DIRECTORY_/workload-per-node.png" /></a>
+
+<p>
+ The plots illustrate the aggregated work per compute node. A strong imbalance 
+ here on the one hand implies that the work itself is imbalanced - at least as 
+ long as we assume roughly the same number of ranks per node. On the other hand,
+ it suggests that we quickly might run into out of memory problems.
+</p>
+
+<p>
+  This plot is trivial/empty if you run without MPI or only one MPI rank.
+</p>
+
+<h2>Domain decomposition</h2>
+
+<h3> Node-wisely </h3>
+
+<a href="_IMAGE_DIRECTORY_/dd.pdf"><img src="_IMAGE_DIRECTORY_/dd.png" /></a>
+
+
+<p>
+ This view is not available for d=3. It is trivial/empty if you run without MPI or only one MPI rank.
+</p>
+
+<h3> Level-wisely </h3>
+
+<a href="_IMAGE_DIRECTORY_/dd.level1.pdf"><img src="_IMAGE_DIRECTORY_/dd.level1.png" /></a>
+<a href="_IMAGE_DIRECTORY_/dd.level2.pdf"><img src="_IMAGE_DIRECTORY_/dd.level2.png" /></a>
+<a href="_IMAGE_DIRECTORY_/dd.level3.pdf"><img src="_IMAGE_DIRECTORY_/dd.level3.png" /></a>
+<a href="_IMAGE_DIRECTORY_/dd.level3.pdf"><img src="_IMAGE_DIRECTORY_/dd.level4.png" /></a>
+<a href="_IMAGE_DIRECTORY_/dd.level3.pdf"><img src="_IMAGE_DIRECTORY_/dd.level5.png" /></a>
+<a href="_IMAGE_DIRECTORY_/dd.level3.pdf"><img src="_IMAGE_DIRECTORY_/dd.level6.png" /></a>
+
+
+<p>
+  The gallery above illustrates the domain decomposition for up to the first six levels of the grid 
+  resolution. If finer levels are split up, too, you find further plots in the output directory.
+</p>
+
+<p>
+  This plot is trivial/empty if you run without MPI or only one MPI rank.
+</p>
+
+
+<h3>MPI communication trace</h3>
+
+<p>
+Two two plots have different zoom factors. The more detailed plot might not be available if trace is too detailed due to plot restrictions.
+</p>
+
+<a href="_IMAGE_DIRECTORY_/mpi-trace.pdf"><img src="_IMAGE_DIRECTORY_/mpi-trace.png" /></a>
+
+<table border="1">
+ <tr>
+  <td> Dotted vertical line  </td>
+  <td> Identifies global grid sweep starts. </td>
+ </tr>
+ <tr>
+  <td> Solid (small) vertical line</td>
+  <td> Identifies local (per rank) grid sweep start. </td>
+ </tr>
+ <tr>
+  <td bgcolor="#00ff00"> </td>
+  <td> Time spent within the local compute tree. Can coincide with time waiting for workers (see below). </td>
+ </tr>
+ <tr>
+  <td bgcolor="#ff0000"> </td>
+  <td> Time local iteration waits for one of its worker to deliver worker-finished message (vertical communication). 
+       This is often part of the local tree traversal, i.e. the two activities overlap and then yield a very dark red phase. </td>
+ </tr>
+ <tr>
+  <td bgcolor="#660000"> </td>
+  <td> Time local iteration waits for its master to deliver kick-off messages (vertical communication). </td>
+ </tr>
+ <tr>
+  <td bgcolor="#0066ff"> </td>
+  <td> Time required to release synchronous heap data (typically vertical master-worker communication). </td>
+ </tr>
+ <tr>
+  <td bgcolor="#000066"> </td>
+  <td> Time required to release asynchronous heap data (horizontal communication). These bars are long if heap data from neighbouring ranks is not available yet. </td>
+ </tr>
+ <tr>
+  <td bgcolor="#ffff00"> </td>
+  <td> Time required to release join data (dynamic load balancing). </td>
+ </tr>
+ <tr>
+  <td bgcolor="#666600"> </td>
+  <td> Time required to release boundary data (horizontal data). </td>
+ </tr>
+ <tr>
+  <td bgcolor="#ffffff"> </td>
+  <td> White areas typically depict time each rank traverses outer or remove cells neighbouring its own partition. </td>
+ </tr>
+</table>
+
+
+<p>
+  A very detailed plot might be available as 
+  <a href="_IMAGE_DIRECTORY_/mpi-trace-detailed.png">png</a>
+  or 
+  <a href="_IMAGE_DIRECTORY_/mpi-trace-detailed.pdf">pdf</a>
+  if the local matplotlib plotter supports reasonably big images.
+</p>
+
+<p>
+  This plot is trivial/empty if you run without MPI or only one MPI rank.
+</p>
+
+
+<h3>Late workers</h3>
+
+<a href="_IMAGE_DIRECTORY_/late-workers.plain.pdf"><img src="_IMAGE_DIRECTORY_/late-workers.plain.png" /></a>
+<a href="_IMAGE_DIRECTORY_/late-workers.plain.pdf"><img src="_IMAGE_DIRECTORY_/late-workers.average.png" /></a>
+<a href="_IMAGE_DIRECTORY_/late-workers.plain.pdf"><img src="_IMAGE_DIRECTORY_/late-workers.max.png" /></a>
+
+<p>
+  This plot is trivial/empty if you run without MPI or only one MPI rank.
+</p>
+
+
+<h3>Late masters</h3>
+
+<a href="_IMAGE_DIRECTORY_/late-masters.plain.pdf"><img src="_IMAGE_DIRECTORY_/late-masters.plain.png" /></a>
+<a href="_IMAGE_DIRECTORY_/late-masters.plain.pdf"><img src="_IMAGE_DIRECTORY_/late-masters.average.png" /></a>
+<a href="_IMAGE_DIRECTORY_/late-masters.plain.pdf"><img src="_IMAGE_DIRECTORY_/late-masters.max.png" /></a>
+
+<p>
+  This plot is trivial/empty if you run without MPI or only one MPI rank.
+</p>
+
+
+<h3>Late boundary exchanges</h3>
+
+<a href="_IMAGE_DIRECTORY_/late-boundaries.pdf"><img src="_IMAGE_DIRECTORY_/late-boundaries.png" /></a>
+
+<p>
+  This plot is trivial/empty if you run without MPI or only one MPI rank.
+</p>
+
+
+<h2>Rank-specific analyses</h2>
+
+<p>
+ The concurrency plots below are available if and only if you have translated with shared memory features.
+ All data results from sampling, i.e. is coarsened in time.
+</p>
+<ul>
+ <li>
+  The <b>max concurrency level</b> denotes which concurrency was exposed to the Peano job system, i.e. how many 
+  tasks/jobs are available at a certain time. The potential max concurrency level denotes how many tasks
+  would have been available had the grain size been one for all algorithmic phases. Basically, it denotes
+  how many cores could have been used efficiently if the multithreading were without any overhead.
+ </li>
+ <li>
+  The concurrency analysis does not take into account the <b>number of background tasks</b>. Background tasks are
+  supposed to slip into idle thread time. If there is a sufficient number of background tasks, the actual potential
+  concurrency level is way higher than the denoted level. How big this gain is however depends on the number of 
+  background threads you do permit and it depends on the arithmetic weight of the tasks.
+ </li>
+ <li>
+  As we use sampling, all concurrency data are snapshots. The <b>time averaged</b> plot weights the samples with 
+  the time in-between two samples. It thus gives a fairer estimate of the actual core usage or the potential core
+  usage.
+ </li> 
+ <li>
+  The plot <b>cpu time vs. real time</b> finally results from real system measurements and thus illustrates how 
+  busy the system has been at any point. This is the only metric that actually comprises real system overheads.
+ </li>
+</ul>
+
+

@@ -1,0 +1,88 @@
+#include "peano/utils/Loop.h"
+#include "peano/stacks/Stacks.h"
+#include "peano/grid/aspects/CellPeanoCurve.h"
+
+
+template <class Vertex, class Cell, class CellStack>
+tarch::logging::Log peano::grid::nodes::tasks::LoadCellsOnRegularRefinedPatch<Vertex,Cell,CellStack>::_log( "peano::grid::nodes::tasks::LoadCellsOnRegularRefinedPatch" );
+
+
+template <class Vertex, class Cell, class CellStack>
+peano::grid::nodes::tasks::LoadCellsOnRegularRefinedPatch<Vertex,Cell,CellStack>::LoadCellsOnRegularRefinedPatch(
+  peano::utils::LoopDirection                                       topLevelLoopDirection,
+  const int                                                         treeDepth,
+  const bool                                                        isTraversalInverted,
+  peano::grid::RegularGridContainer<Vertex,Cell>&  regularGridContainer,
+  CellStack&                                                        cellStack,
+  bool                                                              runsInParallelToOtherTasks
+):
+  _topLevelLoopDirection(topLevelLoopDirection),
+  _treeDepth(treeDepth),
+  _isTraversalInverted(isTraversalInverted),
+  _regularGridContainer(regularGridContainer),
+  _cellStack(cellStack),
+  _runsInParallelToOtherTasks(runsInParallelToOtherTasks) {
+}
+
+
+template <class Vertex, class Cell, class CellStack>
+void peano::grid::nodes::tasks::LoadCellsOnRegularRefinedPatch<Vertex,Cell,CellStack>::loadCells(
+  peano::utils::LoopDirection               loopDirection,
+  int                                       currentLevel,
+  const tarch::la::Vector<DIMENSIONS,int>&  offsetWithinPatch
+) {
+  logTraceInWith5Arguments( "loadCells(...)", loopDirection, currentLevel, _treeDepth, offsetWithinPatch, _isTraversalInverted );
+  peano::utils::LoopDirection copyOfLoopDirectionForRecursion = loopDirection;
+
+  const int CellsPerAxis = tarch::la::aPowI(currentLevel,3);
+  zfor3(k,loopDirection)
+    const int cellIndex = peano::utils::dLinearisedWithoutLookup(k + offsetWithinPatch*3,CellsPerAxis);
+     logDebug( "loadCells(...)", "k=" << k << ", cellIndex=" << cellIndex );
+     _regularGridContainer.setCell( currentLevel, cellIndex, _cellStack.pop(peano::stacks::Constants::InOutStack ) );
+    if (currentLevel<_treeDepth) {
+       assertion4( _regularGridContainer.getCell(currentLevel,cellIndex).isRefined(), _regularGridContainer.getCell(currentLevel,cellIndex).toString(), currentLevel, _treeDepth, offsetWithinPatch );
+    }
+    else {
+      assertion4( _regularGridContainer.getCell(currentLevel,cellIndex).isLeaf(), _regularGridContainer.getCell(currentLevel,cellIndex).toString(), currentLevel, _treeDepth, offsetWithinPatch );
+    }
+  endzfor
+
+  // If another task runs in paralle, we should immediately free the level to
+  // allow the descend task to perform enterCell, e.g., on this level.
+  // Otherwise, we set read-patchs-cell for all levels at the very end in one
+  // bunch and, hence, need to lock the container only once as well.
+  if (_runsInParallelToOtherTasks) {
+    _regularGridContainer.haveReadAllChildrenCellsOfOneRefinedNode(currentLevel);
+  }
+
+  if (currentLevel<_treeDepth) {
+    zfor3(k,copyOfLoopDirectionForRecursion)
+      const int cellIndex = peano::utils::dLinearisedWithoutLookup(k + offsetWithinPatch*3,CellsPerAxis);
+
+      loadCells(
+        peano::grid::aspects::CellPeanoCurve::getLoopDirection(
+          _regularGridContainer.getCell(currentLevel,cellIndex),
+          _isTraversalInverted
+        ),
+        currentLevel+1,
+        k + offsetWithinPatch*3
+      );
+    endzfor
+  }
+
+  logTraceOut( "loadCells(...)" );
+}
+
+
+template <class Vertex, class Cell, class CellStack>
+bool peano::grid::nodes::tasks::LoadCellsOnRegularRefinedPatch<Vertex,Cell,CellStack>::operator()() {
+  _regularGridContainer.haveReadAllCells(0);
+
+  loadCells( _topLevelLoopDirection, 1, 0 );
+
+  if (!_runsInParallelToOtherTasks) {
+    _regularGridContainer.haveReadAllCells(_treeDepth);
+  }
+
+  return false;
+}

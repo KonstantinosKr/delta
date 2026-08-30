@@ -1,0 +1,505 @@
+#ifdef Parallel
+#include "tarch/parallel/Node.h"
+#endif
+
+
+#include "tarch/multicore/MulticoreDefinitions.h"
+#include "peano/grid/RegularGridContainer.h"
+
+#include <limits>
+
+
+template <class CellData>
+tarch::logging::Log peano::grid::Cell<CellData>::_log( "peano::grid::Cell<CellData>" );
+
+
+template <class CellData>
+peano::grid::Cell<CellData>::Cell():
+  _cellData() {
+  _cellData.setIsInside(false);
+  _cellData.setState( CellData::Leaf );
+
+  #ifdef SharedMemoryParallelisation
+  _cellData.setNumberOfLoadsFromInputStream(0);
+  _cellData.setNumberOfStoresToOutputStream(0);
+  #endif
+
+  #ifdef Parallel
+  _cellData.setResponsibleRank(tarch::parallel::Node::getInstance().getRank());
+  _cellData.setSubtreeHoldsWorker(false);
+  _cellData.setCellIsAForkCandidate(true);
+  #endif
+  
+  #ifdef PersistentRegularSubtrees
+  _cellData.setPersistentRegularSubtreeIndex(NoPersistentRegularSubtree);
+  #endif
+}
+
+
+template <class CellData>
+peano::grid::Cell<CellData>::Cell(const typename Cell::DoNotCallStandardConstructor&) {
+}
+
+#ifdef PackedRecords
+template <class CellData>
+peano::grid::Cell<CellData>::Cell(const PersistentCell& argument):
+  _cellData( (typename CellData::Packed(argument)).convert() ) {
+
+  #ifdef Parallel
+  assertion3( _cellData.getResponsibleRank()>=0,                                                      toString(), argument.getResponsibleRank(), tarch::parallel::Node::getInstance().getRank());
+  assertion3( _cellData.getResponsibleRank()<tarch::parallel::Node::getInstance().getNumberOfNodes(), toString(), argument.getResponsibleRank(), tarch::parallel::Node::getInstance().getRank());
+  #endif
+}
+#else
+template <class CellData>
+peano::grid::Cell<CellData>::Cell(const PersistentCell& argument):
+  _cellData( argument ) {
+
+  #ifdef Parallel
+  assertion4(
+    _cellData.getResponsibleRank()>=0,
+    toString(),
+    argument.getAccessNumber(),
+    argument.getResponsibleRank(),
+    tarch::parallel::Node::getInstance().getRank()
+  );
+  assertion4(
+    _cellData.getResponsibleRank()<tarch::parallel::Node::getInstance().getNumberOfNodes(),
+    toString(),
+    argument.getAccessNumber(),
+    argument.getResponsibleRank(),
+    tarch::parallel::Node::getInstance().getRank()
+  );
+  #endif
+}
+#endif
+
+template <class CellData>
+peano::grid::Cell<CellData>::~Cell() {
+}
+
+
+#ifdef SharedMemoryParallelisation
+template <class CellData>
+void peano::grid::Cell<CellData>::setInputOutputStackAccessStatistics(int input, int output) {
+  assertion1( input  >= 0, toString() );
+  assertion1( output >= 0, toString() );
+
+  assertion1( input>0  || isLeaf(), toString() );
+  assertion1( output>0 || isLeaf(), toString() );
+
+  _cellData.setNumberOfLoadsFromInputStream(input);
+  _cellData.setNumberOfStoresToOutputStream(output);
+}
+
+
+template <class CellData>
+void peano::grid::Cell<CellData>::clearInputOutputStackAccessStatistics() {
+  // input can be empty if the refined cell just has been created in the
+  // iteration before
+  #if !defined(PersistentRegularSubtrees)
+  assertion1(
+      !isRefined()
+    || rootsPersistentRegularSubtree()
+    || _cellData.getNumberOfLoadsFromInputStream()>=TWO_POWER_D // that's the inner vertices and we have at most these inner vertices (trivial lower bound)
+    || _cellData.getNumberOfLoadsFromInputStream()==0,
+    toString()
+  );
+  assertion1(
+      !isRefined()
+    || rootsPersistentRegularSubtree()
+    || _cellData.getNumberOfStoresToOutputStream()>=TWO_POWER_D // that's the inner vertices and we have at most these inner vertices (trivial lower bound)
+    || _cellData.getNumberOfStoresToOutputStream()==0,
+    toString()
+  );
+  #endif
+
+  _cellData.setNumberOfLoadsFromInputStream(0);
+  _cellData.setNumberOfStoresToOutputStream(0);
+}
+
+
+template <class CellData>
+void peano::grid::Cell<CellData>::incrementLoadFromInputStackCounter() {
+  assertion1( _cellData.getNumberOfLoadsFromInputStream()>=0, toString() );
+  _cellData.setNumberOfLoadsFromInputStream(_cellData.getNumberOfLoadsFromInputStream()+1);
+}
+
+
+template <class CellData>
+void peano::grid::Cell<CellData>::incrementStoreToOutputStackCounter() {
+  assertion1( _cellData.getNumberOfStoresToOutputStream()>=0, toString() );
+  _cellData.setNumberOfStoresToOutputStream(_cellData.getNumberOfStoresToOutputStream()+1);
+}
+
+
+template <class CellData>
+void peano::grid::Cell<CellData>::restrictInputOutputStackAccessStatistics( const Cell<CellData>& subcell ) {
+  _cellData.setNumberOfLoadsFromInputStream(
+    _cellData.getNumberOfLoadsFromInputStream() +
+    subcell._cellData.getNumberOfLoadsFromInputStream()
+  );
+
+  _cellData.setNumberOfStoresToOutputStream(
+    _cellData.getNumberOfStoresToOutputStream() +
+    subcell._cellData.getNumberOfStoresToOutputStream()
+  );
+}
+
+
+template <class CellData>
+void peano::grid::Cell<CellData>::storedCellOfRegularRefinedGrid() {
+  const int tmp = _cellData.getNumberOfStoresToOutputStream();
+  _cellData.setNumberOfStoresToOutputStream(_cellData.getNumberOfLoadsFromInputStream());
+  _cellData.setNumberOfLoadsFromInputStream(tmp);
+
+  assertion1( _cellData.getNumberOfLoadsFromInputStream()  >= 0, toString() );
+  assertion1( _cellData.getNumberOfStoresToOutputStream() >= 0, toString() );
+
+  assertion1( _cellData.getNumberOfLoadsFromInputStream()>0  || isLeaf(), toString() );
+  assertion1( _cellData.getNumberOfStoresToOutputStream()>0 || isLeaf(), toString() );
+}
+
+
+template <class CellData>
+int peano::grid::Cell<CellData>::getNumberOfLoadsFromInputStack() const {
+  return _cellData.getNumberOfStoresToOutputStream();
+}
+
+
+template <class CellData>
+int peano::grid::Cell<CellData>::getNumberOfStoresToOutputStack() const {
+  return _cellData.getNumberOfLoadsFromInputStream();
+}
+#endif
+
+
+template <class CellData>
+bool peano::grid::Cell<CellData>::isOutside() const {
+  return !_cellData.getIsInside();
+}
+
+
+template <class CellData>
+bool peano::grid::Cell<CellData>::isInside() const {
+  return _cellData.getIsInside();
+}
+
+
+template <class CellData>
+void peano::grid::Cell<CellData>::switchToInside() {
+  assertion1( isOutside(), *this );
+  _cellData.setIsInside(true);
+}
+
+
+template <class CellData>
+void peano::grid::Cell<CellData>::switchToOutside() {
+  _cellData.setIsInside(false);
+}
+
+
+template <class CellData>
+void peano::grid::Cell<CellData>::switchToRoot(int rootLevel) {
+  assertion1( isLeaf(), *this );
+  _cellData.setState( CellData::Root );
+  #ifdef Debug
+  _cellData.setLevel(rootLevel);
+  #endif
+}
+
+
+
+template <class CellData>
+void peano::grid::Cell<CellData>::setCellData(const CellData& cellData) {
+  _cellData = cellData;
+}
+
+
+template <class CellData>
+CellData peano::grid::Cell<CellData>::getCellData() const {
+  return _cellData;
+}
+
+
+template <class CellData>
+CellData& peano::grid::Cell<CellData>::getCellData() {
+  return _cellData;
+}
+
+
+template <class CellData>
+void peano::grid::Cell<CellData>::switchToLeaf() {
+  #ifdef Parallel
+  assertion1( isRefined() || isRoot(), *this );
+  #else
+  assertion1( isRefined(), *this );
+  #endif
+  _cellData.setState( CellData::Leaf );
+}
+
+
+template <class CellData>
+bool peano::grid::Cell<CellData>::isRefined() const {
+  return _cellData.getState() == Records::Refined;
+}
+
+
+template <class CellData>
+bool peano::grid::Cell<CellData>::isLeaf() const {
+  return _cellData.getState() == Records::Leaf;
+}
+
+
+template <class CellData>
+bool peano::grid::Cell<CellData>::isRoot() const {
+  return _cellData.getState() == Records::Root;
+}
+
+
+template <class CellData>
+typename peano::grid::Cell<CellData>::PersistentCell peano::grid::Cell<CellData>::getRecords() const {
+  #if defined(StoreOnlyPersistentAttributes) && defined(PackedRecords)
+
+  #ifdef Parallel
+  assertion2( _cellData.getResponsibleRank()>=0,                                                      toString(), tarch::parallel::Node::getInstance().getRank());
+  assertion2( _cellData.getResponsibleRank()<tarch::parallel::Node::getInstance().getNumberOfNodes(), toString(), tarch::parallel::Node::getInstance().getRank());
+
+  assertion2( _cellData.convert().getResponsibleRank()>=0,                                                      toString(), tarch::parallel::Node::getInstance().getRank());
+  assertion2( _cellData.convert().getResponsibleRank()<tarch::parallel::Node::getInstance().getNumberOfNodes(), toString(), tarch::parallel::Node::getInstance().getRank());
+  #endif
+
+  return _cellData.convert().getPersistentRecords();
+  #endif
+  #if !defined(StoreOnlyPersistentAttributes) && defined(PackedRecords)
+  return _cellData.convert();
+  #endif
+  #if defined(StoreOnlyPersistentAttributes) && !defined(PackedRecords)
+  return _cellData.getPersistentRecords();
+  #endif
+  #if !defined(StoreOnlyPersistentAttributes) && !defined(PackedRecords)
+  return _cellData;
+  #endif
+}
+
+
+template <class CellData>
+std::string peano::grid::Cell<CellData>::toString() const {
+  return _cellData.toString();
+}
+
+
+template <class CellData>
+void peano::grid::Cell<CellData>::toString(std::ostream& out) const {
+  _cellData.toString(out);
+}
+
+
+#ifdef Debug
+template <class CellData>
+int peano::grid::Cell<CellData>::getLevel() const {
+  return _cellData.getLevel();
+}
+
+
+template <class CellData>
+void peano::grid::Cell<CellData>::incLevel() {
+  _cellData.setLevel(_cellData.getLevel()+1);
+}
+#endif
+
+
+template <class CellData>
+std::ostream& operator<<(std::ostream& out, const peano::grid::Cell<CellData>& arg) {
+  arg.toString(out);
+  return out;
+}
+
+
+template <class CellData>
+template <class State>
+bool peano::grid::Cell<CellData>::isRemote(
+  const State&  state,
+  bool          considerForkingNodesToBeRemote,
+  bool          considerJoiningNodesToBeRemote
+) const {
+  #ifdef Parallel
+  return _cellData.getResponsibleRank()!=tarch::parallel::Node::getInstance().getRank()
+     && !state.isForkTriggeredForRank(_cellData.getResponsibleRank())
+     && (considerJoiningNodesToBeRemote || !state.isJoiningRank(_cellData.getResponsibleRank()))
+     && (considerForkingNodesToBeRemote || !state.isForkingRank(_cellData.getResponsibleRank()));
+  #else
+  return false;
+  #endif
+}
+
+
+#ifdef Parallel
+template <class CellData>
+bool peano::grid::Cell<CellData>::thisSubtreeHoldsWorker() const {
+  return _cellData.getSubtreeHoldsWorker();
+}
+
+
+template <class CellData>
+void peano::grid::Cell<CellData>::setRemoteCellSubtreeFlags( const Cell& workerCell ) {
+  _cellData.setSubtreeHoldsWorker( workerCell._cellData.getSubtreeHoldsWorker() );
+}
+
+
+template <class CellData>
+void peano::grid::Cell<CellData>::clearSubtreeFlags() {
+  _cellData.setSubtreeHoldsWorker(false);
+}
+
+
+template <class CellData>
+void peano::grid::Cell<CellData>::reduceSubtreeFlags( const Cell& childCell ) {
+  _cellData.setSubtreeHoldsWorker(_cellData.getSubtreeHoldsWorker() | childCell.thisSubtreeHoldsWorker());
+  if ( childCell.isAssignedToRemoteRank() ) {
+    _cellData.setSubtreeHoldsWorker(_cellData.getSubtreeHoldsWorker() | !isAssignedToRemoteRank());
+  }
+}
+
+
+template <class CellData>
+void peano::grid::Cell<CellData>::replaceAccessNumbersAndEvenFlags( const Cell& otherCell ) {
+  _cellData.setAccessNumber( otherCell._cellData.getAccessNumber() );
+  _cellData.setEvenFlags( otherCell._cellData.getEvenFlags() );
+}
+
+
+template <class CellData>
+std::bitset<DIMENSIONS> peano::grid::Cell<CellData>::getEvenFlags() const {
+  return _cellData.getEvenFlags();
+}
+
+
+template <class CellData>
+void peano::grid::Cell<CellData>::initDatatype() {
+  logTraceIn( "initDatatype()" );
+  if (CellData::Packed::Datatype==0) {
+    CellData::Packed::initDatatype();
+  }
+  if (CellData::Datatype==0) {
+    CellData::initDatatype();
+  }
+
+  assertion(CellData::Datatype!=0);
+  assertion(CellData::Packed::Datatype!=0);
+  logTraceOutWith1Argument( "initDatatype()", MPIDatatypeContainer::Datatype );
+}
+
+
+template <class CellData>
+void peano::grid::Cell<CellData>::shutdownDatatype() {
+  if (CellData::Packed::Datatype!=0) {
+    CellData::Packed::shutdownDatatype();
+  }
+  if (CellData::Datatype!=0) {
+    CellData::shutdownDatatype();
+  }
+
+  CellData::Datatype = 0;
+  CellData::Packed::Datatype = 0;
+}
+
+
+template <class CellData>
+void peano::grid::Cell<CellData>::send(int destination, int tag, bool exchangeOnlyAttributesMarkedWithParallel, typename MPIDatatypeContainer::ExchangeMode exchangeDataBlocking) {
+  assertion4(MPIDatatypeContainer::Datatype!=0,destination,tag,toString(),tarch::parallel::Node::getInstance().getRank());
+
+  #if defined(ParallelExchangePackedRecordsBetweenMasterAndWorker)
+  _cellData.convert().send(destination,tag,exchangeOnlyAttributesMarkedWithParallel,exchangeDataBlocking);
+  #else
+  _cellData.send(destination,tag,exchangeOnlyAttributesMarkedWithParallel,exchangeDataBlocking);
+  #endif
+}
+
+
+template <class CellData>
+void peano::grid::Cell<CellData>::receive(int source, int tag, bool exchangeOnlyAttributesMarkedWithParallel, typename MPIDatatypeContainer::ExchangeMode exchangeDataBlocking) {
+  assertion4(MPIDatatypeContainer::Datatype!=0,source,tag,toString(),tarch::parallel::Node::getInstance().getRank());
+
+  #if defined(ParallelExchangePackedRecordsBetweenMasterAndWorker)
+  MPIDatatypeContainer receivedMessage;
+  receivedMessage.receive(source,tag,exchangeOnlyAttributesMarkedWithParallel,exchangeDataBlocking);
+  _cellData = receivedMessage.convert();
+  #else
+  _cellData.receive(source,tag,exchangeOnlyAttributesMarkedWithParallel,exchangeDataBlocking);
+  #endif
+}
+
+
+template <class CellData>
+bool peano::grid::Cell<CellData>::isCellAForkCandidate() const {
+  return _cellData.getCellIsAForkCandidate();
+}
+
+
+template <class CellData>
+void peano::grid::Cell<CellData>::setCellIsAForkCandidate(bool value) {
+  _cellData.setCellIsAForkCandidate(value);
+}
+
+
+template <class CellData>
+bool peano::grid::Cell<CellData>::isAssignedToRemoteRank() const {
+  return _cellData.getResponsibleRank()!=tarch::parallel::Node::getInstance().getRank();
+}
+
+
+template <class CellData>
+void peano::grid::Cell<CellData>::assignToLocalNode() {
+  assertion2( _cellData.getResponsibleRank()!=tarch::parallel::Node::getInstance().getRank(), toString(), tarch::parallel::Node::getInstance().getRank() );
+
+  _cellData.setResponsibleRank(tarch::parallel::Node::getInstance().getRank());
+}
+
+
+template <class CellData>
+void peano::grid::Cell<CellData>::assignToRemoteNode(int rank) {
+  assertion3( _cellData.getResponsibleRank()==tarch::parallel::Node::getInstance().getRank(), toString(), tarch::parallel::Node::getInstance().getRank(), rank );
+  assertion3( rank>=0, toString(), tarch::parallel::Node::getInstance().getRank(), rank );
+  assertion3( rank<tarch::parallel::Node::getInstance().getNumberOfNodes(), toString(), tarch::parallel::Node::getInstance().getRank(), rank );
+
+  _cellData.setResponsibleRank(rank);
+}
+
+
+template <class CellData>
+int peano::grid::Cell<CellData>::getRankOfRemoteNode() const {
+  return _cellData.getResponsibleRank();
+}
+#endif
+
+
+template <class CellData>
+void peano::grid::Cell<CellData>::updatePersistentRegularSubtreeIndex(int index) {
+  assertion1( isRefined(), toString() );
+  #ifdef PersistentRegularSubtrees
+  _cellData.setPersistentRegularSubtreeIndex(index);
+  #else
+  assertion2( index==NoPersistentRegularSubtree, index, toString() );
+  #endif
+}
+
+
+template <class CellData>
+int peano::grid::Cell<CellData>::getPersistentRegularSubtreeIndex() const {
+  #ifdef PersistentRegularSubtrees
+  return _cellData.getPersistentRegularSubtreeIndex();
+  #else
+  return NoPersistentRegularSubtree;
+  #endif
+}
+
+
+template <class CellData>
+bool peano::grid::Cell<CellData>::rootsPersistentRegularSubtree() const {
+  #ifdef PersistentRegularSubtrees
+  return _cellData.getPersistentRegularSubtreeIndex() != NoPersistentRegularSubtree;
+  #else
+  return false;
+  #endif
+}

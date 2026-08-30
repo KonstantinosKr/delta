@@ -1,0 +1,102 @@
+template<int Rows, typename Scalar>
+tarch::la::Matrix<Rows,Rows,Scalar>  tarch::la::identity() {
+  tarch::la::Matrix<Rows,Rows,Scalar> result(0.0);
+  
+  for (int i=0; i<Rows; i++) {
+    result(i,i) = 1.0;
+  }
+  
+  return result;
+}
+
+
+
+template<int Rows, int Cols, typename Scalar>
+tarch::la::Matrix<Rows,Cols,Scalar> tarch::la::invertEntries (
+  const tarch::la::Matrix<Rows,Cols,Scalar>&  matrix
+) {
+  tarch::la::Matrix<Rows,Cols,Scalar> result(0.0);
+  
+  for (int i=0; i<Rows; i++) {
+    for (int j=0; j<Cols; j++) {
+      result(i,j) = 1.0/matrix(i,j);
+    }
+  }
+  
+  return result;
+}
+
+
+
+template<int Rows, int Cols, typename Scalar>
+tarch::la::Vector<Cols,Scalar> tarch::la::row(const Matrix<Rows,Cols,Scalar>& matrix, int whichRow) {
+  tarch::la::Vector<Cols,Scalar> result;
+
+  for (int i=0; i<Cols; i++) {
+    result(i) = matrix(whichRow,i);
+  }
+
+  return result;
+}
+
+
+template<int Rows, int Cols, typename Scalar>
+tarch::la::Vector<Rows,Scalar> tarch::la::col(const Matrix<Rows,Cols,Scalar>& matrix, int whichColumn) {
+  tarch::la::Vector<Rows,Scalar> result;
+
+  for (int i=0; i<Rows; i++) {
+    result(i) = matrix(i,whichColumn);
+  }
+
+  return result;
+}
+
+
+template<int Rows, int Cols, typename Scalar>
+tarch::la::Matrix<Cols,Rows,Scalar> tarch::la::transpose(const tarch::la::Matrix<Rows,Cols,Scalar>& matrix) {
+  tarch::la::Matrix<Cols,Rows,Scalar> result;
+  #ifdef CompilerICC
+  #pragma ivdep
+  #endif
+  for (int i=0; i < Rows; i++) {
+    for (int j=0; j < Cols; j++) {
+      result(j,i) += matrix(i,j);
+    }
+  }
+  return result;
+}
+
+
+
+template<int Rows, int Cols, typename Scalar>
+Scalar tarch::la::sum(const tarch::la::Matrix<Rows,Cols,Scalar>& matrix) {
+  Scalar result = 0;
+  for (int i=0; i < Rows; i++) {
+    for (int j=0; j < Cols; j++) {
+      result += matrix(i,j);
+    }
+  }
+  return result;
+}
+
+
+
+template<int Rows, int Cols, typename Scalar>
+std::ostream& operator<< (
+  std::ostream& os,
+  const tarch::la::Matrix<Rows,Cols,Scalar>& matrix
+) {
+  os << matrix.toString();
+  return os;
+}
+
+
+template<int Rows, typename Scalar>
+tarch::la::Vector<Rows,Scalar> tarch::la::diag(const Matrix<Rows,Rows,Scalar>& matrix) {
+  tarch::la::Vector<Rows,Scalar> result;
+  for (int i=0; i<Rows; i++) {
+      result(i) = matrix(i,i);
+  }
+  return result;
+}
+

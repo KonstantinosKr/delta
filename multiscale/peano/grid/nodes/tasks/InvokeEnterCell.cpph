@@ -1,0 +1,88 @@
+#include "peano/MappingSpecification.h"
+
+
+template < class Vertex, class Cell, class State, class EventHandle>
+tarch::logging::Log peano::grid::nodes::tasks::InvokeEnterCell< Vertex, Cell, State, EventHandle >::_log( "peano::grid::nodes::tasks::InvokeEnterCell" );
+
+
+template < class Vertex, class Cell, class State, class EventHandle>
+peano::grid::nodes::tasks::InvokeEnterCell< Vertex, Cell, State, EventHandle >::InvokeEnterCell(
+  State&                                                      state,
+  Cell&                                                       fineGridCell,
+  Vertex* const                                               fineGridVertices,
+  const peano::grid::SingleLevelEnumerator&                   fineGridVerticesEnumerator,
+  Cell&                                                       coarseGridCell,
+  Vertex*const                                                coarseGridVertices,
+  const peano::grid::SingleLevelEnumerator&                   coarseGridVerticesEnumerator,
+  const tarch::la::Vector<DIMENSIONS,int>&                    fineGridPositionOfCell,
+  EventHandle&                                                eventHandle
+):
+  _state(state),
+  _fineGridCell(fineGridCell),
+  _fineGridVertices(fineGridVertices),
+  _fineGridVerticesEnumerator(fineGridVerticesEnumerator),
+  _coarseGridCell(coarseGridCell),
+  _coarseGridVertices(coarseGridVertices),
+  _coarseGridVerticesEnumerator(coarseGridVerticesEnumerator),
+  _fineGridPositionOfCell(fineGridPositionOfCell),
+  _eventHandle(eventHandle) {
+}
+
+template < class Vertex, class Cell, class State, class EventHandle>
+bool peano::grid::nodes::tasks::InvokeEnterCell< Vertex, Cell, State, EventHandle >::operator() () {
+  logTraceInWith1Argument( "operator()", _fineGridCell.toString() );
+
+  // According to the specification, only refined cells where all adjacent
+  // vertices are refined are to be excluded. This check is rather expensive,
+  // so I do that simple one.
+//  const bool InvokeEventAccordingToSpecification =
+//    (_threadLocalEventHandle.enterCellSpecification.manipulates == peano::MappingSpecification::WHOLE_TREE) ||
+//    (_threadLocalEventHandle.enterCellSpecification.manipulates == peano::MappingSpecification::ONLY_LEAVES && !_fineGridCell.isRefined());
+
+  const int  level = _fineGridCell.isRefined() ? _fineGridVerticesEnumerator.getLevel() : -_fineGridVerticesEnumerator.getLevel();
+
+  const bool InvokeEventAccordingToSpecification =
+    _eventHandle.enterCellSpecification(level).manipulates != peano::MappingSpecification::Nop;
+
+  #ifdef Parallel
+  const bool invokeEvent = _fineGridCell.isInside() && !_fineGridCell.isRemote(_state,true,true);
+  #else
+  const bool invokeEvent = _fineGridCell.isInside();
+  #endif
+
+
+  if (invokeEvent && InvokeEventAccordingToSpecification) {
+    _eventHandle.enterCell(
+      _fineGridCell,
+      _fineGridVertices,
+      _fineGridVerticesEnumerator,
+      _coarseGridVertices,
+      _coarseGridVerticesEnumerator,
+      _coarseGridCell,
+      _fineGridPositionOfCell
+    );
+
+    #ifdef TrackGridStatistics
+    if (_fineGridCell.isRefined()) {
+      _state.incNumberOfInnerCells( 1.0 );
+    }
+    else {
+      _state.incNumberOfInnerLeafCells( 1.0 );
+    }
+    #endif
+  }
+  else {
+    #ifdef TrackGridStatistics
+    if (_fineGridCell.isRefined()) {
+      _state.incNumberOfOuterCells( 1.0 );
+    }
+    else {
+      _state.incNumberOfOuterLeafCells( 1.0 );
+    }
+    #endif
+  }
+
+  logTraceOut( "operator()" );
+
+  return false;
+}

@@ -1,0 +1,70 @@
+#include "peano/grid/nodes/Constants.h"
+
+
+template <class Vertex, class Cell, class State, class EventHandle>
+tarch::logging::Log peano::grid::nodes::loops::CallAscendLoopBodyOnRegularRefinedPatch<Vertex,Cell,State,EventHandle>::_log( "peano::grid::nodes::loops::CallAscendLoopBodyOnRegularRefinedPatch" );
+
+
+#ifdef Parallel
+#include <set>
+
+#include "peano/parallel/SendReceiveBufferPool.h"
+#endif
+
+
+template <class Vertex, class Cell, class State, class EventHandle>
+peano::grid::nodes::loops::CallAscendLoopBodyOnRegularRefinedPatch<Vertex,Cell,State,EventHandle>::CallAscendLoopBodyOnRegularRefinedPatch(
+  EventHandle&                                     eventHandle,
+  peano::grid::RegularGridContainer<Vertex,Cell>&  regularGridContainer,
+  int                                              coarseLevel
+):
+  _coarseLevel(coarseLevel),
+  _eventHandle(eventHandle),
+  _threadLocalEventHandle(eventHandle),
+  _regularGridContainer(regularGridContainer),
+  _fineGridEnumerator(_regularGridContainer.getVertexEnumerator(_coarseLevel+1)),
+  _coarseGridEnumerator(_regularGridContainer.getVertexEnumerator(_coarseLevel)) {
+}
+
+
+template <class Vertex, class Cell, class State, class EventHandle>
+void peano::grid::nodes::loops::CallAscendLoopBodyOnRegularRefinedPatch<Vertex,Cell,State,EventHandle>::mergeIntoMasterThread() const {
+  tarch::multicore::Lock lock(peano::grid::nodes::tasks::Ascend<Vertex,Cell,State,EventHandle>::_semaphore);
+
+  #if defined(SharedMemoryParallelisation)
+  _eventHandle.mergeWithWorkerThread( _threadLocalEventHandle );
+  #endif
+}
+
+
+template <class Vertex, class Cell, class State, class EventHandle>
+void peano::grid::nodes::loops::CallAscendLoopBodyOnRegularRefinedPatch<Vertex,Cell,State,EventHandle>::operator() (const tarch::la::Vector<DIMENSIONS, int>& i) {
+  logTraceInWith2Arguments( "operator()", i, _coarseLevel );
+
+  _fineGridEnumerator.setOffset(i*3);
+  _coarseGridEnumerator.setOffset(i);
+
+  const int coarseGridCellIndex = _coarseGridEnumerator.lineariseCellIndex(i);
+
+  Cell& currentCell = _regularGridContainer.getCell(_coarseLevel,coarseGridCellIndex);
+
+  if (currentCell.isInside()) {
+    _threadLocalEventHandle.ascend(
+      _regularGridContainer.getCell(_coarseLevel+1),
+      _regularGridContainer.getVertex(_coarseLevel+1),
+      _fineGridEnumerator,
+      _regularGridContainer.getVertex(_coarseLevel),
+      _coarseGridEnumerator,
+      currentCell
+    );
+  }
+
+  #ifdef Parallel
+  currentCell.clearSubtreeFlags();
+  dfor3(i)
+    currentCell.reduceSubtreeFlags( _regularGridContainer.getCell(_coarseLevel+1)[ _fineGridEnumerator.cell(i) ] );
+  enddforx
+  #endif
+
+  logTraceOutWith3Arguments( "operator()", currentCell.isInside(), _fineGridEnumerator.toString(), _coarseGridEnumerator.toString() );
+}

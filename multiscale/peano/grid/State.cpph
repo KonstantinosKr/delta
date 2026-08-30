@@ -1,0 +1,1058 @@
+#include <limits>
+ 
+#include "tarch/parallel/Node.h"
+
+#ifdef Parallel
+#include "peano/parallel/loadbalancing/Oracle.h"
+#include "tarch/parallel/NodePool.h"
+#include "peano/parallel/SendReceiveBufferPool.h"
+#include "peano/parallel/messages/LoadBalancingMessage.h"
+#endif
+
+
+#ifdef Parallel
+template <class StateData>
+std::set<int>       peano::grid::State<StateData>::_loadRebalancingRemoteRanks;
+
+
+template <class StateData>
+typename peano::grid::State<StateData>::LoadBalancingState  peano::grid::State<StateData>::_loadRebalancingState(peano::grid::State<StateData>::LoadBalancingState::NoRebalancing);
+#endif
+
+template <class StateData>
+typename peano::grid::State<StateData>::BatchState          peano::grid::State<StateData>::_batchState(BatchState::NoBatch);
+
+
+template <class StateData>
+tarch::logging::Log  peano::grid::State<StateData>::_log( "peano::grid::State" );
+
+
+template <class StateData>
+const int peano::grid::State<StateData>::IterationsInBetweenRebalancing(3);
+
+
+template <class StateData>
+peano::grid::State<StateData>::State():
+  _stateData() {
+  _stateData.setIsTraversalInverted(false);
+
+  #ifdef Parallel
+  _stateData.setReduceStateAndCell(true);
+  _iterationCounter = 0;
+  _maxForkLevel = std::numeric_limits<int>::max();
+  #ifdef Asserts
+  _previousLoadRebalancingState = LoadBalancingState::Undef;
+  #endif
+  #endif
+  
+  #ifdef PersistentRegularSubtrees
+  _smallestRegularTreeThatIsToBeHeldPersistently                    = 0; 
+  _smallestRegularTreeThatIsToBeHeldPersistentlyInPreviousIteration = 0; 
+  #endif
+
+  _stateData.setHasRefined( false );
+  _stateData.setHasErased( false );
+  _stateData.setHasChangedVertexOrCellState( false );
+}
+
+
+#ifdef PackedRecords
+template <class StateData>
+peano::grid::State<StateData>::State(const PersistentState& argument):
+  _stateData( (typename StateData::Packed(argument)).convert() ) {
+}
+#else
+template <class StateData>
+peano::grid::State<StateData>::State(const PersistentState& argument):
+  _stateData( argument ) {
+}
+#endif
+
+template <class StateData>
+peano::grid::State<StateData>::~State() {
+}
+
+
+
+template <class StateData>
+void peano::grid::State<StateData>::restart() {
+  #ifdef Parallel
+  _loadRebalancingState = LoadBalancingState::NoRebalancing;
+  #endif
+}
+
+
+
+template <class StateData>
+std::string peano::grid::State<StateData>::toString() const {
+  std::ostringstream out;
+  toString(out);
+  return out.str();
+}
+
+
+template <class StateData>
+std::string peano::grid::State<StateData>::toString(LoadBalancingState value) {
+  switch (value) {
+    case LoadBalancingState::NoRebalancing:
+      return "no-rebalancing";
+      break;
+    case LoadBalancingState::ForkTriggered:
+      return "fork-triggered";
+      break;
+    case LoadBalancingState::Forking:
+      return "forking";
+      break;
+    case LoadBalancingState::JoinTriggered:
+      return "join-triggered";
+      break;
+    case LoadBalancingState::Joining:
+      return "joining";
+      break;
+    case LoadBalancingState::JoinWithMasterTriggered:
+      return "join-with-master-triggered";
+      break;
+    case LoadBalancingState::JoiningWithMaster:
+      return "joining-with-master";
+      break;
+    case LoadBalancingState::HasJoinedWithMaster:
+      return "has-joined-with-master";
+      break;
+    case LoadBalancingState::IsNewWorkerDueToForkOfExistingDomain:
+      return "is-new-worker";
+      break;
+    case LoadBalancingState::Undef:
+      return "undef";
+      break;
+  }
+
+  return "<undef>";
+}
+
+
+
+template <class StateData>
+void peano::grid::State<StateData>::toString(std::ostream& out) const {
+  _stateData.toString(out);
+  #ifdef Parallel
+  out << "[lb-state=" << toString(_loadRebalancingState);
+  if (!_loadRebalancingRemoteRanks.empty()) {
+    for (std::set<int>::const_iterator p=_loadRebalancingRemoteRanks.begin(); p!=_loadRebalancingRemoteRanks.end(); p++) {
+      out << ",";
+      out << *p;
+    }
+  }
+  out << ",it=" << _iterationCounter
+      << ",level_max=" << _maxForkLevel;
+  #ifdef Asserts
+  out << ",previous-lb-state=" << toString( _previousLoadRebalancingState );
+  #endif
+  for (
+    std::map<int,bool>::const_iterator p=_stateWillReduce.begin();
+    p!=_stateWillReduce.end();
+    p++
+  ) {
+    out << ",reduce-from-" << p->first << "=" << p->second;
+  }
+  out << "]";
+  #endif
+  
+  #ifdef PersistentRegularSubtrees
+  out << "[smallest-regular-tree-that-is-held-persistently(currently/previous iteration)=" 
+      << _smallestRegularTreeThatIsToBeHeldPersistently 
+      << "/"
+      << _smallestRegularTreeThatIsToBeHeldPersistentlyInPreviousIteration
+      << "]";
+  #endif
+}
+
+
+template <class StateData>
+std::ostream& operator<<(std::ostream& out, const peano::grid::State<StateData>& arg) {
+  arg.toString(out);
+  return out;
+}
+
+
+template <class StateData>
+void peano::grid::State<StateData>::changedCellState() {
+  _stateData.setHasChangedVertexOrCellState( true );
+}
+
+
+template <class StateData>
+bool peano::grid::State<StateData>::isGridStationary() const {
+  return !_stateData.getHasChangedVertexOrCellState()
+      && !_stateData.getHasRefined()
+      && !_stateData.getHasErased()
+      && !_stateData.getHasTriggeredRefinementForNextIteration()
+      && !_stateData.getHasTriggeredEraseForNextIteration()
+  #ifdef Parallel
+      && !_stateData.getCouldNotEraseDueToDecompositionFlag();
+  #endif
+  ;
+}
+
+
+template <class StateData>
+bool peano::grid::State<StateData>::isGridBalanced() const {
+  #ifdef Parallel
+  const bool result =
+           !_stateData.getHasChangedVertexOrCellState()
+        && !_stateData.getHasRefined()
+        && !_stateData.getHasErased()
+        && !_stateData.getHasTriggeredRefinementForNextIteration()
+        && !_stateData.getHasTriggeredEraseForNextIteration()
+        && !hasGridChangedInPreviousIteration()
+        && _iterationCounter > IterationsInBetweenRebalancing+1
+        && !isInvolvedInJoinOrFork();
+
+  assertion1(
+    !hasSubworkerRebalanced() || !result,
+    toString()
+  );
+
+  return result;
+  #else
+  return isGridStationary();
+  #endif
+}
+
+
+template <class StateData>
+void peano::grid::State<StateData>::updateRefinementHistoryBeforeStore( bool hasTriggeredRefinementForNextIteration, bool hasTriggeredEraseForNextIteration ) {
+  _stateData.setHasTriggeredRefinementForNextIteration( _stateData.getHasTriggeredRefinementForNextIteration() || hasTriggeredRefinementForNextIteration );
+  _stateData.setHasTriggeredEraseForNextIteration( _stateData.getHasTriggeredEraseForNextIteration() || hasTriggeredEraseForNextIteration );
+}
+
+
+template <class StateData>
+void peano::grid::State<StateData>::updateRefinementHistoryAfterLoad(
+  bool hasRefinened, bool hasErased, bool hasFailedToEraseDueToDomainDecomposition, bool hasChangedVertexState
+) {
+  _stateData.setHasRefined( _stateData.getHasRefined() || hasRefinened );
+  _stateData.setHasErased( _stateData.getHasErased() || hasErased );
+  _stateData.setHasChangedVertexOrCellState( _stateData.getHasChangedVertexOrCellState() || hasChangedVertexState );
+
+  #ifdef Parallel
+  _stateData.setCouldNotEraseDueToDecompositionFlag( _stateData.getCouldNotEraseDueToDecompositionFlag() || hasFailedToEraseDueToDomainDecomposition );
+  #endif
+}
+
+
+template <class StateData>
+bool peano::grid::State<StateData>::isTraversalInverted() const {
+  return _stateData.getIsTraversalInverted();
+}
+
+
+#ifdef TrackGridStatistics
+template <class StateData>
+double peano::grid::State<StateData>::getNumberOfInnerVertices() const {
+  return _stateData.getNumberOfInnerVertices();
+}
+
+
+template <class StateData>
+double peano::grid::State<StateData>::getNumberOfBoundaryVertices() const {
+  return _stateData.getNumberOfBoundaryVertices();
+}
+
+
+template <class StateData>
+double peano::grid::State<StateData>::getNumberOfOuterVertices() const {
+  return _stateData.getNumberOfOuterVertices();
+}
+
+
+template <class StateData>
+int peano::grid::State<StateData>::getMaxLevel() const {
+  return _stateData.getMaxLevel();
+}
+
+
+template <class StateData>
+double peano::grid::State<StateData>::getNumberOfInnerCells() const {
+  return _stateData.getNumberOfInnerCells();
+}
+
+
+template <class StateData>
+double peano::grid::State<StateData>::getNumberOfOuterCells() const {
+  return _stateData.getNumberOfOuterCells();
+}
+
+
+template <class StateData>
+double peano::grid::State<StateData>::getNumberOfInnerLeafVertices() const {
+  return _stateData.getNumberOfInnerLeafVertices();
+}
+
+
+template <class StateData>
+double peano::grid::State<StateData>::getNumberOfBoundaryLeafVertices() const {
+  return _stateData.getNumberOfBoundaryLeafVertices();
+}
+
+
+template <class StateData>
+double peano::grid::State<StateData>::getNumberOfOuterLeafVertices() const {
+  return _stateData.getNumberOfOuterLeafVertices();
+}
+
+
+template <class StateData>
+double peano::grid::State<StateData>::getNumberOfInnerLeafCells() const {
+  return _stateData.getNumberOfInnerLeafCells();
+}
+
+
+template <class StateData>
+double peano::grid::State<StateData>::getNumberOfOuterLeafCells() const {
+  return _stateData.getNumberOfOuterLeafCells();
+}
+
+
+template <class StateData>
+tarch::la::Vector<DIMENSIONS,double> peano::grid::State<StateData>::getMaximumMeshWidth() const {
+  return _stateData.getMaxMeshWidth();
+}
+
+
+template <class StateData>
+tarch::la::Vector<DIMENSIONS,double> peano::grid::State<StateData>::getMinimumMeshWidth() const {
+  return _stateData.getMinMeshWidth();
+}
+#endif
+
+
+template <class StateData>
+void peano::grid::State<StateData>::resetStateAtEndOfIteration() {
+  logTraceInWith1Argument( "resetStateAtEndOfIteration()", toString() );
+
+  _stateData.setIsTraversalInverted(!_stateData.getIsTraversalInverted());
+
+  if (tarch::parallel::Node::getInstance().isGlobalMaster()) {
+    _stateData.setHasModifiedGridInPreviousIteration(
+      _stateData.getHasChangedVertexOrCellState() |
+      _stateData.getHasErased() |
+      _stateData.getHasRefined() |
+      _stateData.getHasTriggeredEraseForNextIteration() |
+      _stateData.getHasTriggeredRefinementForNextIteration()
+    );
+  }
+
+  #ifdef Parallel
+
+  #ifdef Asserts
+  _previousLoadRebalancingState = _loadRebalancingState;
+  #endif
+
+  _stateWillReduce.clear();
+
+  if (
+    _loadRebalancingState == LoadBalancingState::NoRebalancing &&
+    static_cast<int>(peano::parallel::loadbalancing::Oracle::getInstance().getLastStartCommand())>=static_cast<int>(peano::parallel::loadbalancing::LoadBalancingFlag::ForkOnce) &&
+    _maxForkLevel < std::numeric_limits<int>::max()
+  ) {
+    _maxForkLevel++;
+  }
+
+  switch (_loadRebalancingState) {
+    case LoadBalancingState::NoRebalancing:
+      assertion( _loadRebalancingRemoteRanks.empty());
+      _stateData.setHasChangedVertexOrCellState(false);
+      _iterationCounter++;
+      break;
+    case LoadBalancingState::ForkTriggered:
+      assertion( !_loadRebalancingRemoteRanks.empty());
+      assertion2(!isGridStationary(),toString(),tarch::parallel::Node::getInstance().getRank());
+      _loadRebalancingState = LoadBalancingState::Forking;
+      _stateData.setHasChangedVertexOrCellState(true);
+      _iterationCounter=0;
+      break;
+    case LoadBalancingState::Forking:
+      assertion( !_loadRebalancingRemoteRanks.empty());
+      _loadRebalancingState = LoadBalancingState::NoRebalancing;
+      _stateData.setHasChangedVertexOrCellState(true);
+      _loadRebalancingRemoteRanks.clear();
+      break;
+    case LoadBalancingState::JoinTriggered:
+      assertion( !_loadRebalancingRemoteRanks.empty());
+      assertion2(!isGridStationary(),toString(),tarch::parallel::Node::getInstance().getRank());
+      _loadRebalancingState = LoadBalancingState::Joining;
+      _stateData.setHasChangedVertexOrCellState(true);
+      _iterationCounter=0;
+      break;
+    case LoadBalancingState::Joining:
+      assertion( !_loadRebalancingRemoteRanks.empty());
+      assertion2(!isGridStationary(),toString(),tarch::parallel::Node::getInstance().getRank());
+      _loadRebalancingState = LoadBalancingState::NoRebalancing;
+      _stateData.setHasChangedVertexOrCellState(true);
+      _loadRebalancingRemoteRanks.clear();
+      break;
+    case LoadBalancingState::IsNewWorkerDueToForkOfExistingDomain:
+      assertion2(!isGridStationary(),toString(),tarch::parallel::Node::getInstance().getRank());
+      _stateData.setHasChangedVertexOrCellState(true);
+      _loadRebalancingState = LoadBalancingState::NoRebalancing;
+      _iterationCounter=0;
+      break;
+    case LoadBalancingState::JoinWithMasterTriggered:
+      assertion(_loadRebalancingRemoteRanks.empty());
+      _stateData.setHasChangedVertexOrCellState(true);
+      _loadRebalancingState = LoadBalancingState::JoiningWithMaster;
+      _iterationCounter=0;
+      break;
+    case LoadBalancingState::JoiningWithMaster:
+      assertion(_loadRebalancingRemoteRanks.empty());
+      assertion2(!isGridStationary(), toString(),tarch::parallel::Node::getInstance().getRank() );
+      _stateData.setHasChangedVertexOrCellState(true);
+      _loadRebalancingState = LoadBalancingState::HasJoinedWithMaster;
+      break;
+    default:
+      assertion3( false, "unknown rebalancing state", _stateData.toString(), tarch::parallel::Node::getInstance().getRank() );
+      break;
+  }
+  #endif
+
+  logTraceOutWith1Argument( "resetStateAtEndOfIteration()", toString() );
+}
+
+
+template <class StateData>
+bool peano::grid::State<StateData>::hasGridChangedInPreviousIteration() const {
+  return _stateData.getHasModifiedGridInPreviousIteration();
+}
+
+
+template <class StateData>
+void peano::grid::State<StateData>::resetStateAtBeginOfIteration() {
+  logTraceInWith1Argument( "resetStateAtBeginOfIteration()", toString() );
+
+  _stateData.setHasChangedVertexOrCellState(false);
+  _stateData.setHasErased(false);
+  _stateData.setHasRefined(false);
+  _stateData.setHasTriggeredEraseForNextIteration(false);
+  _stateData.setHasTriggeredRefinementForNextIteration(false);
+
+  #ifdef TrackGridStatistics
+  _stateData.setMaxLevel(0);
+  _stateData.setMaxMeshWidth(tarch::la::Vector<DIMENSIONS,double>(0.0));
+  _stateData.setMinMeshWidth(tarch::la::Vector<DIMENSIONS,double>( std::numeric_limits<double>::max() ));
+
+  _stateData.setNumberOfInnerVertices(0.0);
+  _stateData.setNumberOfBoundaryVertices(0.0);
+  _stateData.setNumberOfOuterVertices(0.0);
+  _stateData.setNumberOfInnerCells(0.0);
+  _stateData.setNumberOfOuterCells(0.0);
+
+  _stateData.setNumberOfInnerLeafVertices(0.0);
+  _stateData.setNumberOfBoundaryLeafVertices(0.0);
+  _stateData.setNumberOfOuterLeafVertices(0.0);
+  _stateData.setNumberOfInnerLeafCells(0.0);
+  _stateData.setNumberOfOuterLeafCells(0.0);
+  #endif
+
+  #ifdef Parallel
+  _stateData.setCouldNotEraseDueToDecompositionFlag(false);
+  _stateData.setSubWorkerIsInvolvedInJoinOrFork( _loadRebalancingState != LoadBalancingState::NoRebalancing );
+  #endif
+
+  logTraceOutWith1Argument( "resetStateAtBeginOfIteration()", toString() );
+}
+
+
+template <class StateData>
+void peano::grid::State<StateData>::updateInLeaf( int level, const tarch::la::Vector<DIMENSIONS,double>& h ) {
+  #ifdef TrackGridStatistics
+  _stateData.setMaxLevel(
+    _stateData.getMaxLevel()>level ? _stateData.getMaxLevel() : level
+  );
+  for (int d=0; d<DIMENSIONS; d++) {
+    _stateData.setMaxMeshWidth(d,
+      _stateData.getMaxMeshWidth(d)<h(d) ? h(d) : _stateData.getMaxMeshWidth(d)
+    );
+    _stateData.setMinMeshWidth(d,
+      _stateData.getMinMeshWidth(d)>h(d) ? h(d) : _stateData.getMinMeshWidth(d)
+    );
+
+    assertion1( _stateData.getMaxMeshWidth(d)>=_stateData.getMinMeshWidth(d), toString() );
+  }
+  #endif
+}
+
+
+#ifdef TrackGridStatistics
+template <class StateData>
+void peano::grid::State<StateData>::incNumberOfInnerVertices( double increment ) {
+  _stateData.setNumberOfInnerVertices(_stateData.getNumberOfInnerVertices()+increment);
+}
+
+
+template <class StateData>
+void peano::grid::State<StateData>::incNumberOfBoundaryVertices( double increment ) {
+  _stateData.setNumberOfBoundaryVertices(_stateData.getNumberOfBoundaryVertices()+increment);
+}
+
+
+template <class StateData>
+void peano::grid::State<StateData>::incNumberOfOuterVertices( double increment ) {
+  _stateData.setNumberOfOuterVertices(_stateData.getNumberOfOuterVertices()+increment);
+}
+
+
+template <class StateData>
+void peano::grid::State<StateData>::incNumberOfInnerCells( double increment ) {
+  _stateData.setNumberOfInnerCells(_stateData.getNumberOfInnerCells()+increment);
+}
+
+
+template <class StateData>
+void peano::grid::State<StateData>::incNumberOfOuterCells( double increment ) {
+  _stateData.setNumberOfOuterCells(_stateData.getNumberOfOuterCells()+increment);
+}
+
+
+template <class StateData>
+void peano::grid::State<StateData>::incNumberOfInnerLeafVertices( double increment ) {
+  _stateData.setNumberOfInnerVertices(_stateData.getNumberOfInnerVertices()+increment);
+  _stateData.setNumberOfInnerLeafVertices(_stateData.getNumberOfInnerLeafVertices()+increment);
+}
+
+
+template <class StateData>
+void peano::grid::State<StateData>::incNumberOfBoundaryLeafVertices( double increment ) {
+  _stateData.setNumberOfBoundaryVertices(_stateData.getNumberOfBoundaryVertices()+increment);
+  _stateData.setNumberOfBoundaryLeafVertices(_stateData.getNumberOfBoundaryLeafVertices()+increment);
+}
+
+
+template <class StateData>
+void peano::grid::State<StateData>::incNumberOfOuterLeafVertices( double increment ) {
+  _stateData.setNumberOfOuterVertices(_stateData.getNumberOfOuterVertices()+increment);
+  _stateData.setNumberOfOuterLeafVertices(_stateData.getNumberOfOuterLeafVertices()+increment);
+}
+
+
+template <class StateData>
+void peano::grid::State<StateData>::incNumberOfInnerLeafCells( double increment ) {
+  _stateData.setNumberOfInnerCells(_stateData.getNumberOfInnerCells()+increment);
+  _stateData.setNumberOfInnerLeafCells(_stateData.getNumberOfInnerLeafCells()+increment);
+}
+
+
+template <class StateData>
+void peano::grid::State<StateData>::incNumberOfOuterLeafCells( double increment ) {
+  _stateData.setNumberOfOuterCells(_stateData.getNumberOfOuterCells()+increment);
+  _stateData.setNumberOfOuterLeafCells(_stateData.getNumberOfOuterLeafCells()+increment);
+}
+#endif
+
+
+template <class StateData>
+void peano::grid::State<StateData>::currentlyRunsMultipleIterations(BatchState batchState) {
+  _batchState = batchState;
+}
+
+
+template <class StateData>
+typename peano::grid::State<StateData>::BatchState peano::grid::State<StateData>::getBatchState() {
+  return _batchState;
+}
+
+
+#ifdef Parallel
+template <class StateData>
+std::set<int> peano::grid::State<StateData>::getForkingOrJoiningOrTriggeredForRebalancingRanks() {
+  return _loadRebalancingRemoteRanks;
+}
+
+
+template <class StateData>
+void peano::grid::State<StateData>::mergeWithWorkerState(const peano::grid::State<StateData>& workerState) {
+  logTraceInWith2Arguments( "mergeWithWorkerState(...)", toString(), workerState.toString() );
+
+  _stateData.setHasChangedVertexOrCellState(workerState._stateData.getHasChangedVertexOrCellState() || _stateData.getHasChangedVertexOrCellState());
+
+  _stateData.setHasChangedVertexOrCellState(            _stateData.getHasChangedVertexOrCellState()            | workerState._stateData.getHasChangedVertexOrCellState() );
+  _stateData.setHasRefined(                             _stateData.getHasRefined()                             | workerState._stateData.getHasRefined() );
+  _stateData.setHasErased(                              _stateData.getHasErased()                              | workerState._stateData.getHasErased() );
+  _stateData.setHasTriggeredRefinementForNextIteration( _stateData.getHasTriggeredRefinementForNextIteration() | workerState._stateData.getHasTriggeredRefinementForNextIteration() );
+  _stateData.setHasTriggeredEraseForNextIteration(      _stateData.getHasTriggeredEraseForNextIteration()      | workerState._stateData.getHasTriggeredEraseForNextIteration() );
+
+  #ifdef TrackGridStatistics
+  _stateData.setNumberOfInnerVertices( _stateData.getNumberOfInnerVertices() + workerState._stateData.getNumberOfInnerVertices());
+  _stateData.setNumberOfBoundaryVertices( _stateData.getNumberOfBoundaryVertices() + workerState._stateData.getNumberOfBoundaryVertices());
+  _stateData.setNumberOfOuterVertices( _stateData.getNumberOfOuterVertices() + workerState._stateData.getNumberOfOuterVertices());
+  _stateData.setNumberOfInnerCells( _stateData.getNumberOfInnerCells() + workerState._stateData.getNumberOfInnerCells());
+  _stateData.setNumberOfOuterCells( _stateData.getNumberOfOuterCells() + workerState._stateData.getNumberOfOuterCells());
+
+  _stateData.setNumberOfInnerLeafVertices( _stateData.getNumberOfInnerLeafVertices() + workerState._stateData.getNumberOfInnerLeafVertices() );
+  _stateData.setNumberOfBoundaryLeafVertices( _stateData.getNumberOfBoundaryLeafVertices() + workerState._stateData.getNumberOfBoundaryLeafVertices());
+  _stateData.setNumberOfOuterLeafVertices( _stateData.getNumberOfOuterLeafVertices() + workerState._stateData.getNumberOfOuterLeafVertices());
+  _stateData.setNumberOfInnerLeafCells( _stateData.getNumberOfInnerLeafCells() + workerState._stateData.getNumberOfInnerLeafCells());
+  _stateData.setNumberOfOuterLeafCells( _stateData.getNumberOfOuterLeafCells() + workerState._stateData.getNumberOfOuterLeafCells());
+
+  _stateData.setMaxLevel( workerState._stateData.getMaxLevel() > _stateData.getMaxLevel() ? workerState._stateData.getMaxLevel() : _stateData.getMaxLevel() );
+  for (int d=0; d<DIMENSIONS; d++) {
+    _stateData.setMaxMeshWidth(d,
+      workerState._stateData.getMaxMeshWidth(d) > _stateData.getMaxMeshWidth(d) ? workerState._stateData.getMaxMeshWidth(d) : _stateData.getMaxMeshWidth(d)
+    );
+    _stateData.setMinMeshWidth(d,
+      workerState._stateData.getMinMeshWidth(d) < _stateData.getMinMeshWidth(d) ? workerState._stateData.getMinMeshWidth(d) : _stateData.getMinMeshWidth(d)
+    );
+
+    // This check makes sense but doesn't pass through if we have just forked a domain
+    //assertion1( _stateData.getMaxMeshWidth(d)>=_stateData.getMinMeshWidth(d), toString() );
+  }
+  #endif
+
+  _stateData.setCouldNotEraseDueToDecompositionFlag(
+    _stateData.getCouldNotEraseDueToDecompositionFlag() |
+    workerState._stateData.getCouldNotEraseDueToDecompositionFlag()
+  );
+
+  _stateData.setSubWorkerIsInvolvedInJoinOrFork(
+    _stateData.getSubWorkerIsInvolvedInJoinOrFork() ||
+    workerState._stateData.getSubWorkerIsInvolvedInJoinOrFork()
+  );
+  
+  #ifdef PersistentRegularSubtrees
+  _smallestRegularTreeThatIsToBeHeldPersistently = std::max(_smallestRegularTreeThatIsToBeHeldPersistently,workerState._smallestRegularTreeThatIsToBeHeldPersistently);
+  #endif
+
+  if (workerState._stateData.getSubWorkerIsInvolvedInJoinOrFork()) {
+    _iterationCounter = 0;
+  }
+
+  logTraceOutWith1Argument( "mergeWithWorkerState(...)", toString() );
+}
+
+
+template <class StateData>
+void peano::grid::State<StateData>::initDatatype() {
+  if (StateData::Packed::Datatype==0) {
+    StateData::Packed::initDatatype();
+  }
+  if (StateData::Datatype==0) {
+    StateData::initDatatype();
+  }
+
+  assertion(StateData::Packed::Datatype!=0);
+  assertion(StateData::Datatype!=0);
+}
+
+
+template <class StateData>
+void peano::grid::State<StateData>::shutdownDatatype() {
+  if (StateData::Packed::Datatype!=0) {
+    StateData::Packed::shutdownDatatype();
+  }
+  if (StateData::Datatype!=0) {
+    StateData::shutdownDatatype();
+  }
+
+  StateData::Datatype = 0;
+  StateData::Packed::Datatype = 0;
+}
+
+
+template <class StateData>
+void peano::grid::State<StateData>::send(int destination, int tag, typename MPIDatatypeContainer::ExchangeMode exchangeDataBlocking) {
+  assertion(MPIDatatypeContainer::Datatype!=0);
+
+  #if defined(ParallelExchangePackedRecordsBetweenMasterAndWorker)
+  _stateData.convert().send(destination,tag,true,exchangeDataBlocking);
+  #else
+  _stateData.send(destination,tag,true,exchangeDataBlocking);
+  #endif
+}
+
+
+template <class StateData>
+void peano::grid::State<StateData>::receive(int source, int tag, typename MPIDatatypeContainer::ExchangeMode exchangeDataBlocking) {
+  assertion(MPIDatatypeContainer::Datatype!=0);
+
+  #if defined(ParallelExchangePackedRecordsBetweenMasterAndWorker)
+  MPIDatatypeContainer receivedMessage;
+  receivedMessage.receive(source,tag,true,exchangeDataBlocking);
+  _stateData = receivedMessage.convert();
+  #else
+  _stateData.receive(source,tag,true,exchangeDataBlocking);
+  #endif
+}
+
+
+template <class StateData>
+void peano::grid::State<StateData>::joinWithRank( int rank ) {
+  assertion( rank!=tarch::parallel::Node::getInstance().getRank() );
+
+  if (rank==tarch::parallel::NodePool::getInstance().getMasterRank()) {
+    assertion(  _loadRebalancingState==LoadBalancingState::NoRebalancing );
+    assertion( _loadRebalancingRemoteRanks.empty() );
+    _loadRebalancingState = LoadBalancingState::JoinWithMasterTriggered;
+  }
+  else {
+    assertion(
+      (_loadRebalancingState == LoadBalancingState::NoRebalancing) ||
+      (_loadRebalancingState == LoadBalancingState::JoinTriggered)
+    );
+    _loadRebalancingState = LoadBalancingState::JoinTriggered;
+    _loadRebalancingRemoteRanks.insert(rank);
+  }
+
+  changedCellState();
+}
+
+
+template <class StateData>
+void peano::grid::State<StateData>::splitIntoRank( int rank ) {
+  assertion(
+    (_loadRebalancingState==LoadBalancingState::NoRebalancing) ||
+    (_loadRebalancingState==LoadBalancingState::ForkTriggered)
+  );
+  assertion( rank!=tarch::parallel::Node::getInstance().getRank() );
+  assertion( _loadRebalancingRemoteRanks.count(rank)==0 );
+
+  _loadRebalancingState = LoadBalancingState::ForkTriggered;
+  _loadRebalancingRemoteRanks.insert(rank);
+
+  changedCellState();
+}
+
+
+template <class StateData>
+bool peano::grid::State<StateData>::isForking() {
+  return _loadRebalancingState == LoadBalancingState::Forking;
+}
+
+
+template <class StateData>
+bool peano::grid::State<StateData>::isInvolvedInJoinOrFork() {
+  return _loadRebalancingState != LoadBalancingState::NoRebalancing;
+}
+
+
+template <class StateData>
+bool peano::grid::State<StateData>::mayUseLazyStateAndDataReceives() const {
+  return (_loadRebalancingState == LoadBalancingState::NoRebalancing) && _batchState!=BatchState::NoBatch;
+}
+
+
+template <class StateData>
+bool peano::grid::State<StateData>::isForkTriggeredForRank(int rank) {
+  assertion( rank!=tarch::parallel::Node::getInstance().getRank() || _loadRebalancingRemoteRanks.count(rank)==0 );
+  return (_loadRebalancingState == LoadBalancingState::ForkTriggered) && (_loadRebalancingRemoteRanks.count(rank)>0);
+}
+
+
+template <class StateData>
+bool peano::grid::State<StateData>::isJoinTriggered() {
+  return (_loadRebalancingState == LoadBalancingState::JoinTriggered) || (_loadRebalancingState == LoadBalancingState::JoinWithMasterTriggered);
+}
+
+
+template <class StateData>
+bool peano::grid::State<StateData>::isJoinTriggeredForRank(int rank) {
+  assertion( rank!=tarch::parallel::Node::getInstance().getRank() || _loadRebalancingRemoteRanks.count(rank)==0 );
+  return (_loadRebalancingState == LoadBalancingState::JoinTriggered) && (_loadRebalancingRemoteRanks.count(rank)>0);
+}
+
+
+template <class StateData>
+bool peano::grid::State<StateData>::isForkTriggered() {
+  return _loadRebalancingState == LoadBalancingState::ForkTriggered;
+}
+
+
+template <class StateData>
+bool peano::grid::State<StateData>::isForkingRank( int rank ) {
+    assertion( rank!=tarch::parallel::Node::getInstance().getRank() || _loadRebalancingRemoteRanks.count(rank)==0 );
+  return _loadRebalancingState == LoadBalancingState::Forking && _loadRebalancingRemoteRanks.count(rank)>0;
+}
+
+
+template <class StateData>
+bool peano::grid::State<StateData>::isJoiningRank(int rank) {
+  return (_loadRebalancingState == LoadBalancingState::Joining && _loadRebalancingRemoteRanks.count(rank) > 0);
+}
+
+
+template <class StateData>
+bool peano::grid::State<StateData>::isNewWorkerDueToForkOfExistingDomain() {
+  return _loadRebalancingState == LoadBalancingState::IsNewWorkerDueToForkOfExistingDomain;
+}
+
+
+template <class StateData>
+void peano::grid::State<StateData>::setIsNewWorkerDueToForkOfExistingDomain(bool value) {
+  if (value) {
+    _loadRebalancingState = LoadBalancingState::IsNewWorkerDueToForkOfExistingDomain;
+  }
+  else {
+    _loadRebalancingState = LoadBalancingState::NoRebalancing;
+  }
+}
+
+
+template <class StateData>
+bool peano::grid::State<StateData>::getCouldNotEraseDueToDecompositionFlag() const {
+  return _stateData.getCouldNotEraseDueToDecompositionFlag();
+}
+
+
+template <class StateData>
+bool peano::grid::State<StateData>::isJoinWithMasterTriggered() {
+  return _loadRebalancingState == LoadBalancingState::JoinWithMasterTriggered;
+}
+
+
+template <class StateData>
+bool peano::grid::State<StateData>::isJoiningWithMaster() {
+  return _loadRebalancingState == LoadBalancingState::JoiningWithMaster;
+}
+
+
+template <class StateData>
+bool peano::grid::State<StateData>::isJoiningWithWorker() {
+  return _loadRebalancingState == LoadBalancingState::Joining;
+}
+
+
+template <class StateData>
+bool peano::grid::State<StateData>::hasJoinedWithMaster() {
+  bool result = _loadRebalancingState == LoadBalancingState::HasJoinedWithMaster;
+  return result;
+}
+
+
+template <class StateData>
+void peano::grid::State<StateData>::setReduceStateAndCell( bool value ) {
+  _stateData.setReduceStateAndCell(value);
+}
+
+
+template <class StateData>
+void peano::grid::State<StateData>::setReduceStateAndCell( int worker, bool value ) {
+  _stateWillReduce[worker] = value;
+}
+
+
+template <class StateData>
+bool peano::grid::State<StateData>::reduceDataToMaster() const {
+  const bool result =
+         _stateData.getReduceStateAndCell() &&
+         _loadRebalancingState != LoadBalancingState::JoiningWithMaster &&
+         _loadRebalancingState != LoadBalancingState::IsNewWorkerDueToForkOfExistingDomain &&
+         !tarch::parallel::Node::getInstance().isGlobalMaster();
+
+  return result;
+}
+
+
+template <class StateData>
+bool peano::grid::State<StateData>::reduceDataFromWorker( int rank ) const {
+  assertion4(
+    _stateWillReduce.count(rank)==1
+    ||
+    _previousLoadRebalancingState==LoadBalancingState::Forking
+    ||
+    _previousLoadRebalancingState==LoadBalancingState::Undef,  // Undef for the very first iteration
+    toString(_previousLoadRebalancingState),
+    _stateWillReduce.count(rank),
+    rank,
+    toString()
+  );
+
+  if ( _stateWillReduce.count(rank)==0) {
+    return true;
+  }
+  else {
+    return _stateWillReduce.at(rank);
+  }
+}
+
+
+
+template <class StateData>
+bool peano::grid::State<StateData>::mayForkCellsOnLevel(int level) {
+  const bool result = level <= _maxForkLevel;
+  if (level<_maxForkLevel) {
+    _maxForkLevel = level;
+  }
+  return result;
+}
+
+
+template <class StateData>
+bool peano::grid::State<StateData>::mayForkDueToLoadBalancing() const {
+  if (_iterationCounter<IterationsInBetweenRebalancing) return false;
+
+  return _loadRebalancingState == LoadBalancingState::NoRebalancing ||
+         _loadRebalancingState == LoadBalancingState::ForkTriggered;
+}
+
+
+template <class StateData>
+bool peano::grid::State<StateData>::mayJoinDueToLoadBalancing() const {
+  if (_iterationCounter<IterationsInBetweenRebalancing) return false;
+
+  return _loadRebalancingState == LoadBalancingState::NoRebalancing;
+}
+
+
+template <class StateData>
+bool peano::grid::State<StateData>::hasSubworkerRebalanced() const {
+  return _stateData.getSubWorkerIsInvolvedInJoinOrFork();
+}
+
+
+
+template <class StateData>
+void peano::grid::State<StateData>::receiveStartupDataFromMaster() {
+  SCOREP_USER_REGION("peano::grid::State<StateData>::receiveStartupDataFromMaster()", SCOREP_USER_REGION_TYPE_FUNCTION)
+    
+  logTraceInWith1Argument( "receiveStartupDataFromMaster()", toString() );
+  if ( tarch::parallel::Node::getInstance().isGlobalMaster()) {
+    setReduceStateAndCell(true);
+  }
+  else if ( !isJoiningWithMaster() ) {
+    peano::performanceanalysis::Analysis::getInstance().beginToReceiveDataFromMaster();
+
+    peano::parallel::messages::LoadBalancingMessage loadBalancingMessage;
+    loadBalancingMessage.receive(
+      tarch::parallel::NodePool::getInstance().getMasterRank(),
+      peano::parallel::SendReceiveBufferPool::getInstance().getIterationManagementTag(),
+      true,
+	  peano::parallel::messages::LoadBalancingMessage::ExchangeMode::NonblockingWithPollingLoopOverTests
+    );
+
+    assertion(
+      loadBalancingMessage.getLoadBalancingFlag()!=static_cast<int>(peano::parallel::loadbalancing::LoadBalancingFlag::Join) ||
+      !peano::parallel::loadbalancing::Oracle::getInstance().hasWorkers()
+    );
+
+    if ( isInvolvedInJoinOrFork() ) {
+      peano::parallel::loadbalancing::Oracle::getInstance().receivedStartCommand(
+        peano::parallel::loadbalancing::LoadBalancingFlag::Continue
+      );
+    }
+    else {
+      peano::parallel::loadbalancing::Oracle::getInstance().receivedStartCommand(static_cast<peano::parallel::loadbalancing::LoadBalancingFlag>(loadBalancingMessage.getLoadBalancingFlag()));
+    }
+
+    if (peano::parallel::loadbalancing::Oracle::getInstance().getLastStartCommand()==peano::parallel::loadbalancing::LoadBalancingFlag::Join ) {
+      joinWithRank(tarch::parallel::NodePool::getInstance().getMasterRank());
+    }
+
+    receive(
+      tarch::parallel::NodePool::getInstance().getMasterRank(),
+      peano::parallel::SendReceiveBufferPool::getInstance().getIterationManagementTag(),
+      State::MPIDatatypeContainer::ExchangeMode::NonblockingWithPollingLoopOverTests
+    );
+
+    peano::performanceanalysis::Analysis::getInstance().endToReceiveDataFromMaster();
+    logDebug( "receiveStartupDataFromMaster()", "received state " << toString() );
+  }
+
+  logTraceOutWith1Argument( "receiveStartupDataFromMaster()", toString() );
+}
+
+
+template <class StateData>
+void peano::grid::State<StateData>::sendStateToMaster() const {
+  logTraceInWith1Argument( "sendStateToMaster()", toString() );
+
+  if ( reduceDataToMaster() ) {
+    // stupid workaround as send is non-const
+    State stateCopy(*this);
+    stateCopy.send(
+      tarch::parallel::NodePool::getInstance().getMasterRank(),
+      peano::parallel::SendReceiveBufferPool::getInstance().getIterationManagementTag(),
+	  State::MPIDatatypeContainer::ExchangeMode::NonblockingWithPollingLoopOverTests
+    );
+    logDebug( "sendStateToMaster()", "sent state " << stateCopy.toString() );
+  }
+
+  logTraceOut( "sendStateToMaster()" );
+}
+
+#endif
+
+
+template <class StateData>
+bool peano::grid::State<StateData>::storeRegularSubtreesPersistently(int treeDepth) const {
+  #ifdef PersistentRegularSubtrees
+  return treeDepth >= _smallestRegularTreeThatIsToBeHeldPersistentlyInPreviousIteration
+      && _smallestRegularTreeThatIsToBeHeldPersistentlyInPreviousIteration >= 0;
+  #else
+  return false;
+  #endif
+}
+
+
+template <class StateData>
+void peano::grid::State<StateData>::holdsPersistentSubtrees( bool value ) {
+  #ifdef PersistentRegularSubtrees
+  if (
+    !value 
+    && 
+    _smallestRegularTreeThatIsToBeHeldPersistentlyInPreviousIteration == _smallestRegularTreeThatIsToBeHeldPersistently
+  ) {
+    _smallestRegularTreeThatIsToBeHeldPersistently = 0;
+  }
+  else if (
+    _smallestRegularTreeThatIsToBeHeldPersistently>0
+    &&
+    _smallestRegularTreeThatIsToBeHeldPersistentlyInPreviousIteration == _smallestRegularTreeThatIsToBeHeldPersistently
+  ) {
+    _smallestRegularTreeThatIsToBeHeldPersistently--;
+  }
+  
+  _smallestRegularTreeThatIsToBeHeldPersistentlyInPreviousIteration = _smallestRegularTreeThatIsToBeHeldPersistently;
+    
+
+  #ifdef Parallel
+  if (
+    _loadRebalancingState!=LoadBalancingState::NoRebalancing
+    || 
+    peano::parallel::loadbalancing::Oracle::getInstance().getLastStartCommand()!=peano::parallel::loadbalancing::LoadBalancingFlag::Continue
+  ) {
+    _smallestRegularTreeThatIsToBeHeldPersistently                    = -1;
+    _smallestRegularTreeThatIsToBeHeldPersistentlyInPreviousIteration = -1;
+  }
+  #endif
+  #endif
+}
+
+
+template <class StateData>
+void peano::grid::State<StateData>::informAboutFailedRefineOrEraseBecauseOfPersistentSubtrees(int treeDepth) {
+  #ifdef PersistentRegularSubtrees
+  if ( 
+    treeDepth==0 
+    &&
+    _smallestRegularTreeThatIsToBeHeldPersistently == _smallestRegularTreeThatIsToBeHeldPersistentlyInPreviousIteration
+  ) {
+    _smallestRegularTreeThatIsToBeHeldPersistently = _smallestRegularTreeThatIsToBeHeldPersistentlyInPreviousIteration+1;
+  }
+  else if (
+    _smallestRegularTreeThatIsToBeHeldPersistently<treeDepth
+    &&
+    _smallestRegularTreeThatIsToBeHeldPersistently>=0
+  ) {
+    _smallestRegularTreeThatIsToBeHeldPersistently = treeDepth+1;
+  }
+  #endif
+}
+
+
+template <class StateData>
+void peano::grid::State<StateData>::informToDrainPersistentSubtreesBecauseOfFork() {
+  #ifdef PersistentRegularSubtrees
+  _smallestRegularTreeThatIsToBeHeldPersistently = -1;
+  // we may not do this because if we do this, then the grid never becomes balanced
+  // if any node wants to load balance
+  // changedCellState();
+  #endif
+}

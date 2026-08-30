@@ -1,0 +1,257 @@
+/**
+
+ @page "How to use a heap"
+ 
+ Peano originally supported solely vertex (and cell) attributes stored and 
+ managed by stacks. This proved to be a big disadvantage for two types of 
+ applications:
+ 
+ - If there are lots of data assigned to a vertex, the data movements bound to 
+   the stack idea are expensive (at least on some machines).
+ - If the cardinality of a record assigned to a vertex changes all the time and 
+   is neither bound nor known a priori.
+   
+ Therefore, we introduced a heap concept, i.e. something like vertices holding 
+ pointers to records. This page describes how to make a vertex hold multiple 
+ instances of class A. The cardinality of this aggregation hereby might change.
+ 
+ The same pattern can be applied to cells holding patches of regular grids, 
+ cells holding particle-like data structures, vertices pointing to complex 
+ boundary descriptions, and so forth.
+ 
+ 
+ !!! Modelling A
+ 
+ We consider our Vertex type V holding zero up to any number of instances of 
+ class A. For this, we create a new text file called $A.def$. For our example 
+ it looks as follows:
+ 
+ \code
+   Packed-Type: short int;
+
+   Constant: DIMENSIONS;
+
+   class peano::applications::myApplication::dastgen::A {
+
+      persistent parallelise double x[DIMENSIONS];
+
+   };
+ \endcode
+ 
+ This file then is to be translated into a Peano C++ class due to the statement
+ \code
+ java -jar DaStGen.jar --plugin PeanoHeapSnippetGenerator --naming PeanoHeapNameTranslator VertexData.def my-pde-applications-records-directory
+ \endcode
+ That's the formal stuff.
+ 
+ Also the pdt is based upon DaStGen. However, it uses a different plug in. The 
+ difference between the two plugins is that the heap's plugin does not augment 
+ the records with additional fields such as sender rank. The memory footpring 
+ of the heap records thus is smaller than those of a standard DaStGen product. 
+ Furthermore, all destructors are non-virtual. As a consequence, there is no 
+ memory spent on vtables.
+ 
+ 
+ !!! Modelling Vertex V
+ 
+ Next, we have to open our vertex's DaStGen file (the specification) and extend 
+ the vertex model with an additional integer attribute.
+ \code
+ ...
+ class MyDaStGenVertex {
+    ...
+    persistent int myAggregateWithArbitraryCardinality;
+ }
+ \endcode
+ The new attribute has to be persistent, i.e. once we've told a vertex that it 
+ holds additional attributes it should not forget this, and it is of type 
+ integer as we model it as kind of a pointer index. There is no need to mark it 
+ as parallelise, as we never exchange indices. We do exchange associated data. 
+ 
+ Please regenerate your vertices either due to an additional DaStGen call or 
+ due to a new run of the prototyping tool.    
+      
+ !!! Sequential behaviour
+ 
+ Finally, we have to add behaviour. In the constructor of the vertex V, we should 
+ set the value of myAggregateWithArbitraryCardinality to -1 or another dummy value
+ smaller than zero.
+ \code
+ _vertexData.setMyAggregateWithArbitraryCardinality(-1); 
+ \endcode
+ 
+ Next, we have to assign each vertex that shall hold instances of A a valid 
+ aggregate number. For this, we use the heap's factory method for numbers. 
+ \code
+ vertex.setMyAggregateWithArbitraryCardinality(peano::kernel::heap::Heap<A>::getInstance().createData());
+ \endcode
+ It might be a good idea to do this in the createVertex operations of your 
+ mappings. Another opportunity is to check whether a vertex already has a 
+ valid aggregate number on-the-fly.
+ 
+ Whenever you wanna manipulate the aggregates, you have to follow a two-step 
+ procedure:
+ - You fetch the aggregate's number from your vertex due to a $vertex.getMyAggregateWithArbitraryCardinality()$ call.
+ - With the result you ask the data heap $peano::kernel::heap::Heap$ for the vector of aggregates.   
+ 
+ !!! MPI Parallelisation - General remarks
+ 
+ Technically, there are two different types of communication in Peano: Masters communicate with 
+ their workers, workers send back data to masters, masters stream data to new workers due to a 
+ fork of the domain, or former workers stream data back to their masters due to joins. The other 
+ type of communication are nodes exchanging their boundaries with their 
+ neighbours. The first type of communication is synchronous, i.e. data sent is 
+ immediately received in the same iteration. Exchange along the boundaries is 
+ asynchronous and spreads over two iterations always. 
+ 
+ Both parallel communication schemes follow the same programming pattern:
+ 
+ - The user has to inform the heap prior to any sends that there will be sends. For this, the 
+   heap provides startToSend operations. One for synchronous data exchange, one for exchange 
+   along the boundaries.
+ - The user then can send data.
+ - The user has to inform the heap at the end of the traversal that all sends now are done. 
+   For this, the heap provides operations as well. Please consult their documentation for 
+   the correct usage.
+ - Receives are independent of all these operations, i.e. there's no need to inform the heap 
+   that there are receives.
+
+ With this information, you can send data from the heaps to the workers and back.
+ The asynchronous data exchange along the boundary however demands for further 
+ explanation:
+   
+ !!! MPI data exchange along domain boundaries
+ 
+ For this parallelisation, you basically have to implement 
+ prepareSendToNeighbour() and mergeWithNeighbour() and decide there whether you 
+ wanna exchange the aggregates or not. While the decision is up to you, the 
+ actual exchange is provided by the heap object:   
+ 
+ \code
+  void MyMapping::prepareSendToNeighbour(
+    V&   vertex,
+    int  toRank
+  ) {
+    if you decide to exchange the aggregates as well {
+      peano::kernel::heap::Heap<A>::getInstance().sendBoundaryData(vertex.getMyAggregateWithArbitraryCardinality(), toRank);
+    }
+  }
+
+  void MyMapping::mergeWithNeighbour(
+    V&         vertex, 
+    const V&   neighbour, 
+    int        fromRank
+  ) {
+    if you decide to exchange the aggregates as well {
+      std::vector< A > neighboursData = peano::kernel::heap::Heap<A>::getInstance().receiveBoundaryData(fromRank);
+    
+      // and now you have to merge neighboursData with the data associated with vertex
+    }
+  }
+  \endcode
+  
+  The tricky thing here is that the exchange of information between neighbours is done between
+  iterations. I.e. if you send the data in prepareSendToNeighbour in iteration i with mapping m(i)
+  you have to receive the data in mergeWithNeighbour in iteration i+1 in mapping m(i+1). 
+  
+
+  Since Peano performs load-balancing on the fly an application's implementer never knows when
+  the heap data is sent due to forking part of the domain to another node. Thus, a good approach
+  is to specify a new mapping in the PeProt script that is merged to all adapters. In this mapping
+  (in the following called ForkJoinMapping) only the events prepareSendToNeighbour() and 
+  mergeWithNeighbour() are relevant.
+
+   \code
+  void ForkJoinMapping::prepareCopyToRemoteNode(
+    V&   localVertex,
+    int  toRank
+  ) {
+    peano::kernel::heap::Heap<A>::getInstance().sendBoundaryData(vertex.getMyAggregateWithArbitraryCardinality(), toRank);
+  }
+
+  void ForkJoinMapping::mergeWithRemoteDataDueToForkOrJoin (
+    V&         localVertex, 
+    const V&   remoteVertex, 
+    int        fromRank,
+  ) {
+    std::vector< A > neighboursData = peano::kernel::heap::Heap<A>::getInstance().receiveBoundaryData(fromRank);
+        
+    //Copy all data to the newly created local vertex
+    if(localVertex.getMyAggregateWithArbitraryCardinality() == -1) {
+      localVertex.setMyAggregateWithArbitraryCardinality( peano::kernel::heap::Heap<A>::getInstance().createData() );
+    }
+    std::vector<ExternalVertexData>& localData = peano::kernel::heap::Heap<A>::getInstance().getData(localVertex.getMyAggregateWithArbitraryCardinality());
+    
+    for(std::vector<ExternalVertexData>::iterator i = remoteData.begin(); i != remoteData.end(); i++) {
+      localData.push_back(*i);
+    }
+  }
+  \endcode
+  
+  To avoid memory leaks the creation and deletion of vertices have to been handled, too. Also the buffered data
+  for the asynchronous sends has to be deleted. This is best be done in the
+  following way:
+  
+  \code
+  void ForkJoinMapping::destroyVertex (
+    Vector<>&   x,
+    Vector<>&   h,
+    Vertex&     vertex
+  ) {
+    if(localVertex.vertex.getMyAggregateWithArbitraryCardinality() != -1) {
+      peano::kernel::heap::Heap<A>::getInstance().deleteData(vertex.getMyAggregateWithArbitraryCardinality());
+    }
+  }
+  
+  void ForkJoinMapping::createInnerVertex(
+    Vector<>&  x,
+    Vector<>&  h,
+    Vertex&    vertex
+  ) {
+    vertex.setAggregate(-1)
+  }
+
+
+  void ForkJoinMapping::createBoundaryVertex(
+    Vector<>&  x,
+    Vector<>&  h,
+    Vertex&    vertex
+  ) {
+    vertex.setAggregate(-1)
+  }
+  
+  void ForkJoinMapping::endIteration(
+    State&    solverState
+  ) {
+    peano::kernel::heap::Heap<A>::getInstance().cleanupSends();
+  }
+  \endcode
+
+  With the approach presented, you can also model multiple aggregates, i.e. 
+  vertices holding for example a class A and B of different cardinality. For 
+  this, we need two DaStGen models for A and B, and we have to assign the 
+  vertex V two integer attributes. Afterwards, we always use two Heap 
+  instances for the two different vertices.   
+ 
+ 
+  !!! Parallel Events
+  
+  The following image shows the events that are called during the various parallel actions.
+  
+  \image html MPIEvents.png
+    
+    
+  !!! Regenerate all message data
+
+  To regenerate all DaStGen records provided by the heap component, change into 
+  the heap directory and call 
+  \code
+  java -jar pdt/lib/DaStGen.jar --plugin PeanoHeapSnippetGenerator --naming PeanoHeapNameTranslator src/peano/heap/dastgen/MetaInformation.def src/peano/heap/records
+  
+  java -jar pdt/lib/DaStGen.jar --plugin PeanoHeapSnippetGenerator --naming PeanoHeapNameTranslator src/peano/heap/dastgen/DoubleHeapData.def src/peano/heap/records
+  java -jar pdt/lib/DaStGen.jar --plugin PeanoHeapSnippetGenerator --naming PeanoHeapNameTranslator src/peano/heap/dastgen/IntegerHeapData.def src/peano/heap/records
+  java -jar pdt/lib/DaStGen.jar --plugin PeanoHeapSnippetGenerator --naming PeanoHeapNameTranslator src/peano/heap/dastgen/FloatHeapData.def src/peano/heap/records
+  java -jar pdt/lib/DaStGen.jar --plugin PeanoHeapSnippetGenerator --naming PeanoHeapNameTranslator src/peano/heap/dastgen/BooleanHeapData.def src/peano/heap/records
+  java -jar pdt/lib/DaStGen.jar --plugin PeanoHeapSnippetGenerator --naming PeanoHeapNameTranslator src/peano/heap/dastgen/CharHeapData.def src/peano/heap/records
+  \endcode
+ */

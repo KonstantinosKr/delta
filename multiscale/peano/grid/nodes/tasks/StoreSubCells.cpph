@@ -1,0 +1,39 @@
+#include "peano/utils/Globals.h"
+#include "tarch/multicore/MulticoreDefinitions.h"
+
+
+template < class Cell, class CellStack >
+tarch::logging::Log peano::grid::nodes::tasks::StoreSubCells< Cell, CellStack >::_log( "peano::grid::nodes::tasks::StoreSubCells" );
+
+
+template < class Cell, class CellStack >
+peano::grid::nodes::tasks::StoreSubCells< Cell, CellStack >::StoreSubCells(
+  Cell&                               coarseCell,
+  Cell const * const                  subCells,
+  CellStack&                          cellStack,
+  const peano::utils::LoopDirection&  loopDirection
+):
+  _coarseCell(coarseCell),
+  _subCells(subCells),
+  _cellStack(cellStack),
+  _loopDirection(loopDirection) {
+}
+
+
+template < class Cell, class CellStack >
+bool peano::grid::nodes::tasks::StoreSubCells< Cell, CellStack >::operator()() {
+  logTraceIn( "operator()" );
+  zfor3( i, _loopDirection ) 
+    const int cellIndex = peano::utils::dLinearised(i,3);
+    logDebug( "operator()", "push " << _subCells[cellIndex] << " from subcell position " << cellIndex << " (" << i << ")" );
+
+    #ifdef SharedMemoryParallelisation
+    _coarseCell.restrictInputOutputStackAccessStatistics(_subCells[cellIndex]);
+    #endif
+
+    _cellStack.push(peano::stacks::Constants::InOutStack, _subCells[cellIndex] );
+  endzfor
+  logTraceOut( "operator()" );
+
+  return false;
+}

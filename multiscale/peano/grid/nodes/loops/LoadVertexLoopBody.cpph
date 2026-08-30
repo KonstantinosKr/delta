@@ -1,0 +1,718 @@
+#include "peano/grid/nodes/Constants.h"
+#include "peano/stacks/Stacks.h"
+#include "peano/geometry/GeometryHelper.h"
+#include "peano/MappingSpecification.h"
+#include "tarch/multicore/MulticoreDefinitions.h"
+#include "tarch/multicore/BooleanSemaphore.h"
+#include "tarch/multicore/Lock.h"
+
+#ifdef Asserts
+#include "peano/parallel/loadbalancing/Oracle.h"
+#endif
+  
+
+template <class Vertex, class Cell, class State, class VertexStack, class EventHandle, int CellFlagsFromEnumerator>
+tarch::logging::Log peano::grid::nodes::loops::LoadVertexLoopBody<Vertex,Cell,State,VertexStack,EventHandle,CellFlagsFromEnumerator>::_log( "peano::grid::nodes::loops::LoadVertexLoopBody" );
+
+
+#ifdef Parallel
+#include <set>
+
+#include "peano/parallel/SendReceiveBufferPool.h"
+#include "peano/grid/aspects/ParallelMerge.h"
+#endif
+
+
+template <class Vertex, class Cell, class State, class VertexStack, class EventHandle, int CellFlagsFromEnumerator>
+peano::grid::nodes::loops::LoadVertexLoopBody<Vertex,Cell,State,VertexStack,EventHandle,CellFlagsFromEnumerator>::LoadVertexLoopBody(
+  State&                                    state,
+  Vertex*                                   fineGridVertices,
+  const SingleLevelEnumerator&              fineGridVerticesEnumerator,
+  Cell&                                     coarseGridCell,
+  Vertex * const                            coarseGridVertices,
+  const SingleLevelEnumerator&              coarseGridVerticesEnumerator,
+  const tarch::la::Vector<DIMENSIONS,int>&  fineGridPositionOfCell,
+  int*                                      counter,
+  VertexStack&                              vertexStack,
+  EventHandle&                              eventHandle,
+  peano::geometry::Geometry&                geometry
+):
+  _state(state),
+  _fineGridVertices(fineGridVertices),
+  _fineGridVerticesEnumerator(fineGridVerticesEnumerator),
+  _coarseGridCell(coarseGridCell),
+  _coarseGridVertices(coarseGridVertices),
+  _coarseGridVerticesEnumerator(coarseGridVerticesEnumerator),
+  _fineGridPositionOfCell(fineGridPositionOfCell),
+  _counter(counter),
+  _vertexStack(vertexStack),
+  _eventHandle(eventHandle),
+  _geometry(geometry) {
+}
+
+
+template <class Vertex, class Cell, class State, class VertexStack, class EventHandle, int CellFlagsFromEnumerator>
+void peano::grid::nodes::loops::LoadVertexLoopBody<Vertex,Cell,State,VertexStack,EventHandle,CellFlagsFromEnumerator>::loadVertexFromInputStream(
+  int                                       positionInVertexArray,
+  const tarch::la::Vector<DIMENSIONS,int>&  positionInLocalCell
+) {
+  logTraceInWith2Arguments( "loadVertexFromInputStream(...)", positionInVertexArray, positionInLocalCell);
+
+  #ifdef SharedMemoryParallelisation
+  _coarseGridCell.incrementLoadFromInputStackCounter();
+  #endif
+
+  _fineGridVertices[positionInVertexArray] = _vertexStack.pop(peano::stacks::Constants::InOutStack);
+
+  logDebug( "loadVertexFromInputStream(...)", "got vertex " << _fineGridVertices[positionInVertexArray].toString() );
+
+  #ifdef Debug
+  assertionNumericalEquals9(
+    _fineGridVertices[positionInVertexArray].getX(), _fineGridVerticesEnumerator.getVertexPosition(positionInLocalCell),
+    _fineGridVertices[positionInVertexArray], _fineGridVerticesEnumerator(0),
+    CellFlagsFromEnumerator, _fineGridVerticesEnumerator.toString(),
+    positionInVertexArray,
+    _coarseGridVertices[ _coarseGridVerticesEnumerator(0) ].toString(),
+    _coarseGridVertices[ _coarseGridVerticesEnumerator(1) ].toString(),
+    _coarseGridVertices[ _coarseGridVerticesEnumerator(2) ].toString(),
+    _coarseGridVertices[ _coarseGridVerticesEnumerator(3) ].toString()
+  );
+  #endif
+
+  assertion1( _fineGridVertices[positionInVertexArray].getRefinementControl() != Vertex::Records::Refining,                                    _fineGridVertices[positionInVertexArray] );
+  assertion1( _fineGridVertices[positionInVertexArray].getRefinementControl() != Vertex::Records::Erasing,                                     _fineGridVertices[positionInVertexArray] );
+
+  #ifdef Parallel
+  assertion1( _fineGridVertices[positionInVertexArray].getRefinementControl() != Vertex::Records::RefineDueToJoinThoughWorkerIsAlreadyErasing, _fineGridVertices[positionInVertexArray] );
+
+  const bool IrregularStaticGrid = CellFlagsFromEnumerator>=peano::grid::StationaryButIrregular;
+  if (!IrregularStaticGrid) {
+    if (
+        _fineGridVertices[positionInVertexArray].isAdjacentToRemoteRank() &&
+        !_fineGridVertices[positionInVertexArray].isRemote(_state,false,true)
+    ) {
+      std::set<int> ranks = _fineGridVertices[positionInVertexArray].getAdjacentRemoteRanks();
+
+      const tarch::la::Vector<TWO_POWER_D,int> originalAdjacencyList = _fineGridVertices[positionInVertexArray].getAdjacentRanks();
+      tarch::la::Vector<TWO_POWER_D,int>       mergedAdjacencyList   = _fineGridVertices[positionInVertexArray].getAdjacentRanks();
+
+      for (
+        std::set<int>::const_iterator p = ranks.begin();
+        p != ranks.end();
+        p++
+      ) {
+        const int currentNeighbourRank = *p;
+        if ( !_state.isForkingRank(currentNeighbourRank) ) {
+          const Vertex receivedVertex = peano::parallel::SendReceiveBufferPool::getInstance().getVertex<Vertex>(currentNeighbourRank);
+
+          if (peano::parallel::SendReceiveBufferPool::getInstance().deploysValidData()) {
+            #ifdef Debug
+            assertionVectorNumericalEquals5(receivedVertex.getX(), _fineGridVertices[positionInVertexArray].getX(), receivedVertex.toString(), _fineGridVertices[positionInVertexArray].toString(), _state.toString(), *p, tarch::parallel::Node::getInstance().getRank());
+            #endif
+            assertionEquals4(receivedVertex.isOutside(),  _fineGridVertices[positionInVertexArray].isOutside(), receivedVertex.toString(), _fineGridVertices[positionInVertexArray].toString(), *p, tarch::parallel::Node::getInstance().getRank());
+            assertionEquals4(receivedVertex.isBoundary(), _fineGridVertices[positionInVertexArray].isBoundary(), receivedVertex.toString(), _fineGridVertices[positionInVertexArray].toString(), *p, tarch::parallel::Node::getInstance().getRank());
+            assertionEquals4(receivedVertex.isInside(),   _fineGridVertices[positionInVertexArray].isInside(), receivedVertex.toString(), _fineGridVertices[positionInVertexArray].toString(), *p, tarch::parallel::Node::getInstance().getRank());
+
+            if (!_state.isJoiningRank(currentNeighbourRank)) {
+              peano::parallel::getMergedAdjacencyLists(
+                originalAdjacencyList,
+                mergedAdjacencyList,
+                receivedVertex.getAdjacentRanks(),
+                currentNeighbourRank
+              );
+            }
+
+            peano::grid::aspects::ParallelMerge::mergeOnDomainBoundary(
+              _fineGridVertices[positionInVertexArray],
+              receivedVertex,
+              currentNeighbourRank
+            );
+          }
+          else {
+            #ifdef Asserts
+            const Vertex copyOfLocalVertex = _fineGridVertices[positionInVertexArray];
+
+            peano::parallel::getMergedAdjacencyLists(
+              originalAdjacencyList,
+              mergedAdjacencyList,
+              receivedVertex.getAdjacentRanks(),
+              currentNeighbourRank
+            );
+
+            for (int i=0; i>TWO_POWER_D; i++) {
+              assertionEquals( mergedAdjacencyList(i), originalAdjacencyList(i) );
+            }
+
+            peano::grid::aspects::ParallelMerge::mergeOnDomainBoundary(
+              _fineGridVertices[positionInVertexArray],
+              receivedVertex,
+              currentNeighbourRank
+            );
+
+            assertionEquals3(
+              _fineGridVertices[positionInVertexArray].getRefinementControl(), copyOfLocalVertex.getRefinementControl(),
+              _fineGridVertices[positionInVertexArray].toString(), copyOfLocalVertex.toString(), receivedVertex.toString()
+            );
+            #endif
+
+            // This is formally not correct, but it is pessimistic: We just
+            // ensure that nothing does go wrong as someone tries to coarse
+            // somewhere.
+            _fineGridVertices[positionInVertexArray].setAdjacentSubtreeForksIntoOtherRankFlag();
+          }
+
+          _eventHandle.mergeWithNeighbour(
+            _fineGridVertices[positionInVertexArray],
+            receivedVertex,
+            currentNeighbourRank,
+            _fineGridVerticesEnumerator.getVertexPosition(positionInLocalCell),
+            _fineGridVerticesEnumerator.getCellSize(),
+            _fineGridVerticesEnumerator.getLevel()
+          );
+        }
+      }
+
+      _fineGridVertices[positionInVertexArray].setAdjacentRanks(mergedAdjacencyList);
+    }
+  }
+  #endif
+
+  _fineGridVertices[positionInVertexArray].clearCounterOfAdjacentRefinedCells();
+  _fineGridVertices[positionInVertexArray].saveAndClearAdjacentCellsInformation();
+
+  logTraceOutWith1Argument( "loadVertexFromInputStream(...)", _fineGridVertices[positionInVertexArray].toString() );
+}
+
+
+template <class Vertex, class Cell, class State, class VertexStack, class EventHandle, int CellFlagsFromEnumerator>
+void peano::grid::nodes::loops::LoadVertexLoopBody<Vertex,Cell,State,VertexStack,EventHandle,CellFlagsFromEnumerator>::updateRefinementFlagsOfVertexAfterLoad(
+  int positionInVertexArray, bool counterIsDelete
+) {
+  logTraceInWith3Arguments( "updateRefinementFlagsOfVertexAfterLoad(...)", positionInVertexArray, counterIsDelete, _fineGridVertices[positionInVertexArray].toString() );
+
+  assertion(!_fineGridVertices[positionInVertexArray].isHangingNode() );
+  #ifdef Parallel
+  assertion( peano::parallel::SendReceiveBufferPool::getInstance().deploysValidData() || !_fineGridVertices[positionInVertexArray].isAdjacentToRemoteRank() );
+  #endif
+    
+  bool hasErased = false;
+  bool hasRefined = false;
+  bool hasFailedToEraseDueToDomainDecomposition = false;
+
+  if (counterIsDelete) {
+    _fineGridVertices[positionInVertexArray].rollbackRefinementOrEraseTriggered();
+    if ( _fineGridVertices[positionInVertexArray].getRefinementControl()==Vertex::Records::Refined) {
+      _fineGridVertices[positionInVertexArray].erase();
+      hasErased = true;
+    }
+    _fineGridVertices[positionInVertexArray].invalidateAdjacentCellInformation();
+    logDebug( "updateRefinementFlagsOfVertexAfterLoad()", "made vertex erasing as parent is erasing: " << _fineGridVertices[positionInVertexArray].toString() );
+  }
+  
+  const typename Vertex::SwitchRefinementTriggeredResult  switchedIntoRefining = _fineGridVertices[positionInVertexArray].switchRefinementTriggeredToRefining();
+  const typename Vertex::SwitchEraseTriggeredResult       switchedIntoErasing  = _fineGridVertices[positionInVertexArray].switchEraseTriggeredToErasing();
+  switch ( switchedIntoRefining ) {
+    case Vertex::SwitchRefinementTriggeredResult::Nop:
+      break;
+    case Vertex::SwitchRefinementTriggeredResult::SwitchedIntoRefining:
+      hasRefined = true;
+      logDebug( "updateRefinementFlagsOfVertexAfterLoad()", "made vertex refining: " << _fineGridVertices[positionInVertexArray].toString() );
+      break;
+    case Vertex::SwitchRefinementTriggeredResult::WasntAbleToSwitchDueToRegularPersistentSubgrids:
+      {
+        logDebug( "updateRefinementFlagsOfVertexAfterLoad()", "can't refine " << _fineGridVertices[positionInVertexArray].toString() );
+        _state.informAboutFailedRefineOrEraseBecauseOfPersistentSubtrees(0);
+      }
+      break;
+  }
+  switch (switchedIntoErasing) {
+    case Vertex::SwitchEraseTriggeredResult::Nop:
+      break;
+    case Vertex::SwitchEraseTriggeredResult::SwitchedIntoErasing:
+      {
+        hasErased = true;
+        logDebug( "updateRefinementFlagsOfVertexAfterLoad()", "made vertex erasing: " << _fineGridVertices[positionInVertexArray].toString() );
+      }
+      break;
+    case Vertex::SwitchEraseTriggeredResult::WasntAbleToSwitchDueToFork:
+      {
+        hasFailedToEraseDueToDomainDecomposition = true;
+        logDebug( "updateRefinementFlagsOfVertexAfterLoad()", "tried to make vertex erasing but could not due to fork: " << _fineGridVertices[positionInVertexArray].toString() );
+        #if !defined(Parallel)
+        assertionMsg( false, "branch is not reachable in serial mode" );
+        #endif
+      }
+      break;
+    case Vertex::SwitchEraseTriggeredResult::WasntAbleToSwitchDueToRegularPersistentSubgrids:
+      {
+        _state.informAboutFailedRefineOrEraseBecauseOfPersistentSubtrees(0);
+      }
+      break;
+  }
+
+  _state.updateRefinementHistoryAfterLoad( hasRefined, hasErased, hasFailedToEraseDueToDomainDecomposition, false );
+
+  #ifdef Parallel
+  assertion1(
+    peano::parallel::SendReceiveBufferPool::getInstance().deploysValidData() ||
+    !hasRefined ||
+    !hasErased,
+    _fineGridVertices[positionInVertexArray].toString()
+  );
+  #endif
+
+  logTraceOutWith1Argument( "updateRefinementFlagsOfVertexAfterLoad(...)", _fineGridVertices[positionInVertexArray].toString() );
+}
+
+
+template <class Vertex, class Cell, class State, class VertexStack, class EventHandle, int CellFlagsFromEnumerator>
+void peano::grid::nodes::loops::LoadVertexLoopBody<Vertex,Cell,State,VertexStack,EventHandle,CellFlagsFromEnumerator>::createHangingNode(
+  int positionInVertexArray,
+  const tarch::la::Vector<DIMENSIONS,int>& positionInLocalCell
+) {
+  logTraceInWith2Arguments( "createHangingNode(...)", positionInVertexArray, positionInLocalCell );
+
+  _fineGridVertices[positionInVertexArray] = Vertex();
+
+  #ifdef Asserts
+  _fineGridVertices[positionInVertexArray].setPosition( _fineGridVerticesEnumerator.getVertexPosition(positionInLocalCell), _fineGridVerticesEnumerator.getLevel() );
+  #endif
+
+  #ifdef Parallel
+  const tarch::la::Vector<TWO_POWER_D_TIMES_TWO_POWER_D,int> coarseGridAdjacencyLists =
+    Vertex::readAdjacencyLists(
+      _coarseGridVerticesEnumerator,
+      _coarseGridVertices
+    );
+  _fineGridVertices[positionInVertexArray].setAdjacentRanks(
+    peano::parallel::getAdjacencyListFromCoarseGrid(coarseGridAdjacencyLists, _fineGridVerticesEnumerator.getVertexPositionWithinCoarserPatch(positionInLocalCell) )
+  );
+  #endif
+
+  _eventHandle.createHangingVertex(
+    _fineGridVertices[positionInVertexArray],
+    _fineGridVerticesEnumerator.getVertexPosition(positionInLocalCell),
+    _fineGridVerticesEnumerator.getCellSize(),
+    _coarseGridVertices,
+    _coarseGridVerticesEnumerator,
+    _coarseGridCell,
+    _fineGridPositionOfCell + positionInLocalCell
+  );
+
+  logTraceOutWith1Argument( "createHangingNode(...)", _fineGridVertices[positionInVertexArray].toString() );
+}
+
+
+template <class Vertex, class Cell, class State, class VertexStack, class EventHandle, int CellFlagsFromEnumerator>
+void peano::grid::nodes::loops::LoadVertexLoopBody<Vertex,Cell,State,VertexStack,EventHandle,CellFlagsFromEnumerator>::invalidateVertexIfGeometryHasChanged( int positionInVertexArray, const tarch::la::Vector<DIMENSIONS,int>& positionInLocalCell ) const {
+  logTraceInWith1Argument( "invalidateVertexIfGeometryHasChanged(...)", _fineGridVertices[positionInVertexArray] );
+  if ( _geometry.domainHasChanged(_fineGridVerticesEnumerator.getVertexPosition(positionInLocalCell),_fineGridVerticesEnumerator.getCellSize() )) {
+    _fineGridVertices[positionInVertexArray].invalidateAdjacentCellInformation();
+  }
+  logTraceOutWith1Argument( "invalidateVertexIfGeometryHasChanged(...)", _fineGridVertices[positionInVertexArray] );
+}
+
+
+template <class Vertex, class Cell, class State, class VertexStack, class EventHandle, int CellFlagsFromEnumerator>
+void peano::grid::nodes::loops::LoadVertexLoopBody<Vertex,Cell,State,VertexStack,EventHandle,CellFlagsFromEnumerator>::updateGeometry(
+  int positionInVertexArray,
+  const tarch::la::Vector<DIMENSIONS,int>& positionInLocalCell
+) {
+  logTraceInWith3Arguments( "updateGeometry(...)", _fineGridVertices[positionInVertexArray].toString(), _fineGridVerticesEnumerator.getVertexPosition(positionInLocalCell), _fineGridVerticesEnumerator.getCellSize() );
+
+  #ifdef Parallel
+  const bool AnalyseVertex =  !_fineGridVertices[positionInVertexArray].isRemote(_state, false, true);
+  const int  CoarsestRegularInnerAndOuterGridLevel = peano::parallel::loadbalancing::Oracle::getInstance().getRegularLevelAlongBoundary();
+  assertion( CoarsestRegularInnerAndOuterGridLevel>=0 );
+  #else
+  const bool AnalyseVertex = true;
+  const int  CoarsestRegularInnerAndOuterGridLevel = 0;
+  #endif
+
+  if (AnalyseVertex) {
+    peano::geometry::GeometryHelper::CurrentVertexState vertexState;
+    if (_fineGridVertices[positionInVertexArray].isOutside()) vertexState = peano::geometry::GeometryHelper::Outside;
+    else if (_fineGridVertices[positionInVertexArray].isInside()) vertexState = peano::geometry::GeometryHelper::Inside;
+    else if (_fineGridVertices[positionInVertexArray].isBoundary()) vertexState = peano::geometry::GeometryHelper::Boundary;
+
+    switch (
+      peano::geometry::GeometryHelper::getVertexCommand(
+        _geometry.isCompletelyInside(_fineGridVerticesEnumerator.getVertexPosition(positionInLocalCell),_fineGridVerticesEnumerator.getCellSize()),
+        _geometry.isCompletelyOutside(_fineGridVerticesEnumerator.getVertexPosition(positionInLocalCell),_fineGridVerticesEnumerator.getCellSize()),
+        _geometry.isOutsideClosedDomain(_fineGridVerticesEnumerator.getVertexPosition(positionInLocalCell)),
+        vertexState
+      )
+    ) {
+      case peano::geometry::GeometryHelper::LeaveVertexUnaltered:
+        break;
+      case peano::geometry::GeometryHelper::LeaveOuterVertexUnaltered:
+        break;
+      case peano::geometry::GeometryHelper::EraseOutsideVertex:
+        logDebug( "updateGeometry(...)", "EraseOutsideVertex" );
+        assertion1( _fineGridVertices[positionInVertexArray].isOutside(),_fineGridVertices[positionInVertexArray] );
+        if (
+          _fineGridVertices[positionInVertexArray].getRefinementControl()==Vertex::Records::Refined
+          &&
+          _fineGridVerticesEnumerator.getLevel()>CoarsestRegularInnerAndOuterGridLevel
+        ) {
+          _state.updateRefinementHistoryAfterLoad( false, false, false, true );
+          _fineGridVertices[positionInVertexArray].erase();
+          logDebug( "updateGeometry(...)", "erase vertex " << _fineGridVertices[positionInVertexArray].toString() << " as it is outside and boundary regularity is set to " << peano::parallel::loadbalancing::Oracle::getInstance().getRegularLevelAlongBoundary() );
+        }
+        break;
+      case peano::geometry::GeometryHelper::CreateInnerVertex:
+        logDebug( "updateGeometry(...)", "CreateInnerVertex" );
+        _eventHandle.createInnerVertex(
+          _fineGridVertices[positionInVertexArray],
+          _fineGridVerticesEnumerator.getVertexPosition(positionInLocalCell),
+          _fineGridVerticesEnumerator.getCellSize(),
+          _coarseGridVertices,
+          _coarseGridVerticesEnumerator,
+          _coarseGridCell,
+          _fineGridPositionOfCell + positionInLocalCell
+        );
+        _fineGridVertices[positionInVertexArray].invalidateAdjacentCellInformation();
+        _fineGridVertices[positionInVertexArray].switchToInside();
+        _state.updateRefinementHistoryAfterLoad( false, false, false, true );
+        logDebug( "updateGeometry(...)", "switch vertex to inside. vertex=" << _fineGridVertices[positionInVertexArray] << ",enumerator=" << _fineGridVerticesEnumerator(0) );
+        break;
+      case peano::geometry::GeometryHelper::CreateBoundaryVertex:
+        logDebug( "updateGeometry(...)", "CreateBoundaryVertex" );
+        _eventHandle.createBoundaryVertex(
+          _fineGridVertices[positionInVertexArray],
+          _fineGridVerticesEnumerator.getVertexPosition(positionInLocalCell),
+          _fineGridVerticesEnumerator.getCellSize(),
+          _coarseGridVertices,
+          _coarseGridVerticesEnumerator,
+          _coarseGridCell,
+          _fineGridPositionOfCell + positionInLocalCell
+        );
+        _fineGridVertices[positionInVertexArray].invalidateAdjacentCellInformation();
+        _fineGridVertices[positionInVertexArray].switchToBoundary();
+        _state.updateRefinementHistoryAfterLoad( false, false, false, true );
+        break;
+      case peano::geometry::GeometryHelper::DestroyVertexAndSwitchToOutside:
+        logDebug( "updateGeometry(...)", "DestroyVertexAndSwitchToOutside" );
+        _eventHandle.destroyVertex(
+          _fineGridVertices[positionInVertexArray],
+          _fineGridVerticesEnumerator.getVertexPosition(),
+          _fineGridVerticesEnumerator.getCellSize(),
+          _coarseGridVertices,
+          _coarseGridVerticesEnumerator,
+          _coarseGridCell,
+          _fineGridPositionOfCell + positionInLocalCell
+        );
+        _fineGridVertices[positionInVertexArray].invalidateAdjacentCellInformation();
+        _fineGridVertices[positionInVertexArray].switchToOutside();
+        _state.updateRefinementHistoryAfterLoad( false, false, false, true );
+        break;
+      case peano::geometry::GeometryHelper::DestroyVertexAndEraseItAndSwitchToOutside:
+        logDebug( "updateGeometry(...)", "DestroyVertexAndEraseItAndSwitchToOutside" );
+        _eventHandle.destroyVertex(
+          _fineGridVertices[positionInVertexArray],
+          _fineGridVerticesEnumerator.getVertexPosition(),
+          _fineGridVerticesEnumerator.getCellSize(),
+          _coarseGridVertices,
+          _coarseGridVerticesEnumerator,
+          _coarseGridCell,
+          _fineGridPositionOfCell + positionInLocalCell
+        );
+        _fineGridVertices[positionInVertexArray].invalidateAdjacentCellInformation();
+        _fineGridVertices[positionInVertexArray].switchToOutside();
+        if (
+          _fineGridVertices[positionInVertexArray].getRefinementControl()==Vertex::Records::Refined
+          &&
+          _fineGridVerticesEnumerator.getLevel()>CoarsestRegularInnerAndOuterGridLevel
+        ) {
+          _fineGridVertices[positionInVertexArray].erase();
+        }
+        _state.updateRefinementHistoryAfterLoad( false, false, false, true );
+        break;
+    }
+  }
+
+  logTraceOutWith1Argument( "updateGeometry(...)", _fineGridVertices[positionInVertexArray] );
+}
+
+
+template <class Vertex, class Cell, class State, class VertexStack, class EventHandle, int CellFlagsFromEnumerator>
+void peano::grid::nodes::loops::LoadVertexLoopBody<Vertex,Cell,State,VertexStack,EventHandle,CellFlagsFromEnumerator>::invokeLoadVertexEvents(
+  int positionInVertexArray,
+  const tarch::la::Vector<DIMENSIONS,int>& positionInLocalCell
+) {
+  logTraceInWith3Arguments( "invokeLoadVertexEvents(...)", _fineGridVertices[positionInVertexArray], _fineGridVerticesEnumerator.getVertexPosition(positionInLocalCell), _fineGridVerticesEnumerator.getCellSize() );
+
+  #ifdef Parallel
+  const bool InvokeEventForVertex = !_fineGridVertices[positionInVertexArray].isOutside() && !_fineGridVertices[positionInVertexArray].isRemote(_state,true,false);
+  #else
+  const bool InvokeEventForVertex = !_fineGridVertices[positionInVertexArray].isOutside();
+  #endif
+
+//  const bool InvokeEventAccordingToSpecification =
+//    (_threadLocalEventHandle.touchVertexFirstTimeSpecification().manipulates == peano::MappingSpecification::WHOLE_TREE) ||
+//    (_threadLocalEventHandle.touchVertexFirstTimeSpecification().manipulates == peano::MappingSpecification::ONLY_LEAVES && _fineGridVertices[positionInVertexArray].getRefinementControl() != Vertex::Records::Refined);
+  const bool InvokeEventAccordingToSpecification = true;
+
+  if (InvokeEventForVertex && InvokeEventAccordingToSpecification) {
+    _eventHandle.touchVertexFirstTime(
+      _fineGridVertices[positionInVertexArray],
+      _fineGridVerticesEnumerator.getVertexPosition(positionInLocalCell),
+      _fineGridVerticesEnumerator.getCellSize(),
+      _coarseGridVertices,
+      _coarseGridVerticesEnumerator,
+      _coarseGridCell,
+      _fineGridPositionOfCell + positionInLocalCell
+    );
+    #ifdef TrackGridStatistics
+    if (_fineGridVertices[positionInVertexArray].isBoundary() && _fineGridVertices[positionInVertexArray].getRefinementControl()!=Vertex::Records::Unrefined) {
+      _state.incNumberOfBoundaryVertices( 1.0 );
+    }
+    else if (_fineGridVertices[positionInVertexArray].isBoundary()) {
+      _state.incNumberOfBoundaryVertices( 1.0 );
+      _state.incNumberOfBoundaryLeafVertices( 1.0 );
+    }
+    else if (_fineGridVertices[positionInVertexArray].getRefinementControl()!=Vertex::Records::Unrefined) {
+      _state.incNumberOfInnerVertices( 1.0 );
+    }
+    else {
+      _state.incNumberOfInnerVertices( 1.0 );
+      _state.incNumberOfInnerLeafVertices( 1.0 );
+    }
+    #endif
+  }
+  else {
+    #ifdef TrackGridStatistics
+    if (_fineGridVertices[positionInVertexArray].getRefinementControl()!=Vertex::Records::Unrefined) {
+      _state.incNumberOfOuterVertices( 1.0 );
+    }
+    else {
+      _state.incNumberOfOuterVertices( 1.0 );
+      _state.incNumberOfOuterLeafVertices( 1.0 );
+    }
+    #endif
+  }
+
+  logTraceOutWith1Argument( "invokeLoadVertexEvents(...)", _fineGridVertices[positionInVertexArray] );
+}
+
+
+template <class Vertex, class Cell, class State, class VertexStack, class EventHandle, int CellFlagsFromEnumerator>
+void peano::grid::nodes::loops::LoadVertexLoopBody<Vertex,Cell,State,VertexStack,EventHandle,CellFlagsFromEnumerator>::createNewVertex(
+  int                                       positionInVertexArray,
+  const tarch::la::Vector<DIMENSIONS,int>&  positionInLocalCell
+) {
+   logTraceInWith2Arguments( "createNewVertex(...)", positionInVertexArray, positionInLocalCell);
+   dfor2(k)
+     logDebug( "createNewVertex(...)", "  - " << _coarseGridVertices[_coarseGridVerticesEnumerator(k)].toString() );
+   enddforx
+
+  _fineGridVertices[positionInVertexArray] = Vertex();
+
+  _fineGridVertices[positionInVertexArray].switchToNonhangingNode();
+  #ifdef Asserts
+  _fineGridVertices[positionInVertexArray].setPosition( _fineGridVerticesEnumerator.getVertexPosition(positionInLocalCell), _fineGridVerticesEnumerator.getLevel() );
+  #endif
+
+  #ifdef Parallel
+  const tarch::la::Vector<TWO_POWER_D_TIMES_TWO_POWER_D,int> coarseGridAdjacencyLists =
+    Vertex::readAdjacencyLists(
+      _coarseGridVerticesEnumerator,
+      _coarseGridVertices
+    );
+  _fineGridVertices[positionInVertexArray].setAdjacentRanks(
+    peano::parallel::getAdjacencyListFromCoarseGrid(coarseGridAdjacencyLists, _fineGridVerticesEnumerator.getVertexPositionWithinCoarserPatch(positionInLocalCell) )
+  );
+  #endif
+
+  assertion1( _fineGridVertices[positionInVertexArray].getRefinementControl() != Vertex::Records::Refining,                                    _fineGridVertices[positionInVertexArray] );
+  assertion1( _fineGridVertices[positionInVertexArray].getRefinementControl() != Vertex::Records::Erasing,                                     _fineGridVertices[positionInVertexArray] );
+  #ifdef Parallel
+  assertion1( _fineGridVertices[positionInVertexArray].getRefinementControl() != Vertex::Records::RefineDueToJoinThoughWorkerIsAlreadyErasing, _fineGridVertices[positionInVertexArray] );
+  #endif
+
+  logTraceOutWith1Argument( "createNewVertex(...)", _fineGridVertices[positionInVertexArray].toString() );
+}
+
+
+template <class Vertex, class Cell, class State, class VertexStack, class EventHandle, int CellFlagsFromEnumerator>
+void peano::grid::nodes::loops::LoadVertexLoopBody<Vertex,Cell,State,VertexStack,EventHandle,CellFlagsFromEnumerator>::operator() (const peano::datatraversal::Action& action) {
+  const int positionInArray = _fineGridVerticesEnumerator(action._cartesianPosition);
+
+  const bool RegularStaticGrid               = CellFlagsFromEnumerator>=peano::grid::Leaf;
+  const bool IrregularStaticGrid             = CellFlagsFromEnumerator>=peano::grid::StationaryButIrregular;
+
+  assertion1( !_state.isInvolvedInJoinOrFork() || !RegularStaticGrid,              _state.toString() );
+  assertion1( !_state.isInvolvedInJoinOrFork() || !IrregularStaticGrid,            _state.toString() );
+
+  logTraceInWith6Arguments( "operator()", action._cartesianPosition, action._id, _counter[positionInArray], positionInArray, RegularStaticGrid, IrregularStaticGrid );
+
+  assertion( !RegularStaticGrid || !(_counter[positionInArray]==CounterHangingNode) );
+  assertion( !RegularStaticGrid || IrregularStaticGrid );
+
+  const bool CaseLoadPersistentVertex =                                     (_counter[positionInArray]==CounterPersistentNode && action._id==peano::stacks::Constants::InOutStack);
+  const bool CaseLoadOfDeleteVertex   =  !IrregularStaticGrid            && (_counter[positionInArray]==CounterPersistentNodeDelete && action._id==peano::stacks::Constants::InOutStack);
+  const bool CaseCreateHangingNode    =  !RegularStaticGrid              && (_counter[positionInArray]==CounterHangingNode);
+  const bool CaseCreateNewNode        =  !IrregularStaticGrid            && (_counter[positionInArray]==CounterNewNode && action._id==peano::stacks::Constants::InOutStack);
+  #ifdef Parallel
+  const bool CaseCreateNewNodeTemporarily = !IrregularStaticGrid && (_counter[positionInArray]==CounterNewNodeRefineDueToJoinThoughWorkerIsAlreadyErasing && action._id==peano::stacks::Constants::InOutStack);
+  #endif
+  const bool CaseTakeFromTempStacks   =  _counter[positionInArray]==CounterPersistentNode ||
+                                         (!IrregularStaticGrid && (_counter[positionInArray]==CounterNewNode || _counter[positionInArray]==CounterPersistentNodeDelete  || _counter[positionInArray]==CounterNewNodeRefineDueToJoinThoughWorkerIsAlreadyErasing));
+
+
+  logDebug(
+    "operator()",
+         "CaseLoadPersistentVertex=" << CaseLoadPersistentVertex
+    << ", CaseLoadOfDeleteVertex=" << CaseLoadOfDeleteVertex
+    << ", CaseCreateHangingNode=" << CaseCreateHangingNode
+    << ", CaseCreateNewNode=" << CaseCreateNewNode
+    << ", CaseTakeFromTempStacks=" <<  CaseTakeFromTempStacks
+    << " (from counter " << _counter[positionInArray] << " at " << positionInArray << ")"
+  );
+
+  if ( CaseLoadPersistentVertex || CaseLoadOfDeleteVertex ) {
+    loadVertexFromInputStream(positionInArray, action._cartesianPosition);
+    if (!IrregularStaticGrid) {
+      invalidateVertexIfGeometryHasChanged(positionInArray,action._cartesianPosition);
+      updateGeometry(positionInArray,action._cartesianPosition);
+    }
+    invokeLoadVertexEvents(positionInArray,action._cartesianPosition);
+    #ifdef Parallel
+    assertion(!_fineGridVertices[positionInArray].isAdjacentToRemoteRank() || !IrregularStaticGrid);
+    #endif
+    if (
+      !IrregularStaticGrid 
+      #ifdef Parallel
+      &&
+      ( peano::parallel::SendReceiveBufferPool::getInstance().deploysValidData() || !_fineGridVertices[positionInArray].isAdjacentToRemoteRank() )
+      #endif
+    ) {
+      updateRefinementFlagsOfVertexAfterLoad(positionInArray,_counter[positionInArray]==CounterPersistentNodeDelete);
+    }
+    logDebug( "operator()", "vertex at " << positionInArray << " is a persistent vertex from in/out stacks: " << _fineGridVertices[positionInArray].toString() );
+    if (_counter[positionInArray]==CounterPersistentNodeDelete) {
+      logDebug( "operator()", "it will be deleted later on" );
+    }
+  }
+  else if ( CaseCreateHangingNode ) {
+    createHangingNode(positionInArray, action._cartesianPosition);
+    logDebug( "operator()", "vertex at " << positionInArray << " is a hanging vertex: " << _fineGridVertices[positionInArray].toString() );
+  }
+  else if ( CaseCreateNewNode ) {
+    createNewVertex(positionInArray, action._cartesianPosition );
+    updateGeometry(positionInArray,action._cartesianPosition);
+    invokeLoadVertexEvents(positionInArray,action._cartesianPosition);
+    #ifdef Parallel
+    const bool DomainDecompositionPermitsRefinement =
+      !_fineGridVertices[positionInArray].isAdjacentToRemoteRank() &&
+      !_state.isInvolvedInJoinOrFork();
+    assertion2(
+      !(_state.isInvolvedInJoinOrFork() && _fineGridVertices[positionInArray].getRefinementControl()==Vertex::Records::EnforceRefinementTriggered),
+      _fineGridVertices[positionInArray].toString(),
+      _state.toString()
+    );
+    const bool UpdateRefinementFlagsAfterLoadImmediately = DomainDecompositionPermitsRefinement || _fineGridVertices[positionInArray].getRefinementControl()==Vertex::Records::EnforceRefinementTriggered;
+    #else
+    const bool UpdateRefinementFlagsAfterLoadImmediately = true;
+    #endif
+    if (UpdateRefinementFlagsAfterLoadImmediately) {
+      updateRefinementFlagsOfVertexAfterLoad(positionInArray,false);
+    }
+    _counter[positionInArray] = CounterPersistentNode;
+    logDebug( "operator()", "vertex at " << positionInArray << " is a new vertex: " << _fineGridVertices[positionInArray].toString() );
+  }
+  #ifdef Parallel
+  else if ( CaseCreateNewNodeTemporarily ) {
+    createNewVertex(positionInArray, action._cartesianPosition );
+    updateGeometry(positionInArray,action._cartesianPosition);
+    invokeLoadVertexEvents(positionInArray,action._cartesianPosition);
+    logDebug( "operator()", "vertex at " << positionInArray << " is a temporary new vertex due to a join: " << _fineGridVertices[positionInArray].toString() );
+  }
+  #endif
+  else if ( CaseTakeFromTempStacks ) {
+    _fineGridVertices[positionInArray] = _vertexStack.pop(action._id);
+    logDebug( "operator()", "vertex at " << positionInArray << " is a persistent vertex from temporary stacks: " << _fineGridVertices[positionInArray].toString() );
+    if (_counter[positionInArray]==CounterPersistentNodeDelete) {
+      logDebug( "operator()", "it will be deleted later on" );
+    }
+  }
+  else {
+    logDebug( "operator()", "vertex at " << positionInArray << " is already loaded or is a hanging node: " << _fineGridVertices[positionInArray].toString() );
+  }
+
+  validateVertexInArray( positionInArray, action._cartesianPosition, action._id );
+
+  _counter[positionInArray]++;
+
+  logTraceOutWith4Arguments( "operator()", action._cartesianPosition, action._id,  _fineGridVertices[positionInArray], _counter[positionInArray]);
+}
+
+
+template <class Vertex, class Cell, class State, class VertexStack, class EventHandle, int CellFlagsFromEnumerator>
+void peano::grid::nodes::loops::LoadVertexLoopBody<Vertex,Cell,State,VertexStack,EventHandle,CellFlagsFromEnumerator>::validateVertexInArray(
+  int                                       positionInVertexArray,
+  const tarch::la::Vector<DIMENSIONS,int>&  positionInLocalCell,
+  int                                       stackNumber
+) const {
+  #if defined(Dim2)
+  assertionEquals10(
+    _fineGridVertices[positionInVertexArray].getLevel(),
+    _fineGridVerticesEnumerator.getLevel(),
+    positionInVertexArray,
+    _fineGridVerticesEnumerator.toString(),
+    _fineGridVertices[positionInVertexArray].toString(),
+    _coarseGridVertices[_coarseGridVerticesEnumerator(0)].toString(),
+    _coarseGridVertices[_coarseGridVerticesEnumerator(1)].toString(),
+    _coarseGridVertices[_coarseGridVerticesEnumerator(2)].toString(),
+    _coarseGridVertices[_coarseGridVerticesEnumerator(3)].toString(),
+    _fineGridVertices[positionInVertexArray].getX(),
+    _fineGridVerticesEnumerator.getVertexPosition(positionInLocalCell),
+    stackNumber
+  );
+  #elif defined(Dim3)
+  assertionEquals14(
+    _fineGridVertices[positionInVertexArray].getLevel(),
+    _fineGridVerticesEnumerator.getLevel(),
+    positionInVertexArray,
+    _fineGridVerticesEnumerator.toString(),
+    _fineGridVertices[positionInVertexArray].toString(),
+    _coarseGridVertices[_coarseGridVerticesEnumerator(0)].toString(),
+    _coarseGridVertices[_coarseGridVerticesEnumerator(1)].toString(),
+    _coarseGridVertices[_coarseGridVerticesEnumerator(2)].toString(),
+    _coarseGridVertices[_coarseGridVerticesEnumerator(3)].toString(),
+    _coarseGridVertices[_coarseGridVerticesEnumerator(4)].toString(),
+    _coarseGridVertices[_coarseGridVerticesEnumerator(5)].toString(),
+    _coarseGridVertices[_coarseGridVerticesEnumerator(6)].toString(),
+    _coarseGridVertices[_coarseGridVerticesEnumerator(7)].toString(),
+    _fineGridVertices[positionInVertexArray].getX(),
+    _fineGridVerticesEnumerator.getVertexPosition(positionInLocalCell),
+    _vertexStack.pop(stackNumber).toString()
+  );
+  #else
+  assertionEquals6(
+    _fineGridVertices[positionInVertexArray].getLevel(),
+    _fineGridVerticesEnumerator.getLevel(),
+    positionInVertexArray,
+    _fineGridVerticesEnumerator.toString(),
+    _fineGridVertices[positionInVertexArray].toString(),
+    _fineGridVertices[positionInVertexArray].getX(),
+    _fineGridVerticesEnumerator.getVertexPosition(positionInLocalCell),
+    stackNumber
+  );
+  #endif
+
+
+  for (int d=0; d<DIMENSIONS; d++) {
+    assertionNumericalEquals8(
+      _fineGridVertices[positionInVertexArray].getX()(d), _fineGridVerticesEnumerator.getVertexPosition(positionInLocalCell)(d),
+      positionInVertexArray,
+      _fineGridVertices[positionInVertexArray].getX(),
+      positionInLocalCell,
+      _fineGridVerticesEnumerator.getVertexPosition(positionInLocalCell),
+      d,
+      _fineGridVerticesEnumerator.toString(),
+      _fineGridVertices[positionInVertexArray].toString(),
+      stackNumber
+    );
+  }
+}

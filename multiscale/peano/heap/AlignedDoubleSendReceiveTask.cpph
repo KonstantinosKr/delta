@@ -1,0 +1,234 @@
+#include "tarch/la/VectorCompare.h"
+
+#include <stdlib.h>
+#include <stdio.h>
+
+template<int Alignment>
+tarch::logging::Log  peano::heap::AlignedDoubleSendReceiveTask<Alignment>::_log( "peano::heap::AlignedDoubleSendReceiveTask<Alignment>" );
+
+
+template<int Alignment>
+peano::heap::AlignedDoubleSendReceiveTask<Alignment>::AlignedDoubleSendReceiveTask():
+  #ifdef Parallel
+  _request( MPI_REQUEST_NULL ),
+  #endif
+  _rank(-1),
+  _data(0) {
+}
+
+
+template<int Alignment>
+bool peano::heap::AlignedDoubleSendReceiveTask<Alignment>::fits(
+  const tarch::la::Vector<DIMENSIONS, double>&  position,
+  int                                           level
+) const {
+  #ifdef Asserts
+  const double tolerance =
+    tarch::la::NUMERICAL_ZERO_DIFFERENCE *
+    std::max(
+      1.0, std::max( 
+        tarch::la::maxAbs(_metaInformation.getPosition()), tarch::la::maxAbs(position)
+      )
+    );
+  
+  return
+    (_metaInformation.getLevel() == -1) ||
+    (
+      _metaInformation.getLevel() == level &&
+      tarch::la::equals(_metaInformation.getPosition(), position, tolerance)
+    );
+  #else
+  return true;
+  #endif
+}
+
+
+template<int Alignment>
+void peano::heap::AlignedDoubleSendReceiveTask<Alignment>::setInvalid() {
+   #if defined(Asserts)
+  _metaInformation.setLevel(-1);
+  #endif
+  _metaInformation.setLength(0);
+  _data = nullptr;
+}
+
+
+template<int Alignment>
+void peano::heap::AlignedDoubleSendReceiveTask<Alignment>::freeMemory() {
+  if (_freeDataPointer && _metaInformation.getLength()>0) {
+    free(_data);
+    _data = nullptr;
+  }
+}
+
+
+
+template<int Alignment>
+void peano::heap::AlignedDoubleSendReceiveTask<Alignment>::sendDataDirectlyFromBuffer(const double* const data) {
+  assertion(  data!=nullptr );
+  assertion( _data==nullptr );
+  assertion( _metaInformation.getLength()>0 );
+
+  _freeDataPointer = false;
+  _data            = const_cast< double* >( data );
+}
+
+
+template<int Alignment>
+void peano::heap::AlignedDoubleSendReceiveTask<Alignment>::wrapData(const double* const data) {
+  assertion(  data!=nullptr );
+  assertion( _data==nullptr );
+
+  _freeDataPointer = true;
+  _data            = nullptr;
+
+  void* p = nullptr;
+  posix_memalign(&p, Alignment, _metaInformation.getLength()*sizeof(double));
+
+  if (p==nullptr) {
+    logError( "wrapData(DataVectorType)", "memory allocation failed. Terminate" );
+    exit(-1);
+  }
+  _data = static_cast<double*>(p);
+  p = nullptr;
+
+  for (int i=0; i<_metaInformation.getLength(); i++) {
+    _data[i] = data[i];
+  }
+}
+
+
+template<int Alignment>
+void peano::heap::AlignedDoubleSendReceiveTask<Alignment>::triggerSend(int tag) {
+  assertion( _data!=nullptr );
+  assertion( _metaInformation.getLength()>0 );
+  
+  #ifdef Parallel
+  const int result = MPI_Isend(
+    _data, _metaInformation.getLength(), MPI_DOUBLE, _rank,
+    tag,
+    tarch::parallel::Node::getInstance().getCommunicator(), &_request
+  );
+
+  if ( result != MPI_SUCCESS ) {
+    logError(
+      "triggerSend(int)", "failed to send heap data to node "
+      << _rank << ": " << tarch::parallel::MPIReturnValueToString(result)
+    );
+  }
+  #endif
+}
+
+
+template<int Alignment>
+void peano::heap::AlignedDoubleSendReceiveTask<Alignment>::triggerReceive(int tag) {
+  assertion( _rank >= 0 );
+  assertion( _data==0 );
+  
+  #ifdef Parallel
+  logTraceInWith2Arguments( "triggerReceive(int)", tag, _metaInformation.toString() );
+
+  _data = nullptr;
+  
+  void* p = nullptr;
+  posix_memalign(&p, Alignment, _metaInformation.getLength()*sizeof(double));
+
+  if (p==nullptr) {
+    logError( "triggerReceive(int)", "memory allocation failed. Terminate" );
+    exit(-1);
+  }
+  _data = static_cast<double*>(p);
+  p = nullptr;
+
+  const int  result = MPI_Irecv(
+    _data, _metaInformation.getLength(), MPI_DOUBLE,
+    _rank, tag, tarch::parallel::Node::getInstance().getCommunicator(),
+    &_request
+  );
+  if ( result != MPI_SUCCESS ) {
+    logError(
+      "triggerReceive()",
+      "failed to receive heap data from node "
+      << _rank << ": " << tarch::parallel::MPIReturnValueToString(result)
+    );
+  }
+  logTraceOut( "triggerReceive(int)" );
+  #endif
+}
+
+template<int Alignment>
+std::string peano::heap::AlignedDoubleSendReceiveTask<Alignment>::toString() const {
+  std::ostringstream out;
+  out << "(" << _metaInformation.toString() << ",rank=" << _rank << ",data=" << (_data==nullptr ? "no" : "yes") << ")";
+  return out.str();
+}
+
+
+template<int Alignment>
+double* peano::heap::AlignedDoubleSendReceiveTask<Alignment>::data() {
+  return _data;
+}
+
+
+template<int Alignment>
+const double* peano::heap::AlignedDoubleSendReceiveTask<Alignment>::data() const {
+  return _data;
+}
+
+
+template<int Alignment>
+int peano::heap::AlignedDoubleSendReceiveTask<Alignment>::getRank() const {
+  return _rank;
+}
+
+
+template<int Alignment>
+void peano::heap::AlignedDoubleSendReceiveTask<Alignment>::setRank(int value) {
+  _rank = value;
+}
+
+
+template<int Alignment>
+bool peano::heap::AlignedDoubleSendReceiveTask<Alignment>::hasCommunicationCompleted() {
+  #ifdef Parallel
+  if ( _metaInformation.getLength()==0  or _data==nullptr ) {
+    return true;
+  }
+  else {
+	int finishedWait;
+    assertion1(_data!=nullptr, toString() );
+    MPI_Test(&(_request), &finishedWait, MPI_STATUS_IGNORE);
+    return finishedWait;
+  }
+  #else
+  return true;
+  #endif
+}
+
+
+template<int Alignment>
+bool peano::heap::AlignedDoubleSendReceiveTask<Alignment>::hasDataExchangeFinished() {
+  #ifdef Parallel
+  int finishedWait;
+  if(_metaInformation.getLength() > 0 and _data!=nullptr ) {
+    MPI_Test(&(_request), &finishedWait, MPI_STATUS_IGNORE);
+    return (finishedWait!=0);
+  }
+  return true;
+  #else
+  return true;
+  #endif
+}
+
+
+template<int Alignment>
+typename peano::heap::AlignedDoubleSendReceiveTask<Alignment>::MetaInformation& peano::heap::AlignedDoubleSendReceiveTask<Alignment>::getMetaInformation() {
+  return _metaInformation;
+}
+
+
+template<int Alignment>
+typename peano::heap::AlignedDoubleSendReceiveTask<Alignment>::MetaInformation  peano::heap::AlignedDoubleSendReceiveTask<Alignment>::getMetaInformation() const {
+  return _metaInformation;
+}
+

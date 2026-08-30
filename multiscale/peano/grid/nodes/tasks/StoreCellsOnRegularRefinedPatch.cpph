@@ -1,0 +1,99 @@
+#include "peano/utils/Loop.h"
+
+
+template <class Vertex, class Cell, class CellStack>
+tarch::logging::Log peano::grid::nodes::tasks::StoreCellsOnRegularRefinedPatch<Vertex,Cell,CellStack>::_log( "peano::grid::nodes::tasks::StoreCellsOnRegularRefinedPatch" );
+
+
+template <class Vertex, class Cell, class CellStack>
+peano::grid::nodes::tasks::StoreCellsOnRegularRefinedPatch<Vertex,Cell,CellStack>::StoreCellsOnRegularRefinedPatch(
+  peano::utils::LoopDirection                                       topLevelLoopDirection,
+  const int                                                         treeDepth,
+  const bool                                                        isTraversalInverted,
+  peano::grid::RegularGridContainer<Vertex,Cell>&  regularGridContainer,
+  CellStack&                                                        cellStack,
+  const bool                                                        storeProcessRunsInParallelToOtherTasks
+):
+  _topLevelLoopDirection(topLevelLoopDirection),
+  _treeDepth(treeDepth),
+  _isTraversalInverted(isTraversalInverted),
+  _regularGridContainer(regularGridContainer),
+  _cellStack(cellStack),
+  _storeProcessRunsInParallelToOtherTasks(storeProcessRunsInParallelToOtherTasks) {
+}
+
+
+template <class Vertex, class Cell, class CellStack>
+void peano::grid::nodes::tasks::StoreCellsOnRegularRefinedPatch<Vertex,Cell,CellStack>::storeCells(
+  peano::utils::LoopDirection               loopDirection,
+  int                                       currentLevel,
+  const tarch::la::Vector<DIMENSIONS,int>&  offsetWithinPatch
+) {
+  logTraceInWith5Arguments( "storeCells(...)", loopDirection, currentLevel, _treeDepth, offsetWithinPatch, _isTraversalInverted );
+
+  peano::utils::LoopDirection copyOfLoopDirectionForRecursion = loopDirection;
+
+  const int CellsPerAxis = _regularGridContainer.getNumberOfCells(currentLevel)(0);
+  assertionEquals( CellsPerAxis, tarch::la::aPowI(currentLevel,3) );
+
+  if (currentLevel<_treeDepth) {
+    zfor3(k,copyOfLoopDirectionForRecursion)
+      const int cellIndex = peano::utils::dLinearisedWithoutLookup(k + offsetWithinPatch*3,CellsPerAxis);
+
+      storeCells(
+        peano::grid::aspects::CellPeanoCurve::getLoopDirection(
+          _regularGridContainer.getCell(currentLevel,cellIndex),
+          _isTraversalInverted
+        ),
+        currentLevel+1,
+        k + offsetWithinPatch*3
+      );
+    endzfor
+  }
+
+  #if !defined(SharedMemoryParallelisation)
+  assertion2(_regularGridContainer.areAllEventsOnThisLevelCalled(currentLevel),           currentLevel, _regularGridContainer.toString());
+  #else
+  logDebug( "storeCells(...)", "wait until all store processes have terminated. store-runs-in-parallel=" <<_storeProcessRunsInParallelToOtherTasks << ", all events called on current level " << currentLevel << "=" << _regularGridContainer.areAllEventsOnThisLevelCalled(currentLevel) );
+  assertion2( _storeProcessRunsInParallelToOtherTasks || _regularGridContainer.areAllEventsOnThisLevelCalled(currentLevel), currentLevel, _regularGridContainer.toString() );
+  while (_storeProcessRunsInParallelToOtherTasks && !_regularGridContainer.areAllEventsOnThisLevelCalled(currentLevel)) {
+    peano::datatraversal::TaskSet::waitForEventTask();
+  }
+  #endif
+
+  zfor3(k,loopDirection)
+    const int cellIndex = peano::utils::dLinearisedWithoutLookup(k + offsetWithinPatch*3,CellsPerAxis);
+
+    if (currentLevel<_treeDepth) {
+      assertion4( _regularGridContainer.getCell(currentLevel,cellIndex).isRefined(), _regularGridContainer.getCell(currentLevel,cellIndex).toString(), currentLevel, _treeDepth, offsetWithinPatch );
+    }
+    else {
+      assertion4( _regularGridContainer.getCell(currentLevel,cellIndex).isLeaf(), _regularGridContainer.getCell(currentLevel,cellIndex).toString(), currentLevel, _treeDepth, offsetWithinPatch );
+    }
+
+    #if defined(SharedMemoryParallelisation)
+    Cell pushCell = _regularGridContainer.getCell(currentLevel,cellIndex);
+    pushCell.storedCellOfRegularRefinedGrid();
+    #else
+    Cell& pushCell = _regularGridContainer.getCell(currentLevel,cellIndex);
+    #endif
+
+    assertion1( !pushCell.rootsPersistentRegularSubtree(), pushCell.toString() );
+    _cellStack.push(
+      peano::stacks::Constants::InOutStack,
+      pushCell
+    );
+  endzfor
+
+  logTraceOut( "storeCells(...)" );
+}
+
+
+template <class Vertex, class Cell, class CellStack>
+bool peano::grid::nodes::tasks::StoreCellsOnRegularRefinedPatch<Vertex,Cell,CellStack>::operator()() {
+  storeCells( _topLevelLoopDirection, 1, 0 );
+
+  _regularGridContainer.haveStoredAllCells(_treeDepth);
+
+  return false;
+}

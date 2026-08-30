@@ -1,0 +1,234 @@
+#include "tarch/parallel/MPIConstants.h"
+
+
+template <class DataType>
+tarch::logging::Log  peano::parallel::JoinDataBufferImplementation<DataType>::_log( "peano::parallel::JoinDataBufferImplementation" );
+
+
+template <class DataType>
+peano::parallel::JoinDataBufferImplementation<DataType>::JoinDataBufferImplementation(bool isReceiveBuffer, int bufferSize, const MPI_Datatype& mpiDatatype, int rank, int tag ):
+  _isReceiveBuffer( isReceiveBuffer ),
+  _bufferSize(bufferSize),
+  _mpiDatatype( mpiDatatype ),
+  _receiveBuffer(),
+  _sendBuffer(0),
+  _currentElement(0),
+  _rank(rank),
+  _tag(tag) {
+  assertion( bufferSize>0 );
+  #ifdef Parallel
+  assertion( tag!=MPI_ANY_TAG );
+  #endif
+
+  if (_isReceiveBuffer) {
+    _sendBuffer = 0;
+  }
+  else {
+    _sendBuffer = new DataType[ bufferSize ];
+  }
+
+  #ifdef Debug
+  _totalNumberOfElements=0;
+  #endif
+}
+
+
+template <class DataType>
+peano::parallel::JoinDataBufferImplementation<DataType>::~JoinDataBufferImplementation() {
+  logTraceInWith4Arguments( "~JoinDataBufferImplementation()", _currentElement, _totalNumberOfElements, _rank, _tag );
+
+  assertion( isEmpty () );
+
+  if (_sendBuffer!=0) {
+    delete[] _sendBuffer;
+  }
+
+  logTraceOut( "~JoinDataBufferImplementation()" );
+}
+
+
+template <class DataType>
+bool peano::parallel::JoinDataBufferImplementation<DataType>::isReceiveBuffer() const {
+  return _isReceiveBuffer;
+}
+
+
+template <class DataType>
+bool peano::parallel::JoinDataBufferImplementation<DataType>::isEmpty() const {
+  return _isReceiveBuffer ? _currentElement==static_cast<int>(_receiveBuffer.size()) : _currentElement==0;
+}
+
+
+template <class DataType>
+void peano::parallel::JoinDataBufferImplementation<DataType>::receivePageIfAvailable() {
+  assertion(_isReceiveBuffer);
+
+  #ifdef Parallel
+  int        flag   = 0;
+  MPI_Status status;
+  const int  result = MPI_Iprobe(
+    _rank, _tag, 
+    tarch::parallel::Node::getInstance().getCommunicator(),
+    &flag, &status
+  );
+  if (result!=MPI_SUCCESS) {
+    logError(
+      "receivePageIfAvailable()",
+      "probing for messages from node " << _rank
+        << " failed: " << tarch::parallel::MPIReturnValueToString(result)
+    );
+  }
+  if (flag) {
+    logTraceIn( "receivePageIfAvailable()" );
+
+    int messages = 0;
+    MPI_Get_count(&status, _mpiDatatype, &messages);
+    logDebug( "receivePageIfAvailable()", "there is/are " << messages << " message(s) from node " << _rank << ", received elements so far=" << _receiveBuffer.size() << ", read elements so far=" << _currentElement );
+
+    assertion4( messages <= _bufferSize, messages, _bufferSize, _receiveBuffer.size(), tarch::parallel::Node::getInstance().getRank() );
+    assertion4( _bufferSize>1, messages, _bufferSize, _receiveBuffer.size(), tarch::parallel::Node::getInstance().getRank() );
+    DataType* receiveBuffer = new DataType[ _bufferSize ];
+
+    const int result = MPI_Recv(
+      receiveBuffer, messages, _mpiDatatype, _rank, _tag,
+      tarch::parallel::Node::getInstance().getCommunicator(),
+	  MPI_STATUS_IGNORE
+    );
+    if (result!=MPI_SUCCESS) {
+      logError(
+        "receivePageIfAvailable()",
+        "receive of " << messages << " message(s) from node " << _rank
+          << " failed: " << tarch::parallel::MPIReturnValueToString(result)
+      );
+    }
+
+    for (int i=0; i<messages; i++) {
+      _receiveBuffer.push_back( receiveBuffer[i] );
+    }
+
+    delete[] receiveBuffer;
+
+    logTraceOut( "receivePageIfAvailable()" );
+  }
+  #endif
+}
+
+
+template <class DataType>
+void peano::parallel::JoinDataBufferImplementation<DataType>::releaseMessages() {
+  assertion(!_isReceiveBuffer);
+
+  logTraceInWith4Arguments( "releaseMessages()", _currentElement, _totalNumberOfElements, _rank, _tag );
+
+  #ifdef Parallel
+  if (_currentElement>0) {
+    const int result = MPI_Send(
+      _sendBuffer, _currentElement, _mpiDatatype, _rank, _tag,
+      tarch::parallel::Node::getInstance().getCommunicator()
+    );
+    if (result!=MPI_SUCCESS) {
+      logError( "releaseMessages()", "send of " << _currentElement << " message(s) failed: " << tarch::parallel::MPIReturnValueToString(result) );
+    }
+    logDebug( "releaseMessages()", "sent " << _currentElement << " message(s) to rank " << _rank );
+    _currentElement = 0;
+  }
+  #endif
+
+  logTraceOut( "releaseMessages()");
+}
+
+
+template <class DataType>
+void peano::parallel::JoinDataBufferImplementation<DataType>::removeTopElementFromStream() {
+  assertion( !isEmpty () );
+  assertion( isReceiveBuffer() );
+  _currentElement++;
+  #ifdef Debug
+  _totalNumberOfElements++;
+  #endif
+}
+
+
+template <class DataType>
+void peano::parallel::JoinDataBufferImplementation<DataType>::send( const DataType& value ) {
+  assertion(!_isReceiveBuffer);
+
+  _sendBuffer[_currentElement] = value;
+  _currentElement++;
+
+  #ifdef Debug
+  _totalNumberOfElements++;
+  #endif
+
+  if ( _currentElement==_bufferSize ) {
+    releaseMessages();
+    assertion( _currentElement==0 );
+  }
+}
+
+
+template <class DataType>
+DataType peano::parallel::JoinDataBufferImplementation<DataType>::getTopElement() {
+  assertion1( isReceiveBuffer(), tarch::parallel::Node::getInstance().getRank() );
+
+  if (isEmpty()) {
+    logTraceInWith6Arguments( "getTopElement()", "is-empty", _tag, _rank, _totalNumberOfElements, _currentElement, _receiveBuffer.size() );
+
+    const std::clock_t  timeOutWarning          = tarch::parallel::Node::getInstance().getDeadlockWarningTimeStamp();
+    const std::clock_t  timeOutShutdown         = tarch::parallel::Node::getInstance().getDeadlockTimeOutTimeStamp();
+    bool                triggeredTimeoutWarning = false;
+
+    while (isEmpty()) {
+      // deadlock aspect
+      if (
+         tarch::parallel::Node::getInstance().isTimeOutWarningEnabled() &&
+         (clock()>timeOutWarning) &&
+         (!triggeredTimeoutWarning)
+      ) {
+         tarch::parallel::Node::getInstance().writeTimeOutWarning(
+         "peano::parallel::JoinDataBufferImplementation",
+         "getTopElement()", _rank, _tag, 1
+         );
+         triggeredTimeoutWarning = true;
+      }
+      if (
+         tarch::parallel::Node::getInstance().isTimeOutDeadlockEnabled() &&
+         (clock()>timeOutShutdown)
+      ) {
+         tarch::parallel::Node::getInstance().triggerDeadlockTimeOut(
+         "peano::parallel::JoinDataBufferImplementation",
+         "getTopElement()", _rank, _tag, 1
+         );
+      }
+      // call receive indirectly
+      tarch::parallel::Node::getInstance().receiveDanglingMessages();
+    }
+
+    logTraceOutWith1Argument( "getTopElement()", _currentElement );
+  }
+
+  assertion2( !isEmpty(), _receiveBuffer.size(), tarch::parallel::Node::getInstance().getRank() );
+  return _receiveBuffer[_currentElement];
+}
+
+
+template <class DataType>
+std::string peano::parallel::JoinDataBufferImplementation<DataType>::toString() const {
+  std::ostringstream msg;
+
+  msg << "("
+      "is-receive-buffer=" << _isReceiveBuffer
+      << ",buffer-size=" << _bufferSize
+      << ",receive-buffer-pages=" << _receiveBuffer.size()
+      << ",current-element=" << _currentElement
+      << ",rank=" << _rank
+      << ",tag=" << _tag;
+
+  #ifdef Debug
+  msg << ",total-no-of-elements=" << _totalNumberOfElements;
+  #endif
+
+  msg << ")";
+
+  return msg.str();
+}

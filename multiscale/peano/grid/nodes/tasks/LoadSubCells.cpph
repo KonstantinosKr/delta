@@ -1,0 +1,47 @@
+#include "peano/utils/Globals.h"
+#include "tarch/multicore/MulticoreDefinitions.h"
+
+
+template < class Cell, class CellStack >
+tarch::logging::Log peano::grid::nodes::tasks::LoadSubCells< Cell, CellStack >::_log( "peano::grid::nodes::tasks::LoadSubCells" );
+
+
+
+template < class Cell, class CellStack >
+peano::grid::nodes::tasks::LoadSubCells< Cell, CellStack >::LoadSubCells(
+  Cell * const                        subCells,
+  CellStack&                          cellStack,
+  const peano::utils::LoopDirection&  loopDirection
+#ifdef Debug
+, int                                 coarseFatherCellLevel
+#endif
+):
+  _subCells(subCells),
+  _cellStack(cellStack),
+  _loopDirection(loopDirection)
+  #ifdef Debug
+  , _coarseFatherCellLevel(coarseFatherCellLevel)
+  #endif
+{}
+
+
+template < class Cell, class CellStack >
+bool peano::grid::nodes::tasks::LoadSubCells< Cell, CellStack >::operator()() {
+  logTraceIn( "operator()" );
+  zfor3( i, _loopDirection ) 
+    const int cellIndex = peano::utils::dLinearised(i,3);
+    _subCells[cellIndex] = _cellStack.pop(peano::stacks::Constants::InOutStack );
+
+    #ifdef SharedMemoryParallelisation
+    _subCells[cellIndex].clearInputOutputStackAccessStatistics();
+    #endif
+
+    #ifdef Debug
+    assertionEquals1( _coarseFatherCellLevel+1, _subCells[cellIndex].getLevel(), _subCells[cellIndex].toString() );
+    #endif
+
+    logDebug( "operator()", "loaded " << _subCells[cellIndex] << " into subcell position " << cellIndex << " (" << i << ")" );
+  endzfor
+  logTraceOut( "operator()" );
+  return false;
+}

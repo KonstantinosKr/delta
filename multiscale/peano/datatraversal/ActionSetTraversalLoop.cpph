@@ -1,0 +1,87 @@
+#include "peano/datatraversal/autotuning/Oracle.h"
+#include "tarch/multicore/MulticoreDefinitions.h"
+#include "peano/utils/PeanoOptimisations.h"
+#include "peano/performanceanalysis/Analysis.h"
+
+
+#include "tarch/multicore/Loop.h"
+
+
+#if defined(TBBInvade)
+#include "shminvade/SHMInvade.h"
+#endif
+
+
+template <class LoopBody>
+tarch::logging::Log peano::datatraversal::ActionSetTraversalLoop<LoopBody>::_log( "peano::datatraversal::ActionSetTraversalLoop" );
+
+
+template <class LoopBody>
+peano::datatraversal::ActionSetTraversalLoop<LoopBody>::ActionSetTraversalLoop(
+  peano::datatraversal::ActionSetTraversal traversal,
+  LoopBody&                                loopBody,
+  int                                      grainSize
+) {
+  #if defined(SharedMemoryParallelisation)
+  if (grainSize>0) {
+    loopParallel(traversal, loopBody, grainSize);
+  }
+  else {
+    loopSequential(traversal, loopBody);
+  }
+  #else
+  loopSequential(traversal, loopBody);
+  #endif
+}
+
+
+
+template <class LoopBody>
+void peano::datatraversal::ActionSetTraversalLoop<LoopBody>::loopSequential(
+  const peano::datatraversal::ActionSetTraversal&  traversal,
+  LoopBody&                                        loopBody
+) {
+  const int maximumPath = traversal.getMaximumPath();
+  for (int currentStepInPath=0; currentStepInPath<maximumPath; currentStepInPath++ ) {
+    peano::performanceanalysis::Analysis::getInstance().changeConcurrencyLevel(0,traversal.getActionSet(currentStepInPath).getNumberOfParallelActions());
+    for (int j=0; j<traversal.getActionSet(currentStepInPath).getNumberOfParallelActions(); j++) {
+      #ifdef CompilerICC
+      #pragma forceinline
+      #endif
+      loopBody(traversal.getActionSet(currentStepInPath).getAction(j));
+    }
+    peano::performanceanalysis::Analysis::getInstance().changeConcurrencyLevel(0,-traversal.getActionSet(currentStepInPath).getNumberOfParallelActions());;
+  }
+}
+
+
+template <class LoopBody>
+void peano::datatraversal::ActionSetTraversalLoop<LoopBody>::loopParallel(
+  const peano::datatraversal::ActionSetTraversal&  traversal,
+  LoopBody&                                        loopBody,
+  int                                              grainSize
+) {
+  const int maximumPath = traversal.getMaximumPath();
+  for (int currentStepInPath=0; currentStepInPath<maximumPath; currentStepInPath++ ) {
+    peano::performanceanalysis::Analysis::getInstance().changeConcurrencyLevel(traversal.getActionSet(currentStepInPath).getNumberOfParallelActions()/grainSize,traversal.getActionSet(currentStepInPath).getNumberOfParallelActions());
+
+    #if defined(TBBInvade)
+    shminvade::SHMInvade invade(traversal.getActionSet(currentStepInPath).getNumberOfParallelActions());
+    #endif
+
+    auto func = [&loopBody,traversal,currentStepInPath] (const tarch::la::Vector<1,int>& i) -> void {
+        loopBody(traversal.getActionSet(currentStepInPath).getAction(i(0)));
+      };
+
+    tarch::multicore::parallelFor(
+      tarch::multicore::dForRange<1>( 0, traversal.getActionSet(currentStepInPath).getNumberOfParallelActions(), grainSize, 1 ),
+	  func
+    );
+
+    #if defined(TBBInvade)
+    invade.retreat();
+    #endif
+
+    peano::performanceanalysis::Analysis::getInstance().changeConcurrencyLevel(-traversal.getActionSet(currentStepInPath).getNumberOfParallelActions()/grainSize,-traversal.getActionSet(currentStepInPath).getNumberOfParallelActions());
+  }
+}
