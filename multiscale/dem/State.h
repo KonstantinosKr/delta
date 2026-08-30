@@ -129,6 +129,8 @@ class dem::State: public peano::grid::State< dem::records::State > {
 
     void setTimeStep(int delta);
     int getTimeStep();
+
+    void setBatchState(int totalNumberOfBatchIterations, int batchIteration);
 };
 
 

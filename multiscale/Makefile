@@ -200,7 +200,7 @@ OBJECTS=$(SOURCES:.cpp=.o)
 files.mk:
 	touch files.mk
 	echo SOURCES=\\ > files.mk
-	find -L $(PROJECT_HOME)  -path delta/core/libraries/ -prune -o -name '*.cpp' | grep -v ./libraries/ | tr '\n' ' ' >> files.mk
+	find -L $(PROJECT_HOME) \( -path delta/core/libraries/ -o -name '._*' \) -prune -o -name '*.cpp' -print | grep -v ./libraries/ | grep -v '/\._' | tr '\n' ' ' >> files.mk
 
 header:
 	@echo  --- This is Delta @ Peano 3 ---

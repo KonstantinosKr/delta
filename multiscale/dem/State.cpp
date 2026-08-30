@@ -212,6 +212,11 @@ int dem::State::getTimeStep() {
   return _stateData.getTimeStep();
 }
 
+void dem::State::setBatchState(int totalNumberOfBatchIterations, int batchIteration) {
+  _stateData.setTotalNumberOfBatchIterations(totalNumberOfBatchIterations);
+  _stateData.setBatchIteration(batchIteration);
+}
+
 void dem::State::setStepIncrement(iREAL number) {//name
   _stateData.setStepIncrement(number);
 }

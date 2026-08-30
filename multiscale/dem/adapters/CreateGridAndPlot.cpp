@@ -5,6 +5,7 @@ peano::CommunicationSpecification   dem::adapters::CreateGridAndPlot::communicat
   return peano::CommunicationSpecification::getMinimalSpecification()
     &  _map2CreateGrid.communicationSpecification()
     &  _map2Plot.communicationSpecification()
+    &  _map2CreateGridAndPlot2VTKGridVisualiser_2.communicationSpecification()
 
   ;
 }
@@ -14,6 +15,7 @@ peano::MappingSpecification   dem::adapters::CreateGridAndPlot::touchVertexLastT
   return peano::MappingSpecification::getMinimalSpecification()
     &  _map2CreateGrid.touchVertexLastTimeSpecification(level)
     &  _map2Plot.touchVertexLastTimeSpecification(level)
+    &  _map2CreateGridAndPlot2VTKGridVisualiser_2.touchVertexLastTimeSpecification(level)
 
   ;
 }
@@ -23,6 +25,7 @@ peano::MappingSpecification   dem::adapters::CreateGridAndPlot::touchVertexFirst
   return peano::MappingSpecification::getMinimalSpecification()
     &  _map2CreateGrid.touchVertexFirstTimeSpecification(level)
     &  _map2Plot.touchVertexFirstTimeSpecification(level)
+    &  _map2CreateGridAndPlot2VTKGridVisualiser_2.touchVertexFirstTimeSpecification(level)
 
   ;
 }
@@ -32,6 +35,7 @@ peano::MappingSpecification   dem::adapters::CreateGridAndPlot::enterCellSpecifi
   return peano::MappingSpecification::getMinimalSpecification()
     &  _map2CreateGrid.enterCellSpecification(level)
     &  _map2Plot.enterCellSpecification(level)
+    &  _map2CreateGridAndPlot2VTKGridVisualiser_2.enterCellSpecification(level)
 
   ;
 }
@@ -41,6 +45,7 @@ peano::MappingSpecification   dem::adapters::CreateGridAndPlot::leaveCellSpecifi
   return peano::MappingSpecification::getMinimalSpecification()
     &  _map2CreateGrid.leaveCellSpecification(level)
     &  _map2Plot.leaveCellSpecification(level)
+    &  _map2CreateGridAndPlot2VTKGridVisualiser_2.leaveCellSpecification(level)
 
   ;
 }
@@ -50,6 +55,7 @@ peano::MappingSpecification   dem::adapters::CreateGridAndPlot::ascendSpecificat
   return peano::MappingSpecification::getMinimalSpecification()
     &  _map2CreateGrid.ascendSpecification(level)
     &  _map2Plot.ascendSpecification(level)
+    &  _map2CreateGridAndPlot2VTKGridVisualiser_2.ascendSpecification(level)
 
   ;
 }
@@ -59,6 +65,7 @@ peano::MappingSpecification   dem::adapters::CreateGridAndPlot::descendSpecifica
   return peano::MappingSpecification::getMinimalSpecification()
     &  _map2CreateGrid.descendSpecification(level)
     &  _map2Plot.descendSpecification(level)
+    &  _map2CreateGridAndPlot2VTKGridVisualiser_2.descendSpecification(level)
 
   ;
 }
@@ -102,7 +109,7 @@ void dem::adapters::CreateGridAndPlot::createHangingVertex(
 ) {
   _map2CreateGrid.createHangingVertex(fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
   _map2Plot.createHangingVertex(fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
-
+  _map2CreateGridAndPlot2VTKGridVisualiser_2.createHangingVertex(fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
 
 }
 
@@ -118,6 +125,7 @@ void dem::adapters::CreateGridAndPlot::destroyHangingVertex(
 ) {
   _map2CreateGrid.destroyHangingVertex(fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
   _map2Plot.destroyHangingVertex(fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
+  _map2CreateGridAndPlot2VTKGridVisualiser_2.destroyHangingVertex(fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
 
 }
 
@@ -133,6 +141,7 @@ void dem::adapters::CreateGridAndPlot::createInnerVertex(
 ) {
   _map2CreateGrid.createInnerVertex(fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
   _map2Plot.createInnerVertex(fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
+  _map2CreateGridAndPlot2VTKGridVisualiser_2.createInnerVertex(fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
 
 }
 
@@ -148,6 +157,7 @@ void dem::adapters::CreateGridAndPlot::createBoundaryVertex(
 ) {
   _map2CreateGrid.createBoundaryVertex( fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
   _map2Plot.createBoundaryVertex( fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
+  _map2CreateGridAndPlot2VTKGridVisualiser_2.createBoundaryVertex( fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
 
 }
 
@@ -163,6 +173,7 @@ void dem::adapters::CreateGridAndPlot::destroyVertex(
 ) {
   _map2CreateGrid.destroyVertex( fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
   _map2Plot.destroyVertex( fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
+  _map2CreateGridAndPlot2VTKGridVisualiser_2.destroyVertex( fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
 
 }
 
@@ -178,6 +189,7 @@ void dem::adapters::CreateGridAndPlot::createCell(
 ) {
   _map2CreateGrid.createCell( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
   _map2Plot.createCell( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
+  _map2CreateGridAndPlot2VTKGridVisualiser_2.createCell( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
 
 }
 
@@ -193,6 +205,7 @@ void dem::adapters::CreateGridAndPlot::destroyCell(
 ) {
   _map2CreateGrid.destroyCell( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
   _map2Plot.destroyCell( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
+  _map2CreateGridAndPlot2VTKGridVisualiser_2.destroyCell( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
 
 }
 
@@ -401,6 +414,7 @@ void dem::adapters::CreateGridAndPlot::touchVertexFirstTime(
 ) {
   _map2CreateGrid.touchVertexFirstTime( fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
   _map2Plot.touchVertexFirstTime( fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
+  _map2CreateGridAndPlot2VTKGridVisualiser_2.touchVertexFirstTime( fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
 
 }
 
@@ -416,6 +430,7 @@ void dem::adapters::CreateGridAndPlot::touchVertexLastTime(
 ) {
   _map2CreateGrid.touchVertexLastTime( fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
   _map2Plot.touchVertexLastTime( fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
+  _map2CreateGridAndPlot2VTKGridVisualiser_2.touchVertexLastTime( fineGridVertex, fineGridX, fineGridH, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfVertex );
 
 }
 
@@ -431,6 +446,7 @@ void dem::adapters::CreateGridAndPlot::enterCell(
 ) {
   _map2CreateGrid.enterCell( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
   _map2Plot.enterCell( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
+  _map2CreateGridAndPlot2VTKGridVisualiser_2.enterCell( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
 
 }
 
@@ -446,6 +462,7 @@ void dem::adapters::CreateGridAndPlot::leaveCell(
 ) {
   _map2CreateGrid.leaveCell( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
   _map2Plot.leaveCell( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
+  _map2CreateGridAndPlot2VTKGridVisualiser_2.leaveCell( fineGridCell, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell, fineGridPositionOfCell );
 
 }
 
@@ -455,6 +472,7 @@ void dem::adapters::CreateGridAndPlot::beginIteration(
 ) {
   _map2CreateGrid.beginIteration( solverState );
   _map2Plot.beginIteration( solverState );
+  _map2CreateGridAndPlot2VTKGridVisualiser_2.beginIteration( solverState );
 
 }
 
@@ -464,6 +482,7 @@ void dem::adapters::CreateGridAndPlot::endIteration(
 ) {
   _map2CreateGrid.endIteration( solverState );
   _map2Plot.endIteration( solverState );
+  _map2CreateGridAndPlot2VTKGridVisualiser_2.endIteration( solverState );
 
 }
 
@@ -480,6 +499,7 @@ void dem::adapters::CreateGridAndPlot::descend(
 ) {
   _map2CreateGrid.descend( fineGridCells, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell );
   _map2Plot.descend( fineGridCells, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell );
+  _map2CreateGridAndPlot2VTKGridVisualiser_2.descend( fineGridCells, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell );
 
 }
 
@@ -494,5 +514,6 @@ void dem::adapters::CreateGridAndPlot::ascend(
 ) {
   _map2CreateGrid.ascend( fineGridCells, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell );
   _map2Plot.ascend( fineGridCells, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell );
+  _map2CreateGridAndPlot2VTKGridVisualiser_2.ascend( fineGridCells, fineGridVertices, fineGridVerticesEnumerator, coarseGridVertices, coarseGridVerticesEnumerator, coarseGridCell );
 
 }

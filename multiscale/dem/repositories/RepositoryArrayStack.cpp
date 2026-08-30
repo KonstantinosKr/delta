@@ -244,7 +244,7 @@ void dem::repositories::RepositoryArrayStack::iterate(int numberOfIterations, bo
   #endif
   
   for (int i=0; i<numberOfIterations; i++) {
-    _solverState.setBatchState(numberOfIterations, i );
+    _solverState.setBatchState(numberOfIterations, i);
   
     switch ( _repositoryState.getAction()) {
       case dem::records::RepositoryState::UseAdapterCreateGrid: watch.startTimer(); _gridWithCreateGrid.iterate(); watch.stopTimer(); _measureCreateGridCPUTime.setValue( watch.getCPUTime() ); _measureCreateGridCalendarTime.setValue( watch.getCalendarTime() ); break;
