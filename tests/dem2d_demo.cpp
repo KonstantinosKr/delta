@@ -23,23 +23,27 @@
  */
 
 /*
- * Runs a mixed circle/triangle scene: static box walls, a stack of disks and
- * triangles falling under gravity, then prints per-step statistics. Writes
- * dem2d_frames.csv for plotting, one row per body per saved frame:
+ * Runs a mixed circle/triangle scene: static box walls, two shelves, and a
+ * stack of disks and triangles falling under gravity, then prints per-step
+ * statistics.
  *
- *   frame,time,id,shape,x,y,angle,radius,v0x,v0y,v1x,v1y,v2x,v2y,vx,vy,omega
+ * Writes a ParaView time series into the output directory:
  *
- * Circles carry a radius and leave the vertex columns at 0; triangles carry
- * the three body-frame vertex offsets and a radius of 0.
+ *   <dir>/dem2d_<step>.vtu   one frame, real filled geometry + fields
+ *   <dir>/dem2d.pvd          the collection, open this one in ParaView
+ *
+ *   ./delta_dem2d_demo [steps] [bodies] [saveEvery] [outDir]
  */
 
 #include <algorithm>
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
+#include <string>
 #include <vector>
 
 #include "dem2d/Dem2D.h"
+#include "dem2d/Dem2DWrite.h"
 
 using namespace delta::dem2d;
 
@@ -57,30 +61,15 @@ namespace {
     ps.push_back(b);
   }
 
-  void writeFrame(std::FILE* f, int frame, double time, const std::vector<Particle2D>& ps)
-  {
-    for (size_t i = 0; i < ps.size(); ++i) {
-      const Particle2D& p = ps[i];
-      const bool circle = (p.shape == ShapeType::Circle);
-      std::fprintf(f, "%d,%.6g,%d,%s,%.6g,%.6g,%.6g,%.6g,%.6g,%.6g,%.6g,%.6g,%.6g,%.6g,%.6g,%.6g,%.6g\n",
-                   frame, time, p.id, circle ? "circle" : "triangle",
-                   p.position.x, p.position.y, p.angle,
-                   circle ? p.radius : 0.0,
-                   circle ? 0.0 : p.localVertices[0].x, circle ? 0.0 : p.localVertices[0].y,
-                   circle ? 0.0 : p.localVertices[1].x, circle ? 0.0 : p.localVertices[1].y,
-                   circle ? 0.0 : p.localVertices[2].x, circle ? 0.0 : p.localVertices[2].y,
-                   p.velocity.x, p.velocity.y, p.angularVelocity);
-    }
-  }
-
 }  // namespace
 
 int main(int argc, char** argv)
 {
-  const int   steps    = argc > 1 ? std::atoi(argv[1]) : 3000;
-  const int   bodies   = argc > 2 ? std::atoi(argv[2]) : 60;
-  const int   saveEvery = argc > 3 ? std::atoi(argv[3]) : 25;
-  const iREAL dt       = 1e-3;
+  const int         steps     = argc > 1 ? std::atoi(argv[1]) : 3000;
+  const int         bodies    = argc > 2 ? std::atoi(argv[2]) : 60;
+  const int         saveEvery = argc > 3 ? std::atoi(argv[3]) : 25;
+  const std::string outDir    = argc > 4 ? std::string(argv[4]) : std::string("dem2d_out/");
+  const iREAL       dt        = 1e-3;
 
   std::vector<Particle2D> ps;
 
@@ -105,24 +94,29 @@ int main(int argc, char** argv)
     }
   }
 
-  std::FILE* out = std::fopen("dem2d_frames.csv", "w");
-  if (out == nullptr) {
-    std::printf("cannot open dem2d_frames.csv\n");
+  Engine2D engine(ps);
+
+  if (std::system(("mkdir -p " + outDir).c_str()) != 0) {
+    std::printf("cannot create %s\n", outDir.c_str());
     return 1;
   }
-  std::fprintf(out, "frame,time,id,shape,x,y,angle,radius,v0x,v0y,v1x,v1y,v2x,v2y,vx,vy,omega\n");
-  writeFrame(out, 0, 0.0, ps);
 
-  Engine2D engine(ps);
   std::printf("dem2d demo: %d bodies (%d static), dt=%g, %d steps\n",
               (int)engine.particles().size(),
               (int)std::count_if(engine.particles().begin(), engine.particles().end(),
                                  [](const Particle2D& p) { return p.isObstacle; }),
               dt, steps);
 
+  int frames = 0;
+  writeDem2DToVTK(outDir, 0, engine.particles());
+  ++frames;
+
   for (int s = 1; s <= steps; ++s) {
     engine.step(dt);
-    if (s % saveEvery == 0) writeFrame(out, s, s * dt, engine.particles());
+    if (s % saveEvery == 0) {
+      writeDem2DToVTK(outDir, s, engine.particles());
+      ++frames;
+    }
     if (s % (steps / 10 == 0 ? 1 : steps / 10) == 0) {
       int contacts = (int)engine.contacts().size();
       iREAL maxSpeed = 0.0;
@@ -133,7 +127,7 @@ int main(int argc, char** argv)
     }
   }
 
-  std::fclose(out);
-  std::printf("wrote dem2d_frames.csv (%d frames)\n", steps / saveEvery + 1);
+  std::printf("wrote %sdem2d_<step>.vtu + %sdem2d.pvd (%d frames, open the .pvd)\n",
+              outDir.c_str(), outDir.c_str(), frames);
   return 0;
 }

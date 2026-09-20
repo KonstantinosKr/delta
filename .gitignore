@@ -34,6 +34,10 @@ geometry_*
 # Generated 3D output collection
 geometry.pvd
 
+# Generated 2D output (demo frames + ParaView collection)
+/dem2d_out/
+dem2dviz/
+
 # CMake build trees (Phase 0 scaffolding)
 /build/
 /build-amrex/

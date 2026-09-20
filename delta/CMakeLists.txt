@@ -63,8 +63,8 @@ target_link_libraries(delta_dem_test PRIVATE delta_lib)
 vtk_module_autoinit(TARGETS delta_dem_test MODULES ${VTK_LIBRARIES})
 add_test(NAME dem_phase0 COMMAND delta_dem_test)
 
-# 2D circle/triangle core: the module is self-contained and does not need VTK,
-# but it is linked through delta_lib so the autoinit stays on for consistency.
+# 2D circle/triangle core. Dem2D.cpp is plain C++; Dem2DWrite.cpp pulls in
+# VTK through delta_lib to emit the same .vtu/.pvd convention as the 3D path.
 add_executable(delta_dem2d_test "${CMAKE_CURRENT_SOURCE_DIR}/../tests/dem2d_test.cpp")
 target_link_libraries(delta_dem2d_test PRIVATE delta_lib)
 vtk_module_autoinit(TARGETS delta_dem2d_test MODULES ${VTK_LIBRARIES})
@@ -73,6 +73,11 @@ add_test(NAME dem2d COMMAND delta_dem2d_test)
 add_executable(delta_dem2d_demo "${CMAKE_CURRENT_SOURCE_DIR}/../tests/dem2d_demo.cpp")
 target_link_libraries(delta_dem2d_demo PRIVATE delta_lib)
 vtk_module_autoinit(TARGETS delta_dem2d_demo MODULES ${VTK_LIBRARIES})
+
+add_executable(delta_dem2d_viz_test "${CMAKE_CURRENT_SOURCE_DIR}/../tests/dem2d_viz_test.cpp")
+target_link_libraries(delta_dem2d_viz_test PRIVATE delta_lib)
+vtk_module_autoinit(TARGETS delta_dem2d_viz_test MODULES ${VTK_LIBRARIES})
+add_test(NAME dem2d_viz COMMAND delta_dem2d_viz_test)
 
 if(DELTA_USE_AMREX)
   add_executable(delta_dem_amrex_test "${CMAKE_CURRENT_SOURCE_DIR}/../tests/dem_phase1_amrex_test.cpp")
