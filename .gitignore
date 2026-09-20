@@ -8,6 +8,7 @@ it-*
 *.log
 *.pyc
 *.txt
+!CMakeLists.txt
 *.optrpt
 *.o
 *.mk
@@ -29,3 +30,10 @@ realtime/ogre-*
 
 gcc-asserts
 geometry_*
+
+# Generated 3D output collection
+geometry.pvd
+
+# CMake build tree (Phase 0 scaffolding)
+/build/
+viztest/

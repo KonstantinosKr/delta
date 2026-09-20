@@ -52,9 +52,8 @@ delta::core::Engine::Engine(
   _collisionModel   = meta.modelScheme;
   _plot             = meta.plotScheme;
   _gravity          = meta.gravity;
-  _state            = delta::core::State(_data, meta);
   _boundary         = boundary;
-	
+
   if(meta.maxPrescribedRefinement > 0.0) {
     _data = delta::core::data::Structure(
 			particles,
@@ -64,6 +63,9 @@ delta::core::Engine::Engine(
   } else {
     _data = delta::core::data::Structure(particles);
   }
+
+  // _data must exist before State reads its particle/triangle counts.
+  _state            = delta::core::State(_data, meta);
 }
 
 delta::core::Engine::~Engine()
