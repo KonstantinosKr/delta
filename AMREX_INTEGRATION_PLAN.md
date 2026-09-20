@@ -3,6 +3,23 @@
 Status: proposal (no code changed yet)
 Scope: integrate the `delta/` DEM tree with AMReX. `zoltan/` and `multiscale/` are legacy parallel paths and are out of scope except as a source of requirements.
 
+> **Status update (branch `amrex-integration`).** Phase 0 is done: serial
+> physics, a uniform-cell broad phase, real `.mbfcp` hopper input (mass, gravity,
+> obstacles) and a third-law regression guard. Commits `aac362b3`, `5408cff2`.
+> Two read-only recon reports now supersede parts of this document:
+>
+> - `docs/recon/serial-audit.md` - every serial/global assumption that blocks
+>   domain decomposition (file:line), 13 latent bugs proven from source, and the
+>   kernels that port unchanged.
+> - `docs/recon/amrex-fit.md` - the AMReX mapping, the corrections to §2/§3/§4/§5
+>   below, and a first-PR plan (~855 new LOC, 0 deletions, 0 serial edits).
+>
+> Known errors in this document, per `docs/recon/amrex-fit.md` §9: the O(N²)
+> claim (now a cell list, `Engine::binnedCandidates`), the
+> `for_each_pair`/`fillGhosts` API names (they do not exist in AMReX 26.09), the
+> "hand-rolled Makefile" claim (the tree is CMake), and the
+> `project(delta_dem CXX)` snippet (must enable C).
+
 ---
 
 ## 1. Why AMReX
