@@ -88,9 +88,14 @@ class delta::core::Engine
 		/* steps */
 		void 	iterate();
 		void 	contactDetection();
+		void 	contactDetectionBruteForce();
 		void 	deriveForces();
 		void 	updatePosition();
 		void 	plot(std::string path);
+
+		/* Contacting particle-id pairs found by the last contact detection pass. */
+		std::vector<std::pair<int,int> >	getContactPairs();
+		iREAL 	getMaxForceMagnitude();
 
 		CollisionModel	_collisionModel;
 		
@@ -107,7 +112,14 @@ class delta::core::Engine
 			bool sphere
 		);
 		
+		/* Candidate enumeration (uniform-cell broad phase and reference scan). */
+		void binnedCandidates(std::vector<std::pair<int,int> >& candidates);
+		void bruteForceCandidates(std::vector<std::pair<int,int> >& candidates);
+		void evaluateCandidates(std::vector<std::pair<int,int> >& candidates);
+
 		bool 							_overlapCheck;
+		bool 							_resolveContacts;
+		iREAL 							_maxForceMagnitude;
 		iREAL 							_gravity;
 		std::array<iREAL, 6>	 		_boundary;
 		delta::core::data::Meta::Plot 	_plot;

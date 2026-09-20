@@ -34,6 +34,10 @@ geometry_*
 # Generated 3D output collection
 geometry.pvd
 
-# CMake build tree (Phase 0 scaffolding)
+# CMake build trees (Phase 0 scaffolding)
 /build/
+/build-amrex/
 viztest/
+
+# Vendored AMReX checkout/build/install
+/third_party/

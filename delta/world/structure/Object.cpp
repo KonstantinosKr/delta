@@ -42,10 +42,13 @@ delta::world::structure::Object::Object(
   _angularVelocity[1] = angular[1];
   _angularVelocity[2] = angular[2];
 
+  // No radius is supplied here; leave radius/diameter at zero so the halo is
+  // still finite and strictly larger than the (zero) diameter. Previously
+  // _haloDiameter read _diameter before it was ever assigned.
   _epsilon 			= epsilon;
+  _rad 				= 0.0;
+  _diameter			= _rad*2;
   _haloDiameter 	= (_diameter+epsilon*2) * 1.1;
-  _diameter			= _rad/2;
-  _rad 				= _diameter/2;
 
   _localParticleID 	= 0;
   _isConvex 		= isConvex;
@@ -185,8 +188,8 @@ delta::world::structure::Object::Object(
   _angularVelocity[1] = angular[1];
   _angularVelocity[2] = angular[2];
 
-  _haloDiameter 	= (_diameter+epsilon*2) * 1.1;
   _diameter			= rad*2;
+  _haloDiameter 	= (_diameter+epsilon*2) * 1.1;
   _mass				= 0;
   _isConvex 		= isConvex;
   _mesh				= nullptr;
@@ -332,12 +335,12 @@ iREAL delta::world::structure::Object::getRad()
 
 void delta::world::structure::Object::setRad(iREAL rad)
 {
+  _rad 				= rad;
+  _diameter			= rad*2;
+  _haloDiameter 	= (_diameter+_epsilon*2) * 1.1;
+
   _minBoundBox 	= {_centre[0] - _rad, _centre[1] - _rad, _centre[2] - _rad};
   _maxBoundBox 	= {_centre[0] + _rad, _centre[1] + _rad, _centre[2] + _rad};
-
-  _rad 				= rad;
-  _haloDiameter 	= (_diameter+_epsilon*2) * 1.1;
-  _diameter			= rad*2;
 }
 
 iREAL delta::world::structure::Object::getMass()

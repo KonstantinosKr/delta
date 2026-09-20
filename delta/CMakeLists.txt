@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
-project(delta_dem LANGUAGES CXX)
+project(delta_dem LANGUAGES C CXX)
 
 # --- Build scaffolding ------------------------------------------------------
 # Serial baseline target. AMReX (Phase 2+) is added behind find_package(AMReX)
@@ -41,3 +41,8 @@ add_executable(delta_viz_test "${CMAKE_CURRENT_SOURCE_DIR}/../tests/viz_write_te
 target_link_libraries(delta_viz_test PRIVATE delta_lib)
 vtk_module_autoinit(TARGETS delta_viz_test MODULES ${VTK_LIBRARIES})
 add_test(NAME viz_write COMMAND delta_viz_test)
+
+add_executable(delta_dem_test "${CMAKE_CURRENT_SOURCE_DIR}/../tests/dem_phase0_test.cpp")
+target_link_libraries(delta_dem_test PRIVATE delta_lib)
+vtk_module_autoinit(TARGETS delta_dem_test MODULES ${VTK_LIBRARIES})
+add_test(NAME dem_phase0 COMMAND delta_dem_test)

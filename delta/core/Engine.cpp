@@ -25,9 +25,18 @@
 
 #include "Engine.h"
 
+#include <algorithm>
+#include <cmath>
+#include <set>
+#include <utility>
+#include <vector>
+
 delta::core::Engine::Engine()
 {
-
+  _overlapCheck      = false;
+  _resolveContacts   = false;
+  _maxForceMagnitude = 0.0;
+	_gravity           = 0.0;
 }
 
 delta::core::Engine::Engine(
@@ -38,6 +47,8 @@ delta::core::Engine::Engine(
   _collisionModel	= meta.modelScheme;
   _plot				= meta.plotScheme;
   _gravity			= world.hasGravity();
+  _resolveContacts	= meta.resolveContacts;
+  _maxForceMagnitude = 0.0;
   _boundary			= world.getBoundary();
   _data				= delta::core::data::Structure(world.getObjects());
   _state			= delta::core::State(_data, meta);
@@ -52,6 +63,8 @@ delta::core::Engine::Engine(
   _collisionModel   = meta.modelScheme;
   _plot             = meta.plotScheme;
   _gravity          = meta.gravity;
+  _resolveContacts  = meta.resolveContacts;
+  _maxForceMagnitude = 0.0;
   _boundary         = boundary;
 
   if(meta.maxPrescribedRefinement > 0.0) {
@@ -157,8 +170,11 @@ void delta::core::Engine::hyperContacts(
 void delta::core::Engine::iterate()
 {
   delta::core::Engine::plot("../output/");
-  //delta::core::Engine::contactDetection();
-  //delta::core::Engine::deriveForces();
+  if(_resolveContacts)
+  {
+	delta::core::Engine::contactDetection();
+	delta::core::Engine::deriveForces();
+  }
   delta::core::Engine::updatePosition();
 	
   _state.update();
@@ -217,23 +233,17 @@ void delta::core::Engine::addCollision(
   //START if dataset A and B is empty
   if(dataSetA==nullptr)
   {
-	/*
- 	//START push_back collisions object into corresponding both A and B particle index collision list
+	//START push_back collisions object into corresponding both A and B particle index collision list
 	_collisionsOfNextTraversal[particleA.getGlobalParticleID()].push_back(
-		delta::core::data::Meta::Collisions() );
+		delta::core::data::Meta::Collisions{particleB, newContactPoints} );
 	_collisionsOfNextTraversal[particleB.getGlobalParticleID()].push_back(
-		delta::core::data::Meta::Collisions() );
+		delta::core::data::Meta::Collisions{particleA, newContactPoints} );
 	//END push_back
 
 	//START reference of vector to data A and B ready to used
 	dataSetA = &(_collisionsOfNextTraversal[particleA.getGlobalParticleID()].back());
 	dataSetB = &(_collisionsOfNextTraversal[particleB.getGlobalParticleID()].back());
 	//END
-
-	//START add copy of master and slave particles to sets (dual contact reference)
-	dataSetA->_copyOfPartnerParticle = particleB;
-	dataSetB->_copyOfPartnerParticle = particleA;
-	//END*/
   }
   //END
 
@@ -269,17 +279,15 @@ int delta::core::Engine::getNumberOfCollisions()
   return _activeCollisions.size();
 }
 
-void delta::core::Engine::contactDetection()
+void delta::core::Engine::evaluateCandidates(
+	std::vector<std::pair<int,int> >& candidates)
 {
-  for(unsigned j=0; j<_data.getNumberOfParticles(); j++)
+  _collisionsOfNextTraversal.clear();
+  for(unsigned p=0; p<candidates.size(); p++)
   {
-		delta::core::data::ParticleRecord& particleA = _data.getParticle(j);
+		delta::core::data::ParticleRecord& particleA = _data.getParticle(candidates[p].first);
+		delta::core::data::ParticleRecord& particleB = _data.getParticle(candidates[p].second);
 
-		//printf("triangles %i\n", particleA.getNumberOfTriangles());
-
-		for(unsigned k=j+1; k<_data.getNumberOfParticles(); k++)
-		{
-			delta::core::data::ParticleRecord& particleB = _data.getParticle(k);
 			if(_overlapCheck)
 			{
 				bool overlap = delta::contact::detection::isSphereOverlayInContact(
@@ -452,8 +460,126 @@ void delta::core::Engine::contactDetection()
 
 			_state.incNumberOfTriangleComparisons(particleA.getNumberOfTriangles() * particleB.getNumberOfTriangles());
 			_state.incNumberOfParticleComparisons(1);
-		}
   }
+
+  // Promote this pass' collisions to the active set consumed by deriveForces().
+  _activeCollisions.swap(_collisionsOfNextTraversal);
+  _collisionsOfNextTraversal.clear();
+}
+
+/**
+ * Uniform-cell (spatial bin) broad phase.
+ *
+ * Cell size is derived from the interaction range rather than guessed: a pair
+ * of spheres can only be in contact when the centre distance is at most
+ * haloDiameterA + haloDiameterB, and getHaloDiameter() already folds in
+ * (diameter + 2*epsilon)*1.1. With cells of side 2*max(halo) every such pair
+ * sits inside one 3x3x3 block of cells, so scanning that block per particle
+ * enumerates every candidate pair exactly once (only j > i).
+ */
+void delta::core::Engine::binnedCandidates(
+	std::vector<std::pair<int,int> >& candidates)
+{
+  const int n = _data.getNumberOfParticles();
+
+  iREAL maxHalo = 0.0;
+  for(int i=0; i<n; i++)
+  {
+	iREAL halo = _data.getParticle(i).getHaloDiameter();
+	if(halo > maxHalo) {maxHalo = halo;}
+  }
+
+  // ponytail: one global cell size (2*max halo) keeps the 3x3x3 scan exact for
+  // any radius mix. A single outsized particle coarsens every cell and the
+  // scan degrades toward O(N^2); switch to per-bin half-extents or a
+  // hierarchical grid if that ever shows up in a profile.
+  iREAL cellSize = 2.0 * maxHalo;
+  if(!(cellSize > 0.0)) {cellSize = 1.0;}
+
+  std::map<std::array<int,3>, std::vector<int> > cells;
+  std::array<int,3> key;
+  for(int i=0; i<n; i++)
+  {
+	const std::array<iREAL,3>& c = _data.getParticle(i)._centre;
+	key[0] = (int)std::floor(c[0]/cellSize);
+	key[1] = (int)std::floor(c[1]/cellSize);
+	key[2] = (int)std::floor(c[2]/cellSize);
+	cells[key].push_back(i);
+  }
+
+  for(int i=0; i<n; i++)
+  {
+	const std::array<iREAL,3>& c = _data.getParticle(i)._centre;
+	int bx = (int)std::floor(c[0]/cellSize);
+	int by = (int)std::floor(c[1]/cellSize);
+	int bz = (int)std::floor(c[2]/cellSize);
+
+	for(int dx=-1; dx<=1; dx++)
+	for(int dy=-1; dy<=1; dy++)
+	for(int dz=-1; dz<=1; dz++)
+	{
+	  key = {bx+dx, by+dy, bz+dz};
+	  std::map<std::array<int,3>, std::vector<int> >::iterator it = cells.find(key);
+	  if(it == cells.end()) {continue;}
+	  for(unsigned q=0; q<it->second.size(); q++)
+	  {
+		int j = it->second[q];
+		if(j > i) {candidates.push_back(std::pair<int,int>(i, j));}
+	  }
+	}
+  }
+}
+
+/* Brute-force O(N^2) reference enumeration; same pairs as binnedCandidates(). */
+void delta::core::Engine::bruteForceCandidates(
+	std::vector<std::pair<int,int> >& candidates)
+{
+  const int n = _data.getNumberOfParticles();
+  for(int i=0; i<n; i++)
+  {
+	for(int j=i+1; j<n; j++)
+	{
+	  candidates.push_back(std::pair<int,int>(i, j));
+	}
+  }
+}
+
+/* Uniform-cell broad phase (see binnedCandidates). */
+void delta::core::Engine::contactDetection()
+{
+  std::vector<std::pair<int,int> > candidates;
+  binnedCandidates(candidates);
+  evaluateCandidates(candidates);
+}
+
+/* Reference all-pairs broad phase. */
+void delta::core::Engine::contactDetectionBruteForce()
+{
+  std::vector<std::pair<int,int> > candidates;
+  bruteForceCandidates(candidates);
+  evaluateCandidates(candidates);
+}
+
+/* Contacting particle-id pairs resolved by the last detection pass. */
+std::vector<std::pair<int,int> > delta::core::Engine::getContactPairs()
+{
+  std::set<std::pair<int,int> > pairs;
+  for(std::map<int, std::vector<Collisions> >::iterator e=_activeCollisions.begin();
+	  e!=_activeCollisions.end(); e++)
+  {
+	for(std::vector<Collisions>::iterator p=e->second.begin(); p!=e->second.end(); p++)
+	{
+	  int a = e->first;
+	  int b = p->_copyOfPartnerParticle.getGlobalParticleID();
+	  pairs.insert(std::pair<int,int>(std::min(a,b), std::max(a,b)));
+	}
+  }
+  return std::vector<std::pair<int,int> >(pairs.begin(), pairs.end());
+}
+
+iREAL delta::core::Engine::getMaxForceMagnitude()
+{
+  return _maxForceMagnitude;
 }
 
 void delta::core::Engine::deriveForces()
@@ -507,6 +633,9 @@ void delta::core::Engine::deriveForces()
 			torque[1] += rtorque[1];
 			torque[2] += rtorque[2];
 		}
+
+		iREAL magnitude = std::sqrt(force[0]*force[0]+force[1]*force[1]+force[2]*force[2]);
+		if(magnitude > _maxForceMagnitude) {_maxForceMagnitude = magnitude;}
 
 		if(!particle.getIsObstacle())
 		{

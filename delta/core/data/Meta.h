@@ -55,6 +55,10 @@ namespace delta {
 					iREAL				dt;
 					bool				gravity;
 					iREAL				maxPrescribedRefinement;
+					// Run contactDetection()+deriveForces() inside iterate(). On by
+					// default so a normal multi-step run resolves contacts; set false
+					// for kinematics-only passes.
+					bool				resolveContacts = true;
 				};
 			}
 		} /* namespace data */

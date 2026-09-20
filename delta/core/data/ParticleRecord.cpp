@@ -34,7 +34,21 @@ delta::core::data::ParticleRecord::ParticleRecord(delta::world::structure::Objec
 		this->_isMesh = false;
 		_bbox = { object.getMinBoundaryVertex()[0], object.getMinBoundaryVertex()[1], object.getMinBoundaryVertex()[2],
 				  object.getMaxBoundaryVertex()[0], object.getMaxBoundaryVertex()[1], object.getMaxBoundaryVertex()[2]};
-	
+
+		// Analytic solid-sphere mass properties. The mesh path derives these
+		// from the volume integral; without this a sphere left mass/inertia
+		// uninitialised and deriveForces() divided by garbage.
+		this->_mass = object.getMass();
+		iREAL r = object.getRad();
+		iREAL inertia = 0.4 * _mass * r * r;
+		iREAL inverse = (inertia > 0.0) ? (1.0/inertia) : 0.0;
+		for(int d=0; d<9; d++) { _inertia[d] = 0.0; _inverse[d] = 0.0; }
+		_inertia[0] = _inertia[4] = _inertia[8] = inertia;
+		if(!object.getIsObstacle())
+		{
+		  _inverse[0] = _inverse[4] = _inverse[8] = inverse;
+		}
+
 	}	else {
 		this->_isMesh = true;
 		
