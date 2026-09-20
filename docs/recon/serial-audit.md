@@ -5,12 +5,13 @@
 - Paths below are relative to `/workspace/delta` unless absolute. `delta/` is the library root (CMake globs `delta/**/*.cpp` only; `multiscale/` and `zoltan/` are **not** in the build — greps can surface same-named symbols from `multiscale/dem/`, ignore those).
 - Reference for the target architecture: `AMREX_INTEGRATION_PLAN.md` (ParticleContainer/NeighborParticleContainer + shared MeshLibrary + Redistribute; delta contact kernels stay).
 
-> **Status update.** §3 bugs L2, L3, L4, L5, L6, L7, L8 and L10 are fixed in
+> **Status update.** §3 bugs L1, L2, L3, L4, L5, L6, L7, L8 and L10 are fixed in
 > `delta/`, each guarded by `tests/regression_test.cpp` (`add_test regression`).
 > The hopper header now prints `# Triangles : 208` (was 0) and the per-step log
 > prints real contact counts (was `cpt:0`); resolved pair counts are unchanged.
-> L1 (`expmap()`) is **not** fixed: it changes baseline trajectories, per the
-> order-of-attack note below. L9 (`OctTree` leak) and L11 (dead code) remain.
+> L1 changed baseline trajectories (the intended repair), so the AMReX parity
+> tests were re-run against the fixed kernels: serial 5/5, AMReX 7/7. L9
+> (`OctTree` leak) and L11 (dead code) remain.
 
 ## Evidence gathered (executed, not inferred)
 

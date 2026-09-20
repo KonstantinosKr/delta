@@ -2,6 +2,7 @@
  * Regression checks for the latent bugs fixed on the amrex-integration branch.
  * Every block below fails (or crashes) against the pre-fix code:
  *
+ *   L1  expmap() rotation matrix was not orthonormal (fixed)
  *   L2  Structure triangle count clobbered to 0 by a following sphere
  *   L3  unsupported CollisionModel silently resolved zero contacts
  *   L4  State collision counter never assigned -> log always printed cpt:0
@@ -25,6 +26,7 @@
 #include "core/Engine.h"
 #include "core/data/Meta.h"
 #include "core/data/Structure.h"
+#include "dynamics/dynamics.h"
 #include "geometry/material.h"
 #include "world/World.h"
 #include "world/structure/Object.h"
@@ -157,6 +159,25 @@ int main() {
     CHECK(threw);
   }
 
-  std::printf("regression_test OK: L2/L3/L4/L5/L6/L7/L8 fixes verified\n");
+  // ---- L1: expmap produces a proper rotation (R R^T = I, det = 1) --------
+  {
+    iREAL angular[3] = {0.0, 0.0, 0.0};
+    iREAL refAngular[3] = {1.0, 2.0, 3.0};  // non-axis-aligned exposes the bug
+    iREAL R[9] = {1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0};
+    delta::dynamics::updateRotationMatrix(angular, refAngular, R, 1.0);
+
+    for (int r = 0; r < 3; r++)
+      for (int c = 0; c < 3; c++) {
+        iREAL p = 0.0;
+        for (int k = 0; k < 3; k++) p += R[3 * r + k] * R[3 * c + k];
+        CHECK(close(p, r == c ? 1.0 : 0.0, 1e-12));
+      }
+    iREAL det = R[0] * (R[4] * R[8] - R[5] * R[7]) -
+                R[3] * (R[1] * R[8] - R[2] * R[7]) +
+                R[6] * (R[1] * R[5] - R[2] * R[4]);
+    CHECK(close(det, 1.0, 1e-12));
+  }
+
+  std::printf("regression_test OK: L1/L2/L3/L4/L5/L6/L7/L8 fixes verified\n");
   return 0;
 }

@@ -75,7 +75,7 @@ void expmap (iREAL Omega1, iREAL Omega2, iREAL Omega3,
   }
 
   v01 = Omega1 * Omega2;
-  v02 = Omega2 * Omega3;
+  v02 = Omega1 * Omega3;
   v12 = Omega2 * Omega3;
   s0 = sx * Omega1;
   s1 = sx * Omega2;
