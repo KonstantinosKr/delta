@@ -36,8 +36,8 @@ static iREAL		_batchError;
 void delta::contact::detection::cleanHybridStatistics() {
   _numberOfPenaltyFails = 0;
   _numberOfBatchFails = 0;
-  int batchSize = 0;
-  iREAL batchError = 0;
+  _batchSize = 0;
+  _batchError = 0;
 }
 
 int delta::contact::detection::getPenaltyFails() {

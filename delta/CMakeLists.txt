@@ -82,6 +82,12 @@ target_link_libraries(delta_dem2d_viz_test PRIVATE delta_lib)
 vtk_module_autoinit(TARGETS delta_dem2d_viz_test MODULES ${VTK_LIBRARIES})
 add_test(NAME dem2d_viz COMMAND delta_dem2d_viz_test)
 
+# Latent-bug regression guards (see docs/recon/serial-audit.md §3).
+add_executable(delta_regression_test "${CMAKE_CURRENT_SOURCE_DIR}/../tests/regression_test.cpp")
+target_link_libraries(delta_regression_test PRIVATE delta_lib)
+vtk_module_autoinit(TARGETS delta_regression_test MODULES ${VTK_LIBRARIES})
+add_test(NAME regression COMMAND delta_regression_test)
+
 if(DELTA_USE_AMREX)
   add_executable(delta_dem_amrex_test "${CMAKE_CURRENT_SOURCE_DIR}/../tests/dem_phase1_amrex_test.cpp")
   target_link_libraries(delta_dem_amrex_test PRIVATE delta_lib)

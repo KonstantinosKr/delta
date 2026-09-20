@@ -28,6 +28,7 @@
 #include <algorithm>
 #include <cmath>
 #include <set>
+#include <stdexcept>
 #include <utility>
 #include <vector>
 
@@ -458,6 +459,12 @@ void delta::core::Engine::evaluateCandidates(
 			break;
 			case CollisionModel::none:
 			break;
+			default:
+			// PenaltyStat/PenaltyTune/HybridTriangleStat/HybridBatchStat/GJK have no
+			// implementation here. Without this the switch fell through, produced no
+			// contacts, and a free-fall run looked like "no collisions today".
+			throw std::logic_error(
+				"Engine: collision model is not implemented by the serial engine");
 			}
 	#endif
 			if(!newContactPoints.empty()) {
@@ -471,6 +478,10 @@ void delta::core::Engine::evaluateCandidates(
   // Promote this pass' collisions to the active set consumed by deriveForces().
   _activeCollisions.swap(_collisionsOfNextTraversal);
   _collisionsOfNextTraversal.clear();
+
+  // The log used to print a hard-coded 0 for every step (State::_numberOfCollisions
+  // was never assigned). Report the resolved pair count instead.
+  _state.setNumberOfCollisions((int)getContactPairs().size());
 }
 
 /**

@@ -51,7 +51,7 @@ delta::world::World::World(
   delta::world::World::createWorld();
 
   std::array<iREAL,3> globalMin = {1E99, 1E99, 1E99};
-  std::array<iREAL,3> globalMax = {0.0, 0.0, 0.0};
+  std::array<iREAL,3> globalMax = {-1E99, -1E99, -1E99};
   std::array<iREAL,3> min, max;
 
   if(!_isSphere)
@@ -67,9 +67,9 @@ delta::world::World::World(
 	  if(min[1] < globalMin[1]) globalMin[1] = min[1];
 	  if(min[2] < globalMin[2]) globalMin[2] = min[2];
 
-	  if(max[0] > globalMax[0]) globalMin[0] = max[0];
-	  if(max[1] > globalMax[1]) globalMin[1] = max[1];
-	  if(max[2] > globalMax[2]) globalMin[2] = max[2];
+	  if(max[0] > globalMax[0]) globalMax[0] = max[0];
+	  if(max[1] > globalMax[1]) globalMax[1] = max[1];
+	  if(max[2] > globalMax[2]) globalMax[2] = max[2];
 
 	  if(_particles[i].getRad() * 2.0 < _minParticleDiam)
 		_minParticleDiam = _particles[i].getRad() * 2.0;
@@ -92,9 +92,9 @@ delta::world::World::World(
 	  if(min[1] < globalMin[1]) globalMin[1] = min[1];
 	  if(min[2] < globalMin[2]) globalMin[2] = min[2];
 
-	  if(max[0] > globalMax[0]) globalMin[0] = max[0];
-	  if(max[1] > globalMax[1]) globalMin[1] = max[1];
-	  if(max[2] > globalMax[2]) globalMin[2] = max[2];
+	  if(max[0] > globalMax[0]) globalMax[0] = max[0];
+	  if(max[1] > globalMax[1]) globalMax[1] = max[1];
+	  if(max[2] > globalMax[2]) globalMax[2] = max[2];
 
 	  if(_particles[i].getRad() * 2.0 < _minParticleDiam)
 		_minParticleDiam = _particles[i].getRad() * 2.0;
@@ -102,7 +102,7 @@ delta::world::World::World(
 		_maxParticleDiam = _particles[i].getRad() * 2.0;
 	}
   }
-  _boundary = {min[0], min[1], min[2], max[0], max[1], max[2]};
+  _boundary = {globalMin[0], globalMin[1], globalMin[2], globalMax[0], globalMax[1], globalMax[2]};
 }
 
 void delta::world::World::createWorld()

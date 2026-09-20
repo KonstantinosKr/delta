@@ -53,9 +53,6 @@ namespace delta {
 					{
 						record.refineTree(record.getAvgMeshSize());
 						_numberOfTriangles += record.getNumberOfTriangles();
-					} else 
-					{
-						_numberOfTriangles = 0;
 					}
 					this->_particles.push_back(record);
 					if(record.getIsObstacle())

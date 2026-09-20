@@ -61,6 +61,7 @@ class delta::core::State {
 
 	int 		getCurrentStepIteration();
 	int 		getCollisions();
+	void 	setNumberOfCollisions(int n);
 	iREAL 	getStepSize();
 
 	void 	incNumberOfTriangleComparisons(int n);

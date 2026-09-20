@@ -75,6 +75,11 @@ int delta::core::State::getCollisions()
   return _numberOfCollisions;
 }
 
+void delta::core::State::setNumberOfCollisions(int n)
+{
+  _numberOfCollisions = n;
+}
+
 iREAL delta::core::State::getStepSize()
 {
   return _dt;
