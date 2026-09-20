@@ -1,5 +1,34 @@
 #include "contactpoint.h"
 
+namespace {
+
+/*
+ * Contact normal derived from the two contact points PA and QB.
+ *
+ * When the points coincide exactly - which happens whenever a sphere touches a
+ * triangle without overlapping, the surface point being the closest point - the
+ * pair carries no direction, and (PA-QB)/distance used to emit NaN and poison
+ * every force of that body. Such a contact gets a zero normal instead: it still
+ * exists, but it cannot push without a direction, so it contributes no force.
+ */
+void contactNormal(const iREAL* PA, const iREAL* QB, iREAL distance, iREAL* normal)
+{
+  if(distance > 0.0)
+  {
+	normal[0] = (PA[0]-QB[0])/distance;
+	normal[1] = (PA[1]-QB[1])/distance;
+	normal[2] = (PA[2]-QB[2])/distance;
+  }
+  else
+  {
+	normal[0] = 0.0;
+	normal[1] = 0.0;
+	normal[2] = 0.0;
+  }
+}
+
+}
+
 delta::contact::contactpoint::contactpoint(){}
 
 delta::contact::contactpoint::contactpoint(const contactpoint& copy) {
@@ -63,7 +92,9 @@ delta::contact::contactpoint::contactpoint(
 
   epsilonTotal = epsilonA+epsilonB;
 
-  depth = (epsilonTotal - getDistance());
+  iREAL pairDistance = getDistance();
+
+  depth = (epsilonTotal - pairDistance);
 
   //face vector of triangle
   iREAL V[3], W[3], N[3];
@@ -86,9 +117,7 @@ delta::contact::contactpoint::contactpoint(
   np[1] = N[1]/mag;
   np[2] = N[2]/mag;
 
-  normal[0] = ((P[0]-Q[0])/getDistance());
-  normal[1] = ((P[1]-Q[1])/getDistance());
-  normal[2] = ((P[2]-Q[2])/getDistance());
+  contactNormal(P, Q, pairDistance, normal);
 
   //direction is less than 0 then vectors point opposite direction (contact inside of body)
   //direction is more than 0 then vecotrs point same direction (contact outside of body)
@@ -141,11 +170,11 @@ delta::contact::contactpoint::contactpoint(
 
   epsilonTotal = epsilonA+epsilonB;
 
-  depth = (epsilonTotal - getDistance());
+  iREAL pairDistance = getDistance();
 
-  normal[0] = ((xPA-xQB)/getDistance());
-  normal[1] = ((yPA-yQB)/getDistance());
-  normal[2] = ((zPA-zQB)/getDistance());
+  depth = (epsilonTotal - pairDistance);
+
+  contactNormal(P, Q, pairDistance, normal);
 
   friction = type;
 

@@ -44,7 +44,8 @@ namespace delta {
 
 	  	  delta::geometry::mesh::Mesh* readPartGeometry(std::string fileName);
 
-	  	  void readmbfcp(std::string filename, std::vector<delta::world::structure::Object>& objects, iREAL epsilon);
+	  	  //Returns the GRAVITY vector of the file (zero when the section is absent).
+	  	  std::array<iREAL, 3> readmbfcp(std::string filename, std::vector<delta::world::structure::Object>& objects, iREAL epsilon);
 	  }
 	}
 }

@@ -222,5 +222,47 @@ int main() {
         (unsigned)objects.size(), maxContacts, maxForce);
   }
 
+  // ---- 5. Newton's third law: one contact must not create momentum ---------
+  //
+  // Regression guard for a bug that passed every check above: the A entry used
+  // to hold the contact point twice (2x force) and the B entry +p then -p
+  // (cancelling to zero). Pair sets are unchanged by that, so only a momentum
+  // check sees it. Equal masses, gravity off, one iterate():
+  //   m*dvA + m*dvB must be ~0, and the pair must have actually pushed.
+  {
+    const iREAL m = 0.5;
+    const std::array<iREAL, 3> zero = {{0.0, 0.0, 0.0}};
+    std::vector<delta::world::structure::Object> pair;
+    delta::world::structure::Object A(
+        "sphere", radius, 0, {{0.47, 0.5, 0.5}},
+        delta::geometry::material::MaterialType::WOOD,
+        false, true, true, epsilon, zero, zero);
+    delta::world::structure::Object B(
+        "sphere", radius, 1, {{0.50, 0.5, 0.5}},
+        delta::geometry::material::MaterialType::WOOD,
+        false, true, true, epsilon, zero, zero);
+    A.setMass(m);
+    B.setMass(m);
+    pair.push_back(A);
+    pair.push_back(B);
+
+    auto meta = baseMeta(1e-4);
+    meta.gravity = false;
+    delta::core::Engine engine(pair, boundary, meta);
+    engine.iterate();
+
+    auto& records = engine.getParticleRecords();
+    CHECK(records.size() == 2u);
+    iREAL dvA = records[0]._linearVelocity[0];
+    iREAL dvB = records[1]._linearVelocity[0];
+    CHECK(std::isfinite(dvA) && std::isfinite(dvB));
+    // Non-vacuous: the contact actually pushed (centres 0.03 apart, r = 0.02).
+    CHECK(std::fabs(dvA) > 1e-9);
+    // Equal and opposite: total momentum change ~0.
+    CHECK(std::fabs(records[0].getMass() * dvA + records[1].getMass() * dvB) < 1e-9);
+    std::printf("third law OK: dvA=%g dvB=%g momentum=%.3e\n", dvA, dvB,
+                records[0].getMass() * dvA + records[1].getMass() * dvB);
+  }
+
   return 0;
 }

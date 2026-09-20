@@ -26,6 +26,33 @@
 #include "point.h"
 #include "../../core/algo.h"
 
+namespace {
+
+/*
+ * Unit direction from a sphere centre P to the closest point Q on a triangle.
+ *
+ * The barrier detectors used to divide (Q-P) by (distance + radius), which is
+ * |P-Q| plus rounding only while |P-Q| != radius. For a sphere exactly touching
+ * the surface (|P-Q| == radius, e.g. centre 0.98 with radius 0.02 against a wall
+ * at x = 1) that denominator cancels to zero, the surface point P + radius*n
+ * goes infinite and every contact of the pair turns into NaN. Dividing by |P-Q|
+ * itself gives the same direction and stays finite; a zero direction is returned
+ * when the centre lies on the triangle, where the pair has no direction at all.
+ */
+void surfaceNormal(const iREAL* P, const iREAL* Q, iREAL* normal)
+{
+  iREAL dx = Q[0]-P[0];
+  iREAL dy = Q[1]-P[1];
+  iREAL dz = Q[2]-P[2];
+  iREAL length = std::sqrt((dx*dx)+(dy*dy)+(dz*dz));
+
+  normal[0] = (length > 0.0) ? dx/length : 0.0;
+  normal[1] = (length > 0.0) ? dy/length : 0.0;
+  normal[2] = (length > 0.0) ? dz/length : 0.0;
+}
+
+}
+
 std::vector<delta::contact::contactpoint> delta::contact::detection::sphere(
   const iREAL   xCoordinatesOfPointsOfGeometryA,
   const iREAL   yCoordinatesOfPointsOfGeometryA,
@@ -112,15 +139,16 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::sphereWithB
 	P[1] = yCoordinatesOfPointsOfGeometryA;
 	P[2] = zCoordinatesOfPointsOfGeometryA;
 
-	iREAL distance = delta::contact::detection::pt(TP1, TP2, TP3, P, Q) - (diameterA/2.0);
+	//Q is filled with the closest point of the triangle; the sphere surface point
+	//P + radius*normal lands on it for an exact touch.
+	delta::contact::detection::pt(TP1, TP2, TP3, P, Q);
 
-	iREAL xnormal = (Q[0] - P[0])/(distance+(diameterA/2.0));
-	iREAL ynormal = (Q[1] - P[1])/(distance+(diameterA/2.0));
-	iREAL znormal = (Q[2] - P[2])/(distance+(diameterA/2.0));
+	iREAL normal[3];
+	surfaceNormal(P, Q, normal);
 
-	xPA = P[0] + ((diameterA/2.0) * xnormal);
-	yPA = P[1] + ((diameterA/2.0) * ynormal);
-	zPA = P[2] + ((diameterA/2.0) * znormal);
+	xPA = P[0] + ((diameterA/2.0) * normal[0]);
+	yPA = P[1] + ((diameterA/2.0) * normal[1]);
+	zPA = P[2] + ((diameterA/2.0) * normal[2]);
 
 	xPB = Q[0];
 	yPB = Q[1];
@@ -177,15 +205,16 @@ int 	  			particleA)
 	P[1] = yCoordinatesOfPointsOfGeometryB;
 	P[2] = zCoordinatesOfPointsOfGeometryB;
 
-	iREAL distance = delta::contact::detection::pt(TP1, TP2, TP3, P, Q) - (diameterB/2.0);
+	//Q is filled with the closest point of the triangle; the sphere surface point
+	//P + radius*normal lands on it for an exact touch.
+	delta::contact::detection::pt(TP1, TP2, TP3, P, Q);
 
-	iREAL xnormal = (Q[0] - P[0])/(distance+(diameterB/2.0));
-	iREAL ynormal = (Q[1] - P[1])/(distance+(diameterB/2.0));
-	iREAL znormal = (Q[2] - P[2])/(distance+(diameterB/2.0));
+	iREAL normal[3];
+	surfaceNormal(P, Q, normal);
 
-	xPA = P[0] + ((diameterB/2.0) * xnormal);
-	yPA = P[1] + ((diameterB/2.0) * ynormal);
-	zPA = P[2] + ((diameterB/2.0) * znormal);
+	xPA = P[0] + ((diameterB/2.0) * normal[0]);
+	yPA = P[1] + ((diameterB/2.0) * normal[1]);
+	zPA = P[2] + ((diameterB/2.0) * normal[2]);
 
 	xPB = Q[0];
 	yPB = Q[1];

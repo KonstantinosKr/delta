@@ -31,12 +31,12 @@
 #include <utility>
 #include <vector>
 
-delta::core::Engine::Engine()
+	delta::core::Engine::Engine()
 {
   _overlapCheck      = false;
   _resolveContacts   = false;
   _maxForceMagnitude = 0.0;
-	_gravity           = 0.0;
+	_gravity           = {0.0, 0.0, 0.0};
 }
 
 delta::core::Engine::Engine(
@@ -46,7 +46,8 @@ delta::core::Engine::Engine(
   _overlapCheck		= meta.overlapPreCheck;
   _collisionModel	= meta.modelScheme;
   _plot				= meta.plotScheme;
-  _gravity			= world.hasGravity();
+  _gravity			= {0.0, 0.0, 0.0};
+  if(world.hasGravity()) {_gravity = {0.0, -9.8, 0.0};}
   _resolveContacts	= meta.resolveContacts;
   _maxForceMagnitude = 0.0;
   _boundary			= world.getBoundary();
@@ -62,7 +63,10 @@ delta::core::Engine::Engine(
   _overlapCheck     = meta.overlapPreCheck;
   _collisionModel   = meta.modelScheme;
   _plot             = meta.plotScheme;
-  _gravity          = meta.gravity;
+  // Gravity vector comes from the scenario meta (the mbfcp GRAVITY block for
+  // the hopper); zero vector when gravity is switched off.
+  _gravity          = {0.0, 0.0, 0.0};
+  if(meta.gravity) {_gravity = meta.gravityVector;}
   _resolveContacts  = meta.resolveContacts;
   _maxForceMagnitude = 0.0;
   _boundary         = boundary;
@@ -234,10 +238,12 @@ void delta::core::Engine::addCollision(
   if(dataSetA==nullptr)
   {
 	//START push_back collisions object into corresponding both A and B particle index collision list
+	//The point list is filled once, by the two inserts below; seeding it with a
+	//copy here would double the force on A and cancel it on B.
 	_collisionsOfNextTraversal[particleA.getGlobalParticleID()].push_back(
-		delta::core::data::Meta::Collisions{particleB, newContactPoints} );
+		delta::core::data::Meta::Collisions{particleB, {}} );
 	_collisionsOfNextTraversal[particleB.getGlobalParticleID()].push_back(
-		delta::core::data::Meta::Collisions{particleA, newContactPoints} );
+		delta::core::data::Meta::Collisions{particleA, {}} );
 	//END push_back
 
 	//START reference of vector to data A and B ready to used
@@ -476,6 +482,11 @@ void delta::core::Engine::evaluateCandidates(
  * (diameter + 2*epsilon)*1.1. With cells of side 2*max(halo) every such pair
  * sits inside one 3x3x3 block of cells, so scanning that block per particle
  * enumerates every candidate pair exactly once (only j > i).
+ *
+ * Obstacles are not binned: their halo is the whole wall (a 3x3 m plate has a
+ * halo diameter of ~5 m), which would coarsen every cell to the domain size and
+ * make the scan all-pairs. They are static, so they are paired with the free
+ * particles whose halo sphere they overlap instead.
  */
 void delta::core::Engine::binnedCandidates(
 	std::vector<std::pair<int,int> >& candidates)
@@ -485,6 +496,7 @@ void delta::core::Engine::binnedCandidates(
   iREAL maxHalo = 0.0;
   for(int i=0; i<n; i++)
   {
+	if(_data.getParticle(i).getIsObstacle()) {continue;}
 	iREAL halo = _data.getParticle(i).getHaloDiameter();
 	if(halo > maxHalo) {maxHalo = halo;}
   }
@@ -500,6 +512,7 @@ void delta::core::Engine::binnedCandidates(
   std::array<int,3> key;
   for(int i=0; i<n; i++)
   {
+	if(_data.getParticle(i).getIsObstacle()) {continue;}
 	const std::array<iREAL,3>& c = _data.getParticle(i)._centre;
 	key[0] = (int)std::floor(c[0]/cellSize);
 	key[1] = (int)std::floor(c[1]/cellSize);
@@ -509,6 +522,7 @@ void delta::core::Engine::binnedCandidates(
 
   for(int i=0; i<n; i++)
   {
+	if(_data.getParticle(i).getIsObstacle()) {continue;}
 	const std::array<iREAL,3>& c = _data.getParticle(i)._centre;
 	int bx = (int)std::floor(c[0]/cellSize);
 	int by = (int)std::floor(c[1]/cellSize);
@@ -525,6 +539,27 @@ void delta::core::Engine::binnedCandidates(
 	  {
 		int j = it->second[q];
 		if(j > i) {candidates.push_back(std::pair<int,int>(i, j));}
+	  }
+	}
+  }
+
+  //Static obstacles vs free particles: their halo sphere contains every
+  //particle that can reach any of their triangles.
+  for(int i=0; i<n; i++)
+  {
+	delta::core::data::ParticleRecord& obstacle = _data.getParticle(i);
+	if(!obstacle.getIsObstacle()) {continue;}
+
+	for(int j=0; j<n; j++)
+	{
+	  delta::core::data::ParticleRecord& particle = _data.getParticle(j);
+	  if(particle.getIsObstacle()) {continue;}
+
+	  if(delta::contact::detection::isSphereOverlayInContact(
+		obstacle._centre[0], obstacle._centre[1], obstacle._centre[2], obstacle.getHaloDiameter(),
+		particle._centre[0], particle._centre[1], particle._centre[2], particle.getHaloDiameter()))
+	  {
+		candidates.push_back(std::pair<int,int>(i, j));
 	  }
 	}
   }
@@ -584,6 +619,10 @@ iREAL delta::core::Engine::getMaxForceMagnitude()
 
 void delta::core::Engine::deriveForces()
 {
+  //Reported max is per force pass, otherwise it stays at the widest value ever
+  //seen and a diverging step is masked.
+  _maxForceMagnitude = 0.0;
+
   for(int i=0; i<_data.getNumberOfParticles(); i++)
   {
 		delta::core::data::ParticleRecord& particle = _data.getParticle(i);
@@ -662,7 +701,9 @@ void delta::core::Engine::updatePosition()
 
 		if(particle.getIsObstacle()) continue;
 
-		particle._linearVelocity[1] += _state.getStepSize()*(int(_gravity)*-9.8); //pass as gravity gxgygz vector
+		particle._linearVelocity[0] += _state.getStepSize()*_gravity[0];
+		particle._linearVelocity[1] += _state.getStepSize()*_gravity[1];
+		particle._linearVelocity[2] += _state.getStepSize()*_gravity[2];
 
 		particle._centre[0] += _state.getStepSize()*particle._linearVelocity[0];
 		particle._centre[1] += _state.getStepSize()*particle._linearVelocity[1];

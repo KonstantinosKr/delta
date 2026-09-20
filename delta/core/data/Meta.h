@@ -54,6 +54,9 @@ namespace delta {
 					Plot				plotScheme;
 					iREAL				dt;
 					bool				gravity;
+					// Acceleration applied when gravity is on. Defaults to the value the
+					// serial Engine used to hard-code (-9.8 on y).
+					std::array<iREAL, 3>	gravityVector = {0.0, -9.8, 0.0};
 					iREAL				maxPrescribedRefinement;
 					// Run contactDetection()+deriveForces() inside iterate(). On by
 					// default so a normal multi-step run resolves contacts; set false

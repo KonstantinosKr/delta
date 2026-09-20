@@ -4,6 +4,7 @@
  */
 
 #include "read.h"
+#include <sstream>
 #include <assimp/Importer.hpp>      // C++ importer interface
 #include <assimp/Exporter.hpp>      // C++ importer interface
 #include <assimp/scene.h>           // Output data structure
@@ -342,7 +343,7 @@ CONSTANT:	0
 CONSTANT:	-10
 */
 
-void delta::core::io::readmbfcp(std::string 									filename,
+std::array<iREAL, 3> delta::core::io::readmbfcp(std::string 									filename,
 								std::vector<delta::world::structure::Object>& 	objects,
 								iREAL 											epsilon) {
     std::ifstream file(filename);
@@ -352,6 +353,12 @@ void delta::core::io::readmbfcp(std::string 									filename,
     
     int idCounter = 0;
     int bodies = 0;
+
+    // BULK_MATERIALS/GRAVITY are parsed before the BODIES paragraphs, so both
+    // values have to outlive the material block: density turns a sphere radius
+    // into a mass, gravity is returned to the caller for the simulation meta.
+    iREAL density = 0.0;
+    std::array<iREAL, 3> gravity = {0.0, 0.0, 0.0};
 
     //read line by line
     for (std::string line; getline(file, line);)
@@ -421,11 +428,10 @@ void delta::core::io::readmbfcp(std::string 									filename,
             getline(file, line);
             iREAL poisson = std::stof(line.substr(9));
             getline(file, line);
-            iREAL density = std::stof(line.substr(9));
+            density = std::stof(line.substr(9));
             getline(file, line);
             getline(file, line);
             getline(file, line);
-            iREAL gravity[3];
             gravity[0] = std::stof(line.substr(10));
             getline(file, line);
             gravity[1] = std::stof(line.substr(10));
@@ -512,35 +518,81 @@ void delta::core::io::readmbfcp(std::string 									filename,
             //std::cout << line << std::endl;
             if (line.find("SPHERES:") != std::string::npos) {
                 getline(file, line);
-                std::cout << line << std::endl;
 
                 iREAL x = std::stod(line.substr(8, 4));
                 iREAL y = std::stod(line.substr(14, 4));
                 iREAL z = std::stod(line.substr(20, 4));
 
-                std::cout << x << "|" << y << "|" << z <<"|"<< std::endl;
-
                 getline(file, line);
                 std::string radius = line.substr(8, 4);
                 iREAL rad = std::stod(radius);
-                //std::cout << radius << std::endl;
 
 
                 std::array<iREAL, 3> centreArray = {x, y, z};
                 std::array<iREAL, 3> linear = {0.0, 0.0, 0.0};
 
                 delta::world::structure::Object object("sphere", rad, id, centreArray, delta::geometry::material::MaterialType::WOOD, false, false, true, epsilon, linear, {0,0,0});
+
+                //deriveForces() divides by the mass, so the bulk density has to
+                //settle it here (the ctor only knows the material).
+                object.setMass(density * (4.0/3.0) * 3.14159265358979323846 * rad*rad*rad);
+
                 objects.push_back(object);
 
 
-            } else if(line.find("VERTEXES:") != std::string::npos) {
-            
+            } else if(line.find("CONVEXES:") != std::string::npos) {
+                //Obstacle (hopper wall): CONVEXES/VERTEXES/FACES paragraph.
+                //FACES index the flat vertex coordinate buffer, hence the /3.
+                getline(file, line);
+                int vertices = std::stoi(line.substr(10));
+
+                std::vector<std::array<iREAL, 3>> uniqueVertices;
+                for(int v=0; v<vertices; v++)
+                {
+                    getline(file, line);
+                    std::istringstream coordinates(line);
+                    iREAL px, py, pz;
+                    coordinates >> px >> py >> pz;
+                    uniqueVertices.push_back({px, py, pz});
+                }
+
+                getline(file, line);
+                int faces = std::stoi(line.substr(7));
+
+                std::vector<std::array<int, 3>> triangleFaces;
+                for(int f=0; f<faces; f++)
+                {
+                    getline(file, line);
+                    std::istringstream face(line);
+                    int verticesPerFace, a, b, c, materialID;
+                    face >> verticesPerFace >> a >> b >> c >> materialID;
+                    triangleFaces.push_back({a/3, b/3, c/3});
+                }
+
+                delta::geometry::mesh::Mesh* mesh = new delta::geometry::mesh::Mesh(triangleFaces, uniqueVertices);
+
+                //The mesh ctor re-centres the mesh on the centre it is given;
+                //passing the mesh's own centre keeps the wall where the file
+                //put it. Mass/inertia come from the mesh volume, the obstacle
+                //gets a zero inverse so it never moves.
+                iREAL centre[3];
+                mesh->computeCenterOfGeometry(centre);
+
+                std::array<iREAL, 3> linear = {0.0, 0.0, 0.0};
+
+                delta::world::structure::Object object("obstacle", id, mesh,
+                    std::array<iREAL, 3>{centre[0], centre[1], centre[2]},
+                    delta::geometry::material::MaterialType::WOOD,
+                    true, false, true, epsilon, linear, {0,0,0});
+
+                objects.push_back(object);
             }
 
 
 
         }
 
-        std::cout << line << std::endl;
     }
+
+    return gravity;
 }

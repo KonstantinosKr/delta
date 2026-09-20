@@ -120,7 +120,7 @@ class delta::core::Engine
 		bool 							_overlapCheck;
 		bool 							_resolveContacts;
 		iREAL 							_maxForceMagnitude;
-		iREAL 							_gravity;
+		std::array<iREAL, 3>		_gravity;
 		std::array<iREAL, 6>	 		_boundary;
 		delta::core::data::Meta::Plot 	_plot;
 		delta::core::State 				_state;

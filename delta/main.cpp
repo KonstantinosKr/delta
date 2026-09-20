@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <cmath>
+#include <fstream>
 #include <random>
+#include <string>
 #include <vector>
 #include <array>
 #include <iostream>
@@ -15,13 +17,9 @@
 using namespace std;
 
 /*
- * Small serial DEM scenario: a dense lattice of jittered spheres whose centre
- * spacing is below the (2r + 2*epsilon) contact reach, so every particle has
- * neighbours and the contact loop actually has work to do.
- *
- * The 15625-sphere hopper file is still loadable (readmbfcp below) but it is
- * far too large to drive the serial broad phase for a few steps, so the demo
- * defaults to a 1000-sphere pile.
+ * Target scenario is the real hopper file (input/hopper.mbfcp): 15625 spheres
+ * in a 25^3 lattice plus 26 obstacle walls. makeSpherePile() stays as the
+ * fallback when the file is not where the binary expects it.
  */
 static std::vector<delta::world::structure::Object> makeSpherePile(
 	int side, iREAL radius, iREAL epsilon)
@@ -66,10 +64,46 @@ int main(int argc, const char *argv[]) {
 	bool isSphere = true;
 	int meshDensity = 20;
 	iREAL epsilon = 0.01;
+	std::array<iREAL, 3> gravity = {0.0, 0.0, 0.0};
 
-	//delta::core::io::readmbfcp("../input/hopper.mbfcp", particles, epsilon);
-	//delta::world::scenarios::twoParticlesCrashDiagonal(particles, isSphere, meshDensity, epsilon);
-	particles = makeSpherePile(10, 0.02, epsilon);
+	const std::string hopperFile = "../input/hopper.mbfcp";
+	std::ifstream hopper(hopperFile);
+	if(hopper.good())
+	{
+		hopper.close();
+		//The mbfcp file carries no contact epsilon. The contact model's rest gap
+		//is epsilonA+epsilonB, so epsilon must stay well below the 0.02 radius:
+		//the hopper is a 0.04-spaced (tangent) lattice, and a large epsilon makes
+		//that lattice start 2*epsilon compressed, releasing the springs in one
+		//step. 0.002 keeps the reach (0.044) above the 0.04 neighbour spacing
+		//while staying a tenth of a radius (6 face-neighbours per sphere).
+		epsilon = 0.002;
+		gravity = delta::core::io::readmbfcp(hopperFile, particles, epsilon);
+	}
+	else
+	{
+		particles = makeSpherePile(10, 0.02, epsilon);
+	}
+
+	//A zero mass makes deriveForces() divide by zero, so fail loudly here.
+	int obstacles = 0;
+	iREAL minMass = 1E99;
+	for(size_t i=0; i<particles.size(); i++)
+	{
+		if(particles[i].getIsObstacle()) {obstacles++;}
+		iREAL mass = particles[i].getMass();
+		if(!(mass > 0.0) || !std::isfinite(mass))
+		{
+			std::cerr << "particle " << i << " has mass " << mass << std::endl;
+			return 1;
+		}
+		if(mass < minMass) {minMass = mass;}
+	}
+
+	std::cout << "loaded particles=" << particles.size()
+			  << " spheres=" << (particles.size()-obstacles)
+			  << " obstacles=" << obstacles
+			  << " minMass=" << minMass << std::endl;
 
 	/////////////////////////////////////////////////////////////////////////
 	delta::core::data::Meta::Simulation simMeta;
@@ -77,8 +111,12 @@ int main(int argc, const char *argv[]) {
 	simMeta.plotScheme = delta::core::data::Meta::Plot::Never;
 	simMeta.modelScheme = delta::core::data::Meta::CollisionModel::Sphere;
 	simMeta.overlapPreCheck = false;
-	simMeta.dt = 0.0001;
-	simMeta.gravity = true;
+	//Explicit Euler with SSPRING = 2e5 and ~100 contacts per sphere: the
+	//per-particle stiffness sets dt <~ 1e-5, above that the pile blows up (still
+	//finite, just wrong).
+	simMeta.dt = 0.00001;
+	simMeta.gravity = (gravity[0] != 0.0 || gravity[1] != 0.0 || gravity[2] != 0.0);
+	simMeta.gravityVector = gravity;
 	simMeta.maxPrescribedRefinement = -1.0;
 	simMeta.resolveContacts = true;
 
@@ -86,14 +124,52 @@ int main(int argc, const char *argv[]) {
 
 	auto _deltaEngine = delta::core::Engine(particles, boundary, simMeta);
 
-	cout << "particles=" << particles.size() << endl;
+	std::cout << "particles=" << particles.size() << std::endl;
+	std::cout << "gravity=" << gravity[0] << " " << gravity[1] << " " << gravity[2] << std::endl;
 
-	const int steps = 20;
+	const int steps = 10;
 	for (int ii = 0; ii < steps; ii++) {
 		_deltaEngine.iterate();
-		cout << "step " << ii
+
+		//Positions/velocities must stay finite; getMaxForceMagnitude() is the
+		//max|force| is the per-step peak reported by deriveForces().
+		bool finite = true;
+		int badParticle = -1;
+		const char* badField = "";
+		iREAL maxSpeed = 0.0;
+		std::vector<delta::core::data::ParticleRecord>& records = _deltaEngine.getParticleRecords();
+		for(unsigned p=0; p<records.size(); p++)
+		{
+			delta::core::data::ParticleRecord& record = records[p];
+			const char* field = "";
+			for(int d=0; d<3; d++)
+			{
+				if(!std::isfinite(record._centre[d])) {field = "centre";}
+				else if(!std::isfinite(record._linearVelocity[d])) {field = "linearVelocity";}
+				else if(!std::isfinite(record._angularVelocity[d])) {field = "angularVelocity";}
+			}
+			if(field[0] != '\0' && badParticle < 0) {finite = false; badParticle = p; badField = field;}
+			iREAL speed = std::sqrt(record._linearVelocity[0]*record._linearVelocity[0]+record._linearVelocity[1]*record._linearVelocity[1]+record._linearVelocity[2]*record._linearVelocity[2]);
+			if(std::isfinite(speed) && speed > maxSpeed) {maxSpeed = speed;}
+		}
+
+		std::cout << "step " << ii
 			 << " contacts=" << _deltaEngine.getContactPairs().size()
-			 << " max|force|=" << _deltaEngine.getMaxForceMagnitude() << endl;
+			 << " max|v|=" << maxSpeed
+			 << " max|force|(per-step)=" << _deltaEngine.getMaxForceMagnitude()
+			 << " finite=" << (finite ? "yes" : "no");
+		if(badParticle >= 0)
+		{
+			delta::core::data::ParticleRecord& record = records[badParticle];
+			std::cout << " firstNonFinite=" << badParticle << ":" << badField
+					  << " obstacle=" << record.getIsObstacle()
+					  << " centre=" << record._centre[0] << "," << record._centre[1] << "," << record._centre[2]
+					  << " linear=" << record._linearVelocity[0] << "," << record._linearVelocity[1] << "," << record._linearVelocity[2]
+					  << " angular=" << record._angularVelocity[0] << "," << record._angularVelocity[1] << "," << record._angularVelocity[2];
+		}
+		std::cout << std::endl;
+
+		if(!finite) {return 1;}
 	}
 
 	cout << "hello master" << endl;
