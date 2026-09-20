@@ -14,8 +14,11 @@ else()
 endif()
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# Only what the code uses. The old list also pulled IOImport/IOExport, which
+# transitively require RenderingCore/FiltersCore - whole subsystems nothing here
+# instantiates. Keep this narrow or a from-source VTK build needs OpenGL too.
 find_package(VTK REQUIRED COMPONENTS
-  CommonCore CommonDataModel IOLegacy IOXML IOImport IOExport)
+  CommonCore CommonDataModel IOLegacy IOXML)
 find_package(assimp QUIET)
 
 file(GLOB_RECURSE DELTA_SOURCES CONFIGURE_DEPENDS

@@ -27,7 +27,6 @@
 #include <vtkMath.h>
 #include <vtkCellArray.h>
 #include <vtkXMLUnstructuredGridReader.h>
-#include <vtkDataSetMapper.h>
 #include <vtkXMLUnstructuredGridWriter.h>
 #include <vtkUnstructuredGrid.h>
 #include <vtkPointData.h>
@@ -39,7 +38,6 @@
 #include <vtkPointData.h>
 #include <vtkSmartPointer.h>
 #include <vtkXMLPolyDataReader.h>
-#include <vtkPolyDataNormals.h>
 #include <vtkFloatArray.h>
 #include <vtkMath.h>
 #include <string>
