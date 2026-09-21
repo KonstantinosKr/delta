@@ -17,6 +17,7 @@
 #include "../../core/data/ParticleRecord.h"
 #include "../../geometry/structure/Mesh.h"
 #include "../../world/structure/Object.h"
+#include "MeshBuffer.h"
 
 #include <vtkSmartPointer.h>
 #include <vtkTetra.h>

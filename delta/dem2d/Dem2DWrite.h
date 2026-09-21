@@ -37,9 +37,9 @@ namespace delta {
  * Write one frame of the 2D scene as a ParaView XML unstructured grid, and
  * rewrite the time series collection beside it.
  *
- * Mirrors the 3D writer in delta/core/io/write.cpp so the two share one
- * convention: every particle becomes real filled geometry, not a point
- * cloud, and path/dem2d.pvd lists every dem2d_<step>.vtu found in path.
+ * Mirrors the 3D convention by filling a delta::core::io::MeshBuffer and
+ * calling delta::core::io::writeVTU, so the file format lives in one place:
+ * every particle becomes real filled geometry, not a point cloud.
  *
  *   disk      -> VTK_POLYGON (tessellated ring, in the z=0 plane)
  *   triangle  -> VTK_TRIANGLE, taken from worldVertices

@@ -88,6 +88,13 @@ target_link_libraries(delta_regression_test PRIVATE delta_lib)
 vtk_module_autoinit(TARGETS delta_regression_test MODULES ${VTK_LIBRARIES})
 add_test(NAME regression COMMAND delta_regression_test)
 
+# Guard for the shared .vtu writer: MeshBuffer::validate() must reject the
+# geometry that would otherwise be written silently wrong.
+add_executable(delta_meshbuffer_test "${CMAKE_CURRENT_SOURCE_DIR}/../tests/meshbuffer_test.cpp")
+target_link_libraries(delta_meshbuffer_test PRIVATE delta_lib)
+vtk_module_autoinit(TARGETS delta_meshbuffer_test MODULES ${VTK_LIBRARIES})
+add_test(NAME mesh_buffer COMMAND delta_meshbuffer_test)
+
 if(DELTA_USE_AMREX)
   add_executable(delta_dem_amrex_test "${CMAKE_CURRENT_SOURCE_DIR}/../tests/dem_phase1_amrex_test.cpp")
   target_link_libraries(delta_dem_amrex_test PRIVATE delta_lib)

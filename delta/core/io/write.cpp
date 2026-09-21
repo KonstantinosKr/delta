@@ -3,111 +3,47 @@
  *
  *  Created on: 20 Oct 2022
  *      Author: konstantinos
+ *
+ * The two model-specific writers below do nothing but turn a model into a
+ * MeshBuffer; emission is shared in core/io/MeshBuffer.cpp.
  */
 
 #include "write.h"
 
-#include <glob.h>
-
-#include <algorithm>
-#include <cstdio>
-#include <cstdlib>
-#include <fstream>
-#include <string>
-#include <utility>
-#include <vector>
-
-namespace {
-
-/*
- * Rewrite the ParaView collection file so all geometry_<step>.vtu files
- * currently on disk load as one animated time series instead of a single
- * frame. Stateless: it rescans the directory on every call.
- */
-void writePVD(const std::string& path, const std::string& name) {
-  const std::string prefix = name + "_";
-  const std::string suffix = ".vtu";
-
-  std::vector<std::pair<int, std::string>> frames;
-
-  glob_t matches;
-  if (glob((path + prefix + "*" + suffix).c_str(), 0, nullptr, &matches) == 0) {
-    for (size_t i = 0; i < matches.gl_pathc; ++i) {
-      std::string full(matches.gl_pathv[i]);
-      if (full.size() < path.size() + prefix.size() + suffix.size()) continue;
-      std::string base  = full.substr(path.size());
-      std::string digits = base.substr(prefix.size(), base.size() - prefix.size() - suffix.size());
-      frames.emplace_back(std::atoi(digits.c_str()), base);
-    }
-  }
-  globfree(&matches);
-
-  std::sort(frames.begin(), frames.end());
-
-  std::ofstream pvd(path + name + ".pvd");
-  if (!pvd) return;
-  pvd << "<?xml version=\"1.0\"?>\n"
-         "<VTKFile type=\"Collection\" version=\"0.1\" byte_order=\"LittleEndian\">\n"
-         "  <Collection>\n";
-  char timestep[64];
-  for (const auto& frame : frames) {
-    std::snprintf(timestep, sizeof(timestep), "%.6g", double(frame.first));
-    pvd << "    <DataSet timestep=\"" << timestep
-        << "\" group=\"\" part=\"0\" file=\"" << frame.second << "\"/>\n";
-  }
-  pvd << "  </Collection>\n"
-         "</VTKFile>\n";
-}
-
-}  // namespace
+#include <vtkCellType.h>
 
 void delta::core::io::writeGeometryToVTKVTK(
     std::string                                     path,
     int                                             step,
     std::vector<delta::core::data::ParticleRecord>& geometries) {
 
-  std::string filename = path + "geometry_" + std::to_string(step) + ".vtu";
+  MeshBuffer buffer;
+  buffer.pointFields.push_back({"velocity", 3, false, {}});
+  buffer.pointFields.push_back({"radius", 1, false, {}});
+  buffer.pointFields.push_back({"epsilon", 1, false, {}});
+  buffer.cellFields.push_back({"global_id", 1, true, {}});
+  buffer.cellFields.push_back({"material", 1, true, {}});
 
-  auto unstructuredGrid = vtkSmartPointer<vtkUnstructuredGrid>::New();
+  std::vector<double>& velocity = buffer.pointFields[0].data;
+  std::vector<double>& radius = buffer.pointFields[1].data;
+  std::vector<double>& epsilon = buffer.pointFields[2].data;
+  std::vector<double>& globalId = buffer.cellFields[0].data;
+  std::vector<double>& material = buffer.cellFields[1].data;
 
-  //Per-vertex fields. Kept on points so ParaView glyphs keep working.
-  auto direction = vtkSmartPointer<vtkDoubleArray>::New();
-  direction->SetNumberOfComponents(3);
-  direction->SetName("velocity");
-
-  auto radius = vtkSmartPointer<vtkDoubleArray>::New();
-  radius->SetNumberOfComponents(1);
-  radius->SetName("radius");
-
-  auto epsilon = vtkSmartPointer<vtkDoubleArray>::New();
-  epsilon->SetNumberOfComponents(1);
-  epsilon->SetName("epsilon");
-
-  //Per-triangle fields.
-  auto globalId = vtkSmartPointer<vtkIntArray>::New();
-  globalId->SetNumberOfComponents(1);
-  globalId->SetName("global_id");
-
-  auto material = vtkSmartPointer<vtkIntArray>::New();
-  material->SetNumberOfComponents(1);
-  material->SetName("material");
-
-  auto points = vtkSmartPointer<vtkPoints>::New();
-
-  vtkIdType offset = 0;
+  long long offset = 0;
 
   for (auto& geometry : geometries) {
     const int   numberOfTriangles = geometry.getNumberOfTriangles();
-    const iREAL rad               = geometry.getRad();
-    const iREAL eps               = geometry.getEpsilon();
+    const iREAL rad = geometry.getRad();
+    const iREAL eps = geometry.getEpsilon();
 
     auto addVertex = [&](iREAL x, iREAL y, iREAL z) {
-      points->InsertNextPoint(x, y, z);
-      direction->InsertNextTuple3(geometry._linearVelocity[0],
-                                  geometry._linearVelocity[1],
-                                  geometry._linearVelocity[2]);
-      radius->InsertNextTuple1(rad);
-      epsilon->InsertNextTuple1(eps);
+      buffer.points.push_back({{x, y, z}});
+      velocity.push_back(geometry._linearVelocity[0]);
+      velocity.push_back(geometry._linearVelocity[1]);
+      velocity.push_back(geometry._linearVelocity[2]);
+      radius.push_back(rad);
+      epsilon.push_back(eps);
     };
 
     if (numberOfTriangles == 0) {
@@ -124,198 +60,70 @@ void delta::core::io::writeGeometryToVTKVTK(
                 geometry._zCoordinates[v]);
     }
 
-    vtkIdType triangle[3];
     for (int t = 0; t < numberOfTriangles; ++t) {
-      triangle[0] = offset + t * 3 + 0;
-      triangle[1] = offset + t * 3 + 1;
-      triangle[2] = offset + t * 3 + 2;
-      unstructuredGrid->InsertNextCell(VTK_TRIANGLE, 3, triangle);
-      globalId->InsertNextTuple1(geometry.getGlobalParticleID());
-      material->InsertNextTuple1(int(geometry.getMaterial()));
+      buffer.cells.push_back({VTK_TRIANGLE,
+                              {offset + t * 3 + 0,
+                               offset + t * 3 + 1,
+                               offset + t * 3 + 2}});
+      globalId.push_back(geometry.getGlobalParticleID());
+      material.push_back(int(geometry.getMaterial()));
     }
 
     offset += numberOfVertices;
   }
 
-  unstructuredGrid->SetPoints(points);
-  unstructuredGrid->GetPointData()->AddArray(direction);
-  unstructuredGrid->GetPointData()->AddArray(radius);
-  unstructuredGrid->GetPointData()->AddArray(epsilon);
-  unstructuredGrid->GetPointData()->SetActiveScalars("radius");
-  unstructuredGrid->GetCellData()->AddArray(globalId);
-  unstructuredGrid->GetCellData()->AddArray(material);
-
-  auto writer = vtkSmartPointer<vtkXMLUnstructuredGridWriter>::New();
-  writer->SetFileName(filename.c_str());
-  writer->SetInputData(unstructuredGrid);
-  writer->Write();
-
-  writePVD(path, "geometry");
+  buffer.activeScalars = "radius";
+  writeVTU(path, "geometry", step, buffer);
 }
 
 void delta::core::io::writeGridGeometryToVTKVTK(
-    std::string 					path,
-    int 							step,
-    std::vector<std::array<iREAL, 6>> boundary)
+    std::string 						path,
+    int 								step,
+    std::vector<std::array<iREAL, 6>> 	boundary)
 {
-    std::string filename = path + "grid_" + std::to_string(step) + ".vtu";
+  MeshBuffer buffer;
+  buffer.pointFields.push_back({"vector123", 3, false, {}});
+  std::vector<double>& normals = buffer.pointFields[0].data;
 
-    vtkSmartPointer<vtkUnstructuredGrid> unstructuredGrid = vtkSmartPointer<vtkUnstructuredGrid>::New();
+  // The twelve edges of a box, in the point order pushed below.
+  static const int edges[12][2] = {
+      {0, 1}, {0, 3}, {0, 6}, {1, 2}, {1, 7}, {2, 3},
+      {3, 5}, {6, 7}, {6, 5}, {4, 2}, {4, 7}, {4, 5}};
 
-    auto normals = vtkSmartPointer<vtkDoubleArray>::New();
-    normals->SetNumberOfComponents(3);
-    normals->SetName("vector123");
-    double xnorm[3] = {-1., 0., 0.};
+  for (const auto& value : boundary) {
+    const iREAL lo[3] = {value[0], value[1], value[2]};
+    const iREAL hi[3] = {value[3], value[4], value[5]};
 
-    // Points accumulate across boxes and each cell indexes its own box's eight
-    // points; recreating vtkPoints per box would collapse every box onto the last.
-    vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
-    vtkIdType offset = 0;
+    const double corners[8][3] = {
+        {lo[0], lo[1], lo[2]},  //0: A
+        {lo[0], hi[1], lo[2]},  //1: B
+        {lo[0], hi[1], hi[2]},  //2: E
+        {lo[0], lo[1], hi[2]},  //3: F
+        {hi[0], hi[1], hi[2]},  //4: H
+        {hi[0], lo[1], hi[2]},  //5: G
+        {hi[0], lo[1], lo[2]},  //6: D
+        {hi[0], hi[1], lo[2]}}; //7: C
 
-    for(const auto& value: boundary) {
-        iREAL lo[3], hi[3];
+    // Points, and therefore cell ids, accumulate across boxes; each box's ids
+    // are offset by the running point count.
+    const long long base = static_cast<long long>(buffer.points.size());
 
-        lo[0] = value[0]; // lower corner
-        lo[1] = value[1]; // lower corner
-        lo[2] = value[2]; // lower corner
-
-        hi[0] = value[3]; // upper corner
-        hi[1] = value[4]; // upper corner
-        hi[2] = value[5]; // upper corner
-
-        points->InsertNextPoint(lo[0], lo[1], lo[2]); //0: A
-        points->InsertNextPoint(lo[0], hi[1], lo[2]); //1: B
-        points->InsertNextPoint(lo[0], hi[1], hi[2]); //2: E
-        points->InsertNextPoint(lo[0], lo[1], hi[2]); //3: F
-
-        points->InsertNextPoint(hi[0], hi[1], hi[2]); //4: H
-        points->InsertNextPoint(hi[0], lo[1], hi[2]); //5: G
-        points->InsertNextPoint(hi[0], lo[1], lo[2]); //6: D
-        points->InsertNextPoint(hi[0], hi[1], lo[2]); //7: C
-
-        normals->InsertNextTuple(xnorm);
-        normals->InsertNextTuple(xnorm);
-        normals->InsertNextTuple(xnorm);
-        normals->InsertNextTuple(xnorm);
-
-        normals->InsertNextTuple(xnorm);
-        normals->InsertNextTuple(xnorm);
-        normals->InsertNextTuple(xnorm);
-        normals->InsertNextTuple(xnorm);
-
-
-        //AB | 0->1
-        //AD | 0->3
-        //AG | 0->6
-
-        //EC | 4->2
-        //EH | 4->7
-        //EF | 4->5
-
-        //BC | 1->C
-        //BH | 1->H
-        //CD | 2->3
-        //DF | 3->5
-        //GH | 6->7
-        //GF | 6->5
-
-        const vtkIdType lA = offset + 0;
-        const vtkIdType lB = offset + 1;
-        const vtkIdType lE = offset + 2;
-        const vtkIdType lF = offset + 3;
-        const vtkIdType lH = offset + 4;
-        const vtkIdType lG = offset + 5;
-        const vtkIdType lD = offset + 6;
-        const vtkIdType lC = offset + 7;
-
-        vtkSmartPointer<vtkLine> line = vtkSmartPointer<vtkLine>::New();
-        line->GetPointIds()->SetId(0, lA);
-        line->GetPointIds()->SetId(1, lB);
-        unstructuredGrid->SetPoints(points);
-        unstructuredGrid->InsertNextCell(VTK_LINE, line->GetPointIds());
-
-        line = vtkSmartPointer<vtkLine>::New();
-        line->GetPointIds()->SetId(0, lA);
-        line->GetPointIds()->SetId(1, lF);
-        unstructuredGrid->SetPoints(points);
-        unstructuredGrid->InsertNextCell(VTK_LINE, line->GetPointIds());
-
-        line = vtkSmartPointer<vtkLine>::New();
-        line->GetPointIds()->SetId(0, lA);
-        line->GetPointIds()->SetId(1, lD);
-        unstructuredGrid->SetPoints(points);
-        unstructuredGrid->InsertNextCell(VTK_LINE, line->GetPointIds());
-
-        line = vtkSmartPointer<vtkLine>::New();
-        line->GetPointIds()->SetId(0, lB);
-        line->GetPointIds()->SetId(1, lE);
-        unstructuredGrid->SetPoints(points);
-        unstructuredGrid->InsertNextCell(VTK_LINE, line->GetPointIds());
-
-        line = vtkSmartPointer<vtkLine>::New();
-        line->GetPointIds()->SetId(0, lB);
-        line->GetPointIds()->SetId(1, lC);
-        unstructuredGrid->SetPoints(points);
-        unstructuredGrid->InsertNextCell(VTK_LINE, line->GetPointIds());
-
-        line = vtkSmartPointer<vtkLine>::New();
-        line->GetPointIds()->SetId(0, lE);
-        line->GetPointIds()->SetId(1, lF);
-        unstructuredGrid->SetPoints(points);
-        unstructuredGrid->InsertNextCell(VTK_LINE, line->GetPointIds());
-
-        line = vtkSmartPointer<vtkLine>::New();
-        line->GetPointIds()->SetId(0, lF);
-        line->GetPointIds()->SetId(1, lG);
-        unstructuredGrid->SetPoints(points);
-        unstructuredGrid->InsertNextCell(VTK_LINE, line->GetPointIds());
-
-        line = vtkSmartPointer<vtkLine>::New();
-        line->GetPointIds()->SetId(0, lD);
-        line->GetPointIds()->SetId(1, lC);
-        unstructuredGrid->SetPoints(points);
-        unstructuredGrid->InsertNextCell(VTK_LINE, line->GetPointIds());
-
-        line = vtkSmartPointer<vtkLine>::New();
-        line->GetPointIds()->SetId(0, lD);
-        line->GetPointIds()->SetId(1, lG);
-        unstructuredGrid->SetPoints(points);
-        unstructuredGrid->InsertNextCell(VTK_LINE, line->GetPointIds());
-
-        line = vtkSmartPointer<vtkLine>::New();
-        line->GetPointIds()->SetId(0, lH);
-        line->GetPointIds()->SetId(1, lE);
-        unstructuredGrid->SetPoints(points);
-        unstructuredGrid->InsertNextCell(VTK_LINE, line->GetPointIds());
-
-        line = vtkSmartPointer<vtkLine>::New();
-        line->GetPointIds()->SetId(0, lH);
-        line->GetPointIds()->SetId(1, lC);
-        unstructuredGrid->SetPoints(points);
-        unstructuredGrid->InsertNextCell(VTK_LINE, line->GetPointIds());
-
-        line = vtkSmartPointer<vtkLine>::New();
-        line->GetPointIds()->SetId(0, lH);
-        line->GetPointIds()->SetId(1, lG);
-        unstructuredGrid->SetPoints(points);
-        unstructuredGrid->InsertNextCell(VTK_LINE, line->GetPointIds());
-
-        offset += 8;
+    for (int c = 0; c < 8; ++c) {
+      buffer.points.push_back({{corners[c][0], corners[c][1], corners[c][2]}});
+      normals.push_back(-1.0);
+      normals.push_back(0.0);
+      normals.push_back(0.0);
     }
 
-    unstructuredGrid->GetPointData()->SetVectors(normals);
+    for (int e = 0; e < 12; ++e)
+      buffer.cells.push_back({VTK_LINE, {base + edges[e][0], base + edges[e][1]}});
+  }
 
-
-    vtkSmartPointer<vtkXMLUnstructuredGridWriter> writer = vtkSmartPointer<vtkXMLUnstructuredGridWriter>::New();
-    writer->SetFileName(filename.c_str());
-    writer->SetInputData(unstructuredGrid);
-    writer->Write();
-
-    writePVD(path, "grid");
+  buffer.activeVectors = "vector123";
+  writeVTU(path, "grid", step, buffer);
 }
 
 void delta::core::io::writeScenarioSpecification(std::string fileName)
 {
 
 }
-
