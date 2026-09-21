@@ -56,7 +56,6 @@ delta::core::Delta::Delta()
 
   //printf("mesh:%i\n", meshes[0].getTriangleFaces().size());
   std::array<iREAL, 6> boundary = {0.0, 0.0, 0.0, 1.0, 1.0, 1.0};
-  //delta::core::io::writeGeometryToVTK(0, boundary, objects);
   */
 }
 

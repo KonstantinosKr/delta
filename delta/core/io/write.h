@@ -56,16 +56,6 @@ namespace delta {
 		int 								step,
 		std::vector<std::array<iREAL, 6>> 	boundary);
 
-	void writeGeometryToVTK(
-		std::string										path,
-		int 											step,
-		std::vector<delta::core::data::ParticleRecord>& geometries);
-
-	void writeGridGeometryToVTK(
-		std::string							path,
-		int 								step,
-		std::vector<std::array<iREAL, 6>> 	boundary);
-
 	  void writeScenarioSpecification(std::string 	fileName);
 	}
   }
