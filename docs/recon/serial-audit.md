@@ -10,8 +10,9 @@
 > The hopper header now prints `# Triangles : 208` (was 0) and the per-step log
 > prints real contact counts (was `cpt:0`); resolved pair counts are unchanged.
 > L1 changed baseline trajectories (the intended repair), so the AMReX parity
-> tests were re-run against the fixed kernels: serial 5/5, AMReX 7/7. L9
-> (`OctTree` leak) and L11 (dead code) remain.
+> tests were re-run against the fixed kernels: serial 5/5, AMReX 7/7. The legacy
+> `zoltan/`, `multiscale/`, `meta/` and `setup/` trees named below were deleted —
+> they were never in the build. L9 (`OctTree` leak) and L11 (dead code) remain.
 
 ## Evidence gathered (executed, not inferred)
 

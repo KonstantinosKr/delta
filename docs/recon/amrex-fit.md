@@ -1,6 +1,10 @@
 # Can delta's parallel layer move onto AMReX? Fit assessment, mapping, deletions, first PR
 
 Recon only. Read-only: no repo file was modified, no commit made. Branch `amrex-integration`, HEAD `5408cff2`.
+
+> **Status update.** The legacy trees discussed below (`zoltan/`, `multiscale/`,
+> `meta/`, `setup/` and the Eclipse project files) have since been deleted — they
+> were never in the build. References to them here are historical.
 Every claim is grounded in a delta source line, an AMReX 26.09 header line, or one of three probes that were compiled and run.
 Probe sources (outside the repo): `/tmp/mirror_probe.cpp`, `/tmp/mesh_probe.cpp`, `/tmp/npcprobe/`.
 

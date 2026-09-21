@@ -6,6 +6,8 @@ Scope: integrate the `delta/` DEM tree with AMReX. `zoltan/` and `multiscale/` a
 > **Status update (branch `amrex-integration`).** Phase 0 is done: serial
 > physics, a uniform-cell broad phase, real `.mbfcp` hopper input (mass, gravity,
 > obstacles) and a third-law regression guard. Commits `aac362b3`, `5408cff2`.
+> The legacy `zoltan/` and `multiscale/` trees named below have since been deleted
+> (they were never in the build); references to them here are historical.
 > Two read-only recon reports now supersede parts of this document:
 >
 > - `docs/recon/serial-audit.md` - every serial/global assumption that blocks
