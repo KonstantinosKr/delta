@@ -28,8 +28,11 @@
 #include <cstdarg>
 #include <cstdio>
 #include <cstdlib>
+#include <fstream>
+#include <iterator>
 #include <random>
 #include <set>
+#include <string>
 #include <utility>
 #include <vector>
 
@@ -680,6 +683,31 @@ int main(int argc, char** argv)
       say("     undersized engine resolved %d pairs vs brute-force %d (dropped %d)\n",
           (int)got.size(), (int)oracle.size(), (int)(oracle.size() - got.size()));
       CHECK(got.size() < oracle.size());
+    }
+
+    // ---- 6. AMReX decomposition -> VTK -----------------------------------
+    {
+      std::vector<ParticleRecord> state = initial;
+      DemAmrexEngine engine(state, manyBoxes());
+      const std::string dir = "/tmp/delta_amrex_grid_vtk/";
+      std::system(("mkdir -p " + dir).c_str());
+      engine.writeToVTK(dir, 0);
+
+      if (amrex::ParallelDescriptor::IOProcessor()) {
+        const int nboxes = (int)engine.container().ParticleBoxArray(0).size();
+        std::ifstream in(dir + "grid_0.vtu");
+        CHECK(in.good());
+        std::string body((std::istreambuf_iterator<char>(in)),
+                         std::istreambuf_iterator<char>());
+        char points[64];
+        std::snprintf(points, sizeof(points), "NumberOfPoints=\"%d\"", nboxes * 8);
+        CHECK(body.find("type=\"UnstructuredGrid\"") != std::string::npos);
+        CHECK(body.find(points) != std::string::npos);
+        std::ifstream pvd(dir + "grid.pvd");
+        CHECK(pvd.good());
+        say("  6. AMReX decomposition -> VTK: %d boxes, %d points in grid_0.vtu (+ grid.pvd)\n",
+            nboxes, nboxes * 8);
+      }
     }
 
     say("OK dem_phase1_amrex_test: all checks passed\n");

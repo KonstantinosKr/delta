@@ -161,6 +161,12 @@ public:
   const DemParticleContainer& container() const { return *_pc; }
   const std::vector<Record>& obstacles() const { return _obstacles; }
 
+  /* Writes this engine's AMReX domain-decomposition boxes (the grid the
+   * particles actually live on) as ParaView XML: <path>grid_<step>.vtu plus a
+   * grid.pvd time series. The writer is rank-serial, so only the I/O rank
+   * writes; the call itself is safe from every rank. */
+  void writeToVTK(const std::string& path, int step) const;
+
 private:
   void buildGrid(const std::vector<const Record*>& freeParticles);
   void seedParticles(const std::vector<const Record*>& freeParticles);

@@ -36,6 +36,7 @@
 #include <AMReX_MFIter.H>
 #include <AMReX_ParallelDescriptor.H>
 
+#include "../io/write.h"
 #include "../../contact/detection/sphere.h"
 #include "../../contact/forces/forces.h"
 #include "../../dynamics/dynamics.h"
@@ -735,4 +736,27 @@ bool delta::core::parallel::DemAmrexEngine::findParticle(int globalId, int& lev,
     }
   }
   return false;
+}
+
+void delta::core::parallel::DemAmrexEngine::writeToVTK(const std::string& path, int step) const
+{
+  /* Same physical-coordinate mapping as buildGrid: index i spans
+   * [ProbLo + i*dx, ProbLo + (i+1)*dx). The BoxArray is replicated, so the I/O
+   * rank alone reconstructs the whole decomposition. */
+  if (!amrex::ParallelDescriptor::IOProcessor()) {return;}
+
+  std::vector<std::array<iREAL, 6> > boxes;
+  boxes.reserve(static_cast<std::size_t>(_ba.size()));
+  for (int i = 0; i < static_cast<int>(_ba.size()); ++i)
+  {
+    const amrex::Box& b = _ba[i];
+    std::array<iREAL, 6> v;
+    for (int d = 0; d < 3; ++d)
+    {
+      v[d]     = _geom.ProbLo(d) +  b.smallEnd(d)        * _geom.CellSize(d);
+      v[3 + d] = _geom.ProbLo(d) + (b.bigEnd(d) + 1)     * _geom.CellSize(d);
+    }
+    boxes.push_back(v);
+  }
+  delta::core::io::writeGridGeometryToVTKVTK(path, step, boxes);
 }

@@ -24,8 +24,8 @@ namespace {
  * currently on disk load as one animated time series instead of a single
  * frame. Stateless: it rescans the directory on every call.
  */
-void writeGeometryPVD(const std::string& path) {
-  const std::string prefix = "geometry_";
+void writePVD(const std::string& path, const std::string& name) {
+  const std::string prefix = name + "_";
   const std::string suffix = ".vtu";
 
   std::vector<std::pair<int, std::string>> frames;
@@ -44,7 +44,7 @@ void writeGeometryPVD(const std::string& path) {
 
   std::sort(frames.begin(), frames.end());
 
-  std::ofstream pvd(path + "geometry.pvd");
+  std::ofstream pvd(path + name + ".pvd");
   if (!pvd) return;
   pvd << "<?xml version=\"1.0\"?>\n"
          "<VTKFile type=\"Collection\" version=\"0.1\" byte_order=\"LittleEndian\">\n"
@@ -150,7 +150,7 @@ void delta::core::io::writeGeometryToVTKVTK(
   writer->SetInputData(unstructuredGrid);
   writer->Write();
 
-  writeGeometryPVD(path);
+  writePVD(path, "geometry");
 }
 
 void delta::core::io::writeGridGeometryToVTKVTK(
@@ -167,9 +167,12 @@ void delta::core::io::writeGridGeometryToVTKVTK(
     normals->SetName("vector123");
     double xnorm[3] = {-1., 0., 0.};
 
-    for(const auto& value: boundary) {
-        vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
+    // Points accumulate across boxes and each cell indexes its own box's eight
+    // points; recreating vtkPoints per box would collapse every box onto the last.
+    vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
+    vtkIdType offset = 0;
 
+    for(const auto& value: boundary) {
         iREAL lo[3], hi[3];
 
         lo[0] = value[0]; // lower corner
@@ -216,14 +219,14 @@ void delta::core::io::writeGridGeometryToVTKVTK(
         //GH | 6->7
         //GF | 6->5
 
-        int lA = 0;
-        int lB = 1;
-        int lE = 2;
-        int lF = 3;
-        int lH = 4;
-        int lG = 5;
-        int lD = 6;
-        int lC = 7;
+        const vtkIdType lA = offset + 0;
+        const vtkIdType lB = offset + 1;
+        const vtkIdType lE = offset + 2;
+        const vtkIdType lF = offset + 3;
+        const vtkIdType lH = offset + 4;
+        const vtkIdType lG = offset + 5;
+        const vtkIdType lD = offset + 6;
+        const vtkIdType lC = offset + 7;
 
         vtkSmartPointer<vtkLine> line = vtkSmartPointer<vtkLine>::New();
         line->GetPointIds()->SetId(0, lA);
@@ -296,6 +299,8 @@ void delta::core::io::writeGridGeometryToVTKVTK(
         line->GetPointIds()->SetId(1, lG);
         unstructuredGrid->SetPoints(points);
         unstructuredGrid->InsertNextCell(VTK_LINE, line->GetPointIds());
+
+        offset += 8;
     }
 
     unstructuredGrid->GetPointData()->SetVectors(normals);
@@ -306,6 +311,7 @@ void delta::core::io::writeGridGeometryToVTKVTK(
     writer->SetInputData(unstructuredGrid);
     writer->Write();
 
+    writePVD(path, "grid");
 }
 
 void delta::core::io::writeGeometryToVTK(
