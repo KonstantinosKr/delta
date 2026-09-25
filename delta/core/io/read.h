@@ -29,6 +29,18 @@ namespace delta {
 	namespace core {
 	  namespace io {
 
+	  	  //Every scenario asset lives in one directory pinned at configure time
+	  	  //(DELTA_INPUT_DIR), so the binaries are runnable from any cwd instead of
+	  	  //only from build/. The literal is the fallback for hand-rolled builds.
+	  	  #ifndef DELTA_INPUT_DIR
+	  	  #define DELTA_INPUT_DIR "../input"
+	  	  #endif
+
+	  	  inline std::string inputPath(std::string fileName)
+	  	  {
+	  	    return std::string(DELTA_INPUT_DIR) + "/" + fileName;
+	  	  }
+
 	  	  void readVTKLegacy();
 
 	  	  void parseModelGridSchematics(

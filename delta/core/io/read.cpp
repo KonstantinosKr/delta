@@ -5,6 +5,7 @@
 
 #include "read.h"
 #include <sstream>
+#include <stdexcept>
 #include <assimp/Importer.hpp>      // C++ importer interface
 #include <assimp/Exporter.hpp>      // C++ importer interface
 #include <assimp/scene.h>           // Output data structure
@@ -160,10 +161,12 @@ std::vector<delta::geometry::mesh::Mesh> delta::core::io::readGeometry(std::stri
         aiProcess_JoinIdenticalVertices  |
         aiProcess_SortByPType);
 
-  bool n = scene->HasMeshes();
-  int nn = scene->mNumMeshes;
+  if(scene == nullptr || scene->mNumMeshes == 0)
+  {
+    throw std::runtime_error("readGeometry: cannot load '" + fileName + "': " + importer.GetErrorString());
+  }
 
-  printf("Importing %i Meshes.\n", nn);
+  printf("Importing %i Meshes.\n", scene->mNumMeshes);
 
   std::vector<delta::geometry::mesh::Mesh> meshVector;
 
@@ -244,10 +247,13 @@ delta::geometry::mesh::Mesh* delta::core::io::readPartGeometry(std::string fileN
         aiProcess_JoinIdenticalVertices  |
         aiProcess_SortByPType);
 
-  bool n = scene->HasMeshes();
-  int nn = scene->mNumMeshes;
-
-  //printf("Importing %i Meshes.\n", nn);
+  //A missing or unreadable file leaves `scene` null with the reason in the
+  //importer's error string; dereferencing it is an instant segfault, so fail
+  //loudly with the path instead.
+  if(scene == nullptr || scene->mNumMeshes == 0)
+  {
+    throw std::runtime_error("readPartGeometry: cannot load '" + fileName + "': " + importer.GetErrorString());
+  }
 
   std::vector<std::array<int, 3>> 	triangleFaces;
   std::vector<std::array<iREAL, 3>> 	uniqueVertices;

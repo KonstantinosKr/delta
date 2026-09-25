@@ -31,6 +31,9 @@ endif()
 
 add_library(delta_lib STATIC ${DELTA_SOURCES})
 target_compile_definitions(delta_lib PUBLIC iREAL=double byteAlignment=32)
+#Scenario assets (hopper.mbfcp, *.STL) sit next to the library sources; pin the
+#path so the binaries run from any cwd instead of only from build/.
+target_compile_definitions(delta_lib PUBLIC DELTA_INPUT_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../input")
 if(NOT DELTA_USE_AMREX)
   # Nothing in delta/ references Dim3 any more, and the macro mangles
   # amrex::Dim3 in the AMReX headers, so it is serial-build only.

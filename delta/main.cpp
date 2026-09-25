@@ -66,7 +66,7 @@ int main(int argc, const char *argv[]) {
 	iREAL epsilon = 0.01;
 	std::array<iREAL, 3> gravity = {0.0, 0.0, 0.0};
 
-	const std::string hopperFile = "../input/hopper.mbfcp";
+	const std::string hopperFile = delta::core::io::inputPath("hopper.mbfcp");
 	std::ifstream hopper(hopperFile);
 	if(hopper.good())
 	{

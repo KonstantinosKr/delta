@@ -10,6 +10,7 @@
  *   L6  World bbox written to globalMin / boundary taken from the last body
  *   L7  Object inverse inertia stored as the plain inertia; max bbox = min vertex
  *   L8  Object::getNumberOfTriangles() null-derefs a meshless body
+ *   I1  readPartGeometry null-derefs Assimp's scene for a missing mesh file
  *
  * Run: ctest --test-dir build  (or ./build/delta_regression_test)
  * CHECK() rather than assert() because the default build is Release (-DNDEBUG).
@@ -26,6 +27,7 @@
 #include "core/Engine.h"
 #include "core/data/Meta.h"
 #include "core/data/Structure.h"
+#include "core/io/read.h"
 #include "dynamics/dynamics.h"
 #include "geometry/material.h"
 #include "world/World.h"
@@ -178,6 +180,19 @@ int main() {
     CHECK(close(det, 1.0, 1e-12));
   }
 
-  std::printf("regression_test OK: L1/L2/L3/L4/L5/L6/L7/L8 fixes verified\n");
+  // ---- I1: a missing mesh file is a diagnosable error, not a segfault ----
+  {
+    bool threw = false;
+    try {
+      delta::core::io::readPartGeometry(
+          delta::core::io::inputPath("no-such-mesh.stl"));
+    } catch (const std::runtime_error&) {
+      threw = true;
+    }
+    CHECK(threw);
+  }
+
+  std::printf(
+      "regression_test OK: L1/L2/L3/L4/L5/L6/L7/L8/I1 fixes verified\n");
   return 0;
 }
