@@ -349,30 +349,99 @@ CONSTANT:	0
 CONSTANT:	-10
 */
 
-std::array<iREAL, 3> delta::core::io::readmbfcp(std::string 									filename,
-								std::vector<delta::world::structure::Object>& 	objects,
-								iREAL 											epsilon) {
-    std::ifstream file(filename);
-    if (file.is_open()) {
-        std::cout << "Opened: " << filename << std::endl;
-    }
-    
-    int idCounter = 0;
-    int bodies = 0;
+namespace {
 
-    // BULK_MATERIALS/GRAVITY are parsed before the BODIES paragraphs, so both
-    // values have to outlive the material block: density turns a sphere radius
-    // into a mass, gravity is returned to the caller for the simulation meta.
+//The file pads numbers with tabs and variable-width spaces
+//("CENTER:\t0.02  0.06  0.06"), so a value can only be read by skipping the key
+//and letting the stream tokenize. Positional substr() misreads any other
+//spacing silently.
+std::string valueAfterColon(const std::string& line)
+{
+  std::string::size_type colon = line.find(':');
+  return colon == std::string::npos ? std::string() : line.substr(colon + 1);
+}
+
+std::vector<iREAL> numbersAfterColon(const std::string& line, int count)
+{
+  std::istringstream stream(valueAfterColon(line));
+  std::vector<iREAL> values(count);
+  for(int i=0; i<count; i++)
+  {
+    if(!(stream >> values[i]))
+    {
+      throw std::logic_error("readmbfcp: malformed line '" + line + "'");
+    }
+  }
+  return values;
+}
+
+iREAL numberAfterColon(const std::string& line)
+{
+  return numbersAfterColon(line, 1)[0];
+}
+
+bool startsWith(const std::string& line, const std::string& prefix)
+{
+  return line.rfind(prefix, 0) == 0;
+}
+
+/*
+ * Every body paragraph ends with VELOCITY (linear xyz then angular xyz) and
+ * FORCES. Both were read past and dropped, so every particle started at rest
+ * no matter what the file said.
+ */
+std::array<std::array<iREAL, 3>, 2> readBodyInitialState(std::ifstream& file, int id)
+{
+  std::string line;
+
+  getline(file, line);
+  std::vector<iREAL> velocity = numbersAfterColon(line, 6);
+
+  getline(file, line);
+  int forces = static_cast<int>(numberAfterColon(line));
+  //Every other single-integer key here is a count (BODIES, SPHERES, CONVEXES,
+  //FACES...), so FORCES is read as one too. Its record grammar is not
+  //documented anywhere in the tree, so refuse rather than guess at it.
+  if(forces > 0)
+  {
+    throw std::logic_error("readmbfcp: body " + std::to_string(id) + " declares " +
+                           std::to_string(forces) +
+                           " FORCES records, whose grammar is not implemented");
+  }
+
+  return {{ {velocity[0], velocity[1], velocity[2]},
+            {velocity[3], velocity[4], velocity[5]} }};
+}
+
+} // namespace
+
+delta::core::io::Scenario delta::core::io::readmbfcp(
+    std::string                                     filename,
+    std::vector<delta::world::structure::Object>&   objects,
+    iREAL                                           epsilon)
+{
+    std::ifstream file(filename);
+    if (!file.is_open())
+    {
+        throw std::runtime_error("readmbfcp: cannot open '" + filename + "'");
+    }
+    std::cout << "Opened: " << filename << std::endl;
+
+    Scenario scenario;
+
+    //BULK_MATERIALS/GRAVITY are parsed before the BODIES paragraphs, so both
+    //values have to outlive the material block: density turns a sphere radius
+    //into a mass, the rest is reported back to the caller.
     iREAL density = 0.0;
-    std::array<iREAL, 3> gravity = {0.0, 0.0, 0.0};
+    int surfaceMaterials = 0;
 
     //read line by line
     for (std::string line; getline(file, line);)
     {
-    	//skip empty lines
-    	if (line.size() == 0)
+    	//skip empty lines, without echoing one per line: the hopper file has one
+    	//between every body.
+        if (line.empty())
         {
-            std::cout << std::endl;
             continue;
         }
 
@@ -383,73 +452,67 @@ std::array<iREAL, 3> delta::core::io::readmbfcp(std::string 									filename,
         SURF1:	ANY
         SURF2:	ANY
         MODEL:	SPRING_DASHPOT
-
         FRICTION:	0
         COHESION:	0
         SPRING:	1e+06
         DASHPOT:	-1
-        */
-        //std::meshVector	
-        if (line.find("SURFACE_MATERIALS:") != std::string::npos) {
-            int nmaterials = std::stoi(line.substr(18));
-            getline(file, line);
-            std::string surf1 = line.substr(7);
-            getline(file, line);
-            std::string surf2 = line.substr(7);
-            getline(file, line);
-            std::string model = line.substr(7);
-            getline(file, line);
-            iREAL friction = std::stof(line.substr(10));
-            getline(file, line);
-            iREAL cohesion = std::stoi(line.substr(10));
-            getline(file, line);
-            iREAL spring = std::stof(line.substr(8));
-            getline(file, line);
-            iREAL dashpot = std::stof(line.substr(8));
-            //////////////////////////////////////////
-            
-            /*
-            BULK_MATERIALS:	1
-            LABEL:	BULK_MATERIAL_0
-            MODEL:	KIRCHHOFF
-            YOUNG:	1e+09
-            POISSON:	0.25
-            DENSITY:	1000
 
-            GRAVITY:
-            CONSTANT:	0
-            CONSTANT:	0
-            CONSTANT:	-10
-            */
-            //std::cout << line;
+        BULK_MATERIALS:	1
+        LABEL:	BULK_MATERIAL_0
+        MODEL:	KIRCHHOFF
+        YOUNG:	1e+09
+        POISSON:	0.25
+        DENSITY:	1000
+
+        GRAVITY:
+        CONSTANT:	0
+        CONSTANT:	0
+        CONSTANT:	-10
+        */
+        if (line.find("SURFACE_MATERIALS:") != std::string::npos) {
+            surfaceMaterials = static_cast<int>(numberAfterColon(line));
+            getline(file, line); //SURF1
+            getline(file, line); //SURF2
+            getline(file, line); //MODEL
             getline(file, line);
+            scenario.surface.friction = numberAfterColon(line);
             getline(file, line);
-            int bulk_materials = std::stoi(line.substr(15));
+            scenario.surface.cohesion = numberAfterColon(line);
             getline(file, line);
-            std::string bulk_materials_label = line.substr(7);
+            scenario.surface.spring = numberAfterColon(line);
             getline(file, line);
-            std::string mat_model = line.substr(7);
+            scenario.surface.dashpot = numberAfterColon(line);
+            //////////////////////////////////////////
+
+            getline(file, line); //blank
+            getline(file, line); //BULK_MATERIALS:
             getline(file, line);
-            iREAL young = std::stof(line.substr(7));
+            scenario.bulk.label = valueAfterColon(line);
             getline(file, line);
-            iREAL poisson = std::stof(line.substr(9));
+            scenario.bulk.model = valueAfterColon(line);
             getline(file, line);
-            density = std::stof(line.substr(9));
+            scenario.bulk.young = numberAfterColon(line);
             getline(file, line);
+            scenario.bulk.poisson = numberAfterColon(line);
             getline(file, line);
+            density = numberAfterColon(line);
+            scenario.bulk.density = density;
+
+            getline(file, line); //blank
+            getline(file, line); //GRAVITY:
             getline(file, line);
-            gravity[0] = std::stof(line.substr(10));
+            scenario.gravity[0] = numberAfterColon(line);
             getline(file, line);
-            gravity[1] = std::stof(line.substr(10));
+            scenario.gravity[1] = numberAfterColon(line);
             getline(file, line);
-            gravity[2] = std::stof(line.substr(10));
+            scenario.gravity[2] = numberAfterColon(line);
             //////////////////////////////////////
         }
-        
+
         //extract number of bodies
         if (line.find("BODIES:") != std::string::npos) {
-            bodies = std::stoi(line.substr(8));
-            std::cout << "# bodies: " << bodies << std::endl;
+            scenario.bodyCount = static_cast<int>(numberAfterColon(line));
+            std::cout << "# bodies: " << scenario.bodyCount << std::endl;
         }
 
         /*
@@ -458,7 +521,7 @@ std::array<iREAL, 3> delta::core::io::readmbfcp(std::string 									filename,
         KINEMATICS:	OBSTACLE
         BULK_MATERIAL:	BULK_MATERIAL_0
         SHAPES:	1
-        
+
         CONVEXES:	1
         VERTEXES:	6
         1  -0.1  0
@@ -484,60 +547,48 @@ std::array<iREAL, 3> delta::core::io::readmbfcp(std::string 									filename,
         KINEMATICS:	RIGID
         BULK_MATERIAL:	BULK_MATERIAL_0
         SHAPES:	1
-        
+
         SPHERES:	0
         VELOCITY:  0  0  0  0  0  0
         FORCES:	0
-        */	
-
+        */
 
         //extract paragraph (group of lines split by \n\n
 
-        //extract ID -- there is an issue before "ID:" is found in multiple lines"
-        if (line.find("ID:") != std::string::npos && line.find("SURFID:") != 0) {
-            
-            //std::cout << line << std::endl;
+        //startsWith, not find: a body starts at "ID:" and "SURFID:" (which
+        //contains "ID:") is not one.
+        if (startsWith(line, "ID:")) {
 
-            int id = std::stoi(line.substr(3));
-            //std::cout << id << std::endl;
-            getline(file, line);
+            int id = static_cast<int>(numberAfterColon(line));
 
-            std::string label = line.substr(6);
-            label.erase(std::remove(label.begin(), label.end(), ' '), label.end());
-            label.erase(std::remove(label.begin(), label.end(), '\t'), label.end());
+            getline(file, line); //LABEL
+            getline(file, line); //KINEMATICS
+            getline(file, line); //BULK_MATERIAL
+            getline(file, line); //SHAPES
+            getline(file, line); //SPHERES/CONVEXES
 
-            getline(file, line);
-            std::string kinematics = line.substr(11);
-            kinematics.erase(std::remove(kinematics.begin(), kinematics.end(), ' '), kinematics.end());
-            kinematics.erase(std::remove(kinematics.begin(), kinematics.end(), '\t'), kinematics.end());
-
-            getline(file, line);
-            std::string bulk_material = line.substr(14);
-            bulk_material.erase(std::remove(bulk_material.begin(), bulk_material.end(), ' '), bulk_material.end());
-            bulk_material.erase(std::remove(bulk_material.begin(), bulk_material.end(), '\t'), bulk_material.end());
-
-            getline(file, line);
-            int shapes = std::stoi(line.substr(7));
-
-            getline(file, line);
-
-            //std::cout << line << std::endl;
             if (line.find("SPHERES:") != std::string::npos) {
                 getline(file, line);
-
-                iREAL x = std::stod(line.substr(8, 4));
-                iREAL y = std::stod(line.substr(14, 4));
-                iREAL z = std::stod(line.substr(20, 4));
+                std::vector<iREAL> centre = numbersAfterColon(line, 3);
 
                 getline(file, line);
-                std::string radius = line.substr(8, 4);
-                iREAL rad = std::stod(radius);
+                iREAL rad = numberAfterColon(line);
 
+                getline(file, line); //SURFID
+                int surfid = static_cast<int>(numberAfterColon(line));
+                //The file's SURFID is 1-based over the SURFACE_MATERIALS table.
+                if(surfid < 1 || surfid > surfaceMaterials)
+                {
+                    throw std::logic_error("readmbfcp: body " + std::to_string(id) +
+                                           " has SURFID " + std::to_string(surfid) +
+                                           " outside the declared SURFACE_MATERIALS table (" +
+                                           std::to_string(surfaceMaterials) + ")");
+                }
 
-                std::array<iREAL, 3> centreArray = {x, y, z};
-                std::array<iREAL, 3> linear = {0.0, 0.0, 0.0};
+                std::array<std::array<iREAL, 3>, 2> initial = readBodyInitialState(file, id);
+                std::array<iREAL, 3> centreArray = {centre[0], centre[1], centre[2]};
 
-                delta::world::structure::Object object("sphere", rad, id, centreArray, delta::geometry::material::MaterialType::WOOD, false, false, true, epsilon, linear, {0,0,0});
+                delta::world::structure::Object object("sphere", rad, id, centreArray, delta::geometry::material::MaterialType::WOOD, false, false, true, epsilon, initial[0], initial[1]);
 
                 //deriveForces() divides by the mass, so the bulk density has to
                 //settle it here (the ctor only knows the material).
@@ -545,12 +596,11 @@ std::array<iREAL, 3> delta::core::io::readmbfcp(std::string 									filename,
 
                 objects.push_back(object);
 
-
             } else if(line.find("CONVEXES:") != std::string::npos) {
                 //Obstacle (hopper wall): CONVEXES/VERTEXES/FACES paragraph.
                 //FACES index the flat vertex coordinate buffer, hence the /3.
                 getline(file, line);
-                int vertices = std::stoi(line.substr(10));
+                int vertices = static_cast<int>(numberAfterColon(line));
 
                 std::vector<std::array<iREAL, 3>> uniqueVertices;
                 for(int v=0; v<vertices; v++)
@@ -563,7 +613,7 @@ std::array<iREAL, 3> delta::core::io::readmbfcp(std::string 									filename,
                 }
 
                 getline(file, line);
-                int faces = std::stoi(line.substr(7));
+                int faces = static_cast<int>(numberAfterColon(line));
 
                 std::vector<std::array<int, 3>> triangleFaces;
                 for(int f=0; f<faces; f++)
@@ -584,21 +634,17 @@ std::array<iREAL, 3> delta::core::io::readmbfcp(std::string 									filename,
                 iREAL centre[3];
                 mesh->computeCenterOfGeometry(centre);
 
-                std::array<iREAL, 3> linear = {0.0, 0.0, 0.0};
+                std::array<std::array<iREAL, 3>, 2> initial = readBodyInitialState(file, id);
 
                 delta::world::structure::Object object("obstacle", id, mesh,
                     std::array<iREAL, 3>{centre[0], centre[1], centre[2]},
                     delta::geometry::material::MaterialType::WOOD,
-                    true, false, true, epsilon, linear, {0,0,0});
+                    true, false, true, epsilon, initial[0], initial[1]);
 
                 objects.push_back(object);
             }
-
-
-
         }
-
     }
 
-    return gravity;
+    return scenario;
 }

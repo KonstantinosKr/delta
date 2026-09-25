@@ -78,7 +78,17 @@ int main(int argc, const char *argv[]) {
 		//step. 0.002 keeps the reach (0.044) above the 0.04 neighbour spacing
 		//while staying a tenth of a radius (6 face-neighbours per sphere).
 		epsilon = 0.002;
-		gravity = delta::core::io::readmbfcp(hopperFile, particles, epsilon);
+		delta::core::io::Scenario scenario = delta::core::io::readmbfcp(hopperFile, particles, epsilon);
+		gravity = scenario.gravity;
+		//The file's contact law is now reported instead of dropped. The engine
+		//still uses its compiled-in SSPRING/SDAMPER (contact/forces/forces.cpp),
+		//so a file that declares other values shows up as a visible mismatch.
+		std::cout << "surface: friction=" << scenario.surface.friction
+				  << " spring=" << scenario.surface.spring
+				  << " dashpot=" << scenario.surface.dashpot
+				  << " | bulk: density=" << scenario.bulk.density
+				  << " young=" << scenario.bulk.young
+				  << " poisson=" << scenario.bulk.poisson << std::endl;
 	}
 	else
 	{

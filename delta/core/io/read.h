@@ -12,6 +12,7 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include <array>
 
 #include <cstdlib>
 #include <fstream>
@@ -41,6 +42,42 @@ namespace delta {
 	  	    return std::string(DELTA_INPUT_DIR) + "/" + fileName;
 	  	  }
 
+	  	  /*
+	  	   * SURFACE_MATERIALS block: the contact law the file asks for.
+	  	   *
+	  	   * The serial contact model still uses the compiled-in SSPRING/SDAMPER
+	  	   * (contact/forces/forces.cpp), so these are reported to the caller
+	  	   * instead of being parsed and dropped. Making them authoritative is a
+	  	   * physics change and needs a fresh baseline.
+	  	   */
+	  	  struct SurfaceMaterial
+	  	  {
+	  	    iREAL friction = 0.0;
+	  	    iREAL cohesion = 0.0;
+	  	    iREAL spring = 0.0;
+	  	    iREAL dashpot = 0.0;
+	  	  };
+
+	  	  struct BulkMaterial
+	  	  {
+	  	    std::string label;
+	  	    std::string model;
+	  	    iREAL young = 0.0;
+	  	    iREAL poisson = 0.0;
+	  	    iREAL density = 0.0;
+	  	  };
+
+	  	  /*
+	  	   * Everything the file declares that is not per-body geometry.
+	  	   */
+	  	  struct Scenario
+	  	  {
+	  	    std::array<iREAL, 3> gravity = {{0.0, 0.0, 0.0}};
+	  	    SurfaceMaterial surface;
+	  	    BulkMaterial bulk;
+	  	    int bodyCount = 0;
+	  	  };
+
 	  	  void readVTKLegacy();
 
 	  	  void parseModelGridSchematics(
@@ -56,8 +93,9 @@ namespace delta {
 
 	  	  delta::geometry::mesh::Mesh* readPartGeometry(std::string fileName);
 
-	  	  //Returns the GRAVITY vector of the file (zero when the section is absent).
-	  	  std::array<iREAL, 3> readmbfcp(std::string filename, std::vector<delta::world::structure::Object>& objects, iREAL epsilon);
+	  	  //Geometry goes into `objects`; the returned struct carries the scene data
+	  	  //(gravity, materials) that used to be parsed and thrown away.
+	  	  Scenario readmbfcp(std::string filename, std::vector<delta::world::structure::Object>& objects, iREAL epsilon);
 	  }
 	}
 }
