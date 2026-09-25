@@ -57,7 +57,6 @@ namespace delta {
 		int 								step,
 		std::vector<std::array<iREAL, 6>> 	boundary);
 
-	  void writeScenarioSpecification(std::string 	fileName);
 	}
   }
 }

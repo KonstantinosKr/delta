@@ -21,10 +21,6 @@
 #include "../../geometry/structure/Mesh.h"
 #include "../../world/scenario/scenarios.h"
 
-#include <vtkUnstructuredGridReader.h>
-#include <vtkUnstructuredGrid.h>
-#include <vtkSmartPointer.h>
-
 
 namespace delta {
 	namespace core {
@@ -78,18 +74,7 @@ namespace delta {
 	  	    int bodyCount = 0;
 	  	  };
 
-	  	  void readVTKLegacy();
-
-	  	  void parseModelGridSchematics(
-				std::string 							fileName,
-				std::vector<std::vector<std::string>> 	&componentGrid,
-				std::vector<std::string>				&componentSeq);
-
 	  	  delta::geometry::mesh::Mesh* readVTKGeometry(char* fileName);
-
-	  	  void readScenarioSpecification(std::string fileName);
-
-	  	  std::vector<delta::geometry::mesh::Mesh> readGeometry(std::string fileName);
 
 	  	  delta::geometry::mesh::Mesh* readPartGeometry(std::string fileName);
 

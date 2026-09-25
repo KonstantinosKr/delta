@@ -13,55 +13,6 @@
 
 #include "../../geometry/structure/Mesh.h"
 
-std::vector<std::string> splitString(
-  std::string input,
-  std::string delimiter)
-{
-	std::vector<std::string> output;
-	char *str = strdup(input.c_str());
-	char *pch = strtok (str, delimiter.c_str());
-
-	while (pch != NULL)
-	{
-            output.push_back(pch);
-            pch = strtok (NULL,  delimiter.c_str());
-	}
-
-	free(str);
-
-	return output;
-}
-
-void delta::core::io::parseModelGridSchematics(
-    std::string fileName,
-    std::vector<std::vector<std::string>> &componentGrid,
-    std::vector<std::string> &componentSeq)
-{
-  std::string line;
-  //46 * 46
-  std::ifstream myfile;
-  myfile.open(fileName.c_str());
-
-  if (myfile.is_open())
-  {
-    while (std::getline (myfile, line))
-    {
-      std::vector<std::string> vstring = splitString(line, ",");
-      //std::cout << vstring[2] << "\n";
-
-      componentSeq.push_back(vstring[2]);
-
-      if(std::stoi(vstring[0]) == 46)
-      {
-        //std::cout << std::stoi(vstring[0]) << "\n";
-        componentGrid.push_back(componentSeq);
-      }
-    }
-    myfile.close();
-  }
-  else std::cout << "Unable to open file";
-}
-
 delta::geometry::mesh::Mesh *delta::core::io::readVTKGeometry(
 	char* fileName)
 {
@@ -146,97 +97,6 @@ delta::geometry::mesh::Mesh *delta::core::io::readVTKGeometry(
   return new delta::geometry::mesh::Mesh(xCoordinates, yCoordinates, zCoordinates);
 }
 
-void delta::core::io::readScenarioSpecification(std::string fileName)
-{
-
-}
-
-std::vector<delta::geometry::mesh::Mesh> delta::core::io::readGeometry(std::string fileName)
-{
-  Assimp::Importer importer;
-
-  const aiScene* scene = importer.ReadFile( fileName,
-        aiProcess_CalcTangentSpace       |
-        aiProcess_Triangulate            |
-        aiProcess_JoinIdenticalVertices  |
-        aiProcess_SortByPType);
-
-  if(scene == nullptr || scene->mNumMeshes == 0)
-  {
-    throw std::runtime_error("readGeometry: cannot load '" + fileName + "': " + importer.GetErrorString());
-  }
-
-  printf("Importing %i Meshes.\n", scene->mNumMeshes);
-
-  std::vector<delta::geometry::mesh::Mesh> meshVector;
-
-  for(uint m_i = 0; m_i < scene->mNumMeshes; m_i++)
-  {
-    std::vector<std::array<int, 3>> 		triangleFaces;
-    std::vector<std::array<iREAL, 3>> 	uniqueVertices;
-
-    const aiMesh* mesh = scene->mMeshes[m_i];
-
-    std::vector<iREAL> g_vp;
-    g_vp.reserve(3 * mesh->mNumVertices);
-
-    //printf("Read %i vertices\n", mesh->mNumVertices);
-
-    //vertices
-    #pragma omp parallel for
-    for(uint v_i = 0; v_i < mesh->mNumVertices; v_i++)
-    {
-      if(mesh->HasPositions())
-      {
-        const aiVector3D* vp = &(mesh->mVertices[v_i]);
-        g_vp.push_back(vp->x);
-        g_vp.push_back(vp->y);
-        g_vp.push_back(vp->z);
-
-        std::array<iREAL, 3> vertex = {vp->x, vp->y, vp->z};
-
-        #pragma omp critical
-        uniqueVertices.push_back(vertex);
-        //std::cout << vp->x << " " << vp->y << " " << vp->z << std::endl;
-      }
-    }
-
-    //printf("number of triangles: %i\n", mesh->mNumFaces);
-
-    //only triangle faces
-    //#pragma omp parallel for
-    for(uint f_i = 0; f_i < mesh->mNumFaces; f_i++)
-    {
-      //only triangle faces
-      //#pragma omp parallel for
-      for(uint index = 0; index < mesh->mFaces[f_i].mNumIndices; index+=3)
-      {
-        int idxA = mesh->mFaces[f_i].mIndices[index];
-        int idxB = mesh->mFaces[f_i].mIndices[index+1];
-        int idxC = mesh->mFaces[f_i].mIndices[index+2];
-        std::array<int, 3> triangle = {idxA, idxB, idxC};
-
-        /*std::cout << uniqueVertices[idxA][0] << " " << uniqueVertices[idxA][1] << " " << uniqueVertices[idxA][2] << std::endl;
-        std::cout << uniqueVertices[idxB][0] << " " << uniqueVertices[idxB][1] << " " << uniqueVertices[idxB][2] << std::endl;
-        std::cout << uniqueVertices[idxC][0] << " " << uniqueVertices[idxC][1] << " " << uniqueVertices[idxC][2] << std::endl;*/
-
-        //#pragma omp critical
-        triangleFaces.push_back(triangle);
-      }
-    }
-
-    //printf("Faces Size: %i\n", triangleFaces.size());
-    for(int i=0; i<triangleFaces.size(); i++)
-    {
-      std::cout << triangleFaces[i][0] << " " << triangleFaces[i][1] << " " << triangleFaces[i][2] << std::endl;
-    }
-    delta::geometry::mesh::Mesh *meshgeometry = new delta::geometry::mesh::Mesh(triangleFaces, uniqueVertices);
-    meshVector.push_back(*meshgeometry);
-  }
-
-  return meshVector;
-}
-
 delta::geometry::mesh::Mesh* delta::core::io::readPartGeometry(std::string fileName)
 {
   Assimp::Importer importer;
@@ -305,49 +165,6 @@ delta::geometry::mesh::Mesh* delta::core::io::readPartGeometry(std::string fileN
   }
   return new delta::geometry::mesh::Mesh(triangleFaces, uniqueVertices);
 }
-
-void delta::core::io::readVTKLegacy() {
-
-    // Get all data from the file
-    vtkSmartPointer<vtkUnstructuredGridReader> reader =
-      vtkSmartPointer<vtkUnstructuredGridReader>::New();
-    reader->SetFileName("../output/grid_0.vtk");
-    reader->Update();
-
-    // All of the standard data types can be checked and obtained like this:
-    if(reader->IsFileUnstructuredGrid())
-    {
-        std::cout << "output is a unstructured grid" << std::endl;
-        vtkUnstructuredGrid* output = reader->GetOutput();
-        std::cout << "output has " << output->GetNumberOfPoints() << " points." << std::endl;
-    }
-}
-
-/*
- *
- * 
-SURFACE_MATERIALS:	1
-SURF1:	ANY
-SURF2:	ANY
-MODEL:	SPRING_DASHPOT
-
-FRICTION:	0
-COHESION:	0
-SPRING:	1e+06
-DASHPOT:	-1
-
-BULK_MATERIALS:	1
-LABEL:	BULK_MATERIAL_0
-MODEL:	KIRCHHOFF
-YOUNG:	1e+09
-POISSON:	0.25
-DENSITY:	1000
-
-GRAVITY:
-CONSTANT:	0
-CONSTANT:	0
-CONSTANT:	-10
-*/
 
 namespace {
 

@@ -122,8 +122,3 @@ void delta::core::io::writeGridGeometryToVTKVTK(
   buffer.activeVectors = "vector123";
   writeVTU(path, "grid", step, buffer);
 }
-
-void delta::core::io::writeScenarioSpecification(std::string fileName)
-{
-
-}

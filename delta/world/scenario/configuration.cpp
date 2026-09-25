@@ -517,9 +517,6 @@ void delta::world::configuration::nonUniformlyDistributedTotalMass(
   iREAL h = mesh->computeYw();
 
   //read nuclear graphite schematics
-  //std::vector<std::vector<std::string>> compoGrid;
-  //delta::core::parseModelGridSchematics("input/nuclear_core", compoGrid, componentGrid);
-
   ///place components of 2d array structure
   int elements = 46;
   iREAL arrayXZlength = width/2;
