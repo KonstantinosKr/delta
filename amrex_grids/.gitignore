@@ -1,0 +1,9 @@
+build/
+third_party/amrex-install/
+third_party/amrex-*/
+__pycache__/
+*.o
+*.csv
+*.pyc
+Backtrace.*
+results/
