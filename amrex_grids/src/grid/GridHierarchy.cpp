@@ -1082,4 +1082,31 @@ void GridHierarchy::printProfile(std::ostream& os) const {
        << " h_max=" << maxCellSize() << '\n';
 }
 
+// ---------------------------------------------------------------------------
+// Visualisation snapshot: every cell that currently exists, with its level and
+// how many real / inherited bodies it holds. The regular grid therefore shows
+// its full uniform mesh, the adaptive one only the occupied neighbourhood, and
+// the reluctant one the cells it deliberately refused to refine.
+// ---------------------------------------------------------------------------
+void GridHierarchy::cellsForVisualisation(std::vector<CellViz>& out,
+                                          std::size_t max_cells) const {
+    out.clear();
+    for (const auto& lp : levels_) {
+        const Level& L = *lp;
+        for (int c = 0; c < static_cast<int>(L.cells.size()); ++c) {
+            if (out.size() >= max_cells) return;
+            Real lo[3];
+            Real hi[3];
+            L.cellBounds(c, lo, hi);
+            CellViz v;
+            v.lo = makeVec3(lo[0], lo[1], lo[2]);
+            v.hi = makeVec3(hi[0], hi[1], hi[2]);
+            v.level = L.index;
+            v.nreal = static_cast<int>(L.realBins[c].size());
+            v.nvirt = static_cast<int>(L.virtBins[c].size());
+            out.push_back(v);
+        }
+    }
+}
+
 }  // namespace contact

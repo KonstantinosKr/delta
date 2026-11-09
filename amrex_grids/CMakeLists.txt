@@ -30,9 +30,10 @@ file(GLOB GRID_SRC   CONFIGURE_DEPENDS src/grid/*.cpp)
 file(GLOB PHYS_SRC   CONFIGURE_DEPENDS src/physics/*.cpp)
 file(GLOB SCEN_SRC   CONFIGURE_DEPENDS src/scenario/*.cpp)
 file(GLOB APP_SRC    CONFIGURE_DEPENDS src/app/*.cpp)
+ file(GLOB IO_SRC     CONFIGURE_DEPENDS src/io/*.cpp)
 
 # ---- main driver -----------------------------------------------------------
-add_executable(contact_dem ${APP_SRC} ${GEOM_SRC} ${GRID_SRC} ${PHYS_SRC} ${SCEN_SRC})
+add_executable(contact_dem ${APP_SRC} ${GEOM_SRC} ${GRID_SRC} ${PHYS_SRC} ${SCEN_SRC} ${IO_SRC})
 target_include_directories(contact_dem PRIVATE include)
 target_link_libraries(contact_dem PRIVATE AMReX::amrex)
 target_compile_options(contact_dem PRIVATE -Wall -Wextra -Wno-unused-parameter)

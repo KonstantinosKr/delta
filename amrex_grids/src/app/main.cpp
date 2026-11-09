@@ -34,6 +34,7 @@
 #include "contact/Physics.hpp"
 #include "contact/Scenario.hpp"
 #include "contact/Types.hpp"
+#include "contact/VtkWriter.hpp"
 
 namespace {
 
@@ -59,6 +60,8 @@ struct Options {
     Real mu{0.5};
     Real restitution{0.5};
     std::string dt_source{"stiffness"};  // stiffness | grid (thesis ch.7 regime)
+    std::string vtk{};                    // prefix for VTU frames, empty = off
+    int vtk_every{1};
     bool dynamic_dt{true};
     bool verify{false};
     bool gravity{false};
@@ -81,6 +84,7 @@ void usage() {
         "  --dt <dt0>  --velocity <v>  --fixed-dt   (disable the chapter-7 controller)\n"
         "  --domain <L>  --fill <frac>  --kn <k>  --mu <m>  --restitution <e>\n"
         "  --dt-source stiffness|grid   (grid = thesis ch.7, dt limited by h_min only)\n"
+        "  --vtk <prefix>  --vtk-every <n>   (VTU frames + .pvd collection)\n"
         "  --gravity  --verify             (compare contacts against nogrid+brute)\n"
         "  --max-level <n>  --refine <r>   (grid refinement factor)\n"
         "  --csv <path>  --quiet\n";
@@ -137,6 +141,8 @@ bool parseArgs(int argc, char** argv, Options& o) {
         else if (a == "--mu") next(o.mu);
         else if (a == "--restitution") next(o.restitution);
         else if (a == "--dt-source") { if (++i < argc) o.dt_source = argv[i]; }
+        else if (a == "--vtk") { if (++i < argc) o.vtk = argv[i]; }
+        else if (a == "--vtk-every") nexti(o.vtk_every);
         else if (a == "--fixed-dt") o.dynamic_dt = false;
         else if (a == "--gravity") o.gravity = true;
         else if (a == "--verify") o.verify = true;
@@ -188,7 +194,8 @@ std::vector<ContactPoint> findContacts(const std::vector<Particle>& bodies,
 }
 
 RunResult runMode(GridMode mode, const Options& opt, const amrex::Geometry& geom,
-                  const std::vector<Particle>& initial, std::ostream* csv) {
+                  const std::vector<Particle>& initial, std::ostream* csv,
+                  const std::string& vtk_prefix) {
     const amrex::RealBox domain_rb = geom.ProbDomain();
     Aabb box;
     box.lo = makeVec3(domain_rb.lo(0), domain_rb.lo(1), domain_rb.lo(2));
@@ -244,6 +251,10 @@ RunResult runMode(GridMode mode, const Options& opt, const amrex::Geometry& geom
     RunResult res;
     res.mode = toString(mode);
 
+    std::unique_ptr<VtuWriter> vtu;
+    if (!vtk_prefix.empty()) vtu = std::make_unique<VtuWriter>(vtk_prefix);
+    const int vtk_every = (opt.vtk_every > 0) ? opt.vtk_every : 1;
+
     Real dt = opt.dt0;
     Real t = 0.0;
     double wall = 0.0;
@@ -287,7 +298,17 @@ RunResult runMode(GridMode mode, const Options& opt, const amrex::Geometry& geom
             for (auto& b : bodies) b.force[2] -= b.mass * 9.81;
         }
 
+
         const auto diag = computeDiagnostics(bodies, contacts);
+
+        if (vtu && (step % vtk_every == 0)) {
+            for (std::size_t i = 0; i < bodies.size(); ++i) {
+                bodies[i].level = grid.levelOf(static_cast<int>(i));
+            }
+            std::vector<CellViz> cells;
+            grid.cellsForVisualisation(cells);
+            vtu->write(step, t, bodies, cells);
+        }
         res.contacts += static_cast<long>(contacts.size());
         res.candidate_pairs += static_cast<long>(pairs.size());
         res.tri_pairs += np.stats().tri_pairs;
@@ -360,6 +381,7 @@ RunResult runMode(GridMode mode, const Options& opt, const amrex::Geometry& geom
     res.dt_max = dt_hi;
     res.dt_min = (dt_lo < 1.0e29) ? dt_lo : 0.0;
     res.grid = grid.stats();
+    if (vtu) vtu->writeCollection();
     if (!opt.quiet) {
         std::cout << "---- " << res.mode << " ----\n";
         grid.printProfile(std::cout);
@@ -436,7 +458,11 @@ int main(int argc, char** argv) {
                     csv = &csv_file;
                 }
             }
-            results.push_back(runMode(m, opt, geom, initial, csv));
+            std::string vtk_prefix = opt.vtk;
+            if (!vtk_prefix.empty() && modes.size() > 1) {
+                vtk_prefix += "." + std::string(toString(m));
+            }
+            results.push_back(runMode(m, opt, geom, initial, csv, vtk_prefix));
         }
 
         // ---- summary --------------------------------------------------------

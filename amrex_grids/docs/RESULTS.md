@@ -1,8 +1,9 @@
 # Results
 
-Machine: 2 vCPU, 4 GB RAM, Debian, g++ 14.2. AMReX 25.11, 3D, **serial CPU** build
-(`third_party/amrex-install`), `-O3`. All numbers below were produced by the commands
-in `tools/verify.sh`; the raw CSVs are in `results/` (git-ignored, regenerable).
+Machine: .125, 2 vCPU, 4 GB RAM, Debian 13, g++ 14.2, inside the `herdr` container.
+AMReX as vendored in `third_party/amrex-install` (3D, double, MPI-enabled, run on a single
+rank), `-O3`. Every number below comes from `tools/verify.sh`; the raw CSVs land in
+`results/` (git-ignored, regenerable).
 
 Narrowphase in every run: `hybrid` (Algorithm 5 penalty solver + brute-force
 fallback). Contact law: linear penalty + Coulomb cap. `dt` is explicit-stability

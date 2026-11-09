@@ -60,6 +60,14 @@ struct GridStats {
     void reset() noexcept { *this = GridStats{}; }
 };
 
+struct CellViz {
+    Vec3 lo{};
+    Vec3 hi{};
+    int level{0};
+    int nreal{0};
+    int nvirt{0};
+};
+
 class GridHierarchy {
   public:
     GridHierarchy(const amrex::Geometry& geom, GridParams params, GridMode mode);
@@ -87,6 +95,10 @@ class GridHierarchy {
     [[nodiscard]] Real maxCellSize() const noexcept;
 
     void printProfile(std::ostream& os) const;
+
+    // Snapshot of the cells that currently exist, for the VTU writer. `max_cells`
+    // caps a pathologically fine regular grid.
+    void cellsForVisualisation(std::vector<CellViz>& out, std::size_t max_cells = 200000) const;
 
   private:
     struct Level;
