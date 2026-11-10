@@ -50,6 +50,26 @@ ctest --test-dir build --output-on-failure
 Expected: **4/4 suites pass** — `narrowphase` (1,324,282 checks), `physics` (74), `scenario`
 (3,447), `grid` (149).
 
+### Per-morphology binaries
+
+The build also emits one driver per broadphase morphology, with that mode baked in as the
+default (the `--mode` flag still overrides it):
+
+```
+build/contact_dem            # --mode all by default, runs the four in sequence
+build/contact_dem_nogrid
+build/contact_dem_regular
+build/contact_dem_adaptive
+build/contact_dem_reluctant
+```
+
+So these two are equivalent:
+
+```bash
+./build/contact_dem_adaptive --scenario two-body --steps 7000
+./build/contact_dem --scenario two-body --mode adaptive --steps 7000
+```
+
 ---
 
 ## 2. Run the two-particle collision

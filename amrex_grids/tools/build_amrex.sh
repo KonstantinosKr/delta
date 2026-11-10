@@ -7,6 +7,7 @@ SRC="${ROOT}/third_party/amrex-${AMREX_VERSION}"
 PREFIX="${ROOT}/third_party/amrex-install"
 
 if [[ ! -d "${SRC}" ]]; then
+  mkdir -p "${ROOT}/third_party"
   curl -sSL "https://github.com/AMReX-Codes/amrex/archive/refs/tags/${AMREX_VERSION}.tar.gz" \
     | tar xz -C "${ROOT}/third_party"
 fi

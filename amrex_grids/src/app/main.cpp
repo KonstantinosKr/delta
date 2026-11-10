@@ -42,7 +42,13 @@ using namespace contact;
 
 struct Options {
     std::string scenario{"pack"};
+#ifdef CONTACT_DEM_DEFAULT_MODE
+    // Per-morphology binaries (contact_dem_nogrid, ...) bake their mode in; the
+    // command line can still override it with --mode.
+    std::string modes{CONTACT_DEM_DEFAULT_MODE};
+#else
     std::string modes{"all"};          // all | nogrid | regular | adaptive | reluctant
+#endif
     GridMode single_mode{GridMode::Adaptive};
     bool single_mode_set{false};
     NarrowphaseKind narrow{NarrowphaseKind::Hybrid};
@@ -151,6 +157,17 @@ bool parseArgs(int argc, char** argv, Options& o) {
         else if (a == "--csv") { if (++i < argc) o.csv = argv[i]; }
         else if (a == "--quiet") o.quiet = true;
         else { std::cerr << "unknown option: " << a << "\n"; usage(); return false; }
+    }
+    // A mode baked in at compile time (or given before any --mode) still needs
+    // resolving into the single-mode path; --mode sets this directly.
+    if (!o.single_mode_set && o.modes != "all") {
+        GridMode m;
+        if (!gridModeFromString(o.modes, m)) {
+            std::cerr << "bad default mode: " << o.modes << "\n";
+            return false;
+        }
+        o.single_mode = m;
+        o.single_mode_set = true;
     }
     return true;
 }

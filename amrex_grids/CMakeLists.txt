@@ -33,10 +33,26 @@ file(GLOB APP_SRC    CONFIGURE_DEPENDS src/app/*.cpp)
  file(GLOB IO_SRC     CONFIGURE_DEPENDS src/io/*.cpp)
 
 # ---- main driver -----------------------------------------------------------
-add_executable(contact_dem ${APP_SRC} ${GEOM_SRC} ${GRID_SRC} ${PHYS_SRC} ${SCEN_SRC} ${IO_SRC})
-target_include_directories(contact_dem PRIVATE include)
-target_link_libraries(contact_dem PRIVATE AMReX::amrex)
+# One library shared by the driver binaries, so the morphology variants do not
+# recompile it four times.
+add_library(contact_core STATIC ${GEOM_SRC} ${GRID_SRC} ${PHYS_SRC} ${SCEN_SRC} ${IO_SRC})
+target_include_directories(contact_core PUBLIC include)
+target_link_libraries(contact_core PUBLIC AMReX::amrex)
+target_compile_options(contact_core PRIVATE -Wall -Wextra -Wno-unused-parameter)
+
+# contact_dem runs every morphology (--mode all); the four contact_dem_<mode>
+# binaries are the same driver with that morphology baked in as the default.
+add_executable(contact_dem ${APP_SRC})
+target_link_libraries(contact_dem PRIVATE contact_core)
 target_compile_options(contact_dem PRIVATE -Wall -Wextra -Wno-unused-parameter)
+
+set(CONTACT_DEM_MODES nogrid regular adaptive reluctant)
+foreach(mode IN LISTS CONTACT_DEM_MODES)
+  add_executable(contact_dem_${mode} ${APP_SRC})
+  target_link_libraries(contact_dem_${mode} PRIVATE contact_core)
+  target_compile_definitions(contact_dem_${mode} PRIVATE CONTACT_DEM_DEFAULT_MODE="${mode}")
+  target_compile_options(contact_dem_${mode} PRIVATE -Wall -Wextra -Wno-unused-parameter)
+endforeach()
 
 # ---- tests -----------------------------------------------------------------
 enable_testing()
