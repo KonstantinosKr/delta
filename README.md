@@ -3,13 +3,23 @@
 ## Layout
 
 ```
-src/          backend-agnostic core (data, contact, geometry, dynamics, world, io)
-src/backends/ serial (Engine) and amrex (DemAmrexEngine, particle container)
-apps/         entry points; one main.cpp per app
+src/core/     shared platform: ParticleRecord, State, MeshBuffer, mbcfp/STL readers
+src/dim2/     the 2D solver (circles and triangles, SAT narrowphase)
+src/dim3/     the 3D solver
+  contact/    broad + narrow phase, contact forces
+  geometry/   mesh/ (exact) hull/ (approximate) loaders/ (imported files)
+  dynamics/   integration, inertia, rotation
+  world/      objects, scenarios, obstacles
+  io/         VTU writer
+  backends/   serial (Engine) and amrex (DemAmrexEngine, particle container)
+apps/         one main.cpp per app (dem3d)
 tests/        one executable per suite (ctest)
 amrex_grids/  standalone contact/broadphase experiment tree (own CMakeLists)
 third_party/  vendored AMReX install (git-ignored)
-input/        scenarios (*.mbfcp, *.STL)
+input/dim3/   scenarios (*.mbfcp) and geometry (*.STL); input/dim2/ when needed
+tools/        Parmes scenario generators (hopper.py, bounce.py)
+viz/          hand-edited ParaView sessions
+output/       generated artefacts, git-ignored
 ```
 
 ## Build

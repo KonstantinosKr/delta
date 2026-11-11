@@ -40,7 +40,7 @@ namespace delta {
 }
 
 /*
- * Per-particle component layout (docs/recon/amrex-fit.md 4). 45 reals + 3 ints:
+ * Per-particle component layout. 45 reals + 3 ints:
  *   linVel3 angVel3 refAngVel3 force3 torque3 orientation9 inverse9 inertia9
  *   mass1 epsilon1 diameter1                                      = 45 reals
  *   material friction globalId                                    = 3  ints
