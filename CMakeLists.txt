@@ -76,6 +76,12 @@ add_executable(delta "${PROJECT_SOURCE_DIR}/apps/dem3d/main.cpp")
 target_link_libraries(delta PRIVATE delta_lib)
 vtk_module_autoinit(TARGETS delta MODULES ${VTK_LIBRARIES})
 
+# 2D entry point. Needs the writer, so it links delta_dem2d_io rather than the
+# VTK-free core alone.
+add_executable(delta2d "${PROJECT_SOURCE_DIR}/apps/dem2d/main.cpp")
+target_link_libraries(delta2d PRIVATE delta_dem2d_io)
+vtk_module_autoinit(TARGETS delta2d MODULES ${VTK_LIBRARIES})
+
 if(DELTA_USE_AMREX)
   find_package(AMReX REQUIRED CONFIG)
   # For MPIEXEC_EXECUTABLE, used by the parallel test below.

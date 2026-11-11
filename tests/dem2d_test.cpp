@@ -317,18 +317,44 @@ static void testMixedBox()
   std::uniform_real_distribution<double> pos(1.0, 9.0);
   std::uniform_real_distribution<double> siz(0.15, 0.35);
 
+  /* Every body must start inside the box. The walls are open at the top, so a
+   * body placed above y = 10 free-falls from outside and passes through the
+   * floor without ever touching a wall from the inside - which is what this
+   * scenario is meant to check. Bodies are spread over x and over the lower
+   * half of y, so they fall onto each other and onto the floor. */
+  std::uniform_real_distribution<double> column(0.0, 1.0);
   for (int i = 0; i < 40; ++i) {
-    const Vec2 c(pos(rng), pos(rng) + 4.0);
+    const iREAL size = siz(rng);
+    const iREAL x    = pos(rng);
+    const iREAL y    = 1.0 + column(rng) * 8.0;   /* [1, 9]: inside, with margin */
+    const Vec2 c(x, y);
     if (i % 2 == 0) {
-      ps.push_back(makeCircle(100 + i, c, siz(rng), 1000.0, 0.4));
+      ps.push_back(makeCircle(100 + i, c, size, 1000.0, 0.4));
     } else {
-      const double s = siz(rng);
+      const double s = size;
       std::array<Vec2, 3> v = { c + Vec2(-s, -s), c + Vec2(s, -s), c + Vec2(0.0, s) };
       ps.push_back(makeTriangle(100 + i, v, 1000.0, 0.4));
     }
   }
 
   Engine2D engine(ps);
+
+  /* Bodies that start outside the box free-fall through the floor and this
+   * check then blames the solver. Assert the setup instead, so a future edit to
+   * the placement range fails here rather than 2000 steps later. */
+  {
+    int outside = 0;
+    for (size_t i = 0; i < ps.size(); ++i) {
+      if (ps[i].isObstacle) continue;
+      if (!(ps[i].position.x > 0.0 && ps[i].position.x < 10.0 &&
+            ps[i].position.y > 0.0 && ps[i].position.y < 10.0)) ++outside;
+    }
+    if (outside != 0) {
+      std::printf("FAIL mixed box: %d bodies start outside the domain\n", outside);
+      ++failures;
+    }
+  }
+
   const iREAL dt = 1e-3;
   for (int s = 0; s < 2000; ++s) engine.step(dt);
 
