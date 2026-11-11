@@ -29,6 +29,8 @@ cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build -j && (cd build && ctest)
 ```
 
+Binaries: `delta` (3D) and `delta2d` (2D), both take `--help`.
+
 One CMake project builds the core, `apps/dem` (`delta`), every test, and
 `amrex_grids` when `third_party/amrex-install` exists. Options:
 `-DDELTA_USE_AMREX=ON` adds the AMReX backend and its MPI test,
