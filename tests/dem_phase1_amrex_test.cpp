@@ -1,6 +1,6 @@
 /*
  * Phase 1 acceptance tests for the parallel AMReX DEM path
- * (delta/core/parallel/DemAmrexEngine).
+ * (src/backends/amrex/DemAmrexEngine).
  *
  *   1. contact pair set == brute-force serial detection, for a mixed random
  *      cloud + lattice (global reach/halo completeness).
@@ -39,9 +39,9 @@
 #include <AMReX.H>
 #include <AMReX_ParallelDescriptor.H>
 
-#include "core/Engine.h"
+#include "backends/serial/Engine.h"
 #include "core/data/Meta.h"
-#include "core/parallel/DemAmrexEngine.h"
+#include "backends/amrex/DemAmrexEngine.h"
 
 #include <mpi.h>
 #include "geometry/material.h"

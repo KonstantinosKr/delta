@@ -22,7 +22,7 @@
  SOFTWARE.
  */
 
-#include "../core/Engine.h"
+#include "../backends/serial/Engine.h"
 #include "World.h"
 
 #define epsilon 1E-3

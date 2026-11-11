@@ -26,7 +26,7 @@
 #include <stdexcept>
 #include <vector>
 
-#include "core/Engine.h"
+#include "backends/serial/Engine.h"
 #include "core/data/Meta.h"
 #include "core/data/Structure.h"
 #include "core/io/read.h"

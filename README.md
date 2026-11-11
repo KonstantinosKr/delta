@@ -1,4 +1,30 @@
 # Delta
+
+## Layout
+
+```
+src/          backend-agnostic core (data, contact, geometry, dynamics, world, io)
+src/backends/ serial (Engine) and amrex (DemAmrexEngine, particle container)
+apps/         entry points; one main.cpp per app
+tests/        one executable per suite (ctest)
+amrex_grids/  standalone contact/broadphase experiment tree (own CMakeLists)
+third_party/  vendored AMReX install (git-ignored)
+input/        scenarios (*.mbfcp, *.STL)
+```
+
+## Build
+
+```sh
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build -j && (cd build && ctest)
+```
+
+One CMake project builds the core, `apps/dem` (`delta`), every test, and
+`amrex_grids` when `third_party/amrex-install` exists. Options:
+`-DDELTA_USE_AMREX=ON` adds the AMReX backend and its MPI test,
+`-DDELTA_BUILD_AMREX_CONTACT=OFF` skips the experiment tree. The AMReX install
+is built by `amrex_grids/tools/build_amrex.sh`.
+
 We present a novel DEM (discrete element method) code with explicit time stepping. DEM codes simulate billions of small particles that interact with each other primarily through collisions. Different to state-of-the-art codes, we rely on triangulated non-spherical particles. This is computationally demanding, and we thus devise an asynchronous data exchange communication technique using MPI (Message Passing Interface) on manycore supercomputers, we discuss possible solutions to handle ghost particles that overlap multiple subdomains. At the compute node level, shared memory parallelism as well as vectorised SIMD executions are studied. On the algorithmic side, we explore a hybrid parallelisation approach and memory layouts that are suited to combine robust exact geometry checks with a fast penalty-based method.
 
 The following research would not have been possible without the funding from both the Engineering and Physical Sciences Research Council (EPSRC) and EDF Energy Generation.

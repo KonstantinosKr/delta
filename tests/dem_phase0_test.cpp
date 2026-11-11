@@ -21,7 +21,7 @@
 #include <utility>
 #include <vector>
 
-#include "core/Engine.h"
+#include "backends/serial/Engine.h"
 #include "core/data/Meta.h"
 #include "geometry/material.h"
 #include "world/structure/Object.h"

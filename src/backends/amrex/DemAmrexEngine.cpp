@@ -36,10 +36,10 @@
 #include <AMReX_MFIter.H>
 #include <AMReX_ParallelDescriptor.H>
 
-#include "../io/write.h"
-#include "../../contact/detection/sphere.h"
-#include "../../contact/forces/forces.h"
-#include "../../dynamics/dynamics.h"
+#include "core/io/write.h"
+#include "contact/detection/sphere.h"
+#include "contact/forces/forces.h"
+#include "dynamics/dynamics.h"
 
 namespace {
 

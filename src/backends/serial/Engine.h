@@ -25,29 +25,29 @@
 #ifndef DELTA_CORE_ENGINE_H_
 #define DELTA_CORE_ENGINE_H_
 
-#include "../contact/contactpoint.h"
-#include "../contact/detection/sphere.h"
-#include "../contact/detection/bf.h"
-#include "../contact/detection/penalty.h"
-#include "../contact/detection/hybrid.h"
-#include "../contact/detection/point.h"
-#include "../contact/detection/box.h"
-#include "../contact/forces/forces.h"
+#include "contact/contactpoint.h"
+#include "contact/detection/sphere.h"
+#include "contact/detection/bf.h"
+#include "contact/detection/penalty.h"
+#include "contact/detection/hybrid.h"
+#include "contact/detection/point.h"
+#include "contact/detection/box.h"
+#include "contact/forces/forces.h"
 
-#include "data/Structure.h"
-#include "data/ParticleRecord.h"
-#include "data/Meta.h"
+#include "core/data/Structure.h"
+#include "core/data/ParticleRecord.h"
+#include "core/data/Meta.h"
 
-#include "io/read.h"
-#include "io/write.h"
+#include "core/io/read.h"
+#include "core/io/write.h"
 
-#include "State.h"
+#include "core/State.h"
 
-#include "../geometry/material.h"
-#include "../geometry/operators/vertex.h"
-#include "../dynamics/dynamics.h"
+#include "geometry/material.h"
+#include "geometry/operators/vertex.h"
+#include "dynamics/dynamics.h"
 
-#include "../world/World.h"
+#include "world/World.h"
 
 #include <map>
 

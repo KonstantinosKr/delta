@@ -1,10 +1,21 @@
 cmake_minimum_required(VERSION 3.20)
-project(delta_dem LANGUAGES C CXX)
+project(delta LANGUAGES C CXX)
 
-# --- Build scaffolding ------------------------------------------------------
-# Serial baseline target. AMReX (Phase 2+) is added behind find_package(AMReX)
-# so this tree keeps building without it.
-option(DELTA_USE_AMREX "Build the AMReX-backed target (Phase 2+)" OFF)
+# --- Layout -----------------------------------------------------------------
+#   src/                backend-agnostic core + backends/{serial,amrex}
+#   apps/               entry points (one main.cpp per app)
+#   tests/              one executable per suite
+#   amrex_grids/        standalone contact/morphology experiment tree
+#   third_party/        vendored AMReX install (git-ignored, tools/build_amrex.sh)
+
+# Vendored AMReX, if it was built (amrex_grids/tools/build_amrex.sh).
+list(APPEND CMAKE_PREFIX_PATH
+     "${PROJECT_SOURCE_DIR}/third_party/amrex-install")
+
+# Serial baseline. The AMReX backend is added behind find_package(AMReX) so this
+# tree keeps building without it.
+option(DELTA_USE_AMREX "Build the AMReX-backed backend" OFF)
+option(DELTA_BUILD_AMREX_CONTACT "Build the amrex_grids experiment tree" ON)
 
 if(DELTA_USE_AMREX)
   # AMReX headers need C++17 and its particle machinery needs C++20.
@@ -22,30 +33,29 @@ find_package(VTK REQUIRED COMPONENTS
 find_package(assimp QUIET)
 
 file(GLOB_RECURSE DELTA_SOURCES CONFIGURE_DEPENDS
-  "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
-list(FILTER DELTA_SOURCES EXCLUDE REGEX "/main\\.cpp$")
+  "${PROJECT_SOURCE_DIR}/src/*.cpp")
 if(NOT DELTA_USE_AMREX)
-  # The parallel engine is AMReX-only; keep it out of the serial build.
-  list(FILTER DELTA_SOURCES EXCLUDE REGEX "/parallel/")
+  # The AMReX backend is AMReX-only; keep it out of the serial build.
+  list(FILTER DELTA_SOURCES EXCLUDE REGEX "/backends/amrex/")
 endif()
 
 add_library(delta_lib STATIC ${DELTA_SOURCES})
 target_compile_definitions(delta_lib PUBLIC iREAL=double byteAlignment=32)
-#Scenario assets (hopper.mbfcp, *.STL) sit next to the library sources; pin the
-#path so the binaries run from any cwd instead of only from build/.
-target_compile_definitions(delta_lib PUBLIC DELTA_INPUT_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../input")
+#Scenario assets (hopper.mbfcp, *.STL) sit at the repo root; pin the path so the
+#binaries run from any cwd instead of only from build/.
+target_compile_definitions(delta_lib PUBLIC DELTA_INPUT_DIR="${PROJECT_SOURCE_DIR}/input")
 if(NOT DELTA_USE_AMREX)
-  # Nothing in delta/ references Dim3 any more, and the macro mangles
+  # Nothing in src/ references Dim3 any more, and the macro mangles
   # amrex::Dim3 in the AMReX headers, so it is serial-build only.
   target_compile_definitions(delta_lib PUBLIC Dim3)
 endif()
-target_include_directories(delta_lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(delta_lib PUBLIC ${PROJECT_SOURCE_DIR}/src)
 target_link_libraries(delta_lib PUBLIC ${VTK_LIBRARIES})
 if(assimp_FOUND)
   target_link_libraries(delta_lib PUBLIC assimp::assimp)
 endif()
 
-add_executable(delta main.cpp)
+add_executable(delta "${PROJECT_SOURCE_DIR}/apps/dem/main.cpp")
 target_link_libraries(delta PRIVATE delta_lib)
 vtk_module_autoinit(TARGETS delta MODULES ${VTK_LIBRARIES})
 
@@ -59,47 +69,47 @@ endif()
 
 # --- Tests ------------------------------------------------------------------
 enable_testing()
-add_executable(delta_viz_test "${CMAKE_CURRENT_SOURCE_DIR}/../tests/viz_write_test.cpp")
+add_executable(delta_viz_test "${PROJECT_SOURCE_DIR}/tests/viz_write_test.cpp")
 target_link_libraries(delta_viz_test PRIVATE delta_lib)
 vtk_module_autoinit(TARGETS delta_viz_test MODULES ${VTK_LIBRARIES})
 add_test(NAME viz_write COMMAND delta_viz_test)
 
-add_executable(delta_dem_test "${CMAKE_CURRENT_SOURCE_DIR}/../tests/dem_phase0_test.cpp")
+add_executable(delta_dem_test "${PROJECT_SOURCE_DIR}/tests/dem_phase0_test.cpp")
 target_link_libraries(delta_dem_test PRIVATE delta_lib)
 vtk_module_autoinit(TARGETS delta_dem_test MODULES ${VTK_LIBRARIES})
 add_test(NAME dem_phase0 COMMAND delta_dem_test)
 
 # 2D circle/triangle core. Dem2D.cpp is plain C++; Dem2DWrite.cpp pulls in
 # VTK through delta_lib to emit the same .vtu/.pvd convention as the 3D path.
-add_executable(delta_dem2d_test "${CMAKE_CURRENT_SOURCE_DIR}/../tests/dem2d_test.cpp")
+add_executable(delta_dem2d_test "${PROJECT_SOURCE_DIR}/tests/dem2d_test.cpp")
 target_link_libraries(delta_dem2d_test PRIVATE delta_lib)
 vtk_module_autoinit(TARGETS delta_dem2d_test MODULES ${VTK_LIBRARIES})
 add_test(NAME dem2d COMMAND delta_dem2d_test)
 
-add_executable(delta_dem2d_demo "${CMAKE_CURRENT_SOURCE_DIR}/../tests/dem2d_demo.cpp")
+add_executable(delta_dem2d_demo "${PROJECT_SOURCE_DIR}/tests/dem2d_demo.cpp")
 target_link_libraries(delta_dem2d_demo PRIVATE delta_lib)
 vtk_module_autoinit(TARGETS delta_dem2d_demo MODULES ${VTK_LIBRARIES})
 
-add_executable(delta_dem2d_viz_test "${CMAKE_CURRENT_SOURCE_DIR}/../tests/dem2d_viz_test.cpp")
+add_executable(delta_dem2d_viz_test "${PROJECT_SOURCE_DIR}/tests/dem2d_viz_test.cpp")
 target_link_libraries(delta_dem2d_viz_test PRIVATE delta_lib)
 vtk_module_autoinit(TARGETS delta_dem2d_viz_test MODULES ${VTK_LIBRARIES})
 add_test(NAME dem2d_viz COMMAND delta_dem2d_viz_test)
 
 # Latent-bug regression guards (see docs/recon/serial-audit.md §3).
-add_executable(delta_regression_test "${CMAKE_CURRENT_SOURCE_DIR}/../tests/regression_test.cpp")
+add_executable(delta_regression_test "${PROJECT_SOURCE_DIR}/tests/regression_test.cpp")
 target_link_libraries(delta_regression_test PRIVATE delta_lib)
 vtk_module_autoinit(TARGETS delta_regression_test MODULES ${VTK_LIBRARIES})
 add_test(NAME regression COMMAND delta_regression_test)
 
 # Guard for the shared .vtu writer: MeshBuffer::validate() must reject the
 # geometry that would otherwise be written silently wrong.
-add_executable(delta_meshbuffer_test "${CMAKE_CURRENT_SOURCE_DIR}/../tests/meshbuffer_test.cpp")
+add_executable(delta_meshbuffer_test "${PROJECT_SOURCE_DIR}/tests/meshbuffer_test.cpp")
 target_link_libraries(delta_meshbuffer_test PRIVATE delta_lib)
 vtk_module_autoinit(TARGETS delta_meshbuffer_test MODULES ${VTK_LIBRARIES})
 add_test(NAME mesh_buffer COMMAND delta_meshbuffer_test)
 
 if(DELTA_USE_AMREX)
-  add_executable(delta_dem_amrex_test "${CMAKE_CURRENT_SOURCE_DIR}/../tests/dem_phase1_amrex_test.cpp")
+  add_executable(delta_dem_amrex_test "${PROJECT_SOURCE_DIR}/tests/dem_phase1_amrex_test.cpp")
   target_link_libraries(delta_dem_amrex_test PRIVATE delta_lib)
   vtk_module_autoinit(TARGETS delta_dem_amrex_test MODULES ${VTK_LIBRARIES})
   # Run both at one rank and at two: the parallel path's whole point is that the
@@ -111,4 +121,15 @@ if(DELTA_USE_AMREX)
   add_test(NAME dem_phase1_amrex_np2
     COMMAND ${MPIEXEC_EXECUTABLE} ${MPIEXEC_NUMPROC_FLAG} 2 --allow-run-as-root
             $<TARGET_FILE:delta_dem_amrex_test>)
+endif()
+
+# --- amrex_grids ------------------------------------------------------------
+# Self-contained experiment tree (own CMakeLists, own targets). Only added when
+# the vendored AMReX install exists; it is not part of the delta binaries.
+if(DELTA_BUILD_AMREX_CONTACT)
+  if(EXISTS "${PROJECT_SOURCE_DIR}/third_party/amrex-install/lib/libamrex_3d.a")
+    add_subdirectory(amrex_grids)
+  else()
+    message(STATUS "amrex_grids skipped: third_party/amrex-install not built")
+  endif()
 endif()

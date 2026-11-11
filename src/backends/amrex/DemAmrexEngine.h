@@ -36,7 +36,7 @@
 #include <AMReX_DistributionMapping.H>
 #include <AMReX_Geometry.H>
 
-#include "../data/ParticleRecord.h"
+#include "core/data/ParticleRecord.h"
 #include "DemParticleContainer.h"
 
 namespace delta {
