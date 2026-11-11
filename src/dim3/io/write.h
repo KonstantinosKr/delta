@@ -1,0 +1,64 @@
+/*
+ * write.h
+ *
+ *  Created on: 2 Apr 2017
+ *      Author: konstantinos
+ */
+
+#ifndef DELTA_IO_WRITE_H_
+#define DELTA_IO_WRITE_H_
+
+#include <vector>
+#include <string>
+#include "stdio.h"
+#include "string.h"
+
+
+#include "core/data/ParticleRecord.h"
+#include "../geometry/structure/Mesh.h"
+#include "../world/structure/Object.h"
+#include "core/io/MeshBuffer.h"
+
+#include <vtkSmartPointer.h>
+#include <vtkTetra.h>
+#include <vtkLine.h>
+#include <vtkDataArray.h>
+#include <vtkDoubleArray.h>
+#include <vtkIntArray.h>
+#include <vtkMath.h>
+#include <vtkCellArray.h>
+#include <vtkXMLUnstructuredGridReader.h>
+#include <vtkXMLUnstructuredGridWriter.h>
+#include <vtkUnstructuredGrid.h>
+#include <vtkPointData.h>
+
+#include <vtkCellData.h>
+#include <vtkDoubleArray.h>
+#include <vtkPoints.h>
+#include <vtkPolyData.h>
+#include <vtkPointData.h>
+#include <vtkSmartPointer.h>
+#include <vtkXMLPolyDataReader.h>
+#include <vtkFloatArray.h>
+#include <vtkMath.h>
+#include <string>
+
+namespace delta {
+  namespace core {
+	namespace io {
+
+	void writeGeometryToVTKVTK(
+		std::string 									path,
+		int 											step,
+		std::vector<delta::core::data::ParticleRecord>& geometries);
+
+	void writeGridGeometryToVTKVTK(
+		std::string 						path,
+		int 								step,
+		std::vector<std::array<iREAL, 6>> 	boundary);
+
+	}
+  }
+}
+
+#endif /* DELTA_CORE_WRITE_H_ */

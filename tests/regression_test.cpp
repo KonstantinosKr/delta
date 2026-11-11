@@ -26,14 +26,14 @@
 #include <stdexcept>
 #include <vector>
 
-#include "backends/serial/Engine.h"
+#include "dim3/backends/serial/Engine.h"
 #include "core/data/Meta.h"
 #include "core/data/Structure.h"
 #include "core/io/read.h"
-#include "dynamics/dynamics.h"
-#include "geometry/material.h"
-#include "world/World.h"
-#include "world/structure/Object.h"
+#include "dim3/dynamics/dynamics.h"
+#include "dim3/geometry/material.h"
+#include "dim3/world/World.h"
+#include "dim3/world/structure/Object.h"
 
 #define CHECK(cond)                                                        \
   do {                                                                     \

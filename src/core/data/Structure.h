@@ -10,7 +10,7 @@
 
 #include <vector>
 #include "ParticleRecord.h"
-#include "../../world/structure/Object.h"
+#include "../../dim3/world/structure/Object.h"
 
 namespace delta {
   namespace core {

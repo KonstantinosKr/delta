@@ -38,7 +38,7 @@
 #include <random>
 #include <vector>
 
-#include "dem2d/Dem2D.h"
+#include "dim2/Dem2D.h"
 
 using namespace delta::dem2d;
 

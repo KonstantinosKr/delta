@@ -18,8 +18,8 @@
 #include <fstream>
 #include <cmath>
 
-#include "../../geometry/structure/Mesh.h"
-#include "../../world/scenario/scenarios.h"
+#include "../../dim3/geometry/structure/Mesh.h"
+#include "../../dim3/world/scenario/scenarios.h"
 
 
 namespace delta {

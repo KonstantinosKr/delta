@@ -15,9 +15,9 @@
 #include <vector>
 
 #include "core/data/Structure.h"
-#include "core/io/write.h"
-#include "geometry/mesh/cube.h"
-#include "world/structure/Object.h"
+#include "dim3/io/write.h"
+#include "dim3/geometry/mesh/cube.h"
+#include "dim3/world/structure/Object.h"
 
 namespace {
 

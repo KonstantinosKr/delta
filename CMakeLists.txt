@@ -37,12 +37,12 @@ find_package(assimp QUIET)
 # not depend on dem2d and dem2d only reaches core/io/MeshBuffer.h, which is
 # header-only VTK-free, so excluding it is safe in both directions.
 file(GLOB_RECURSE DEM2D_SOURCES CONFIGURE_DEPENDS
-  "${PROJECT_SOURCE_DIR}/src/dem2d/*.cpp")
+  "${PROJECT_SOURCE_DIR}/src/dim2/*.cpp")
 file(GLOB_RECURSE DELTA_SOURCES CONFIGURE_DEPENDS
   "${PROJECT_SOURCE_DIR}/src/*.cpp")
 if(NOT DELTA_USE_AMREX)
   # The AMReX backend is AMReX-only; keep it out of the serial build.
-  list(FILTER DELTA_SOURCES EXCLUDE REGEX "/backends/amrex/")
+  list(FILTER DELTA_SOURCES EXCLUDE REGEX "/dim3/backends/amrex/")
 endif()
 list(REMOVE_ITEM DELTA_SOURCES ${DEM2D_SOURCES})
 
@@ -55,7 +55,7 @@ add_library(delta_lib STATIC ${DELTA_SOURCES})
 target_compile_definitions(delta_lib PUBLIC iREAL=double byteAlignment=32)
 #Scenario assets (hopper.mbfcp, *.STL) sit at the repo root; pin the path so the
 #binaries run from any cwd instead of only from build/.
-target_compile_definitions(delta_lib PUBLIC DELTA_INPUT_DIR="${PROJECT_SOURCE_DIR}/input")
+target_compile_definitions(delta_lib PUBLIC DELTA_INPUT_DIR="${PROJECT_SOURCE_DIR}/input/dim3")
 if(NOT DELTA_USE_AMREX)
   # Nothing in src/ references Dim3 any more, and the macro mangles
   # amrex::Dim3 in the AMReX headers, so it is serial-build only.
@@ -68,11 +68,11 @@ if(assimp_FOUND)
 endif()
 
 # Links both: the 2D writer lives in dem2d and pulls MeshBuffer out of delta_lib.
-add_library(delta_dem2d_io STATIC "${PROJECT_SOURCE_DIR}/src/dem2d/Dem2DWrite.cpp")
+add_library(delta_dem2d_io STATIC "${PROJECT_SOURCE_DIR}/src/dim2/Dem2DWrite.cpp")
 target_link_libraries(delta_dem2d_io PUBLIC delta_dem2d delta_lib)
 vtk_module_autoinit(TARGETS delta_dem2d_io MODULES ${VTK_LIBRARIES})
 
-add_executable(delta "${PROJECT_SOURCE_DIR}/apps/dem/main.cpp")
+add_executable(delta "${PROJECT_SOURCE_DIR}/apps/dem3d/main.cpp")
 target_link_libraries(delta PRIVATE delta_lib)
 vtk_module_autoinit(TARGETS delta MODULES ${VTK_LIBRARIES})
 

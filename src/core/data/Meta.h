@@ -9,7 +9,7 @@
 #define DELTA_CORE_DATA_META_H_
 
 #include "ParticleRecord.h"
-#include "../../contact/contactpoint.h"
+#include "../../dim3/contact/contactpoint.h"
 
 namespace delta {
   namespace core {

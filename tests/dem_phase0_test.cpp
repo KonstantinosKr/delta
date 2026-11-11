@@ -21,10 +21,10 @@
 #include <utility>
 #include <vector>
 
-#include "backends/serial/Engine.h"
+#include "dim3/backends/serial/Engine.h"
 #include "core/data/Meta.h"
-#include "geometry/material.h"
-#include "world/structure/Object.h"
+#include "dim3/geometry/material.h"
+#include "dim3/world/structure/Object.h"
 
 #define CHECK(cond)                                                        \
   do {                                                                     \

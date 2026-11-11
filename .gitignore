@@ -45,3 +45,6 @@ viztest/
 
 # Vendored AMReX checkout/build/install
 /third_party/
+
+# Tracked-by-mistake artefacts: the engine writes these, git should not.
+/output/

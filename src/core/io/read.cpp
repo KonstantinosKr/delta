@@ -11,7 +11,7 @@
 #include <assimp/scene.h>           // Output data structure
 #include <assimp/postprocess.h>     // Post processing flags
 
-#include "../../geometry/structure/Mesh.h"
+#include "../../dim3/geometry/structure/Mesh.h"
 
 delta::geometry::mesh::Mesh *delta::core::io::readVTKGeometry(
 	char* fileName)

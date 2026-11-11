@@ -38,8 +38,8 @@
 #include <string>
 #include <vector>
 
-#include "dem2d/Dem2D.h"
-#include "dem2d/Dem2DWrite.h"
+#include "dim2/Dem2D.h"
+#include "dim2/Dem2DWrite.h"
 
 using namespace delta::dem2d;
 

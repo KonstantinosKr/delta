@@ -23,8 +23,8 @@
  */
 
 #include "delta.h"
-#include "io/write.h"
-#include "io/read.h"
+#include "dim3/io/write.h"
+#include "core/io/read.h"
 
 delta::core::Delta::Delta()
 {
