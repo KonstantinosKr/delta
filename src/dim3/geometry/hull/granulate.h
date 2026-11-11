@@ -58,6 +58,18 @@ namespace delta {
 		);
 
 		/*
+		 * Deterministic variant of the 2D generator. The no-seed overload uses
+		 * the process-wide rand() state, so it depends on call order.
+		 */
+		void generateParticle(
+		  iREAL    				center[2],
+		  iREAL    				h,
+		  std::vector<iREAL>&  	xCoordinates,
+		  std::vector<iREAL>&  	yCoordinates,
+		  unsigned 				seed
+		);
+
+		/*
 		 *  Generate Particle
 		 *
 		 *  Creates granulate using hull algorithm.
@@ -85,6 +97,30 @@ namespace delta {
 		  iREAL    				center[3],
 		  iREAL    				h,
 		  int 					noPointsPerParticle);
+
+		/*
+		 * Deterministic variant: the point cloud comes from a generator owned
+		 * by this call, so the same seed gives the same granulate on every run
+		 * and on every machine.
+		 *
+		 * Use this when a scenario has to be reproducible. The overload above
+		 * consumes the process-wide drand48() stream instead, which means the
+		 * shape depends on whatever ran before it - that behaviour is kept
+		 * because existing scenario runs depend on it.
+		 */
+		delta::geometry::mesh::Mesh *generateParticle(
+		  iREAL    				center[3],
+		  iREAL    				h,
+		  int 					noPointsPerParticle,
+		  unsigned 				seed);
+
+		/* Shared implementation behind the two overloads above. */
+		delta::geometry::mesh::Mesh *generateParticle(
+		  iREAL    				center[3],
+		  iREAL    				h,
+		  int 					noPointsPerParticle,
+		  unsigned 				seed,
+		  bool 					seeded);
 	  }
 	}
   }
