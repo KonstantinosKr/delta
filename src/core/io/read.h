@@ -41,10 +41,8 @@ namespace delta {
 	  	  /*
 	  	   * SURFACE_MATERIALS block: the contact law the file asks for.
 	  	   *
-	  	   * The serial contact model still uses the compiled-in SSPRING/SDAMPER
-	  	   * (contact/forces/forces.cpp), so these are reported to the caller
-	  	   * instead of being parsed and dropped. Making them authoritative is a
-	  	   * physics change and needs a fresh baseline.
+	  	   * A DASHPOT of -1 in the file means "not given"; it is reported as -1
+	  	   * and the caller keeps the default. See core::ContactParams.
 	  	   */
 	  	  struct SurfaceMaterial
 	  	  {

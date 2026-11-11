@@ -462,8 +462,12 @@ namespace delta {
         const iREAL mEff = 1.0 / invMassSum;
 
         /* Damping opposes the approach: vRel along the a->b normal is negative
-         * while the pair closes, so the correct damper is -c * vn. (Note the 3D
-         * core's forces.cpp adds +c*vn here, which injects energy; not copied.) */
+         * while the pair closes, so the correct damper is -c * vn. That is not
+         * a disagreement with the 3D core: it uses a b->a normal
+         * (contactNormal(PA,Q) = (PA-Q)/|..|), where +c*vn is the same damper.
+         * Measured - the 3D form is dissipative for both approaching and
+         * receding pairs, and the flipped form adds energy in both, so it is
+         * the sign convention that differs, not the physics. */
         iREAL fn = _params.stiffness * c.depth
                  - 2.0 * _params.dampingRatio * std::sqrt(_params.stiffness * mEff) * vn;
         if (fn < 0.0) fn = 0.0;   /* spring-dashpot carries no tension */

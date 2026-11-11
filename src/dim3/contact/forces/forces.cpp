@@ -8,17 +8,30 @@
 //#define SPRING 50
 //#define DAMPER 0.2
 //mine
-#define SPRING 1E4
-#define DAMPER 0.5
 
-#define FRICTION 0.5
 
 //sphere parameters for piling simulation
-#define SSPRING 2E5
-#define SDAMPER 0.5
 #define SFRICTIONGOLD 1
 #define SFRICTIONWOOD 1
 #define SFRICTIONROLLING 0.5
+
+namespace {
+  delta::core::ContactParams& paramStore()
+  {
+	static delta::core::ContactParams p;
+	return p;
+  }
+}
+
+const delta::core::ContactParams& delta::contact::forces::params()
+{
+  return paramStore();
+}
+
+void delta::contact::forces::setParams(const delta::core::ContactParams& p)
+{
+  paramStore() = p;
+}
 
 void delta::contact::forces::spring(
     iREAL normal[3],
@@ -209,9 +222,9 @@ void delta::contact::forces::spring(
 
   iREAL velocity = (vij[0]*normal[0]) + (vij[1]*normal[1]) + (vij[2]*normal[2]);
 
-  iREAL damp = DAMPER * 2.0 * sqrt(ma*SPRING)*velocity;
+  iREAL damp = params().dashpot * 2.0 * sqrt(ma*params().spring)*velocity;
 
-  iREAL force = SPRING*depth+damp;
+  iREAL force = params().spring*depth+damp;
 
   f[0] = force*normal[0];
   f[1] = force*normal[1];
@@ -237,9 +250,9 @@ void delta::contact::forces::springSphere(
 
   iREAL velocity = (relativeVelocity[0]*normal[0]) + (relativeVelocity[1]*normal[1]) + (relativeVelocity[2]*normal[2]);
 
-  iREAL damp = 2.0 * SDAMPER * sqrt(SSPRING*ma)*velocity;
+  iREAL damp = 2.0 * params().dashpot * sqrt(params().spring*ma)*velocity;
 
-  iREAL force = SSPRING*depth + damp;
+  iREAL force = params().spring*depth + damp;
 
   f[0] = force*normal[0];
   f[1] = force*normal[1];
@@ -282,9 +295,9 @@ void delta::contact::forces::friction(
       friction[2] =  -vt[2]*SFRICTIONWOOD*force;
     }*/
   } else {
-    friction[0] =  -vt[0]*FRICTION*force;
-    friction[1] =  -vt[1]*FRICTION*force;
-    friction[2] =  -vt[2]*FRICTION*force;
+    friction[0] =  -vt[0]*params().friction*force;
+    friction[1] =  -vt[1]*params().friction*force;
+    friction[2] =  -vt[2]*params().friction*force;
   }
 }
 
@@ -455,7 +468,7 @@ void delta::contact::forces::getContactForce(
   {
     delta::contact::forces::springSphere(conpnt.normal, conpnt.depth, vij, massA, massB, f, forc);
     #ifdef CONTACTSTATS
-    std::cout << "id=" << std::fixed << std::setprecision(10) << 0.0 << ", SDAMPER=" << std::fixed << std::setprecision(10) << SDAMPER << ", SSPRING=" << std::fixed << std::setprecision(10) << SSPRING << std::endl
+    std::cout << "id=" << std::fixed << std::setprecision(10) << 0.0 << ", SDAMPER=" << std::fixed << std::setprecision(10) << params().dashpot << ", SSPRING=" << std::fixed << std::setprecision(10) << params().spring << std::endl
               << "vij[0]=" << std::fixed << std::setprecision(10) << vij[0] << ", vij[1]=" << std::fixed << std::setprecision(10) << vij[1] << ", vij[2]" << std::fixed << std::setprecision(10) << vij[2] << std::endl
               << "vij*normal=" << std::fixed << std::setprecision(10) << (vij[0]*conpnt.normal[0]) + (vij[1]*conpnt.normal[1]) + (vij[2]*conpnt.normal[2]) << ", depth=" << std::fixed << std::setprecision(10) << conpnt.depth << ", spring*depth=" << std::fixed << std::setprecision(10) << SPRING*conpnt.depth << std::endl
               << "totalforce=" << std::fixed << std::setprecision(10) << forc;

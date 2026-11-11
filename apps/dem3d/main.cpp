@@ -12,6 +12,8 @@
 #include "dim3/io/write.h"
 #include "core/data/Meta.h"
 #include "dim3/geometry/material.h"
+#include "core/ContactParams.h"
+#include "dim3/contact/forces/forces.h"
 #include "dim3/world/scenario/scenarios.h"
 
 using namespace std;
@@ -80,15 +82,37 @@ int main(int argc, const char *argv[]) {
 		epsilon = 0.002;
 		delta::core::io::Scenario scenario = delta::core::io::readmbfcp(hopperFile, particles, epsilon);
 		gravity = scenario.gravity;
-		//The file's contact law is now reported instead of dropped. The engine
-		//still uses its compiled-in SSPRING/SDAMPER (contact/forces/forces.cpp),
-		//so a file that declares other values shows up as a visible mismatch.
 		std::cout << "surface: friction=" << scenario.surface.friction
 				  << " spring=" << scenario.surface.spring
 				  << " dashpot=" << scenario.surface.dashpot
 				  << " | bulk: density=" << scenario.bulk.density
 				  << " young=" << scenario.bulk.young
 				  << " poisson=" << scenario.bulk.poisson << std::endl;
+
+		//--apply-scenario-contact makes the file authoritative instead of only
+		//reported. Off by default: a file whose SPRING differs from the old
+		//compiled-in 2E5 changes every trajectory, so that is opt-in.
+		for(int a=1; a<argc; a++)
+		{
+			if(std::string(argv[a]) == "--apply-scenario-contact")
+			{
+				delta::core::ContactParams params;   // defaults = old macros
+				if(scenario.surface.spring > 0.0)  {params.spring = scenario.surface.spring;}
+				//-1 is the file's "not given", and the ratio is dimensionless while
+				//the file's DASHPOT is a coefficient. Only take it when it is a
+				//plausible ratio, otherwise a raw coefficient would over-damp by
+				//orders of magnitude.
+				if(scenario.surface.dashpot >= 0.0 && scenario.surface.dashpot <= 1.0)
+				{
+					params.dashpot = scenario.surface.dashpot;
+				}
+				if(scenario.surface.friction > 0.0) {params.friction = scenario.surface.friction;}
+				delta::contact::forces::setParams(params);
+				std::cout << "contact: using scenario values -> spring=" << params.spring
+						  << " dashpot=" << params.dashpot
+						  << " friction=" << params.friction << std::endl;
+			}
+		}
 	}
 	else
 	{

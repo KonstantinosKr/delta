@@ -1,4 +1,5 @@
 #include "dim3/contact/contactpoint.h"
+#include "core/ContactParams.h"
 #include <vector>
 #include <cmath>
 #include <iostream>
@@ -24,6 +25,17 @@
 namespace delta {
   namespace contact {
 	namespace forces {
+
+		/*
+		 * Contact-law parameters for this process. Defaults are the old
+		 * SSPRING/SDAMPER/FRICTION macro values, so a run that never calls
+		 * setParams() behaves exactly as before. Free functions rather than a
+		 * constructor argument because springSphere() and friction() are called
+		 * from the per-contact loops where threading a struct through every call
+		 * would churn the whole file for no gain.
+		 */
+		const delta::core::ContactParams& params();
+		void setParams(const delta::core::ContactParams& p);
 
 		/*
 		* Spring Force
