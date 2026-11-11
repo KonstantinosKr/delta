@@ -305,7 +305,7 @@ void delta::world::configuration::nonUniformlyDistributedTotalMass(
     std::array<iREAL, 3> pos = objects[i].getCentre();
     iREAL position[3] = {pos[0], pos[1], pos[2]};
 
-    delta::geometry::mesh::Mesh *mesh = delta::geometry::primitive::cube::generateHullCube(position, radius*2, radius*2, radius*2, 0, 0, 0, 0);
+    delta::geometry::mesh::Mesh *mesh = delta::geometry::hull::generateHullCube(position, radius*2, radius*2, radius*2, 0, 0, 0, 0);
     objects[i].setMesh(*mesh);
 
     iREAL mt = mesh->computeMass(material);
@@ -466,7 +466,7 @@ void delta::world::configuration::nonUniformlyDistributedTotalMass(
 
      iREAL position[3] = { objects[i].getCentre()[0], objects[i].getCentre()[1], objects[i].getCentre()[2]};
 
-    delta::geometry::mesh::Mesh *mesh = delta::geometry::primitive::cube::generateHullCube(position, radius*2, radius*2, radius*2, 0, 0, 0, 0);
+    delta::geometry::mesh::Mesh *mesh = delta::geometry::hull::generateHullCube(position, radius*2, radius*2, radius*2, 0, 0, 0, 0);
     objects[i].setMesh(*mesh);
 
      iREAL mt = mesh->computeMass(material);

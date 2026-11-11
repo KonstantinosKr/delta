@@ -1,7 +1,7 @@
-#include <geometry/shape/cube.h>
-#include <geometry/shape/granulate.h>
-#include <geometry/shape/graphite.h>
-#include <geometry/shape/hopper.h>
+#include <geometry/mesh/cube.h>
+#include <geometry/hull/granulate.h>
+#include <geometry/loaders/graphite.h>
+#include <geometry/mesh/hopper.h>
 #include "../structure/Object.h"
 
 #include <stdio.h>

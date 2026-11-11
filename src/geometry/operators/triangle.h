@@ -33,7 +33,7 @@
 #include <vector>
 #include <array>
 #include "../../world/structure/Object.h"
-#include "../shape/surface.h"
+#include "../mesh/surface.h"
 #include "../structure/Mesh.h"
 
 namespace delta {

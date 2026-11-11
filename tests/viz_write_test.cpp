@@ -16,7 +16,7 @@
 
 #include "core/data/Structure.h"
 #include "core/io/write.h"
-#include "geometry/shape/cube.h"
+#include "geometry/mesh/cube.h"
 #include "world/structure/Object.h"
 
 namespace {

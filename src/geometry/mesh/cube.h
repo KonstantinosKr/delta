@@ -106,42 +106,10 @@ namespace delta {
 		 );
 
 		/*
-		 *  Generate Cube
-		 *
-		 *  Creates cube using hull algorithm.
-		 *
-		 *  @param center
-		 *  @param diagonal
-		 *  @returns mesh
+		 * generateHullCube() moved to geometry/hull/hullcube.h: it builds the box
+		 * through the Delaunay hull, so it is an approximation, unlike the
+		 * generateCube() overloads above.
 		 */
-		 delta::geometry::mesh::Mesh *generateHullCube(
-		   iREAL  center[3],
-		   iREAL  diagonal);
-
-		/*
-		 *  Generate Hull Cube
-		 *
-		 *  Creates cube using hull algorithm.
-		 *
-		 *  @param center : center of geometry
-		 *  @param x
-		 *  @param y
-		 *  @param z
-		 *  @param alphaX : rotation along x axis
-		 *  @param alphaY : rotation along y axis
-		 *  @param alphaZ : rotation along z axis
-		 *  @param meshmultiplier
-		 *  @returns mesh
-		 */
-		 delta::geometry::mesh::Mesh *generateHullCube(
-		   iREAL center[3],
-		   iREAL x,
-		   iREAL y,
-		   iREAL z,
-		   iREAL alphaX,
-		   iREAL alphaY,
-		   iREAL alphaZ,
-		   int   meshmultiplier);
 	  }
 	}
   }

@@ -1,4 +1,4 @@
-#include <geometry/shape/granulate.h>
+#include <geometry/hull/granulate.h>
 
 void delta::geometry::primitive::granulate::generateParticle(
   iREAL  center[2],

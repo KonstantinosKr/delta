@@ -5,13 +5,14 @@
  *      Author: konstantinos
  */
 
-#include <geometry/shape/hopper.h>
+#include <geometry/mesh/hopper.h>
 #include "scenarios.h"
 #include "configuration.h"
 #include "../../core/io/read.h"
-#include "../../geometry/shape/graphite.h"
-#include "../../geometry/shape/cube.h"
-#include "../../geometry/shape/granulate.h"
+#include "../../geometry/loaders/graphite.h"
+#include "../../geometry/mesh/cube.h"
+#include "../../geometry/hull/hullcube.h"
+#include "../../geometry/hull/granulate.h"
 #include "../../geometry/structure/Mesh.h"
 #include "../../geometry/material.h"
 
@@ -71,7 +72,7 @@ void delta::world::scenarios::hopper(
   position = {centre[0], 0.35, centre[2]};
 
   iREAL po[3] = {position[0], position[1], position[2]};
-  delta::geometry::mesh::Mesh *cube = delta::geometry::primitive::cube::generateHullCube(
+  delta::geometry::mesh::Mesh *cube = delta::geometry::hull::generateHullCube(
 	  po, width, height, width, 0, 0, 0, 0);
   delta::world::structure::Object objectFloor(
 	  "cube", 0, cube, position,
@@ -383,7 +384,7 @@ void delta::world::scenarios::friction(
   std::array<iREAL, 3> position = {centre[0], centre[1], centre[2]};
 
   ////////////////////////////////////////////////////////////////////////////////
-  delta::geometry::mesh::Mesh *geometry = delta::geometry::primitive::cube::generateHullCube(
+  delta::geometry::mesh::Mesh *geometry = delta::geometry::hull::generateHullCube(
 	  centre, width, height, width, 0, 0, 0, 0);
 
   delta::world::structure::Object objectFloor(
@@ -411,7 +412,7 @@ void delta::world::scenarios::friction(
 	else
 	{
 	  iREAL pos[3] = {position[0], position[1], position[2]};
-	  delta::geometry::mesh::Mesh *geometry = delta::geometry::primitive::cube::generateHullCube(
+	  delta::geometry::mesh::Mesh *geometry = delta::geometry::hull::generateHullCube(
 		  pos, rad, rad, rad, 0, 0, 0, 0);
 	  delta::world::structure::Object objectA(
 		  "cube", 1, geometry, position,
@@ -436,7 +437,7 @@ void delta::world::scenarios::friction(
 	else
 	{
 	  iREAL pos[3] = {position[0], position[1], position[2]};
-	  delta::geometry::mesh::Mesh *geometry = delta::geometry::primitive::cube::generateHullCube(
+	  delta::geometry::mesh::Mesh *geometry = delta::geometry::hull::generateHullCube(
 		  pos, rad, rad, rad, 0, 0, 0, 0);
 	  delta::world::structure::Object objectA(
 		  "cube", 1, geometry, position,
@@ -461,7 +462,7 @@ void delta::world::scenarios::friction(
 	else
 	{
 	  iREAL pos[3] = {position[0], position[1], position[2]};
-	  delta::geometry::mesh::Mesh *geometry = delta::geometry::primitive::cube::generateHullCube(pos, rad, rad, rad, 0, 0, 0, 0);
+	  delta::geometry::mesh::Mesh *geometry = delta::geometry::hull::generateHullCube(pos, rad, rad, rad, 0, 0, 0, 0);
 	  delta::world::structure::Object objectA(
 		  "cube", 1, geometry, position,
 		  delta::geometry::material::MaterialType::WOOD,
@@ -507,7 +508,7 @@ void delta::world::scenarios::freeFall(
   } else if(shape == "cube")
   {
 	iREAL pos[3] = {position[0], position[1], position[2]};
-	delta::geometry::mesh::Mesh *geometry = delta::geometry::primitive::cube::generateHullCube(
+	delta::geometry::mesh::Mesh *geometry = delta::geometry::hull::generateHullCube(
 		pos, rad, rad, rad, 0, 0, 0, 0);
 
 	delta::world::structure::Object objectA(
@@ -548,7 +549,7 @@ void delta::world::scenarios::nuclear(
   std::array<iREAL, 3> position = {centre[0], centre[1], centre[2]};
 
   iREAL pos[3] = {position[0], position[1], position[2]};
-  delta::geometry::mesh::Mesh *geometry = delta::geometry::primitive::cube::generateHullCube(
+  delta::geometry::mesh::Mesh *geometry = delta::geometry::hull::generateHullCube(
 	  pos, width, height, width, 0, 0, 0, 0);
   delta::world::structure::Object objectFloor(
 	  "cube", 0, geometry, position,

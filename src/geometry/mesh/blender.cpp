@@ -22,7 +22,7 @@
  SOFTWARE.
  */
 
-#include <geometry/shape/blender.h>
+#include <geometry/mesh/blender.h>
 
 void delta::geometry::hardcoded::generateBlender(
 		iREAL   center[3],

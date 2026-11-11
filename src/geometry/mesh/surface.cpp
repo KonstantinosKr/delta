@@ -21,7 +21,7 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
-#include <geometry/shape/surface.h>
+#include <geometry/mesh/surface.h>
 #include "../operators/hull/hull.h"
 #include "../operators/hull/alg.h"
 
