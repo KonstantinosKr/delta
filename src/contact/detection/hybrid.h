@@ -28,11 +28,6 @@
 #include "../detection/penalty.h"
 #include <vector>
 
-#ifdef peanoCall
-	#include "peano/utils/Loop.h"
-	#include "tarch/multicore/Lock.h"
-	#include "tarch/multicore/BooleanSemaphore.h"
-#endif
 namespace delta {
   namespace contact {
 	namespace detection {

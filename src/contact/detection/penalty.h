@@ -29,11 +29,6 @@
 #include <float.h>
 #include "../../core/algo.h"
 
-#ifdef peanoCall
-#include "peano/utils/Loop.h"
-#include "tarch/multicore/Lock.h"
-#include "tarch/multicore/BooleanSemaphore.h"
-#endif
 
 #define MaxNumberOfNewtonIterations 16
 

@@ -32,12 +32,24 @@ find_package(VTK REQUIRED COMPONENTS
   CommonCore CommonDataModel IOLegacy IOXML)
 find_package(assimp QUIET)
 
+# The 2D solver is plain C++ and must stay buildable without VTK, so it is its
+# own target and delta_lib takes a recursive glob minus dem2d. The 3D IO does
+# not depend on dem2d and dem2d only reaches core/io/MeshBuffer.h, which is
+# header-only VTK-free, so excluding it is safe in both directions.
+file(GLOB_RECURSE DEM2D_SOURCES CONFIGURE_DEPENDS
+  "${PROJECT_SOURCE_DIR}/src/dem2d/*.cpp")
 file(GLOB_RECURSE DELTA_SOURCES CONFIGURE_DEPENDS
   "${PROJECT_SOURCE_DIR}/src/*.cpp")
 if(NOT DELTA_USE_AMREX)
   # The AMReX backend is AMReX-only; keep it out of the serial build.
   list(FILTER DELTA_SOURCES EXCLUDE REGEX "/backends/amrex/")
 endif()
+list(REMOVE_ITEM DELTA_SOURCES ${DEM2D_SOURCES})
+
+# VTK-free 2D solver: Vec2 + Dem2D.cpp, no writer, no VTK, no assimp.
+add_library(delta_dem2d STATIC ${DEM2D_SOURCES})
+target_compile_definitions(delta_dem2d PUBLIC iREAL=double)
+target_include_directories(delta_dem2d PUBLIC ${PROJECT_SOURCE_DIR}/src)
 
 add_library(delta_lib STATIC ${DELTA_SOURCES})
 target_compile_definitions(delta_lib PUBLIC iREAL=double byteAlignment=32)
@@ -54,6 +66,11 @@ target_link_libraries(delta_lib PUBLIC ${VTK_LIBRARIES})
 if(assimp_FOUND)
   target_link_libraries(delta_lib PUBLIC assimp::assimp)
 endif()
+
+# Links both: the 2D writer lives in dem2d and pulls MeshBuffer out of delta_lib.
+add_library(delta_dem2d_io STATIC "${PROJECT_SOURCE_DIR}/src/dem2d/Dem2DWrite.cpp")
+target_link_libraries(delta_dem2d_io PUBLIC delta_dem2d delta_lib)
+vtk_module_autoinit(TARGETS delta_dem2d_io MODULES ${VTK_LIBRARIES})
 
 add_executable(delta "${PROJECT_SOURCE_DIR}/apps/dem/main.cpp")
 target_link_libraries(delta PRIVATE delta_lib)
@@ -82,16 +99,17 @@ add_test(NAME dem_phase0 COMMAND delta_dem_test)
 # 2D circle/triangle core. Dem2D.cpp is plain C++; Dem2DWrite.cpp pulls in
 # VTK through delta_lib to emit the same .vtu/.pvd convention as the 3D path.
 add_executable(delta_dem2d_test "${PROJECT_SOURCE_DIR}/tests/dem2d_test.cpp")
-target_link_libraries(delta_dem2d_test PRIVATE delta_lib)
-vtk_module_autoinit(TARGETS delta_dem2d_test MODULES ${VTK_LIBRARIES})
+# Physics only: no writer, no VTK. This is the target that proves the 2D core
+# stands alone.
+target_link_libraries(delta_dem2d_test PRIVATE delta_dem2d)
 add_test(NAME dem2d COMMAND delta_dem2d_test)
 
 add_executable(delta_dem2d_demo "${PROJECT_SOURCE_DIR}/tests/dem2d_demo.cpp")
-target_link_libraries(delta_dem2d_demo PRIVATE delta_lib)
+target_link_libraries(delta_dem2d_demo PRIVATE delta_dem2d_io)
 vtk_module_autoinit(TARGETS delta_dem2d_demo MODULES ${VTK_LIBRARIES})
 
 add_executable(delta_dem2d_viz_test "${PROJECT_SOURCE_DIR}/tests/dem2d_viz_test.cpp")
-target_link_libraries(delta_dem2d_viz_test PRIVATE delta_lib)
+target_link_libraries(delta_dem2d_viz_test PRIVATE delta_dem2d_io)
 vtk_module_autoinit(TARGETS delta_dem2d_viz_test MODULES ${VTK_LIBRARIES})
 add_test(NAME dem2d_viz COMMAND delta_dem2d_viz_test)
 
