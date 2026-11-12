@@ -1,3 +1,5 @@
+# STALE: targets the removed amrex_contact contact_dem binaries; port to
+# `build/delta --backend amrex --mode <mode>` before trusting any output.
 #!/usr/bin/env python3
 """Benchmark report for the amrex-contact app CSV output.
 

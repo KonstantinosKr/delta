@@ -6,6 +6,8 @@ project(delta LANGUAGES C CXX)
 #   apps/               entry points (one main.cpp per app)
 #   tests/              one executable per suite
 #   amrex_contact/      standalone contact/morphology experiment tree
+#   docs/               design notes and the measured morphology results
+#   tools/              bootstrap and benchmark scripts
 #   third_party/        vendored AMReX install (git-ignored, tools/build_amrex.sh)
 
 # Vendored AMReX, if it was built (amrex_contact/tools/build_amrex.sh).
@@ -17,7 +19,7 @@ find_package(AMReX CONFIG QUIET)
 # install is found, so a machine without one builds serial-only instead of
 # failing. -DDELTA_USE_AMREX=OFF still forces the serial build.
 option(DELTA_USE_AMREX "Build the AMReX-backed backend" ${AMReX_FOUND})
-option(DELTA_BUILD_AMREX_CONTACT "Build the amrex_contact experiment tree" ON)
+option(DELTA_BUILD_AMREX_CONTACT "Build the amrex_contact thesis reference tree" OFF)
 
 if(DELTA_USE_AMREX)
   # AMReX headers need C++17 and its particle machinery needs C++20.

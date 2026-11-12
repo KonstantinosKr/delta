@@ -11,12 +11,16 @@ src/dim3/     the 3D solver
   dynamics/   integration, inertia, rotation
   world/      objects, scenarios, obstacles
   io/         VTU writer
-  backends/   serial (Engine) and amrex (DemAmrexEngine, particle container)
+  backends/   serial (Engine) and amrex (DemAmrexEngine, particle container,
+              GridHierarchy for the four grid modes, DtController)
 apps/         one directory per app
   dem3d/      main.cpp, backend.h, tools/ (scenario generators), viz/ (ParaView sessions)
   dem2d/      main.cpp
 tests/        one executable per suite (ctest)
-amrex_contact/  standalone contact/broadphase experiment tree (own CMakeLists)
+docs/         SPEC, thesis mapping, and the measured morphology results
+tools/        build_amrex.sh (vendored AMReX bootstrap), bench/ (measurements)
+amrex_contact/  thesis reference implementation of the hierarchy + contact law,
+                opt-in (-DDELTA_BUILD_AMREX_CONTACT=ON); nothing links it
 third_party/  vendored AMReX install (git-ignored)
 input/dim3/   scenarios (*.mbfcp) and geometry (*.STL)
 output/       generated artefacts, git-ignored

@@ -1,8 +1,14 @@
 #!/usr/bin/env bash
+#
+# STALE: this harness still drives the amrex_contact `contact_dem` binaries,
+# which were removed when the morphologies moved into the delta backend. It has
+# not been ported. What it should do now: run `build/delta --backend amrex
+# --mode <mode>` per morphology and `ctest -R "grid_modes|dt_controller"` for the
+# equivalence checks, then regenerate docs/RESULTS.md from those numbers.
 # Full verification: unit tests, cross-mode contact equivalence, benchmarks.
 # Produces the numbers quoted in docs/RESULTS.md. Runtime ~1 min on 2 cores.
 set -euo pipefail
-ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "${ROOT}"
 
 BIN="${ROOT}/build/contact_dem"
