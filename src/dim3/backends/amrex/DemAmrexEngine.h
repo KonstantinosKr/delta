@@ -67,8 +67,18 @@ namespace delta {
   namespace core {
     namespace parallel {
 
+/* Which grid the particles are put on. NoGrid is the original uniform tiling;
+ * Regular refines to the smallest body so one large body cannot coarsen the
+ * grid for everyone (thesis 6.3). Adaptive and Reluctant are not ported yet. */
+enum class GridMode
+{
+  NoGrid,
+  Regular
+};
+
 struct DemParallelConfig
 {
+  GridMode mode = GridMode::NoGrid;
   int maxGridSize = 32;
   int nneighbor = 1;
   double cellsPerReach = 1.0;
@@ -156,6 +166,7 @@ public:
   bool findParticle(int globalId, int& lev, int& grid, int& tile, int& index) const;
 
   iREAL reach() const { return _reach; }
+  iREAL minReach() const { return _minReach; }
   iREAL dx() const { return _dxMin; }
   int nneighbor() const { return _config.nneighbor; }
   const DemParticleContainer& container() const { return *_pc; }
@@ -184,6 +195,7 @@ private:
 
   long long _expectedParticles = 0;
   iREAL     _reach = 0.0;
+  iREAL     _minReach = 0.0;
   iREAL     _dxMin = 0.0;
   iREAL     _maxHalo = 0.0;
   iREAL     _maxForce = 0.0;

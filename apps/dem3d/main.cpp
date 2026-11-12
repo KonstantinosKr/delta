@@ -15,6 +15,10 @@
 #include "core/ContactParams.h"
 #include "dim3/contact/forces/forces.h"
 #include "dim3/world/scenario/scenarios.h"
+#include "backend.h"
+#ifdef DELTA_USE_AMREX
+#include <AMReX.H>
+#endif
 
 using namespace std;
 
@@ -67,6 +71,34 @@ int main(int argc, const char *argv[]) {
 	int meshDensity = 20;
 	iREAL epsilon = 0.01;
 	std::array<iREAL, 3> gravity = {0.0, 0.0, 0.0};
+
+	//Which 3D engine drives the loop: "serial" (always built) or "amrex"
+	//(needs -DDELTA_USE_AMREX=ON).
+	std::string backendName = "serial";
+	//Broadphase grid of the amrex backend: "nogrid" (uniform) or "regular"
+	//(refined to the smallest body).
+	std::string gridMode = "nogrid";
+	for(int a=1; a+1<argc; a++)
+	{
+		if(std::string(argv[a]) == "--backend") {backendName = argv[a+1];}
+		if(std::string(argv[a]) == "--mode")    {gridMode    = argv[a+1];}
+	}
+
+	bool amrexInitialised = false;
+#ifdef DELTA_USE_AMREX
+	//AMReX is initialised globally and torn down after the engine is gone. It
+	//only sees the program name, so our own flags never reach its ParmParse.
+	char* amrexArgvStorage[2] = {const_cast<char*>(argv[0]), 0};
+	int   amrexArgc         = 1;
+	char** amrexArgv        = amrexArgvStorage;
+	if(backendName == "amrex")
+	{
+		amrex::Initialize(amrexArgc, amrexArgv);
+		amrexInitialised = true;
+	}
+#else
+	(void)amrexInitialised;
+#endif
 
 	const std::string hopperFile = delta::core::io::inputPath("hopper.mbfcp");
 	std::ifstream hopper(hopperFile);
@@ -156,14 +188,17 @@ int main(int argc, const char *argv[]) {
 
 	std::array<iREAL, 6> boundary = {{ 0.0, 0.0, 0.0, 1.0, 1.0, 1.0 }};
 
-	auto _deltaEngine = delta::core::Engine(particles, boundary, simMeta);
+	auto backend = delta::app::makeBackend(backendName, particles, boundary, simMeta, gridMode);
+	if(!backend) {return 1;}
 
 	std::cout << "particles=" << particles.size() << std::endl;
+	std::cout << "backend=" << backendName << (backendName == "amrex" ? " mode=" + gridMode : "")
+			  << std::endl;
 	std::cout << "gravity=" << gravity[0] << " " << gravity[1] << " " << gravity[2] << std::endl;
 
 	const int steps = 10;
 	for (int ii = 0; ii < steps; ii++) {
-		_deltaEngine.iterate();
+		backend->step();
 
 		//Positions/velocities must stay finite; getMaxForceMagnitude() is the
 		//max|force| is the per-step peak reported by deriveForces().
@@ -171,7 +206,7 @@ int main(int argc, const char *argv[]) {
 		int badParticle = -1;
 		const char* badField = "";
 		iREAL maxSpeed = 0.0;
-		std::vector<delta::core::data::ParticleRecord>& records = _deltaEngine.getParticleRecords();
+		std::vector<delta::core::data::ParticleRecord>& records = backend->records();
 		for(unsigned p=0; p<records.size(); p++)
 		{
 			delta::core::data::ParticleRecord& record = records[p];
@@ -188,9 +223,9 @@ int main(int argc, const char *argv[]) {
 		}
 
 		std::cout << "step " << ii
-			 << " contacts=" << _deltaEngine.getContactPairs().size()
+			 << " contacts=" << backend->contacts()
 			 << " max|v|=" << maxSpeed
-			 << " max|force|(per-step)=" << _deltaEngine.getMaxForceMagnitude()
+			 << " max|force|(per-step)=" << backend->maxForce()
 			 << " finite=" << (finite ? "yes" : "no");
 		if(badParticle >= 0)
 		{
@@ -205,6 +240,12 @@ int main(int argc, const char *argv[]) {
 
 		if(!finite) {return 1;}
 	}
+
+	//The AMReX container and its grid must go before amrex::Finalize().
+	backend.reset();
+#ifdef DELTA_USE_AMREX
+	if(amrexInitialised) {amrex::Finalize();}
+#endif
 
 	cout << "hello master" << endl;
 }

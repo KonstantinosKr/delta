@@ -227,6 +227,7 @@ void delta::core::parallel::DemAmrexEngine::initFrom(
   _maxForce = 0.0;
   _maxTorque = 0.0;
   _reach = 0.0;
+  _minReach = std::numeric_limits<iREAL>::max();
   _maxHalo = 0.0;
 
   std::vector<const Record*> freeParticles;
@@ -243,10 +244,14 @@ void delta::core::parallel::DemAmrexEngine::initFrom(
       continue;
     }
     freeParticles.push_back(&r);
-    _reach = std::max(_reach, 0.5 * rr.getDiameter() + rr.getEpsilon());
+    const iREAL bodyReach = 0.5 * rr.getDiameter() + rr.getEpsilon();
+    _reach = std::max(_reach, bodyReach);
+    _minReach = std::min(_minReach, bodyReach);
     _maxHalo = std::max(_maxHalo, rr.getHaloDiameter());
   }
+  if (freeParticles.empty()) {_minReach = 0.0;}
   _reach *= 2.0;
+  _minReach *= 2.0;
   _expectedParticles = static_cast<long long>(freeParticles.size());
 
   buildGrid(freeParticles);
@@ -275,10 +280,18 @@ void delta::core::parallel::DemAmrexEngine::buildGrid(
     hi[d] += margin;
   }
 
-  /* dx aims at reach/cellsPerReach and floor() keeps it >= reach for
-   * cellsPerReach = 1. nx >= 1 always, so a box smaller than the reach yields
-   * dx < reach and the sizing diagnostic below catches it. */
-  const iREAL target = _reach / std::max(_config.cellsPerReach, 1.0e-12);
+  /* dx aims at (mode reach)/cellsPerReach and floor() keeps it >= that reach
+   * for cellsPerReach = 1. nx >= 1 always, so a box smaller than the reach
+   * yields dx < reach and the sizing diagnostic below catches it.
+   *
+   * NoGrid resolves to the largest body, which is the original behaviour.
+   * Regular resolves to the smallest one (thesis 6.3), so a single large body
+   * cannot coarsen the grid for everybody; the halo is then widened to cover
+   * the largest reach, since dx < reach. NoGrid keeps the configured
+   * nneighbor on purpose: the sizing test needs to build an unsound grid. */
+  iREAL gridReach = _reach;
+  if (_config.mode == GridMode::Regular && _minReach > 0.0) {gridReach = _minReach;}
+  const iREAL target = gridReach / std::max(_config.cellsPerReach, 1.0e-12);
   int nx[3] = {1, 1, 1};
   iREAL dx[3] = {1.0, 1.0, 1.0};
 
@@ -309,6 +322,16 @@ void delta::core::parallel::DemAmrexEngine::buildGrid(
     _ba.maxSize(_config.maxGridSize);
   }
   _dmap = amrex::DistributionMapping(_ba);
+
+  if (_config.mode == GridMode::Regular)
+  {
+    /* nneighbor*dx >= reach is the soundness condition; with dx below the
+     * largest reach one ghost cell is not enough, so widen the halo instead of
+     * aborting in the diagnostic below. */
+    const int required = static_cast<int>(std::ceil(_reach / std::max(_dxMin, 1.0e-30)));
+    if (required > _config.nneighbor) {_config.nneighbor = required;}
+  }
+
   _pc.reset(new DemParticleContainer(_geom, _dmap, _ba, _config.nneighbor));
 
   /* buildNeighborList(CheckPair, bin_size) is called with bin_size = 2*reach
@@ -666,6 +689,10 @@ void delta::core::parallel::DemAmrexEngine::syncTo(std::vector<Record>& out) con
 
   for (int k = 0; k < N; ++k)
   {
+    /* Obstacles are never in the container (they are replicated read-only and
+     * not moved), so they carry no marker and their state is already correct in
+     * `out`. Without this every scene with a static wall aborted here. */
+    if (out[k].getIsObstacle()) {continue;}
     const std::size_t base = static_cast<std::size_t>(k) * fields;
     if (buffer[base + 21] != 1.0) {
       char msg[512];

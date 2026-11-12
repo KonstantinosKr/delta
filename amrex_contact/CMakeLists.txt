@@ -9,7 +9,7 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 # AMReX 3D serial install. Look in this directory first (standalone checkout),
-# then in the parent Delta tree (this directory vendored under delta/amrex_grids).
+# then in the parent Delta tree (this directory vendored under delta/amrex_contact).
 list(APPEND CMAKE_PREFIX_PATH
      "${CMAKE_CURRENT_SOURCE_DIR}/third_party/amrex-install"
      "${CMAKE_CURRENT_SOURCE_DIR}/../third_party/amrex-install")

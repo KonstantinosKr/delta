@@ -1,4 +1,4 @@
-# amrex_grids — grid morphologies and contact detection on AMReX
+# amrex_contact — grid morphologies and contact detection on AMReX
 
 A self-contained experiment tree inside the Delta repo that reproduces the contact-detection
 machinery of K. Krestenitis, *Parallel Multiscale Contact Dynamics for Rigid Non-spherical
@@ -26,7 +26,7 @@ Everything below runs on **.125 inside the `herdr` container**, which is where t
 
 ```bash
 # inside the dev container (docker exec -it herdr bash)
-cd /workspace/delta/amrex_grids
+cd /workspace/delta/amrex_contact
 
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build -j"$(nproc)"

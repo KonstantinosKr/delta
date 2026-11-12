@@ -2,7 +2,7 @@
 # Fetch and build the AMReX version this project is pinned to (3D, serial, CPU).
 set -euo pipefail
 AMREX_VERSION="${AMREX_VERSION:-25.11}"
-# The vendored AMReX lives at the repo-root third_party/ so both the amrex_grids
+# The vendored AMReX lives at the repo-root third_party/ so both the amrex_contact
 # tree and the delta backend find the same install.
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 SRC="${ROOT}/third_party/amrex-${AMREX_VERSION}"
