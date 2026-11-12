@@ -84,9 +84,11 @@ delta::geometry::mesh::Mesh *delta::geometry::primitive::granulate::loadParticle
   std::vector<iREAL> yCoordinates;
   std::vector<iREAL> zCoordinates;
 
-  char fileinput[100] = "input/rock.vtk";
+  /* Was "input/rock.vtk" read by the legacy VTK parser. STL is the format the
+   * repo ships and the only one readPartGeometry needs a dependency for. */
+  const std::string fileinput = delta::core::io::inputPath("rock.stl");
 
-  delta::geometry::mesh::Mesh *mesh =  delta::core::io::readVTKGeometry(fileinput);
+  delta::geometry::mesh::Mesh *mesh = delta::core::io::readPartGeometry(fileinput);
 
   iREAL diagonal = mesh->computeDiagonal();
   mesh->scaleXYZ(h/1.0/diagonal);

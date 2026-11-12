@@ -72,8 +72,6 @@ namespace delta {
 	  	    int bodyCount = 0;
 	  	  };
 
-	  	  delta::geometry::mesh::Mesh* readVTKGeometry(char* fileName);
-
 	  	  delta::geometry::mesh::Mesh* readPartGeometry(std::string fileName);
 
 	  	  //Geometry goes into `objects`; the returned struct carries the scene data

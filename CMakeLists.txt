@@ -39,13 +39,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # instantiates. Keep this narrow or a from-source VTK build needs OpenGL too.
 find_package(VTK QUIET COMPONENTS
   CommonCore CommonDataModel IOLegacy IOXML)
+# assimp is optional. STL - the only mesh format the repo ships - is read by
+# hand in core/io/read.cpp; assimp is only reached for other formats (OBJ, PLY,
+# DAE from Blender). Without it, readPartGeometry() says so for a non-STL.
 find_package(assimp QUIET)
-if(assimp_FOUND)
-  # assimp's exported flags carry a bare -lminizip, which does not resolve unless
-  # its own directory is on the link path (MacPorts installs libminizip.dylib
-  # there but the bare flag alone fails).
-  link_directories(${assimp_DIR}/../.. )
-endif()
 
 # The 2D solver is plain C++ and must stay buildable without VTK, so it is its
 # own target and delta3d_core takes a recursive glob minus dim2. The 3D IO does
@@ -83,7 +80,14 @@ else()
   message(STATUS "VTK not found: building with the ascii .vtu emitter only")
 endif()
 if(assimp_FOUND)
+  target_compile_definitions(delta3d_core PUBLIC DELTA_HAVE_ASSIMP)
   target_link_libraries(delta3d_core PUBLIC assimp::assimp)
+  # assimp's exported flags carry a bare -lminizip, which does not resolve unless
+  # its own directory is on the link path (MacPorts installs libminizip.dylib
+  # there but the bare flag alone fails). Only needed when assimp is linked.
+  link_directories(${assimp_DIR}/../..)
+else()
+  message(STATUS "assimp not found: STL only (native reader)")
 endif()
 
 # Links both: the 2D writer lives in dem2d and pulls FrameStaging out of delta_lib.
