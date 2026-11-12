@@ -116,12 +116,16 @@ int main(int argc, char** argv)
   cfgNoGrid.mode = GridMode::NoGrid;
   DemParallelConfig cfgRegular;
   cfgRegular.mode = GridMode::Regular;
+  DemParallelConfig cfgAdaptive;
+  cfgAdaptive.mode = GridMode::Adaptive;
 
   std::vector<ParticleRecord> stateA = initial;
   std::vector<ParticleRecord> stateB = initial;
+  std::vector<ParticleRecord> stateC = initial;
 
   DemAmrexEngine noGrid(stateA, cfgNoGrid);
   DemAmrexEngine regular(stateB, cfgRegular);
+  DemAmrexEngine adaptive(stateC, cfgAdaptive);
 
   CHECK(noGrid.sizingIsSound());
   CHECK(regular.sizingIsSound());
@@ -133,17 +137,23 @@ int main(int argc, char** argv)
 
   noGrid.detectAndDeriveForces(dt);
   regular.detectAndDeriveForces(dt);
+  adaptive.detectAndDeriveForces(dt);
 
   std::vector<std::pair<long long, long long> > pairsNoGrid = pairsOf(noGrid);
   std::vector<std::pair<long long, long long> > pairsRegular = pairsOf(regular);
+  std::vector<std::pair<long long, long long> > pairsAdaptive = pairsOf(adaptive);
 
   CHECK(!pairsNoGrid.empty());
+  /* The grid may change which pairs are tested, never which are in contact. */
   CHECK(pairsNoGrid == pairsRegular);
+  CHECK(pairsNoGrid == pairsAdaptive);
 
   std::printf("delta_grid_modes_test OK: %zu bodies, %zu contacts; "
-              "nogrid dx=%g nneighbor=%d, regular dx=%g nneighbor=%d\n",
+              "nogrid dx=%g nneighbor=%d, regular dx=%g nneighbor=%d, "
+              "adaptive %d levels\n",
               objects.size(), pairsNoGrid.size(), (double)noGrid.dx(),
-              noGrid.nneighbor(), (double)regular.dx(), regular.nneighbor());
+              noGrid.nneighbor(), (double)regular.dx(), regular.nneighbor(),
+              adaptive.levels());
 
   amrex::Finalize();
   return 0;

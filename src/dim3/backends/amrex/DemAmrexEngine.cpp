@@ -222,6 +222,9 @@ void delta::core::parallel::DemAmrexEngine::initFrom(
   _config = config;
   _obstacles.clear();
   _indexOfGlobalId.clear();
+  _freeRecord.clear();
+  _recordToFree.clear();
+  _gidOfFree.clear();
   _pairList.clear();
   _contactPairs = 0;
   _maxForce = 0.0;
@@ -243,6 +246,7 @@ void delta::core::parallel::DemAmrexEngine::initFrom(
       _obstacles.push_back(r);
       continue;
     }
+    _freeRecord.push_back(static_cast<int>(k));
     freeParticles.push_back(&r);
     const iREAL bodyReach = 0.5 * rr.getDiameter() + rr.getEpsilon();
     _reach = std::max(_reach, bodyReach);
@@ -252,6 +256,14 @@ void delta::core::parallel::DemAmrexEngine::initFrom(
   if (freeParticles.empty()) {_minReach = 0.0;}
   _reach *= 2.0;
   _minReach *= 2.0;
+
+  _recordToFree.assign(records.size(), -1);
+  _gidOfFree.reserve(_freeRecord.size());
+  for (std::size_t f = 0; f < _freeRecord.size(); ++f) {
+    _recordToFree[static_cast<std::size_t>(_freeRecord[f])] = static_cast<int>(f);
+    _gidOfFree.push_back(readable(records[static_cast<std::size_t>(_freeRecord[f])])
+                             .getGlobalParticleID());
+  }
   _expectedParticles = static_cast<long long>(freeParticles.size());
 
   buildGrid(freeParticles);
@@ -442,6 +454,12 @@ void delta::core::parallel::DemAmrexEngine::detectAndDeriveForces(iREAL dt)
 
 void delta::core::parallel::DemAmrexEngine::forcePass(iREAL dt)
 {
+  if (_config.mode == GridMode::Adaptive) {forcePassByPairs(dt); return;}
+  forcePassNeighborList(dt);
+}
+
+void delta::core::parallel::DemAmrexEngine::forcePassNeighborList(iREAL dt)
+{
   _maxForce = 0.0;
   _maxTorque = 0.0;
   _contactPairs = 0;
@@ -564,6 +582,192 @@ void delta::core::parallel::DemAmrexEngine::forcePass(iREAL dt)
    * summing this over ranks is the unique global pair count. */
   _contactPairs = static_cast<long long>(_pairList.size());
 
+  applyForceCache(dt);
+}
+
+void delta::core::parallel::DemAmrexEngine::forcePassByPairs(iREAL dt)
+{
+  _maxForce = 0.0;
+  _maxTorque = 0.0;
+  _contactPairs = 0;
+  _pairList.clear();
+  _forceCache.clear();
+
+  struct Slot {int grid; int tile; int local;};
+
+  const int freeCount = static_cast<int>(_freeRecord.size());
+  std::vector<ParticleView> views(static_cast<std::size_t>(freeCount));
+  std::vector<Slot> slots(static_cast<std::size_t>(freeCount), Slot{-1, -1, -1});
+  std::vector<GridBody> bodies(static_cast<std::size_t>(freeCount));
+
+  /* Snapshot the tile state once: a pair list is indexed by particle, not by
+   * tile, so the views must be addressable in both directions. */
+  for (amrex::MFIter mfi = _pc->MakeMFIter(0); mfi.isValid(); ++mfi)
+  {
+    auto& ptile = _pc->ParticlesAt(0, mfi);
+    auto ptd = ptile.getConstParticleTileData();
+    const int npReal = static_cast<int>(ptile.numRealParticles());
+
+    for (int i = 0; i < npReal; ++i)
+    {
+      ParticleView v;
+      loadView(ptd, i, v);
+      const std::map<int, int>::const_iterator rec =
+          _indexOfGlobalId.find(static_cast<int>(v.gid));
+      if (rec == _indexOfGlobalId.end()) {continue;}
+      const std::size_t o = static_cast<std::size_t>(_recordToFree[static_cast<std::size_t>(rec->second)]);
+      if (_recordToFree[static_cast<std::size_t>(rec->second)] < 0) {continue;}
+
+      views[o] = v;
+      slots[o].grid  = mfi.index();
+      slots[o].tile  = mfi.LocalTileIndex();
+      slots[o].local = i;
+      bodies[o].pos[0] = v.pos[0];
+      bodies[o].pos[1] = v.pos[1];
+      bodies[o].pos[2] = v.pos[2];
+      bodies[o].diameter = v.diameter;
+      bodies[o].reach    = 0.5 * v.diameter + v.epsilon;
+    }
+  }
+
+  const iREAL lo[3] = {_geom.ProbLo(0), _geom.ProbLo(1), _geom.ProbLo(2)};
+  const iREAL hi[3] = {_geom.ProbHi(0), _geom.ProbHi(1), _geom.ProbHi(2)};
+  const std::array<iREAL, 3> domLo = {{lo[0], lo[1], lo[2]}};
+  const std::array<iREAL, 3> domHi = {{hi[0], hi[1], hi[2]}};
+
+  _hierarchy = GridHierarchy(_config.grid);
+  _hierarchy.build(bodies, domLo, domHi, _reach);
+
+  std::vector<iREAL> frc(3 * static_cast<std::size_t>(freeCount), 0.0);
+  std::vector<iREAL> trq(3 * static_cast<std::size_t>(freeCount), 0.0);
+
+  const std::vector<std::pair<int, int> >& pairs = _hierarchy.candidatePairs();
+  for (std::size_t k = 0; k < pairs.size(); ++k)
+  {
+    const int ia = pairs[k].first;
+    const int ib = pairs[k].second;
+
+    /* Both endpoints, exactly as the serial engine stores each contact twice
+     * (its B copy carries the negated normal): the force a body feels is the
+     * one computed with it in the A slot. */
+    std::vector<delta::contact::contactpoint> pts = delta::contact::detection::sphere(
+        views[ia].pos[0], views[ia].pos[1], views[ia].pos[2],
+        views[ia].diameter, views[ia].epsilon, views[ia].friction,
+        static_cast<int>(views[ia].gid),
+        views[ib].pos[0], views[ib].pos[1], views[ib].pos[2],
+        views[ib].diameter, views[ib].epsilon, views[ib].friction,
+        static_cast<int>(views[ib].gid));
+
+    if (!pts.empty())
+    {
+      accumulateContacts(views[ia], views[ib], pts,
+                         &frc[3 * static_cast<std::size_t>(ia)],
+                         &trq[3 * static_cast<std::size_t>(ia)]);
+      const long long gidA = _gidOfFree[static_cast<std::size_t>(ia)];
+      const long long gidB = _gidOfFree[static_cast<std::size_t>(ib)];
+      _pairList.push_back(gidA < gidB ? std::make_pair(gidA, gidB)
+                                      : std::make_pair(gidB, gidA));
+    }
+
+    pts = delta::contact::detection::sphere(
+        views[ib].pos[0], views[ib].pos[1], views[ib].pos[2],
+        views[ib].diameter, views[ib].epsilon, views[ib].friction,
+        static_cast<int>(views[ib].gid),
+        views[ia].pos[0], views[ia].pos[1], views[ia].pos[2],
+        views[ia].diameter, views[ia].epsilon, views[ia].friction,
+        static_cast<int>(views[ia].gid));
+
+    if (!pts.empty())
+    {
+      accumulateContacts(views[ib], views[ia], pts,
+                         &frc[3 * static_cast<std::size_t>(ib)],
+                         &trq[3 * static_cast<std::size_t>(ib)]);
+    }
+  }
+
+  /* Static obstacles: replicated read-only records, sphere x mesh scan. Same as
+   * the neighbour-list path, independent of the broadphase. */
+  for (int o = 0; o < freeCount; ++o)
+  {
+    const ParticleView& a = views[static_cast<std::size_t>(o)];
+    iREAL force[3]  = {frc[3 * static_cast<std::size_t>(o)],
+                       frc[3 * static_cast<std::size_t>(o) + 1],
+                       frc[3 * static_cast<std::size_t>(o) + 2]};
+    iREAL torque[3] = {trq[3 * static_cast<std::size_t>(o)],
+                       trq[3 * static_cast<std::size_t>(o) + 1],
+                       trq[3 * static_cast<std::size_t>(o) + 2]};
+
+    for (std::size_t b = 0; b < _obstacles.size(); ++b)
+    {
+      const Record& obstacle = _obstacles[b];
+      Record& obs = readable(obstacle);
+      if (!delta::contact::detection::isSphereOverlayInContact(
+              a.pos[0], a.pos[1], a.pos[2], haloDiameter(a.diameter, a.epsilon),
+              obstacle._centreOfMass[0], obstacle._centreOfMass[1], obstacle._centreOfMass[2],
+              obs.getHaloDiameter())) {continue;}
+
+      std::vector<delta::contact::contactpoint> pts = delta::contact::detection::sphereWithBarrierAB(
+          a.pos[0], a.pos[1], a.pos[2], a.diameter, a.epsilon, a.friction,
+          static_cast<int>(a.gid),
+          obstacle._xCoordinates.data(), obstacle._yCoordinates.data(),
+          obstacle._zCoordinates.data(), obs.getNumberOfTriangles(),
+          obs.getEpsilon(), obs.getIsFriction(),
+          obs.getGlobalParticleID());
+      if (pts.empty()) {continue;}
+
+      ParticleView bView;
+      loadObstacleView(obstacle, bView);
+      ParticleView aCopy = a;
+      accumulateContacts(aCopy, bView, pts, force, torque);
+
+      const long long obsGid = obs.getGlobalParticleID();
+      const long long gid = a.gid;
+      _pairList.push_back(obsGid < gid ? std::make_pair(obsGid, gid)
+                                       : std::make_pair(gid, obsGid));
+    }
+
+    for (int d = 0; d < 3; ++d) {
+      frc[3 * static_cast<std::size_t>(o) + d] = force[d];
+      trq[3 * static_cast<std::size_t>(o) + d] = torque[d];
+    }
+
+    const iREAL fmag = std::sqrt(force[0]*force[0] + force[1]*force[1] + force[2]*force[2]);
+    if (fmag > _maxForce) {_maxForce = fmag;}
+    const iREAL tmag = std::sqrt(torque[0]*torque[0] + torque[1]*torque[1] + torque[2]*torque[2]);
+    if (tmag > _maxTorque) {_maxTorque = tmag;}
+  }
+
+  /* Hand the accumulated forces to the shared apply pass, keyed like the
+   * neighbour-list path so both modes go through the same serial ordering. */
+  /* The cache is indexed per tile, so fill it tile by tile: sizes differ
+   * between tiles and empty tiles exist. */
+  for (amrex::MFIter mfi = _pc->MakeMFIter(0); mfi.isValid(); ++mfi)
+  {
+    const DemParticleContainer::PairIndex key(mfi.index(), mfi.LocalTileIndex());
+    auto& ptile = _pc->ParticlesAt(0, mfi);
+    auto ptd = ptile.getConstParticleTileData();
+    const int npReal = static_cast<int>(ptile.numRealParticles());
+    std::vector<iREAL>& acc = _forceCache[key];
+    acc.assign(6 * static_cast<std::size_t>(npReal), 0.0);
+    const int* gids = ptd.idata(DemIntComp::globalId);
+    for (int i = 0; i < npReal; ++i) {
+      const std::map<int, int>::const_iterator rec = _indexOfGlobalId.find(gids[i]);
+      if (rec == _indexOfGlobalId.end()) {continue;}
+      const int ordinal = _recordToFree[static_cast<std::size_t>(rec->second)];
+      if (ordinal < 0) {continue;}
+      for (int d = 0; d < 3; ++d) {
+        acc[6 * static_cast<std::size_t>(i) + d]           = frc[3 * static_cast<std::size_t>(ordinal) + d];
+        acc[6 * static_cast<std::size_t>(i) + 3 + d]       = trq[3 * static_cast<std::size_t>(ordinal) + d];
+      }
+    }
+  }
+
+  _contactPairs = static_cast<long long>(_pairList.size());
+  applyForceCache(dt);
+}
+
+void delta::core::parallel::DemAmrexEngine::applyForceCache(iREAL dt)
+{
   /* Pass B: apply the accumulated contact impulse, in serial deriveForces order
    * (linear velocity first, then updateAngular). */
   for (amrex::MFIter mfi = _pc->MakeMFIter(0); mfi.isValid(); ++mfi)

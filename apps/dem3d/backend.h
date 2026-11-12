@@ -127,10 +127,11 @@ inline std::unique_ptr<Backend> makeBackend(const std::string& name,
 	{
 #ifdef DELTA_USE_AMREX
 		delta::core::parallel::DemParallelConfig config;
-		if (gridMode == "regular") {config.mode = delta::core::parallel::GridMode::Regular;}
+		if (gridMode == "regular")       {config.mode = delta::core::parallel::GridMode::Regular;}
+		else if (gridMode == "adaptive") {config.mode = delta::core::parallel::GridMode::Adaptive;}
 		else if (gridMode != "nogrid")
 		{
-			std::cerr << "unknown --mode '" << gridMode << "' (nogrid|regular)" << std::endl;
+			std::cerr << "unknown --mode '" << gridMode << "' (nogrid|regular|adaptive)" << std::endl;
 			return std::unique_ptr<Backend>();
 		}
 		return std::unique_ptr<Backend>(

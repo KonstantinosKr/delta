@@ -38,6 +38,7 @@
 
 #include "core/data/ParticleRecord.h"
 #include "DemParticleContainer.h"
+#include "GridHierarchy.h"
 
 namespace delta {
   namespace core {
@@ -73,12 +74,14 @@ namespace delta {
 enum class GridMode
 {
   NoGrid,
-  Regular
+  Regular,
+  Adaptive
 };
 
 struct DemParallelConfig
 {
   GridMode mode = GridMode::NoGrid;
+  GridParams grid;             /* refine factor / depth of the Adaptive grid */
   int maxGridSize = 32;
   int nneighbor = 1;
   double cellsPerReach = 1.0;
@@ -165,6 +168,9 @@ public:
    * rank, which is what syncTo() relies on. */
   bool findParticle(int globalId, int& lev, int& grid, int& tile, int& index) const;
 
+  /* Levels of the Adaptive grid (0 in the other modes). */
+  int levels() const { return _hierarchy.stats().levels; }
+  long cells() const { return _hierarchy.stats().cells; }
   iREAL reach() const { return _reach; }
   iREAL minReach() const { return _minReach; }
   iREAL dx() const { return _dxMin; }
@@ -183,6 +189,11 @@ private:
   void seedParticles(const std::vector<const Record*>& freeParticles);
   void checkParticleCount(const char* where) const;
   void forcePass(iREAL dt);
+  void forcePassNeighborList(iREAL dt);
+  /* Adaptive mode: candidate pairs from GridHierarchy instead of AMReX's
+   * neighbour list (single rank only, see GridHierarchy.h). */
+  void forcePassByPairs(iREAL dt);
+  void applyForceCache(iREAL dt);
 
   DemParallelConfig          _config;
   amrex::Geometry            _geom;
@@ -193,6 +204,12 @@ private:
   std::vector<Record> _obstacles;
   std::map<int, int>  _indexOfGlobalId;   /* delta global id -> position in input */
 
+  /* Free particles, in container order: ordinal -> position in the input vector
+   * and back, plus the global id used for pair keys. */
+  std::vector<int> _freeRecord;
+  std::vector<int> _recordToFree;
+  std::vector<int> _gidOfFree;
+
   long long _expectedParticles = 0;
   iREAL     _reach = 0.0;
   iREAL     _minReach = 0.0;
@@ -202,6 +219,7 @@ private:
   iREAL     _maxTorque = 0.0;
   long long _contactPairs = 0;
   std::vector<std::pair<long long, long long> > _pairList;
+  GridHierarchy _hierarchy;               /* Adaptive mode only */
   /* Accumulated (force, torque) per tile between the two force-pass loops. */
   std::map<std::pair<int, int>, std::vector<iREAL> > _forceCache;
   std::string _sizingDiagnostic;
