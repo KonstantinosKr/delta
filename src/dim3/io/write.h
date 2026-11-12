@@ -10,49 +10,33 @@
 
 #include <vector>
 #include <string>
-#include "stdio.h"
-#include "string.h"
+#include <stdio.h>
+#include <string.h>
 
 
 #include "core/data/ParticleRecord.h"
 #include "../geometry/structure/Mesh.h"
 #include "../world/structure/Object.h"
-#include "core/io/MeshBuffer.h"
+#include "core/io/FrameStaging.h"
 
-#include <vtkSmartPointer.h>
-#include <vtkTetra.h>
-#include <vtkLine.h>
-#include <vtkDataArray.h>
-#include <vtkDoubleArray.h>
-#include <vtkIntArray.h>
-#include <vtkMath.h>
-#include <vtkCellArray.h>
-#include <vtkXMLUnstructuredGridReader.h>
-#include <vtkXMLUnstructuredGridWriter.h>
-#include <vtkUnstructuredGrid.h>
-#include <vtkPointData.h>
 
-#include <vtkCellData.h>
-#include <vtkDoubleArray.h>
-#include <vtkPoints.h>
-#include <vtkPolyData.h>
-#include <vtkPointData.h>
-#include <vtkSmartPointer.h>
-#include <vtkXMLPolyDataReader.h>
-#include <vtkFloatArray.h>
-#include <vtkMath.h>
 #include <string>
 
 namespace delta {
   namespace core {
 	namespace io {
 
-	void writeGeometryToVTKVTK(
+	/* One body per record, drawn as its mesh triangles (or as a sphere when the
+	 * record carries no mesh). */
+	void writeParticleGeometryToVTK(
 		std::string 									path,
 		int 											step,
 		std::vector<delta::core::data::ParticleRecord>& geometries);
 
-	void writeGridGeometryToVTKVTK(
+	/* The space decomposition: one wireframe box per subdomain, drawn as
+	 * VTK_LINE edges. Named for what it is rather than for the AMReX type the
+	 * caller happens to build it from. */
+	void writeSpaceDecompositionToVTK(
 		std::string 						path,
 		int 								step,
 		std::vector<std::array<iREAL, 6>> 	boundary);

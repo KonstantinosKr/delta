@@ -5,19 +5,22 @@
  *      Author: konstantinos
  *
  * The two model-specific writers below do nothing but turn a model into a
- * MeshBuffer; emission is shared in core/io/MeshBuffer.cpp.
+ * FrameStaging; emission is shared in core/io/FrameStaging.cpp.
+ *
+ * writeParticleGeometryToVTK    bodies and their meshes
+ * writeSpaceDecompositionToVTK  the subdomain boxes as wireframe
  */
 
 #include "write.h"
 
-#include <vtkCellType.h>
 
-void delta::core::io::writeGeometryToVTKVTK(
+
+void delta::core::io::writeParticleGeometryToVTK(
     std::string                                     path,
     int                                             step,
     std::vector<delta::core::data::ParticleRecord>& geometries) {
 
-  MeshBuffer buffer;
+  FrameStaging buffer;
   buffer.pointFields.push_back({"velocity", 3, false, {}});
   buffer.pointFields.push_back({"radius", 1, false, {}});
   buffer.pointFields.push_back({"epsilon", 1, false, {}});
@@ -61,7 +64,7 @@ void delta::core::io::writeGeometryToVTKVTK(
     }
 
     for (int t = 0; t < numberOfTriangles; ++t) {
-      buffer.cells.push_back({VTK_TRIANGLE,
+      buffer.cells.push_back({VTU_TRIANGLE,
                               {offset + t * 3 + 0,
                                offset + t * 3 + 1,
                                offset + t * 3 + 2}});
@@ -76,12 +79,12 @@ void delta::core::io::writeGeometryToVTKVTK(
   writeVTU(path, "geometry", step, buffer);
 }
 
-void delta::core::io::writeGridGeometryToVTKVTK(
+void delta::core::io::writeSpaceDecompositionToVTK(
     std::string 						path,
     int 								step,
     std::vector<std::array<iREAL, 6>> 	boundary)
 {
-  MeshBuffer buffer;
+  FrameStaging buffer;
   buffer.pointFields.push_back({"vector123", 3, false, {}});
   std::vector<double>& normals = buffer.pointFields[0].data;
 
@@ -116,7 +119,7 @@ void delta::core::io::writeGridGeometryToVTKVTK(
     }
 
     for (int e = 0; e < 12; ++e)
-      buffer.cells.push_back({VTK_LINE, {base + edges[e][0], base + edges[e][1]}});
+      buffer.cells.push_back({VTU_LINE, {base + edges[e][0], base + edges[e][1]}});
   }
 
   buffer.activeVectors = "vector123";

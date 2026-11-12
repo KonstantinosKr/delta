@@ -51,8 +51,8 @@ int main() {
   }
   assert(triangles > 0 && "cube mesh must expose triangles");
 
-  delta::core::io::writeGeometryToVTKVTK("./viztest/", 0, records);
-  delta::core::io::writeGeometryToVTKVTK("./viztest/", 1, records);
+  delta::core::io::writeParticleGeometryToVTK("./viztest/", 0, records);
+  delta::core::io::writeParticleGeometryToVTK("./viztest/", 1, records);
 
   std::string vtu = slurp("./viztest/geometry_0.vtu");
   const std::string cellTag = "NumberOfCells=\"";

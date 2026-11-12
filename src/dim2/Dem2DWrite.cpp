@@ -26,9 +26,9 @@
 
 #include <cmath>
 
-#include <vtkCellType.h>
 
-#include "core/io/MeshBuffer.h"
+
+#include "core/io/FrameStaging.h"
 
 namespace delta {
   namespace dem2d {
@@ -39,7 +39,7 @@ namespace delta {
       const iREAL TWO_PI = 6.28318530717958647692;
       const int circleSegments = 24;
 
-      delta::core::io::MeshBuffer buffer;
+      delta::core::io::FrameStaging buffer;
       buffer.pointFields.push_back({"velocity", 3, false, {}});
       buffer.pointFields.push_back({"radius", 1, false, {}});
       buffer.cellFields.push_back({"global_id", 1, true, {}});
@@ -75,7 +75,7 @@ namespace delta {
             radius.push_back(p.radius);
             ids.push_back(offset + s);
           }
-          buffer.cells.push_back({VTK_POLYGON, ids});
+          buffer.cells.push_back({delta::core::io::VTU_POLYGON, ids});
         } else {
           for (int v = 0; v < 3; ++v) {
             buffer.points.push_back({{p.worldVertices[v].x, p.worldVertices[v].y, 0.0}});
@@ -85,7 +85,7 @@ namespace delta {
             radius.push_back(p.boundingRadius);
             ids.push_back(offset + v);
           }
-          buffer.cells.push_back({VTK_TRIANGLE, ids});
+          buffer.cells.push_back({delta::core::io::VTU_TRIANGLE, ids});
         }
 
         globalId.push_back(p.id);

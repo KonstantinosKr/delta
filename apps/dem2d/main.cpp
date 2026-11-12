@@ -2,7 +2,7 @@
  * apps/dem2d — entry point for the 2D solver.
  *
  * Counterpart of apps/dem3d. Fills a box with circles and triangles, drops them
- * under gravity and writes VTU frames through the shared MeshBuffer writer, so
+ * under gravity and writes VTU frames through the shared FrameStaging writer, so
  * the output convention matches the 3D path.
  *
  * The engine has no scenario-file format of its own, so the scene is a flag
@@ -12,6 +12,7 @@
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
+#include <sys/stat.h>
 #include <cstring>
 #include <random>
 #include <string>
@@ -149,6 +150,12 @@ int main(int argc, const char** argv)
 
   std::printf("dem2d: bodies=%d (moving %d) domain=%.3g steps=%d dt=%.3g seed=%u\n",
               (int)ps.size(), opt.bodies, D, opt.steps, opt.dt, opt.seed);
+
+  /* The writer does not create its directory; make it here so --out works
+   * for a path that does not exist yet. */
+  if (opt.saveEvery > 0) {
+    ::mkdir(opt.out.c_str(), 0777);   /* EEXIST is fine */
+  }
 
   int frame = 0;
   if (opt.saveEvery > 0) {

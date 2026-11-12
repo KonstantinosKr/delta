@@ -29,16 +29,27 @@ else()
 endif()
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# VTK is optional. frame_staging has two emitters for the .vtu format: the VTK
+# one (used when the library is found) and a hand-written ascii one that is
+# always available. Only the VTK writer needs the library, so a machine without
+# it can still build every target and produce frames.
+#
 # Only what the code uses. The old list also pulled IOImport/IOExport, which
 # transitively require RenderingCore/FiltersCore - whole subsystems nothing here
 # instantiates. Keep this narrow or a from-source VTK build needs OpenGL too.
-find_package(VTK REQUIRED COMPONENTS
+find_package(VTK QUIET COMPONENTS
   CommonCore CommonDataModel IOLegacy IOXML)
 find_package(assimp QUIET)
+if(assimp_FOUND)
+  # assimp's exported flags carry a bare -lminizip, which does not resolve unless
+  # its own directory is on the link path (MacPorts installs libminizip.dylib
+  # there but the bare flag alone fails).
+  link_directories(${assimp_DIR}/../.. )
+endif()
 
 # The 2D solver is plain C++ and must stay buildable without VTK, so it is its
 # own target and delta3d_core takes a recursive glob minus dim2. The 3D IO does
-# not depend on dim2 and dim2 only reaches core/io/MeshBuffer.h, which is
+# not depend on dim2 and dim2 only reaches core/io/FrameStaging.h, which is
 # header-only VTK-free, so excluding it is safe in both directions.
 file(GLOB_RECURSE DELTA2D_SOURCES CONFIGURE_DEPENDS
   "${PROJECT_SOURCE_DIR}/src/dim2/*.cpp")
@@ -64,25 +75,37 @@ target_compile_definitions(delta3d_core PUBLIC iREAL=double byteAlignment=32)
 #binaries run from any cwd instead of only from build/.
 target_compile_definitions(delta3d_core PUBLIC DELTA_INPUT_DIR="${PROJECT_SOURCE_DIR}/input/dim3")
 target_include_directories(delta3d_core PUBLIC ${PROJECT_SOURCE_DIR}/src)
-target_link_libraries(delta3d_core PUBLIC ${VTK_LIBRARIES})
+
+if(VTK_FOUND)
+  target_compile_definitions(delta3d_core PUBLIC DELTA_HAVE_VTK)
+  target_link_libraries(delta3d_core PUBLIC ${VTK_LIBRARIES})
+else()
+  message(STATUS "VTK not found: building with the ascii .vtu emitter only")
+endif()
 if(assimp_FOUND)
   target_link_libraries(delta3d_core PUBLIC assimp::assimp)
 endif()
 
-# Links both: the 2D writer lives in dem2d and pulls MeshBuffer out of delta_lib.
+# Links both: the 2D writer lives in dem2d and pulls FrameStaging out of delta_lib.
 add_library(delta2d_io STATIC "${PROJECT_SOURCE_DIR}/src/dim2/Dem2DWrite.cpp")
 target_link_libraries(delta2d_io PUBLIC delta2d_core delta3d_core)
-vtk_module_autoinit(TARGETS delta2d_io MODULES ${VTK_LIBRARIES})
+if(VTK_FOUND)
+  vtk_module_autoinit(TARGETS delta2d_io MODULES ${VTK_LIBRARIES})
+endif()
 
 add_executable(delta "${PROJECT_SOURCE_DIR}/apps/dem3d/main.cpp")
 target_link_libraries(delta PRIVATE delta3d_core)
-vtk_module_autoinit(TARGETS delta MODULES ${VTK_LIBRARIES})
+if(VTK_FOUND)
+  vtk_module_autoinit(TARGETS delta MODULES ${VTK_LIBRARIES})
+endif()
 
 # 2D entry point. Needs the writer, so it links delta2d_io rather than the
 # VTK-free core alone.
 add_executable(delta2d "${PROJECT_SOURCE_DIR}/apps/dem2d/main.cpp")
 target_link_libraries(delta2d PRIVATE delta2d_io)
-vtk_module_autoinit(TARGETS delta2d MODULES ${VTK_LIBRARIES})
+if(VTK_FOUND)
+  vtk_module_autoinit(TARGETS delta2d MODULES ${VTK_LIBRARIES})
+endif()
 
 if(DELTA_USE_AMREX)
   find_package(AMReX REQUIRED CONFIG)
@@ -94,12 +117,16 @@ endif()
 enable_testing()
 add_executable(delta_viz_test "${PROJECT_SOURCE_DIR}/tests/viz_write_test.cpp")
 target_link_libraries(delta_viz_test PRIVATE delta3d_core)
-vtk_module_autoinit(TARGETS delta_viz_test MODULES ${VTK_LIBRARIES})
+if(VTK_FOUND)
+  vtk_module_autoinit(TARGETS delta_viz_test MODULES ${VTK_LIBRARIES})
+endif()
 add_test(NAME viz_write COMMAND delta_viz_test)
 
 add_executable(delta_dem_test "${PROJECT_SOURCE_DIR}/tests/dem_phase0_test.cpp")
 target_link_libraries(delta_dem_test PRIVATE delta3d_core)
-vtk_module_autoinit(TARGETS delta_dem_test MODULES ${VTK_LIBRARIES})
+if(VTK_FOUND)
+  vtk_module_autoinit(TARGETS delta_dem_test MODULES ${VTK_LIBRARIES})
+endif()
 add_test(NAME dem_phase0 COMMAND delta_dem_test)
 
 # 2D circle/triangle core. Dem2D.cpp is plain C++; Dem2DWrite.cpp pulls in
@@ -112,32 +139,59 @@ add_test(NAME dem2d COMMAND delta_dem2d_test)
 
 add_executable(delta_dem2d_demo "${PROJECT_SOURCE_DIR}/tests/dem2d_demo.cpp")
 target_link_libraries(delta_dem2d_demo PRIVATE delta2d_io)
-vtk_module_autoinit(TARGETS delta_dem2d_demo MODULES ${VTK_LIBRARIES})
+if(VTK_FOUND)
+  vtk_module_autoinit(TARGETS delta_dem2d_demo MODULES ${VTK_LIBRARIES})
+endif()
 
 add_executable(delta_dem2d_viz_test "${PROJECT_SOURCE_DIR}/tests/dem2d_viz_test.cpp")
 target_link_libraries(delta_dem2d_viz_test PRIVATE delta2d_io)
-vtk_module_autoinit(TARGETS delta_dem2d_viz_test MODULES ${VTK_LIBRARIES})
+if(VTK_FOUND)
+  vtk_module_autoinit(TARGETS delta_dem2d_viz_test MODULES ${VTK_LIBRARIES})
+endif()
 add_test(NAME dem2d_viz COMMAND delta_dem2d_viz_test)
 
 # Latent-bug regression guards.
 add_executable(delta_regression_test "${PROJECT_SOURCE_DIR}/tests/regression_test.cpp")
 target_link_libraries(delta_regression_test PRIVATE delta3d_core)
-vtk_module_autoinit(TARGETS delta_regression_test MODULES ${VTK_LIBRARIES})
+if(VTK_FOUND)
+  vtk_module_autoinit(TARGETS delta_regression_test MODULES ${VTK_LIBRARIES})
+endif()
 add_test(NAME regression COMMAND delta_regression_test)
 
-# Guard for the shared .vtu writer: MeshBuffer::validate() must reject the
+# The native STL reader, checked against the meshes actually in input/dim3.
+add_executable(delta_stl_read_test "${PROJECT_SOURCE_DIR}/tests/stl_read_test.cpp")
+target_link_libraries(delta_stl_read_test PRIVATE delta3d_core)
+if(VTK_FOUND)
+  vtk_module_autoinit(TARGETS delta_stl_read_test MODULES ${VTK_LIBRARIES})
+endif()
+add_test(NAME stl_read COMMAND delta_stl_read_test)
+
+# The hopper scenario end to end: the file's gravity and contact law reach the
+# engine, a short run stays finite, and BodySpec builds the same body as Object.
+add_executable(delta_hopper_test "${PROJECT_SOURCE_DIR}/tests/hopper_test.cpp")
+target_link_libraries(delta_hopper_test PRIVATE delta3d_core)
+if(VTK_FOUND)
+  vtk_module_autoinit(TARGETS delta_hopper_test MODULES ${VTK_LIBRARIES})
+endif()
+add_test(NAME hopper COMMAND delta_hopper_test)
+
+# Guard for the shared .vtu writer: FrameStaging::validate() must reject the
 # geometry that would otherwise be written silently wrong.
-add_executable(delta_meshbuffer_test "${PROJECT_SOURCE_DIR}/tests/meshbuffer_test.cpp")
-target_link_libraries(delta_meshbuffer_test PRIVATE delta3d_core)
-vtk_module_autoinit(TARGETS delta_meshbuffer_test MODULES ${VTK_LIBRARIES})
-add_test(NAME mesh_buffer COMMAND delta_meshbuffer_test)
+add_executable(delta_frame_staging_test "${PROJECT_SOURCE_DIR}/tests/frame_staging_test.cpp")
+target_link_libraries(delta_frame_staging_test PRIVATE delta3d_core)
+if(VTK_FOUND)
+  vtk_module_autoinit(TARGETS delta_frame_staging_test MODULES ${VTK_LIBRARIES})
+endif()
+add_test(NAME frame_staging COMMAND delta_frame_staging_test)
 
 # Broadphase grid modes: the grid may change which pairs are tested, never which
 # pairs are in contact. Single process, so it needs no MPI.
 if(DELTA_USE_AMREX)
   add_executable(delta_grid_modes_test "${PROJECT_SOURCE_DIR}/tests/grid_modes_test.cpp")
   target_link_libraries(delta_grid_modes_test PRIVATE delta3d_core)
+  if(VTK_FOUND)
   vtk_module_autoinit(TARGETS delta_grid_modes_test MODULES ${VTK_LIBRARIES})
+endif()
   add_test(NAME grid_modes COMMAND delta_grid_modes_test)
   set_tests_properties(grid_modes PROPERTIES ENVIRONMENT "AMREX_VERBOSE=0")
 
@@ -156,7 +210,9 @@ if(DELTA_USE_AMREX AND AMReX_MPI)
   find_package(MPI COMPONENTS CXX REQUIRED)
   add_executable(delta_dem_amrex_test "${PROJECT_SOURCE_DIR}/tests/dem_phase1_amrex_test.cpp")
   target_link_libraries(delta_dem_amrex_test PRIVATE delta3d_core)
+  if(VTK_FOUND)
   vtk_module_autoinit(TARGETS delta_dem_amrex_test MODULES ${VTK_LIBRARIES})
+endif()
   # Run both at one rank and at two: the parallel path's whole point is that the
   # result does not depend on the rank count. --allow-run-as-root because CI
   # here runs as root.

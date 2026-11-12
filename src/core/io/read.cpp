@@ -4,12 +4,16 @@
  */
 
 #include "read.h"
+#include <cctype>
+#include <cstring>
+#include <fstream>
 #include <sstream>
 #include <stdexcept>
-#include <assimp/Importer.hpp>      // C++ importer interface
-#include <assimp/Exporter.hpp>      // C++ importer interface
-#include <assimp/scene.h>           // Output data structure
-#include <assimp/postprocess.h>     // Post processing flags
+#ifdef DELTA_HAVE_ASSIMP
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+#endif
 
 #include "../../dim3/geometry/structure/Mesh.h"
 
@@ -97,14 +101,20 @@ delta::geometry::mesh::Mesh *delta::core::io::readVTKGeometry(
   return new delta::geometry::mesh::Mesh(xCoordinates, yCoordinates, zCoordinates);
 }
 
-delta::geometry::mesh::Mesh* delta::core::io::readPartGeometry(std::string fileName)
+#ifdef DELTA_HAVE_ASSIMP
+/* Everything assimp can open: OBJ, PLY, DAE, glTF, ... Not STL - that has its
+ * own reader below, because assimp's STL path costs a 5 MB dependency and a
+ * link hack for the one format the repo actually ships. */
+static delta::geometry::mesh::Mesh* readViaAssimp(const std::string& fileName)
 {
   Assimp::Importer importer;
 
+  /* aiProcess_Triangulate is the only one actually needed: the rest of the code
+   * assumes triangle faces. CalcTangentSpace is unused by rigid-body dynamics,
+   * and JoinIdenticalVertices would silently merge coincident vertices and
+   * renumber the faces under the contact code. */
   const aiScene* scene = importer.ReadFile( fileName,
-        aiProcess_CalcTangentSpace       |
         aiProcess_Triangulate            |
-        aiProcess_JoinIdenticalVertices  |
         aiProcess_SortByPType);
 
   //A missing or unreadable file leaves `scene` null with the reason in the
@@ -165,6 +175,116 @@ delta::geometry::mesh::Mesh* delta::core::io::readPartGeometry(std::string fileN
   }
   return new delta::geometry::mesh::Mesh(triangleFaces, uniqueVertices);
 }
+#endif  /* DELTA_HAVE_ASSIMP */
+
+namespace {
+
+/* ---------------------------------------------------------------------------
+ * STL, both flavours, no third-party dependency.
+ *
+ * binary:  80-byte header, uint32 triangle count, then 50 bytes per triangle:
+ *          normal (3 float32) + 3 vertices (9 float32) + uint16 attribute.
+ * ascii:   "solid ..." then per facet "facet normal nx ny nz / outer loop /
+ *          vertex x y z (x3) / endloop / endfacet", then "endsolid".
+ *
+ * Assumes little-endian float32 and uint32, which is what every exporter writes
+ * and what every platform this runs on is.
+ * ------------------------------------------------------------------------- */
+
+bool isAsciiStl(const std::string& data)
+{
+  /* A binary STL may legitimately begin with "solid" - the header is free-form
+   * - so the only reliable discriminator is the declared size. */
+  if (data.size() < 84) return true;
+  unsigned int n = 0;
+  std::memcpy(&n, data.data() + 80, sizeof(n));
+  return data.size() != 84u + 50u * (std::size_t)n && data.compare(0, 5, "solid") == 0;
+}
+
+delta::geometry::mesh::Mesh* readStlAscii(const std::string& data)
+{
+  std::vector<std::array<iREAL, 3> >  vertices;
+  std::vector<std::array<int, 3> >    faces;
+
+  std::istringstream in(data);
+  std::string        token;
+  while (in >> token)
+  {
+    if (token != "vertex") continue;
+
+    std::array<iREAL, 3> v;
+    if (!(in >> v[0] >> v[1] >> v[2]))
+    {
+      throw std::runtime_error("readStlAscii: truncated vertex");
+    }
+    vertices.push_back(v);
+
+    /* STL repeats a vertex for every triangle that uses it. Coalesce identical
+     * positions so the mesh has a real shared-vertex topology; the contact code
+     * walks vertices, and a fan of duplicated points would triple its work. */
+    if (vertices.size() % 3 == 0)
+    {
+      const std::size_t base = vertices.size() - 3;
+      faces.push_back({{static_cast<int>(base),
+                        static_cast<int>(base + 1),
+                        static_cast<int>(base + 2)}});
+    }
+  }
+
+  if (faces.empty()) throw std::runtime_error("readStlAscii: no triangles");
+  return new delta::geometry::mesh::Mesh(faces, vertices);
+}
+
+delta::geometry::mesh::Mesh* readStlBinary(const std::string& data)
+{
+  unsigned int n = 0;
+  std::memcpy(&n, data.data() + 80, sizeof(n));
+
+  if (data.size() < 84u + 50u * (std::size_t)n)
+  {
+    throw std::runtime_error("readStlBinary: file is shorter than its declared "
+                             "triangle count");
+  }
+
+  std::vector<std::array<iREAL, 3> >  vertices;
+  std::vector<std::array<int, 3> >    faces;
+  vertices.reserve(3u * n);
+  faces.reserve(n);
+
+  const char* p = data.data() + 84;
+  for (unsigned int t = 0; t < n; ++t)
+  {
+    /* Skip the normal: it is redundant (cross product of the edges) and the
+     * mesh recomputes its own. */
+    p += 12;
+    for (int k = 0; k < 3; ++k)
+    {
+      float xyz[3];
+      std::memcpy(xyz, p, sizeof(xyz));
+      p += 12;
+      std::array<iREAL, 3> v = {{xyz[0], xyz[1], xyz[2]}};
+      vertices.push_back(v);
+      (void)v;
+    }
+    const std::size_t base = vertices.size() - 3;
+    faces.push_back({{static_cast<int>(base),
+                      static_cast<int>(base + 1),
+                      static_cast<int>(base + 2)}});
+    p += 2;   /* attribute byte count */
+  }
+
+  return new delta::geometry::mesh::Mesh(faces, vertices);
+}
+
+bool hasStlSuffix(const std::string& name)
+{
+  if (name.size() < 4) return false;
+  std::string tail = name.substr(name.size() - 4);
+  for (std::size_t i = 0; i < tail.size(); ++i) tail[i] = (char)std::tolower(tail[i]);
+  return tail == ".stl";
+}
+
+}  // namespace
 
 namespace {
 
@@ -464,4 +584,39 @@ delta::core::io::Scenario delta::core::io::readmbfcp(
     }
 
     return scenario;
+}
+
+/* ---------------------------------------------------------------------------
+ * readPartGeometry - the one entry point scenarios call.
+ *
+ * STL is handled here, both binary and ascii, with no dependency: all four
+ * meshes in input/dim3 are binary STL. Anything else is delegated to assimp
+ * when the build found it, which keeps OBJ/PLY/DAE from Blender working.
+ * ------------------------------------------------------------------------- */
+delta::geometry::mesh::Mesh* delta::core::io::readPartGeometry(std::string fileName)
+{
+  if (hasStlSuffix(fileName))
+  {
+    std::ifstream in(fileName.c_str(), std::ios::binary);
+    if (!in)
+    {
+      throw std::runtime_error("readPartGeometry: cannot open '" + fileName + "'");
+    }
+    std::ostringstream ss;
+    ss << in.rdbuf();
+    const std::string data = ss.str();
+    if (data.size() < 15)
+    {
+      throw std::runtime_error("readPartGeometry: '" + fileName + "' is too short to be an STL");
+    }
+    return isAsciiStl(data) ? readStlAscii(data) : readStlBinary(data);
+  }
+
+#ifdef DELTA_HAVE_ASSIMP
+  return readViaAssimp(fileName);
+#else
+  throw std::runtime_error("readPartGeometry: '" + fileName + "' is not an STL, "
+                           "and this build has no assimp (DELTA_HAVE_ASSIMP) "
+                           "to read other formats");
+#endif
 }

@@ -37,7 +37,7 @@ namespace delta {
  * Write one frame of the 2D scene as a ParaView XML unstructured grid, and
  * rewrite the time series collection beside it.
  *
- * Mirrors the 3D convention by filling a delta::core::io::MeshBuffer and
+ * Mirrors the 3D convention by filling a delta::core::io::FrameStaging and
  * calling delta::core::io::writeVTU, so the file format lives in one place:
  * every particle becomes real filled geometry, not a point cloud.
  *

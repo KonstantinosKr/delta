@@ -1,5 +1,5 @@
 /*
- * MeshBuffer.h
+ * FrameStaging.h
  *
  * Staging container for one VTK XML unstructured grid (.vtu), deliberately
  * free of any VTK type so the code that fills it stays independent of the
@@ -7,16 +7,16 @@
  *
  * Points are always three-dimensional because VTK is; a plane model simply
  * writes z = 0. Dimension is therefore a property of whatever fills the
- * buffer, never of the buffer itself - there is no "2D buffer" to keep in
- * sync with a "3D buffer".
+ * staging container, never of the container itself - there is no "2D staging"
+ * to keep in sync with a "3D staging".
  *
  * Cell ids are absolute indices into `points`, so a body appended after
  * another must offset its ids by the running point count. Getting that wrong
  * is what collapsed every AMReX box onto the last one, so validate() checks it.
  */
 
-#ifndef DELTA_CORE_IO_MESHBUFFER_H_
-#define DELTA_CORE_IO_MESHBUFFER_H_
+#ifndef DELTA_CORE_IO_FRAMESTAGING_H_
+#define DELTA_CORE_IO_FRAMESTAGING_H_
 
 #include <array>
 #include <string>
@@ -27,7 +27,24 @@ namespace delta {
 namespace core {
 namespace io {
 
-struct MeshBuffer
+/*
+ * The cell type tags of the .vtu format (VTK cell types, section 5 of the
+ * legacy format spec). They are fixed integers, part of the file format rather
+ * than of the library, so the header can name them without including VTK - that
+ * is what lets a producer fill a FrameStaging on a machine with no VTK at all.
+ */
+enum VtuCellType
+{
+  VTU_VERTEX     = 1,
+  VTU_POLYLINE   = 4,
+  VTU_TRIANGLE   = 5,
+  VTU_POLYGON    = 7,
+  VTU_TETRA      = 10,
+  VTU_HEXAHEDRON = 12,
+  VTU_LINE       = 3
+};
+
+struct FrameStaging
 {
   struct Field
   {
@@ -55,10 +72,29 @@ struct MeshBuffer
   void validate() const;
 };
 
-/* Emit `buffer` as path + name + "_" + step + ".vtu" and rewrite
- * path + name + ".pvd" so the frames load as one time series. */
+/* Emit the staging as path + name + "_" + step + ".vtu" and rewrite
+ * path + name + ".pvd" so the frames load as one time series.
+ *
+ * Two emitters for the same file format:
+ *
+ *   writeVTU       through the VTK library. Only compiled when VTK was found
+ *                  (DELTA_HAVE_VTK); the reference implementation.
+ *   writeVTUAscii  hand-written XML, no VTK. Always available, so a machine
+ *                  without VTK can still produce frames and run the tests.
+ *
+ * Both validate() the staging first and call writePVD, so the two cannot drift
+ * on anything except the bytes in the file - which tests/frame_staging_test.cpp
+ * checks by parsing both back.
+ */
 void writeVTU(const std::string& path, const std::string& name, int step,
-              const MeshBuffer& buffer);
+              const FrameStaging& buffer);
+
+void writeVTUAscii(const std::string& path, const std::string& name, int step,
+                   const FrameStaging& buffer);
+
+/* True when writeVTU() is compiled in; false means only the ascii emitter
+ * exists, and callers that want a file should use writeVTUAscii(). */
+bool hasVtkWriter();
 
 /* Rewrite the ParaView collection beside the .vtu files. Stateless: rescans
  * the directory on every call. */
@@ -68,4 +104,4 @@ void writePVD(const std::string& path, const std::string& name);
 }  // namespace core
 }  // namespace delta
 
-#endif /* DELTA_CORE_IO_MESHBUFFER_H_ */
+#endif /* DELTA_CORE_IO_FRAMESTAGING_H_ */

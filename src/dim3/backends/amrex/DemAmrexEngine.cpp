@@ -1017,5 +1017,5 @@ void delta::core::parallel::DemAmrexEngine::writeToVTK(const std::string& path, 
     }
     boxes.push_back(v);
   }
-  delta::core::io::writeGridGeometryToVTKVTK(path, step, boxes);
+  delta::core::io::writeSpaceDecompositionToVTK(path, step, boxes);
 }

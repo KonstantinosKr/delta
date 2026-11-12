@@ -3,7 +3,7 @@
 ## Layout
 
 ```
-src/core/     shared platform: ParticleRecord, State, MeshBuffer, mbcfp/STL readers
+src/core/     shared platform: ParticleRecord, State, FrameStaging, mbcfp/STL readers
 src/dim2/     the 2D solver (circles and triangles, SAT narrowphase)
 src/dim3/     the 3D solver
   contact/    broad + narrow phase, contact forces
