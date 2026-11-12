@@ -9,7 +9,6 @@
 #include "scenarios.h"
 #include "configuration.h"
 #include "core/io/read.h"
-#include "dim3/geometry/loaders/graphite.h"
 #include "dim3/geometry/mesh/cube.h"
 #include "dim3/geometry/hull/hullcube.h"
 #include "dim3/geometry/hull/granulate.h"
@@ -531,69 +530,4 @@ void delta::world::scenarios::freeFall(
   //////////////////////////////////////////////////////
   /// END | FREEFALL AND BLACKHOLE SCENARIO
   //////////////////////////////////////////////////////
-}
-
-void delta::world::scenarios::nuclear(
-	int 												scenario,
-	iREAL 											centre[3],
-	int 												meshDensity,
-	iREAL 											epsilon,
-	std::vector<delta::world::structure::Object>&	coarse)
-{
-
-  //////////////////////////////////////////////////////
-  /// NUCLEAR ARRAY
-  //////////////////////////////////////////////////////
-  //////FLOOR//////////////////////////////////////////////////////////////////////////////////////////////////
-  iREAL height = 0.05; iREAL width = 0.30;
-  std::array<iREAL, 3> position = {centre[0], centre[1], centre[2]};
-
-  iREAL pos[3] = {position[0], position[1], position[2]};
-  delta::geometry::mesh::Mesh *geometry = delta::geometry::hull::generateHullCube(
-	  pos, width, height, width, 0, 0, 0, 0);
-  delta::world::structure::Object objectFloor(
-	  "cube", 0, geometry, position,
-	  delta::geometry::material::MaterialType::GOLD,
-	  true, true, true, epsilon, {-1.0, 0, 0}, {0,0,0});
-  coarse.push_back(objectFloor);
-  //////FLOOR//////////////////////////////////////////////////////////////////////////////////////////////////
-
-  /////////FINE GRID///////////////////////////////
-  pos[0] = position[0];
-  pos[1] = position[1] + height/2;
-  pos[2] = position[2];
-
-  if(scenario == -1)
-  {
-	delta::world::configuration::loadNuclearGeometry(pos, width, 1, epsilon, coarse);
-  }
-  else if(scenario == 0)
-  {
-	delta::world::configuration::loadNuclearGeometry(pos, width, 2, epsilon, coarse);
-  }
-  else if(scenario == 1)
-  {
-	//nuclear deck 1s
-	delta::world::configuration::makeBrickGrid(pos, 0.10, 1, 0.1, 1, epsilon, coarse);
-  }
-  else if(scenario == 2)
-  {
-	//nuclear deck 4s
-	delta::world::configuration::makeBrickGrid(pos, 0.10, 2, 0.1, 1, epsilon, coarse);
-  }
-  else if(scenario == 3)
-  {
-	//nuclear deck 32s
-	delta::world::configuration::makeBrickGrid(pos, 0.15, 4, 0.1, 2, epsilon, coarse);
-  }
-  else if(scenario == 4)
-  {
-	//nuclear deck 64
-	delta::world::configuration::makeBrickGrid(pos, 0.15, 4, 0.4, 4, epsilon, coarse);
-  }
-  else if(scenario == 5)
-  {
-	//nuclear deck 256
-	delta::world::configuration::makeBrickGrid(pos, 0.15, 10, 0.08, 4, epsilon, coarse);
-  }
 }

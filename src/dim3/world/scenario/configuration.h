@@ -36,7 +36,6 @@
 #include "dim3/geometry/mesh/cube.h"
 #include "dim3/geometry/hull/hullcube.h"
 #include "dim3/geometry/hull/granulate.h"
-#include "dim3/geometry/loaders/graphite.h"
 
 namespace delta {
   namespace world {
@@ -199,48 +198,8 @@ namespace delta {
 		  iREAL 											subcellx,
 		  int 											meshDensity);
 
-		  /*
-		   *  Load Nuclear Geometry
-		   *
-		   *  load nuclear core geometry
-		   *
-		   *  @param position			: position of the layout
-		   *  @param width 				: width of the geometry
-		   *  @param layers				: number of y cuts
-		   *  @param epsilon 			: grid xyz length
-		   *  @param objects				: objects returned
-		   *  @returns void
-		   */
-		 void loadNuclearGeometry(
-		  iREAL 											position[3],
-		  iREAL 											width,
-		  int 											layers,
-		  iREAL 											epsilon,
-		  std::vector<delta::world::structure::Object>& 	objects);
-
-		  /*
-		   *  Make Brick Grid
-		   *
-		   *  load nuclear core geometry into the grid
-		   *
-		   *  @param position			: position of the layout
-		   *  @param arrayXZlength 		: width at xz axis
-		   *  @param xzElements			: number of xz elements
-		   *  @param arrayYlength 		: width at y axis
-		   *  @param yElements			: number of y elements
-		   *  @param epsilon				: epsilon margin
-		   *  @param objects				: objects returned
-		   *  @returns void
-		   */
-		 void makeBrickGrid(
-		  iREAL 											position[3],
-		  iREAL							 				arrayXZlength,
-		  int   											xzElements,
-		  iREAL 											arrayYlength,
-		  int   											yElements,
-		  iREAL 											epsilon,
-		  std::vector<delta::world::structure::Object>& 	objects);
-	}
+		  
+		  	}
   }
 }
 #endif

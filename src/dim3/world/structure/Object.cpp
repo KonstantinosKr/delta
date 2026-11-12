@@ -1,6 +1,5 @@
 #include <dim3/geometry/mesh/cube.h>
 #include <dim3/geometry/hull/granulate.h>
-#include <dim3/geometry/loaders/graphite.h>
 #include <dim3/geometry/mesh/hopper.h>
 #include "dim3/world/structure/Object.h"
 

@@ -64,13 +64,6 @@ namespace delta {
 				iREAL 										epsilon,
 				std::vector<delta::world::structure::Object>&	coarse);
 
-			void nuclear(
-				int 											scenario,
-				iREAL 										centre[3],
-				int 											meshDensity,
-				iREAL 										epsilon,
-				std::vector<delta::world::structure::Object>&	coarse);
-
 			void freeFall(
 				int 											randomVelocities,
 				std::string 							shape,
