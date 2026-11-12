@@ -6,7 +6,7 @@ Branch: `amrex-integration`
 ## What this covers
 
 Making AMReX the default 3D backend of delta, porting the thesis grid
-morphologies out of the `amrex_contact` experiment tree into the backend, and
+morphologies out of the `amrex_contact` experiment tree (now `tests/thesis/`) into the backend, and
 shrinking that tree to the parts delta does not have.
 
 ## Commits
@@ -93,7 +93,7 @@ body.
 
 - `amrex_contact/docs/*.md` → `docs/`; `build_amrex.sh` → `tools/`;
   `bench.py`, `verify.sh` → `tools/bench/`.
-- `amrex_contact` keeps only what delta does not have: `src/grid`,
+- `amrex_contact` (since moved to `tests/thesis/`) keeps only what delta does not have: `src/grid`,
   `src/physics`, `include/contact`, and the two suites that measured them.
   `geom`, `scenario`, `io` and `app` were duplicates and are deleted.
   `DELTA_BUILD_AMREX_CONTACT` now defaults to `OFF` because nothing links it.
@@ -122,7 +122,7 @@ critical approaches and tightened the step. That is the intended behaviour.
 
 ## Not verified
 
-- The shrunken `amrex_contact` was configured and built with
+- The shrunken `amrex_contact` (now `tests/thesis/`) was configured and built with
   `-DDELTA_BUILD_AMREX_CONTACT=ON` (10/10 tests) *before* `bfaf28a1`. The moves
   in that commit changed `build_amrex.sh`'s `ROOT` and nothing else CMake reads,
   so configuration is expected to be unaffected — but it was not re-run.

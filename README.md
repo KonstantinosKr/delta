@@ -16,10 +16,10 @@ src/dim3/     the 3D solver
 apps/         one directory per app
   dem3d/      main.cpp, backend.h, tools/ (scenario generators), viz/ (ParaView sessions)
   dem2d/      main.cpp
-tests/        one executable per suite (ctest)
+tests/        one executable per suite (ctest), plus thesis/ (opt-in)
 docs/         SPEC, thesis mapping, and the measured morphology results
 tools/        build_amrex.sh (vendored AMReX bootstrap), bench/ (measurements)
-amrex_contact/  thesis reference implementation of the hierarchy + contact law,
+tests/thesis/ thesis reference implementation of the hierarchy + contact law,
                 opt-in (-DDELTA_BUILD_AMREX_CONTACT=ON); nothing links it
 third_party/  vendored AMReX install (git-ignored)
 input/dim3/   scenarios (*.mbfcp) and geometry (*.STL)
@@ -64,11 +64,11 @@ neighbour list with the hierarchy, so there is no cross-rank ghost exchange.
 that value carries the explicit-stability limit of the contact spring.
 
 One CMake project builds the core, `apps/dem3d` (`delta`), every test, and
-`amrex_contact` when `third_party/amrex-install` exists. The AMReX backend is
+the thesis suites in `tests/thesis/` when an AMReX install exists. The AMReX backend is
 built by default whenever that install is found; a machine without one builds
 serial-only instead of failing. Options: `-DDELTA_USE_AMREX=OFF` forces the
 serial build, `-DDELTA_BUILD_AMREX_CONTACT=OFF` skips the experiment tree. The
-AMReX install is built by `amrex_contact/tools/build_amrex.sh`.
+AMReX install is built by `tools/build_amrex.sh`.
 
 The MPI test (`dem_phase1_amrex`, run at 1 and 2 ranks) is only configured when
 AMReX itself was built with MPI; the vendored 25.11 install is built with

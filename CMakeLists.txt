@@ -5,12 +5,12 @@ project(delta LANGUAGES C CXX)
 #   src/                backend-agnostic core + backends/{serial,amrex}
 #   apps/               entry points (one main.cpp per app)
 #   tests/              one executable per suite
-#   amrex_contact/      standalone contact/morphology experiment tree
+#   tests/thesis/       thesis reference implementation (opt-in, not linked)
 #   docs/               design notes and the measured morphology results
 #   tools/              bootstrap and benchmark scripts
 #   third_party/        vendored AMReX install (git-ignored, tools/build_amrex.sh)
 
-# Vendored AMReX, if it was built (amrex_contact/tools/build_amrex.sh).
+# Vendored AMReX, if it was built (tools/build_amrex.sh).
 list(APPEND CMAKE_PREFIX_PATH
      "${PROJECT_SOURCE_DIR}/third_party/amrex-install")
 find_package(AMReX CONFIG QUIET)
@@ -19,7 +19,7 @@ find_package(AMReX CONFIG QUIET)
 # install is found, so a machine without one builds serial-only instead of
 # failing. -DDELTA_USE_AMREX=OFF still forces the serial build.
 option(DELTA_USE_AMREX "Build the AMReX-backed backend" ${AMReX_FOUND})
-option(DELTA_BUILD_AMREX_CONTACT "Build the amrex_contact thesis reference tree" OFF)
+option(DELTA_BUILD_AMREX_CONTACT "Build the thesis reference implementation in tests/thesis" OFF)
 
 if(DELTA_USE_AMREX)
   # AMReX headers need C++17 and its particle machinery needs C++20.
@@ -170,13 +170,35 @@ elseif(DELTA_USE_AMREX)
   message(STATUS "delta_dem_amrex_test skipped: AMReX was built without MPI")
 endif()
 
-# --- amrex_contact ------------------------------------------------------------
-# Self-contained experiment tree (own CMakeLists, own targets). Only added when
-# the vendored AMReX install exists; it is not part of the delta binaries.
+# --- Thesis reference implementation ------------------------------------------
+# A second implementation of the grid hierarchy and the contact law, as they
+# were measured in docs/RESULTS.md. The morphologies that delta ships now live
+# in src/dim3/backends/amrex/; this tree is kept so the numbers in the thesis
+# results can be reproduced, and it is the only place the wall/contact law is
+# unit-tested. Nothing in the delta binaries links it.
+#
+# It declares its types in a global `contact` namespace (delta's are in
+# delta::core::parallel), so it has to stay a separate library.
+# Opt in with -DDELTA_BUILD_AMREX_CONTACT=ON.
 if(DELTA_BUILD_AMREX_CONTACT)
-  if(EXISTS "${PROJECT_SOURCE_DIR}/third_party/amrex-install/lib/libamrex_3d.a")
-    add_subdirectory(amrex_contact)
+  if(AMReX_FOUND)
+    add_library(thesis_contact STATIC
+      "${PROJECT_SOURCE_DIR}/tests/thesis/grid/GridHierarchy.cpp"
+      "${PROJECT_SOURCE_DIR}/tests/thesis/physics/ContactDynamics.cpp"
+      "${PROJECT_SOURCE_DIR}/tests/thesis/physics/Diagnostics.cpp"
+      "${PROJECT_SOURCE_DIR}/tests/thesis/physics/DtController.cpp")
+    target_include_directories(thesis_contact PUBLIC
+      "${PROJECT_SOURCE_DIR}/tests/thesis/include")
+    target_link_libraries(thesis_contact PUBLIC AMReX::amrex)
+
+    add_executable(thesis_test_grid "${PROJECT_SOURCE_DIR}/tests/thesis/test_grid.cpp")
+    target_link_libraries(thesis_test_grid PRIVATE thesis_contact)
+    add_test(NAME thesis_grid COMMAND thesis_test_grid)
+
+    add_executable(thesis_test_physics "${PROJECT_SOURCE_DIR}/tests/thesis/test_physics.cpp")
+    target_link_libraries(thesis_test_physics PRIVATE thesis_contact)
+    add_test(NAME thesis_physics COMMAND thesis_test_physics)
   else()
-    message(STATUS "amrex_contact skipped: third_party/amrex-install not built")
+    message(STATUS "thesis tests skipped: no AMReX install found")
   endif()
 endif()

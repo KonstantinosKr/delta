@@ -48,3 +48,11 @@ viztest/
 
 # Tracked-by-mistake artefacts: the engine writes these, git should not.
 /output/
+
+# Rendered media: regenerate with tools/render_morphology.py, do not commit
+docs/media/
+*.mp4
+
+# Thesis morphology driver: build by hand, not part of the CMake test suite
+tests/thesis/two_sphere_morphology.cpp
+tests/thesis/render_morphology.py
