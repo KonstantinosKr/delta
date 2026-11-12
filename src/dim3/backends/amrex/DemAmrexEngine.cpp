@@ -230,6 +230,10 @@ void delta::core::parallel::DemAmrexEngine::initFrom(
   _maxForce = 0.0;
   _maxTorque = 0.0;
   _reach = 0.0;
+  _currentDt = 0.0;
+  _hMin = 0.0;
+  _bodies.clear();
+  _hierarchyPairs.clear();
   _minReach = std::numeric_limits<iREAL>::max();
   _maxHalo = 0.0;
 
@@ -428,8 +432,14 @@ long long delta::core::parallel::DemAmrexEngine::particleCount() const
 
 void delta::core::parallel::DemAmrexEngine::step(iREAL dt, const std::array<iREAL, 3>& gravity)
 {
-  detectAndDeriveForces(dt);
-  integrate(dt, gravity);
+  /* With the chapter-7 controller the engine owns the step: the first call seeds
+   * it with the caller's dt, later calls use the decision of the last pass. */
+  if (_config.dynamicDt && _currentDt <= 0.0) {_currentDt = dt;}
+  const iREAL useDt = (_config.dynamicDt && _currentDt > 0.0) ? _currentDt : dt;
+  _lastDt = useDt;
+
+  detectAndDeriveForces(useDt);
+  integrate(useDt, gravity);
 }
 
 void delta::core::parallel::DemAmrexEngine::detectAndDeriveForces(iREAL dt)
@@ -454,7 +464,10 @@ void delta::core::parallel::DemAmrexEngine::detectAndDeriveForces(iREAL dt)
 
 void delta::core::parallel::DemAmrexEngine::forcePass(iREAL dt)
 {
-  if (_config.mode == GridMode::Adaptive) {forcePassByPairs(dt); return;}
+  if (_config.mode == GridMode::Adaptive || _config.mode == GridMode::Reluctant) {
+    forcePassByPairs(dt);
+    return;
+  }
   forcePassNeighborList(dt);
 }
 
@@ -625,6 +638,9 @@ void delta::core::parallel::DemAmrexEngine::forcePassByPairs(iREAL dt)
       bodies[o].pos[0] = v.pos[0];
       bodies[o].pos[1] = v.pos[1];
       bodies[o].pos[2] = v.pos[2];
+      bodies[o].vel[0] = v.linVel[0];
+      bodies[o].vel[1] = v.linVel[1];
+      bodies[o].vel[2] = v.linVel[2];
       bodies[o].diameter = v.diameter;
       bodies[o].reach    = 0.5 * v.diameter + v.epsilon;
     }
@@ -635,13 +651,19 @@ void delta::core::parallel::DemAmrexEngine::forcePassByPairs(iREAL dt)
   const std::array<iREAL, 3> domLo = {{lo[0], lo[1], lo[2]}};
   const std::array<iREAL, 3> domHi = {{hi[0], hi[1], hi[2]}};
 
-  _hierarchy = GridHierarchy(_config.grid);
+  GridParams gridParams = _config.grid;
+  gridParams.mode = (_config.mode == GridMode::Reluctant) ? HierarchyMode::Reluctant
+                                                         : HierarchyMode::Adaptive;
+  _hierarchy = GridHierarchy(gridParams);
   _hierarchy.build(bodies, domLo, domHi, _reach);
 
   std::vector<iREAL> frc(3 * static_cast<std::size_t>(freeCount), 0.0);
   std::vector<iREAL> trq(3 * static_cast<std::size_t>(freeCount), 0.0);
 
   const std::vector<std::pair<int, int> >& pairs = _hierarchy.candidatePairs();
+  _bodies = bodies;
+  _hierarchyPairs = pairs;
+  _hMin = (_hierarchy.stats().levels > 0) ? _hierarchy.cellEdge(_hierarchy.stats().levels - 1) : 0.0;
   for (std::size_t k = 0; k < pairs.size(); ++k)
   {
     const int ia = pairs[k].first;
@@ -764,6 +786,12 @@ void delta::core::parallel::DemAmrexEngine::forcePassByPairs(iREAL dt)
 
   _contactPairs = static_cast<long long>(_pairList.size());
   applyForceCache(dt);
+
+  if (_config.dynamicDt) {
+    _dtController.setState(_config.dtState);
+    _lastDtDecision = _dtController.update(_bodies, _hierarchyPairs, _hMin);
+    _currentDt = _lastDtDecision.dtNext;
+  }
 }
 
 void delta::core::parallel::DemAmrexEngine::applyForceCache(iREAL dt)

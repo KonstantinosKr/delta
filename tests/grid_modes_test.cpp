@@ -118,14 +118,18 @@ int main(int argc, char** argv)
   cfgRegular.mode = GridMode::Regular;
   DemParallelConfig cfgAdaptive;
   cfgAdaptive.mode = GridMode::Adaptive;
+  DemParallelConfig cfgReluctant;
+  cfgReluctant.mode = GridMode::Reluctant;
 
   std::vector<ParticleRecord> stateA = initial;
   std::vector<ParticleRecord> stateB = initial;
   std::vector<ParticleRecord> stateC = initial;
+  std::vector<ParticleRecord> stateD = initial;
 
   DemAmrexEngine noGrid(stateA, cfgNoGrid);
   DemAmrexEngine regular(stateB, cfgRegular);
   DemAmrexEngine adaptive(stateC, cfgAdaptive);
+  DemAmrexEngine reluctant(stateD, cfgReluctant);
 
   CHECK(noGrid.sizingIsSound());
   CHECK(regular.sizingIsSound());
@@ -138,22 +142,25 @@ int main(int argc, char** argv)
   noGrid.detectAndDeriveForces(dt);
   regular.detectAndDeriveForces(dt);
   adaptive.detectAndDeriveForces(dt);
+  reluctant.detectAndDeriveForces(dt);
 
   std::vector<std::pair<long long, long long> > pairsNoGrid = pairsOf(noGrid);
   std::vector<std::pair<long long, long long> > pairsRegular = pairsOf(regular);
   std::vector<std::pair<long long, long long> > pairsAdaptive = pairsOf(adaptive);
+  std::vector<std::pair<long long, long long> > pairsReluctant = pairsOf(reluctant);
 
   CHECK(!pairsNoGrid.empty());
   /* The grid may change which pairs are tested, never which are in contact. */
   CHECK(pairsNoGrid == pairsRegular);
   CHECK(pairsNoGrid == pairsAdaptive);
+  CHECK(pairsNoGrid == pairsReluctant);
 
   std::printf("delta_grid_modes_test OK: %zu bodies, %zu contacts; "
               "nogrid dx=%g nneighbor=%d, regular dx=%g nneighbor=%d, "
-              "adaptive %d levels\n",
+              "adaptive %d levels, reluctant %d levels\n",
               objects.size(), pairsNoGrid.size(), (double)noGrid.dx(),
               noGrid.nneighbor(), (double)regular.dx(), regular.nneighbor(),
-              adaptive.levels());
+              adaptive.levels(), reluctant.levels());
 
   amrex::Finalize();
   return 0;

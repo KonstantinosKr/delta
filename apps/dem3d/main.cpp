@@ -78,10 +78,13 @@ int main(int argc, const char *argv[]) {
 	//Broadphase grid of the amrex backend: "nogrid" (uniform) or "regular"
 	//(refined to the smallest body).
 	std::string gridMode = "nogrid";
+	//"fixed" keeps simMeta.dt; "grid" lets the chapter-7 controller pick the step.
+	bool gridDt = false;
 	for(int a=1; a+1<argc; a++)
 	{
 		if(std::string(argv[a]) == "--backend") {backendName = argv[a+1];}
 		if(std::string(argv[a]) == "--mode")    {gridMode    = argv[a+1];}
+		if(std::string(argv[a]) == "--dt-source" && std::string(argv[a+1]) == "grid") {gridDt = true;}
 	}
 
 	bool amrexInitialised = false;
@@ -188,7 +191,7 @@ int main(int argc, const char *argv[]) {
 
 	std::array<iREAL, 6> boundary = {{ 0.0, 0.0, 0.0, 1.0, 1.0, 1.0 }};
 
-	auto backend = delta::app::makeBackend(backendName, particles, boundary, simMeta, gridMode);
+	auto backend = delta::app::makeBackend(backendName, particles, boundary, simMeta, gridMode, gridDt);
 	if(!backend) {return 1;}
 
 	std::cout << "particles=" << particles.size() << std::endl;

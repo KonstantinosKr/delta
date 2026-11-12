@@ -117,7 +117,8 @@ inline std::unique_ptr<Backend> makeBackend(const std::string& name,
 											std::vector<delta::world::structure::Object> particles,
 											const std::array<iREAL, 6>& boundary,
 											const delta::core::data::Meta::Simulation& meta,
-											const std::string& gridMode = "nogrid")
+											const std::string& gridMode = "nogrid",
+											bool gridDt = false)
 {
 	if (name == "serial")
 	{
@@ -127,17 +128,25 @@ inline std::unique_ptr<Backend> makeBackend(const std::string& name,
 	{
 #ifdef DELTA_USE_AMREX
 		delta::core::parallel::DemParallelConfig config;
+		config.dynamicDt = gridDt;
+		/* The incoming step carries the explicit-stability limit of the contact
+		 * spring, so the controller may only tighten it, never relax it. */
+		config.dtState.dt    = meta.dt;
+		config.dtState.dtMax = meta.dt;
+		config.dtState.dtMin = meta.dt / 100.0;
 		if (gridMode == "regular")       {config.mode = delta::core::parallel::GridMode::Regular;}
-		else if (gridMode == "adaptive") {config.mode = delta::core::parallel::GridMode::Adaptive;}
+		else if (gridMode == "adaptive")  {config.mode = delta::core::parallel::GridMode::Adaptive;}
+		else if (gridMode == "reluctant") {config.mode = delta::core::parallel::GridMode::Reluctant;}
 		else if (gridMode != "nogrid")
 		{
-			std::cerr << "unknown --mode '" << gridMode << "' (nogrid|regular|adaptive)" << std::endl;
+			std::cerr << "unknown --mode '" << gridMode << "' (nogrid|regular|adaptive|reluctant)" << std::endl;
 			return std::unique_ptr<Backend>();
 		}
 		return std::unique_ptr<Backend>(
 			new AmrexBackend(std::move(particles), boundary, meta, config));
 #else
 		(void)gridMode;
+		(void)gridDt;
 		std::cerr << "backend 'amrex' is not compiled in; configure with -DDELTA_USE_AMREX=ON"
 				  << std::endl;
 		return std::unique_ptr<Backend>();

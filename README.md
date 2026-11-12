@@ -37,12 +37,27 @@ Binaries: `delta` (3D) and `delta2d` (2D), both take `--help`.
 ./build/delta --backend serial              # default
 ./build/delta --backend amrex               # parallel, uniform grid
 ./build/delta --backend amrex --mode regular  # parallel, refined to smallest body
+./build/delta --backend amrex --mode adaptive   # levels by body size
+./build/delta --backend amrex --mode reluctant  # refine only approaching pairs
+./build/delta --backend amrex --mode reluctant --dt-source grid  # ch.7 step bound
 ```
 
-`--mode` applies to the amrex backend only: `nogrid` (the original uniform
-tiling) or `regular` (thesis 6.3, `dx` from the smallest body, halo widened to
-cover the largest). Both must produce the same contact set - that is what
-`tests/grid_modes_test.cpp` asserts.
+`--mode` applies to the amrex backend only:
+
+| mode | grid |
+|---|---|
+| `nogrid` | original uniform tiling (`dx` from the largest body) |
+| `regular` | thesis 6.3, `dx` from the smallest body, halo widened to cover the largest |
+| `adaptive` | thesis 6.3/6.4.2, every body on its natural level, coarse bodies inherited downwards as virtual particles |
+| `reluctant` | ch. 7, everything starts on the mono-cell and a cell is refined only when it holds >= 2 approaching bodies |
+
+All four must produce the same contact set - that is what `tests/grid_modes_test.cpp`
+asserts. `adaptive`/`reluctant` are single-rank only: they replace AMReX's
+neighbour list with the hierarchy, so there is no cross-rank ghost exchange.
+
+`--dt-source grid` hands the step to the chapter-7 controller
+(`tests/dt_controller_test.cpp`). It only tightens the step you asked for, since
+that value carries the explicit-stability limit of the contact spring.
 
 One CMake project builds the core, `apps/dem3d` (`delta`), every test, and
 `amrex_contact` when `third_party/amrex-install` exists. The AMReX backend is

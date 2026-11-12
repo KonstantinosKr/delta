@@ -138,6 +138,12 @@ if(DELTA_USE_AMREX)
   vtk_module_autoinit(TARGETS delta_grid_modes_test MODULES ${VTK_LIBRARIES})
   add_test(NAME grid_modes COMMAND delta_grid_modes_test)
   set_tests_properties(grid_modes PROPERTIES ENVIRONMENT "AMREX_VERBOSE=0")
+
+  # Chapter-7 step controller: pure arithmetic, no AMReX initialisation needed,
+  # but the types live in the amrex backend.
+  add_executable(delta_dt_controller_test "${PROJECT_SOURCE_DIR}/tests/dt_controller_test.cpp")
+  target_link_libraries(delta_dt_controller_test PRIVATE delta3d_core)
+  add_test(NAME dt_controller COMMAND delta_dt_controller_test)
 endif()
 
 # The AMReX test reads amrex::ParallelDescriptor's communicator, so it needs an

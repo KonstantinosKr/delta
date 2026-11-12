@@ -39,6 +39,7 @@
 #include "core/data/ParticleRecord.h"
 #include "DemParticleContainer.h"
 #include "GridHierarchy.h"
+#include "DtController.h"
 
 namespace delta {
   namespace core {
@@ -75,13 +76,18 @@ enum class GridMode
 {
   NoGrid,
   Regular,
-  Adaptive
+  Adaptive,
+  Reluctant
 };
 
 struct DemParallelConfig
 {
   GridMode mode = GridMode::NoGrid;
-  GridParams grid;             /* refine factor / depth of the Adaptive grid */
+  GridParams grid;             /* refine factor / depth of the hierarchy modes */
+  /* Chapter-7 dynamic step: when set, step() advances with the controller's dt
+   * instead of the caller's, computed from the previous force pass. */
+  bool dynamicDt = false;
+  DtState dtState;
   int maxGridSize = 32;
   int nneighbor = 1;
   double cellsPerReach = 1.0;
@@ -171,6 +177,9 @@ public:
   /* Levels of the Adaptive grid (0 in the other modes). */
   int levels() const { return _hierarchy.stats().levels; }
   long cells() const { return _hierarchy.stats().cells; }
+  /* Step size the last/next step actually used (chapter-7 controller). */
+  iREAL stepSize() const { return _lastDt; }
+  const DtDecision& lastDtDecision() const { return _lastDtDecision; }
   iREAL reach() const { return _reach; }
   iREAL minReach() const { return _minReach; }
   iREAL dx() const { return _dxMin; }
@@ -219,7 +228,14 @@ private:
   iREAL     _maxTorque = 0.0;
   long long _contactPairs = 0;
   std::vector<std::pair<long long, long long> > _pairList;
-  GridHierarchy _hierarchy;               /* Adaptive mode only */
+  GridHierarchy _hierarchy;               /* hierarchy modes only */
+  DtController _dtController;
+  DtDecision   _lastDtDecision;
+  iREAL        _currentDt = 0.0;
+  iREAL        _lastDt = 0.0;
+  iREAL        _hMin = 0.0;
+  std::vector<GridBody> _bodies;                             /* last force pass */
+  std::vector<std::pair<int, int> > _hierarchyPairs;          /* last force pass */
   /* Accumulated (force, torque) per tile between the two force-pass loops. */
   std::map<std::pair<int, int>, std::vector<iREAL> > _forceCache;
   std::string _sizingDiagnostic;

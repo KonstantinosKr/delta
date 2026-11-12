@@ -37,25 +37,40 @@ namespace delta {
   namespace core {
     namespace parallel {
 
-/* One body as the hierarchy sees it: where it is and how far it reaches. */
+/* One body as the hierarchy sees it: where it is, how it moves and how far it
+ * reaches. */
 struct GridBody
 {
   std::array<iREAL, 3> pos;
+  std::array<iREAL, 3> vel;
   iREAL diameter;
   iREAL reach;      /* 0.5*diameter + epsilon, the pair reach contributed */
 };
 
+/* Adaptive: every body sits as deep as its size allows (6.3).
+ * Reluctant: everything starts on the mono-cell and a cell is refined only when
+ * it holds >= 2 bodies that are approaching (ch. 7), so h_min stays large. */
+enum class HierarchyMode
+{
+  Adaptive,
+  Reluctant
+};
+
 struct GridParams
 {
-  int refineFactor = 3;      /* children per edge (thesis 6.1) */
-  int maxLevel     = 4;      /* deepest level */
-  double sizeSlack = 1.0;    /* a level must satisfy h >= sizeSlack*diameter */
+  HierarchyMode mode = HierarchyMode::Adaptive;
+  int refineFactor  = 3;      /* children per edge (thesis 6.1) */
+  int maxLevel      = 4;      /* deepest level */
+  double sizeSlack  = 1.0;    /* a level must satisfy h >= sizeSlack*diameter */
+  int minBodiesToRefine = 2;  /* reluctant: bodies a cell needs to be refined */
+  double approachGap    = 1.0;/* reluctant: refine when gap < approachGap*h */
 };
 
 struct GridStats
 {
   int  levels        = 0;
   long cells         = 0;    /* occupied cells over all levels */
+  long refused       = 0;    /* reluctant: cells left coarse on purpose */
   long cellPairs     = 0;    /* neighbour lookups performed */
   long rawPairs      = 0;    /* before dedup */
   long uniquePairs   = 0;
@@ -94,6 +109,13 @@ private:
   };
 
   Cell cellOf(const Level& level, const std::array<iREAL, 3>& pos) const;
+
+  void buildAdaptive(const std::vector<GridBody>& bodies, iREAL maxReach);
+  void buildReluctant(const std::vector<GridBody>& bodies, iREAL maxReach);
+  void collectPairs(const std::vector<GridBody>& bodies,
+                    const std::vector<int>& levelOf,
+                    int topLevel,
+                    iREAL maxReach);
 
   GridParams _params;
   std::array<iREAL, 3> _lo{{0.0, 0.0, 0.0}};
