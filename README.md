@@ -17,8 +17,11 @@ apps/         one directory per app
   dem3d/      main.cpp, backend.h, tools/ (scenario generators), viz/ (ParaView sessions)
   dem2d/      main.cpp
 tests/        one executable per suite (ctest), plus thesis/ (opt-in)
-docs/         SPEC, thesis mapping, and the measured morphology results
-tools/        build_amrex.sh (vendored AMReX bootstrap), bench/ (measurements)
+docs/         SPEC, thesis mapping, measured morphology results, and the
+              hopper bug report (hopper-bug-report.pdf); its figures and
+              videos are generated into output/report/ and output/big/
+tools/        build_amrex.sh (vendored AMReX bootstrap), bench/ (measurements),
+              report/ (regenerates the bug-report figures and video)
 tests/thesis/ thesis reference implementation of the hierarchy + contact law,
                 opt-in (-DDELTA_BUILD_AMREX_CONTACT=ON); nothing links it
 third_party/  vendored AMReX install (git-ignored)

@@ -480,8 +480,17 @@ void delta::core::Engine::evaluateCandidates(
   _collisionsOfNextTraversal.clear();
 
   // The log used to print a hard-coded 0 for every step (State::_numberOfCollisions
-  // was never assigned). Report the resolved pair count instead.
-  _state.setNumberOfCollisions((int)getContactPairs().size());
+  // was never assigned). Report the resolved pair count instead: every pair is
+  // stored twice (once under each endpoint), so the sum of the list lengths is
+  // twice the pair count. Building the deduplicated set here cost a set insert
+  // per contact on every step - tens of thousands of them.
+  int storedEndpoints = 0;
+  for(std::map<int, std::vector<Collisions> >::const_iterator e=_activeCollisions.begin();
+      e!=_activeCollisions.end(); e++)
+  {
+	storedEndpoints += (int)e->second.size();
+  }
+  _state.setNumberOfCollisions(storedEndpoints / 2);
 }
 
 /**

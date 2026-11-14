@@ -179,6 +179,25 @@ if(VTK_FOUND)
 endif()
 add_test(NAME hopper COMMAND delta_hopper_test)
 
+# 10 spheres dropped into a meshed hopper, onto a floor: sphere-vs-mesh contact,
+# sphere-vs-sphere, gravity and the integrator in one run.
+add_executable(delta_hopper_fall_test "${PROJECT_SOURCE_DIR}/tests/hopper_fall_test.cpp")
+target_link_libraries(delta_hopper_fall_test PRIVATE delta3d_core)
+if(VTK_FOUND)
+  vtk_module_autoinit(TARGETS delta_hopper_fall_test MODULES ${VTK_LIBRARIES})
+endif()
+add_test(NAME hopper_fall COMMAND delta_hopper_fall_test)
+
+# Dumps the funnel scenario for the report figures and the video
+# (tools/report/README.md). Not a test: run it by hand when regenerating
+# docs/hopper-bug-report.pdf or docs/hopper-fall.mp4.
+add_executable(hf_video "${PROJECT_SOURCE_DIR}/tools/report/hf_video.cpp")
+target_link_libraries(hf_video PRIVATE delta3d_core)
+
+# The same for the full hopper.mbfcp scenario (15 651 bodies) and its timing.
+add_executable(hf_big "${PROJECT_SOURCE_DIR}/tools/report/hf_big.cpp")
+target_link_libraries(hf_big PRIVATE delta3d_core)
+
 # Guard for the shared .vtu writer: FrameStaging::validate() must reject the
 # geometry that would otherwise be written silently wrong.
 add_executable(delta_frame_staging_test "${PROJECT_SOURCE_DIR}/tests/frame_staging_test.cpp")

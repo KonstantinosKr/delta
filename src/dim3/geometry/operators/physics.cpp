@@ -99,6 +99,35 @@ void delta::geometry::operators::physics::computeInertia(
   }
 
   mass = me;
+
+  /* A flat mesh - a floor made of one quad, a single triangle - encloses no
+   * volume, so the simplex integral above sums to zero. Dividing the first
+   * moments by it would produce 0/0 everywhere and the NaN would then spread
+   * through euler[] into every inertia component, into ParticleRecord, and from
+   * there into the torque integration, which poisons the body's position on the
+   * first contact.
+   *
+   * Such a body cannot rotate meaningfully anyway. Report a well-defined
+   * centroid (the mean of the vertices) and zero inertia, and leave it to the
+   * caller to treat it as infinite mass - which is what an obstacle is. */
+  if (!(me > 0.0))
+  {
+    mass = 0.0;
+    center[0] = center[1] = center[2] = 0.0;
+    for (std::size_t v = 0; v < xCoordinates.size(); ++v)
+    {
+      center[0] += xCoordinates[v];
+      center[1] += yCoordinates[v];
+      center[2] += zCoordinates[v];
+    }
+    const iREAL n = (xCoordinates.empty() ? 1.0 : iREAL(xCoordinates.size()));
+    center[0] /= n;
+    center[1] /= n;
+    center[2] /= n;
+    for (int k = 0; k < 9; ++k) inertia[k] = 0.0;
+    return;
+  }
+
   //printf("mass:%f\n", mass);
 //#ifdef STATS
   //printf("sx:%f sy:%f sz:%f\n", sx, sy, sz);

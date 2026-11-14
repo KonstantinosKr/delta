@@ -28,30 +28,85 @@
 
 namespace {
 
-/*
- * Unit direction from a sphere centre P to the closest point Q on a triangle.
+/* Unit normal of the triangle from its winding alone: n = (t2-t1) x (t3-t1).
  *
- * The barrier detectors used to divide (Q-P) by (distance + radius), which is
- * |P-Q| plus rounding only while |P-Q| != radius. For a sphere exactly touching
- * the surface (|P-Q| == radius, e.g. centre 0.98 with radius 0.02 against a wall
- * at x = 1) that denominator cancels to zero, the surface point P + radius*n
- * goes infinite and every contact of the pair turns into NaN. Dividing by |P-Q|
- * itself gives the same direction and stays finite; a zero direction is returned
- * when the centre lies on the triangle, where the pair has no direction at all.
- */
-void surfaceNormal(const iREAL* P, const iREAL* Q, iREAL* normal)
+ * Deliberately NOT flipped toward the sphere. Flipping makes the wall push from
+ * either side, which reads well for a container but destroys the signed
+ * distance: the projection then becomes |distance|, depth peaks at the surface
+ * and falls again inside, and the contact normal reverses sign on penetration.
+ * With a fixed winding the projection is genuinely signed, depth grows
+ * monotonically as the sphere sinks, and "which side" is decided by the caller. */
+bool triangleNormal(const iREAL* t1, const iREAL* t2, const iREAL* t3, iREAL n[3])
 {
-  iREAL dx = Q[0]-P[0];
-  iREAL dy = Q[1]-P[1];
-  iREAL dz = Q[2]-P[2];
-  iREAL length = std::sqrt((dx*dx)+(dy*dy)+(dz*dz));
+  const iREAL u[3] = {t2[0]-t1[0], t2[1]-t1[1], t2[2]-t1[2]};
+  const iREAL v[3] = {t3[0]-t1[0], t3[1]-t1[1], t3[2]-t1[2]};
 
-  normal[0] = (length > 0.0) ? dx/length : 0.0;
-  normal[1] = (length > 0.0) ? dy/length : 0.0;
-  normal[2] = (length > 0.0) ? dz/length : 0.0;
+  n[0] = u[1]*v[2] - u[2]*v[1];
+  n[1] = u[2]*v[0] - u[0]*v[2];
+  n[2] = u[0]*v[1] - u[1]*v[0];
+
+  const iREAL len = std::sqrt(n[0]*n[0] + n[1]*n[1] + n[2]*n[2]);
+  if (!(len > 0.0)) return false;
+
+  n[0] /= len; n[1] /= len; n[2] /= len;
+  return true;
 }
 
+/* Distance from P to the triangle plane, positive on the side the normal points
+ * to (i.e. toward P). */
+iREAL planeDistance(const iREAL* t1, const iREAL* n, const iREAL* P)
+{
+  return (P[0]-t1[0])*n[0] + (P[1]-t1[1])*n[1] + (P[2]-t1[2])*n[2];
 }
+
+/* Sphere against a FINITE triangle.
+ *
+ * Fills `cn` (unit contact normal, pointing from the triangle toward the sphere
+ * centre), `Q` (closest point on the triangle) and `gap` (signed: negative when
+ * the sphere overlaps). Returns false when the sphere is behind the triangle or
+ * too far to be resolved.
+ *
+ * A plane-only test (the previous version) turns every triangle into an
+ * infinite plane: a sphere above a slanted wall's top edge, or beyond its side
+ * edge, is still "in contact" with the wall's plane and gets pushed by a face
+ * it is not touching. For the hopper that ejects spheres sideways through the
+ * front/back walls. So: when the centre projects inside the triangle use the
+ * plane distance; otherwise measure against the closest edge/vertex. */
+bool sphereTriangleContact(iREAL* TP1, iREAL* TP2, iREAL* TP3,
+                           iREAL* P, iREAL radius, iREAL epsTotal,
+                           iREAL cn[3], iREAL Q[3], iREAL& gap)
+{
+  iREAL n[3];
+  if (!triangleNormal(TP1, TP2, TP3, n)) return false;
+
+  const iREAL planeDist = planeDistance(TP1, n, P);
+  if (planeDist < 0.0) return false;          /* back face */
+
+  const iREAL qDist = delta::contact::detection::pt(TP1, TP2, TP3, P, Q);
+  if (!(qDist > 0.0)) return false;
+
+  /* qDist == planeDist only when Q is the perpendicular projection, i.e. the
+   * centre is over the triangle's interior. Otherwise Q lies on an edge or a
+   * vertex and the gap is the distance to that feature. */
+  const iREAL tol = 1e-12 * std::max(1.0, std::fabs(planeDist));
+  if (qDist <= planeDist + tol)
+  {
+    cn[0] = n[0]; cn[1] = n[1]; cn[2] = n[2];
+    gap = planeDist - radius;
+  }
+  else
+  {
+    cn[0] = (P[0]-Q[0]) / qDist;
+    cn[1] = (P[1]-Q[1]) / qDist;
+    cn[2] = (P[2]-Q[2]) / qDist;
+    gap = qDist - radius;
+  }
+
+  const iREAL depth = epsTotal - gap;
+  return depth >= 0.0;
+}
+
+}  // namespace
 
 std::vector<delta::contact::contactpoint> delta::contact::detection::sphere(
   const iREAL   xCoordinatesOfPointsOfGeometryA,
@@ -72,29 +127,43 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::sphere(
 {
   std::vector<contactpoint> result;
 
-  iREAL distance = std::sqrt(((xCoordinatesOfPointsOfGeometryB-xCoordinatesOfPointsOfGeometryA)*(xCoordinatesOfPointsOfGeometryB-xCoordinatesOfPointsOfGeometryA))+((yCoordinatesOfPointsOfGeometryB-yCoordinatesOfPointsOfGeometryA)*(yCoordinatesOfPointsOfGeometryB-yCoordinatesOfPointsOfGeometryA))+((zCoordinatesOfPointsOfGeometryB-zCoordinatesOfPointsOfGeometryA)*(zCoordinatesOfPointsOfGeometryB-zCoordinatesOfPointsOfGeometryA)));
-  iREAL xd = xCoordinatesOfPointsOfGeometryB - xCoordinatesOfPointsOfGeometryA;
-  iREAL yd = yCoordinatesOfPointsOfGeometryB - yCoordinatesOfPointsOfGeometryA;
-  iREAL zd = zCoordinatesOfPointsOfGeometryB - zCoordinatesOfPointsOfGeometryA;
+  iREAL dx = xCoordinatesOfPointsOfGeometryB - xCoordinatesOfPointsOfGeometryA;
+  iREAL dy = yCoordinatesOfPointsOfGeometryB - yCoordinatesOfPointsOfGeometryA;
+  iREAL dz = zCoordinatesOfPointsOfGeometryB - zCoordinatesOfPointsOfGeometryA;
+  iREAL distance = std::sqrt(dx*dx + dy*dy + dz*dz);
+  if (!(distance > 0.0)) return result;      /* coincident centres */
 
-  iREAL xnormal = (1.0/distance) * xd;
-  iREAL ynormal = (1.0/distance) * yd;
-  iREAL znormal = (1.0/distance) * zd;
+  /* n points from B to A: the direction body A is pushed away from B. This is
+   * the same convention the sphere-vs-triangle path stores for the sphere, so
+   * the shared spring+dashpot law works for both contact kinds. */
+  const iREAL n[3] = {-dx/distance, -dy/distance, -dz/distance};
 
-  iREAL xPA = xCoordinatesOfPointsOfGeometryA + ((diameterA/2) * xnormal);
-  iREAL yPA = yCoordinatesOfPointsOfGeometryA + ((diameterA/2) * ynormal);
-  iREAL zPA = zCoordinatesOfPointsOfGeometryA + ((diameterA/2) * znormal);
+  const iREAL radiusA = diameterA / 2.0;
+  const iREAL radiusB = diameterB / 2.0;
+  const iREAL gap = distance - (radiusA + radiusB);   /* signed: <0 overlapping */
+  const iREAL depth = (epsilonA + epsilonB) - gap;    /* acceptance quantity */
+  if (depth < 0.0) return result;
 
-  iREAL xPB = xCoordinatesOfPointsOfGeometryB - ((diameterB/2) * xnormal);
-  iREAL yPB = yCoordinatesOfPointsOfGeometryB - ((diameterB/2) * ynormal);
-  iREAL zPB = zCoordinatesOfPointsOfGeometryB - ((diameterB/2) * znormal);
+  /* Surface points: A's on the side facing B, B's on the side facing A. */
+  const iREAL xPA = xCoordinatesOfPointsOfGeometryA - radiusA * n[0];
+  const iREAL yPA = yCoordinatesOfPointsOfGeometryA - radiusA * n[1];
+  const iREAL zPA = zCoordinatesOfPointsOfGeometryA - radiusA * n[2];
+  const iREAL xPB = xCoordinatesOfPointsOfGeometryB + radiusB * n[0];
+  const iREAL yPB = yCoordinatesOfPointsOfGeometryB + radiusB * n[1];
+  const iREAL zPB = zCoordinatesOfPointsOfGeometryB + radiusB * n[2];
 
   contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, particleA, xPB, yPB, zPB, epsilonB, particleB, frictionA & frictionB);
 
-  if(newContactPoint.getDistance() <= (epsilonA+epsilonB))
-  {
-	result.push_back( newContactPoint );
-  }
+  /* The constructor cannot represent this contact: it derives depth as
+   * epsilonTotal - |PA-QB| (the acceptance quantity, which peaks at first touch
+   * and falls as the overlap grows) and its normal degenerates at exact touch.
+   * Use the real overlap and the centre-to-centre normal instead. */
+  newContactPoint.normal[0] = n[0];
+  newContactPoint.normal[1] = n[1];
+  newContactPoint.normal[2] = n[2];
+  newContactPoint.depth      = (gap < 0.0) ? -gap : 0.0;
+
+  result.push_back( newContactPoint );
   return result;
 }
 
@@ -139,27 +208,32 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::sphereWithB
 	P[1] = yCoordinatesOfPointsOfGeometryA;
 	P[2] = zCoordinatesOfPointsOfGeometryA;
 
-	//Q is filled with the closest point of the triangle; the sphere surface point
-	//P + radius*normal lands on it for an exact touch.
-	delta::contact::detection::pt(TP1, TP2, TP3, P, Q);
+	const iREAL radius = diameterA / 2.0;
+	iREAL cn[3], gap;
+	if (!sphereTriangleContact(TP1, TP2, TP3, P, radius, epsilonA + epsilonB, cn, Q, gap)) continue;
 
-	iREAL normal[3];
-	surfaceNormal(P, Q, normal);
-
-	xPA = P[0] + ((diameterA/2.0) * normal[0]);
-	yPA = P[1] + ((diameterA/2.0) * normal[1]);
-	zPA = P[2] + ((diameterA/2.0) * normal[2]);
+	/* The sphere's surface point, on the side facing the wall. */
+	xPA = P[0] - radius * cn[0];
+	yPA = P[1] - radius * cn[1];
+	zPA = P[2] - radius * cn[2];
 
 	xPB = Q[0];
 	yPB = Q[1];
 	zPB = Q[2];
 
-	contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, particleA, xPB, yPB, zPB, epsilonB, particleB, frictionA & frictionB);
+	contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, particleA,
+	                             xPB, yPB, zPB, epsilonB, particleB,
+	                             frictionA & frictionB);
 
-	if(newContactPoint.getDistance() <= (epsilonA+epsilonB))
-	{
-	  result.push_back( newContactPoint );
-	}
+	/* Override what the constructor derived from the two points: it cannot
+	 * represent a plane contact and collapses when the points coincide. The
+	 * spring uses the ACTUAL overlap, zero at first touch, never a pre-load. */
+	newContactPoint.normal[0] = cn[0];
+	newContactPoint.normal[1] = cn[1];
+	newContactPoint.normal[2] = cn[2];
+	newContactPoint.depth      = (gap < 0.0) ? -gap : 0.0;
+
+	result.push_back( newContactPoint );
   }
   return result;
 }
@@ -205,26 +279,39 @@ int 	  			particleA)
 	P[1] = yCoordinatesOfPointsOfGeometryB;
 	P[2] = zCoordinatesOfPointsOfGeometryB;
 
-	//Q is filled with the closest point of the triangle; the sphere surface point
-	//P + radius*normal lands on it for an exact touch.
-	delta::contact::detection::pt(TP1, TP2, TP3, P, Q);
+	/* Same construction as sphereWithBarrierAB; see the comment there. This
+	 * variant only differs in the argument order of the contactpoint, which
+	 * records the sphere as the master. */
+	const iREAL radius = diameterB / 2.0;
+	iREAL cn[3], gap;
+	if (!sphereTriangleContact(TP1, TP2, TP3, P, radius, epsilonA + epsilonB, cn, Q, gap)) continue;
 
-	iREAL normal[3];
-	surfaceNormal(P, Q, normal);
-
-	xPA = P[0] + ((diameterB/2.0) * normal[0]);
-	yPA = P[1] + ((diameterB/2.0) * normal[1]);
-	zPA = P[2] + ((diameterB/2.0) * normal[2]);
+	xPA = P[0] - radius * cn[0];
+	yPA = P[1] - radius * cn[1];
+	zPA = P[2] - radius * cn[2];
 
 	xPB = Q[0];
 	yPB = Q[1];
 	zPB = Q[2];
 
-	contactpoint newContactPoint(xPB, yPB, zPB, epsilonB, particleB, xPA, yPA, zPA, epsilonA, particleA, frictionA & frictionB);
-	if (newContactPoint.getDistance() <= (epsilonA+epsilonB))
-	{
-	  result.push_back( newContactPoint );
-	}
+	/* Master must be the SPHERE and slave the triangle, matching
+	 * sphereWithBarrierAB. The old order paired the triangle's point with the
+	 * sphere's id, so deriveForces applied the separating force to the wrong
+	 * side and drove the sphere into the wall. */
+	contactpoint newContactPoint(xPA, yPA, zPA, epsilonB, particleB,
+	                             xPB, yPB, zPB, epsilonA, particleA,
+	                             frictionA & frictionB);
+
+	/* addCollision() negates the normal for the second party, and here the
+	 * sphere IS that second party (the obstacle is A). Its stored copy must end
+	 * up pointing away from the wall, so return -cn and let the negation flip it
+	 * back to +cn. */
+	newContactPoint.normal[0] = -cn[0];
+	newContactPoint.normal[1] = -cn[1];
+	newContactPoint.normal[2] = -cn[2];
+	newContactPoint.depth      = (gap < 0.0) ? -gap : 0.0;
+
+	result.push_back( newContactPoint );
   }
   return result;
 }

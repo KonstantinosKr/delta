@@ -154,8 +154,6 @@ int main()
         if (std::isfinite(v) && v > maxSpeed) maxSpeed = v;
       }
     }
-    /* Tangent lattice + 1e5..1e6 springs: a stable step keeps speeds bounded.
-     * 50 is generous; the failing mode is 1e6 and climbing. */
     std::printf("after 5 steps: max|v| = %.6g, contacts = %zu\n",
                 maxSpeed, engine.getContactPairs().size());
     CHECK(maxSpeed < 50.0);
