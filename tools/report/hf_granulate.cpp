@@ -5,7 +5,7 @@
  * default - not Sphere, which would see only their bounding spheres.
  *
  * Writes, into <outdir>:
- *   gran_walls.csv       the five hopper walls, world space (once)
+ *   gran_walls.csv       hopper walls + ground, world space (once)
  *   gran_frames.csv      per frame: time, contacts, then per body its id and
  *                        its triangles in world space, so the renderer does not
  *                        have to re-derive the rotation
@@ -25,6 +25,7 @@
 #include "dim3/backends/serial/Engine.h"
 #include "dim3/contact/forces/forces.h"
 #include "dim3/geometry/hull/granulate.h"
+#include "dim3/geometry/operators/triangle.h"
 #include "dim3/geometry/structure/Mesh.h"
 #include "dim3/world/structure/Object.h"
 
@@ -55,8 +56,8 @@ struct Hopper
   iREAL topY, bottomY, halfAtTop, halfAtBottom, depth, cx, cy, cz;
 };
 
-/* Same funnel as tests/hopper_fall_test.cpp: two slanted walls, two side walls,
- * a floor. Wound so every normal points into the funnel. */
+/* Two slanted walls and two side walls, open at the bottom and the top.
+ * Wound so every normal points into the funnel. */
 Mesh* makeHopper(const Hopper& g, iREAL eps)
 {
   (void)eps;
@@ -77,18 +78,20 @@ Mesh* makeHopper(const Hopper& g, iREAL eps)
   { const iREAL a[3] = {tl, g.topY, z1}, b[3] = {tr, g.topY, z1};
     const iREAL c[3] = {br, g.bottomY, z1}, d[3] = {bl, g.bottomY, z1};
     addQuad(x, y, z, a, b, c, d); }
-  { const iREAL a[3] = {g.cx - g.halfAtTop, g.bottomY, z0},
-                 b[3] = {g.cx + g.halfAtTop, g.bottomY, z0},
-                 c[3] = {g.cx + g.halfAtTop, g.bottomY, z1},
-                 d[3] = {g.cx - g.halfAtTop, g.bottomY, z1};
-    addQuad(x, y, z, d, c, b, a); }
+  /* No floor: the funnel is open at the throat, so the granulates drain out of
+   * it and fall onto the ground plane below. */
 
-  std::FILE* f = std::fopen((gDir + "/gran_walls.csv").c_str(), "w");
-  std::fprintf(f, "x,y,z\n");
-  for (std::size_t i = 0; i < x.size(); ++i)
-    std::fprintf(f, "%.5f,%.5f,%.5f\n", x[i], y[i], z[i]);
-  std::fclose(f);
+  return new Mesh(x, y, z);
+}
 
+/* A large ground plane at y = `y0`, wound so its normal points up. The hopper
+ * is lifted off it, so the granulates fall out of the throat and land. */
+Mesh* makeGround(iREAL y0, iREAL half)
+{
+  std::vector<iREAL> x, y, z;
+  const iREAL a[3] = {-half, y0, -half}, b[3] = {half, y0, -half};
+  const iREAL c[3] = {half, y0, half},   d[3] = {-half, y0, half};
+  addQuad(x, y, z, d, c, b, a);          /* normal +y */
   return new Mesh(x, y, z);
 }
 
@@ -101,16 +104,29 @@ int main(int argc, char** argv)
   const int    frames = (argc > 3) ? std::atoi(argv[3]) : 300;
   const double dt     = (argc > 4) ? std::atof(argv[4]) : 1e-5;
   const int    points = (argc > 5) ? std::atoi(argv[5]) : 24;
+  /* Adaptive mesh: bisect every hull triangle longer than `gridH`, `refine`
+   * passes deep. Only the granulates are refined - the walls are large quads
+   * and refining them would multiply the contact pairs for no accuracy gain. */
+  const int    refine = (argc > 6) ? std::atoi(argv[6]) : 0;
+  const iREAL  gridH  = (argc > 7) ? std::atof(argv[7]) : 0.03;
 
   const int    nBodies = 10;                 /* "use 10" */
   const iREAL  radius  = 0.035;
   const iREAL  epsilon = 0.002;
 
-  const Hopper g = {0.60, 0.10, 0.30, 0.10, 0.10, 0.0, 0.0, 0.0};
+  /* The hopper is lifted off the ground so there is a clear gap under its
+   * throat: granulates fall through it and land on the floor plane below. */
+  const iREAL lift  = 0.35;
+  const Hopper g = {0.60 + lift, 0.10 + lift, 0.30, 0.10, 0.10, 0.0, 0.0, 0.0};
 
   std::vector<Object> bodies;
   bodies.push_back(Object("hopper", 0, makeHopper(g, epsilon),
                           {{g.cx, 0.5 * (g.bottomY + g.topY), g.cz}},
+                          delta::geometry::material::MaterialType::WOOD,
+                          /*obstacle*/ true, true, true, epsilon,
+                          {{0.0, 0.0, 0.0}}, {{0.0, 0.0, 0.0}}));
+
+  bodies.push_back(Object("ground", -1, makeGround(0.0, 0.9), {{0.0, 0.0, 0.0}},
                           delta::geometry::material::MaterialType::WOOD,
                           /*obstacle*/ true, true, true, epsilon,
                           {{0.0, 0.0, 0.0}}, {{0.0, 0.0, 0.0}}));
@@ -125,6 +141,14 @@ int main(int argc, char** argv)
                        g.cz};
     Mesh* hull = delta::geometry::primitive::granulate::generateParticle(
         centre, radius, points, 1234u + 7u * (unsigned)i);
+    if (refine > 0)
+    {
+      std::vector<iREAL> hx = hull->getXCoordinatesAsVector();
+      std::vector<iREAL> hy = hull->getYCoordinatesAsVector();
+      std::vector<iREAL> hz = hull->getZCoordinatesAsVector();
+      delta::geometry::operators::triangle::meshDenser(refine, gridH, hx, hy, hz);
+      hull = new Mesh(hx, hy, hz);
+    }
 
     Object o("granulate", id++, hull, {{centre[0], centre[1], centre[2]}},
              delta::geometry::material::MaterialType::WOOD,
@@ -154,11 +178,32 @@ int main(int argc, char** argv)
   delta::core::Engine engine(bodies, boundary, meta);
   auto t1 = std::chrono::steady_clock::now();
 
-  std::printf("hopper_granulate: %d granulates (%d hull points each), "
-              "%d bodies total, %d threads\n",
-              nBodies, points, (int)bodies.size(), delta::core::parallel::threads());
+  int hullTris = 0;
+  for (std::size_t b = 0; b < bodies.size(); ++b)
+    if (!bodies[b].getIsObstacle()) {hullTris = bodies[b].getNumberOfTriangles(); break;}
+
+  std::printf("hopper_granulate: %d granulates (%d hull points, %d triangles each "
+              "after %d adaptive passes at h=%.3g), %d bodies, %d threads\n",
+              nBodies, points, hullTris, refine, gridH, (int)bodies.size(),
+              delta::core::parallel::threads());
   std::printf("engine built in %.2f s\n",
               std::chrono::duration<double>(t1 - t0).count());
+
+  {
+    std::FILE* f = std::fopen((gDir + "/gran_walls.csv").c_str(), "w");
+    std::fprintf(f, "x,y,z\n");
+    for (std::size_t b = 0; b < bodies.size(); ++b)
+    {
+      if (!bodies[b].getIsObstacle()) continue;
+      const int ntri = bodies[b].getNumberOfTriangles();
+      const std::vector<iREAL> xs = bodies[b].getMesh().getXCoordinatesAsVector();
+      const std::vector<iREAL> ys = bodies[b].getMesh().getYCoordinatesAsVector();
+      const std::vector<iREAL> zs = bodies[b].getMesh().getZCoordinatesAsVector();
+      for (int t = 0; t < ntri * 3; ++t)
+        std::fprintf(f, "%.5f,%.5f,%.5f\n", xs[t], ys[t], zs[t]);
+    }
+    std::fclose(f);
+  }
 
   std::FILE* out = std::fopen((gDir + "/gran_frames.csv").c_str(), "w");
   std::fprintf(out, "# frames %d bodies %d\n", frames, nBodies);
