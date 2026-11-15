@@ -79,6 +79,35 @@ if(VTK_FOUND)
 else()
   message(STATUS "VTK not found: building with the ascii .vtu emitter only")
 endif()
+
+# --- OpenMP: multicore contact kernels -------------------------------------
+# Optional, like VTK and assimp. Without it every parallel region compiles out
+# and the solver is the scalar loop it was before (src/core/Parallel.h).
+option(DELTA_ENABLE_OPENMP "Build the contact kernels with OpenMP" ON)
+if(DELTA_ENABLE_OPENMP)
+  find_package(OpenMP QUIET COMPONENTS CXX)
+  if(OpenMP_CXX_FOUND)
+    target_link_libraries(delta3d_core PUBLIC OpenMP::OpenMP_CXX)
+    target_compile_definitions(delta3d_core PUBLIC DELTA_HAVE_OPENMP=1)
+    message(STATUS "OpenMP: enabled (target OpenMP::OpenMP_CXX)")
+  else()
+    # AppleClang ships no libomp and CMake's FindOpenMP does not look in the
+    # MacPorts/Homebrew prefixes, so wire the runtime up by hand.
+    find_path(DELTA_LIBOMP_INCLUDE omp.h HINTS /opt/local/include/libomp /opt/homebrew/opt/libomp/include)
+    find_library(DELTA_LIBOMP_LIBRARY NAMES omp HINTS /opt/local/lib/libomp /opt/homebrew/opt/libomp/lib)
+    if(DELTA_LIBOMP_INCLUDE AND DELTA_LIBOMP_LIBRARY)
+      get_filename_component(DELTA_LIBOMP_DIR "${DELTA_LIBOMP_LIBRARY}" DIRECTORY)
+      target_include_directories(delta3d_core PUBLIC ${DELTA_LIBOMP_INCLUDE})
+      target_compile_options(delta3d_core PUBLIC -Xpreprocessor -fopenmp)
+      target_link_libraries(delta3d_core PUBLIC "${DELTA_LIBOMP_LIBRARY}")
+      target_link_options(delta3d_core PUBLIC "LINKER:-rpath,${DELTA_LIBOMP_DIR}")
+      target_compile_definitions(delta3d_core PUBLIC DELTA_HAVE_OPENMP=1)
+      message(STATUS "OpenMP: enabled (${DELTA_LIBOMP_LIBRARY})")
+    else()
+      message(STATUS "OpenMP not found: contact kernels stay single-threaded")
+    endif()
+  endif()
+endif()
 if(assimp_FOUND)
   target_compile_definitions(delta3d_core PUBLIC DELTA_HAVE_ASSIMP)
   target_link_libraries(delta3d_core PUBLIC assimp::assimp)
@@ -188,6 +217,17 @@ if(VTK_FOUND)
 endif()
 add_test(NAME hopper_fall COMMAND delta_hopper_fall_test)
 
+# Serial vs OpenMP: every contact model must give the same contacts and the same
+# state at 1 thread and at all threads (tests/parallel_test.cpp).
+add_executable(delta_parallel_test "${PROJECT_SOURCE_DIR}/tests/parallel_test.cpp")
+target_link_libraries(delta_parallel_test PRIVATE delta3d_core)
+add_test(NAME parallel COMMAND delta_parallel_test)
+
+# Speed of the contact path at 1..N threads for every model. Not a test: run it
+# by hand (tools/bench/parallel_bench.cpp).
+add_executable(parallel_bench "${PROJECT_SOURCE_DIR}/tools/bench/parallel_bench.cpp")
+target_link_libraries(parallel_bench PRIVATE delta3d_core)
+
 # Dumps the funnel scenario for the report figures and the video
 # (tools/report/README.md). Not a test: run it by hand when regenerating
 # docs/hopper-bug-report.pdf or docs/hopper-fall.mp4.
@@ -197,6 +237,11 @@ target_link_libraries(hf_video PRIVATE delta3d_core)
 # The same for the full hopper.mbfcp scenario (15 651 bodies) and its timing.
 add_executable(hf_big "${PROJECT_SOURCE_DIR}/tools/report/hf_big.cpp")
 target_link_libraries(hf_big PRIVATE delta3d_core)
+
+# Ten convex granulates dropped into the funnel hopper (granulate hulls, so the
+# triangle contact model). Report/video driver, not a test.
+add_executable(hf_granulate "${PROJECT_SOURCE_DIR}/tools/report/hf_granulate.cpp")
+target_link_libraries(hf_granulate PRIVATE delta3d_core)
 
 # Guard for the shared .vtu writer: FrameStaging::validate() must reject the
 # geometry that would otherwise be written silently wrong.

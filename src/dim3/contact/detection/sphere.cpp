@@ -25,6 +25,7 @@
 #include "sphere.h"
 #include "point.h"
 #include "core/algo.h"
+#include "core/Parallel.h"
 
 namespace {
 
@@ -184,9 +185,12 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::sphereWithB
   bool    		frictionB,
   int 				particleB)
 {
-  std::vector<contactpoint> result;
-
-  for(int i=0; i<numberOfTrianglesOfGeometryB*3; i+=3)
+  /* One body for both the scalar and the parallel loop: the OpenMP runtime is
+   * only entered above the grain, because a 12-triangle wall pays more for the
+   * fork/join than for the whole mesh. Above it, a triangle yields at most one
+   * contact and only its own iteration writes the slot, so the parallel loop
+   * needs no synchronisation and the sweep restores the serial order. */
+  auto testTriangle = [&](int i, contactpoint& out) -> bool
   {
 	iREAL P[3], Q[3];
 	iREAL xPA, yPA, zPA, xPB, yPB, zPB;
@@ -210,7 +214,8 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::sphereWithB
 
 	const iREAL radius = diameterA / 2.0;
 	iREAL cn[3], gap;
-	if (!sphereTriangleContact(TP1, TP2, TP3, P, radius, epsilonA + epsilonB, cn, Q, gap)) continue;
+	if (!sphereTriangleContact(TP1, TP2, TP3, P, radius, epsilonA + epsilonB, cn, Q, gap))
+	  return false;
 
 	/* The sphere's surface point, on the side facing the wall. */
 	xPA = P[0] - radius * cn[0];
@@ -221,19 +226,39 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::sphereWithB
 	yPB = Q[1];
 	zPB = Q[2];
 
-	contactpoint newContactPoint(xPA, yPA, zPA, epsilonA, particleA,
-	                             xPB, yPB, zPB, epsilonB, particleB,
-	                             frictionA & frictionB);
+	out = contactpoint(xPA, yPA, zPA, epsilonA, particleA,
+	                   xPB, yPB, zPB, epsilonB, particleB,
+	                   frictionA & frictionB);
 
 	/* Override what the constructor derived from the two points: it cannot
 	 * represent a plane contact and collapses when the points coincide. The
 	 * spring uses the ACTUAL overlap, zero at first touch, never a pre-load. */
-	newContactPoint.normal[0] = cn[0];
-	newContactPoint.normal[1] = cn[1];
-	newContactPoint.normal[2] = cn[2];
-	newContactPoint.depth      = (gap < 0.0) ? -gap : 0.0;
+	out.normal[0] = cn[0];
+	out.normal[1] = cn[1];
+	out.normal[2] = cn[2];
+	out.depth     = (gap < 0.0) ? -gap : 0.0;
+	return true;
+  };
 
-	result.push_back( newContactPoint );
+  std::vector<contactpoint> result;
+  const int numberOfTriangles = numberOfTrianglesOfGeometryB;
+  if (numberOfTriangles >= delta::core::parallel::kForkJoinGrain)
+  {
+	std::vector<contactpoint> hit(numberOfTriangles);
+	std::vector<char>         hasHit(numberOfTriangles, 0);
+	DELTA_OMP_PARALLEL_FOR
+	for (int t = 0; t < numberOfTriangles; ++t)
+	  if (testTriangle(3 * t, hit[t])) hasHit[t] = 1;
+	for (int t = 0; t < numberOfTriangles; ++t)
+	  if (hasHit[t]) result.push_back(hit[t]);
+  }
+  else
+  {
+	for (int t = 0; t < numberOfTriangles; ++t)
+	{
+	  contactpoint cp;
+	  if (testTriangle(3 * t, cp)) result.push_back(cp);
+	}
   }
   return result;
 }
@@ -255,9 +280,8 @@ iREAL   			epsilonA,
 bool    			frictionA,
 int 	  			particleA)
 {
-  std::vector<contactpoint> result;
-
-  for(int i=0; i<numberOfTrianglesOfGeometryA*3; i+=3)
+  /* Same split as sphereWithBarrierAB: one body, parallel only above the grain. */
+  auto testTriangle = [&](int i, contactpoint& out) -> bool
   {
 	iREAL P[3], Q[3];
 	iREAL xPA, yPA, zPA, xPB, yPB, zPB;
@@ -284,7 +308,8 @@ int 	  			particleA)
 	 * records the sphere as the master. */
 	const iREAL radius = diameterB / 2.0;
 	iREAL cn[3], gap;
-	if (!sphereTriangleContact(TP1, TP2, TP3, P, radius, epsilonA + epsilonB, cn, Q, gap)) continue;
+	if (!sphereTriangleContact(TP1, TP2, TP3, P, radius, epsilonA + epsilonB, cn, Q, gap))
+	  return false;
 
 	xPA = P[0] - radius * cn[0];
 	yPA = P[1] - radius * cn[1];
@@ -298,20 +323,40 @@ int 	  			particleA)
 	 * sphereWithBarrierAB. The old order paired the triangle's point with the
 	 * sphere's id, so deriveForces applied the separating force to the wrong
 	 * side and drove the sphere into the wall. */
-	contactpoint newContactPoint(xPA, yPA, zPA, epsilonB, particleB,
-	                             xPB, yPB, zPB, epsilonA, particleA,
-	                             frictionA & frictionB);
+	out = contactpoint(xPA, yPA, zPA, epsilonB, particleB,
+	                   xPB, yPB, zPB, epsilonA, particleA,
+	                   frictionA & frictionB);
 
 	/* addCollision() negates the normal for the second party, and here the
 	 * sphere IS that second party (the obstacle is A). Its stored copy must end
 	 * up pointing away from the wall, so return -cn and let the negation flip it
 	 * back to +cn. */
-	newContactPoint.normal[0] = -cn[0];
-	newContactPoint.normal[1] = -cn[1];
-	newContactPoint.normal[2] = -cn[2];
-	newContactPoint.depth      = (gap < 0.0) ? -gap : 0.0;
+	out.normal[0] = -cn[0];
+	out.normal[1] = -cn[1];
+	out.normal[2] = -cn[2];
+	out.depth     = (gap < 0.0) ? -gap : 0.0;
+	return true;
+  };
 
-	result.push_back( newContactPoint );
+  std::vector<contactpoint> result;
+  const int numberOfTriangles = numberOfTrianglesOfGeometryA;
+  if (numberOfTriangles >= delta::core::parallel::kForkJoinGrain)
+  {
+	std::vector<contactpoint> hit(numberOfTriangles);
+	std::vector<char>         hasHit(numberOfTriangles, 0);
+	DELTA_OMP_PARALLEL_FOR
+	for (int t = 0; t < numberOfTriangles; ++t)
+	  if (testTriangle(3 * t, hit[t])) hasHit[t] = 1;
+	for (int t = 0; t < numberOfTriangles; ++t)
+	  if (hasHit[t]) result.push_back(hit[t]);
+  }
+  else
+  {
+	for (int t = 0; t < numberOfTriangles; ++t)
+	{
+	  contactpoint cp;
+	  if (testTriangle(3 * t, cp)) result.push_back(cp);
+	}
   }
   return result;
 }

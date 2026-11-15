@@ -24,8 +24,42 @@
 
 #include "bf.h"
 
+#include <memory>
+#include "core/Parallel.h"
+
+
+namespace {
+
+/* The contact normal from the two closest points collapses when they coincide
+ * (a face-face or vertex-face touch), and then the spring has no direction and
+ * the body sinks through. Fall back to A's triangle winding, flipped so it
+ * still points from B toward A - the master-A convention the engine stores. */
+void hardenNormal(delta::contact::contactpoint& cp,
+                  const iREAL* triA,
+                  const iREAL  pairDistance)
+{
+  if (!(pairDistance > 0.0))
+  {
+	iREAL u[3] = {triA[3]-triA[0], triA[4]-triA[1], triA[5]-triA[2]};
+	iREAL v[3] = {triA[6]-triA[0], triA[7]-triA[1], triA[8]-triA[2]};
+	iREAL n[3] = {u[1]*v[2]-u[2]*v[1], u[2]*v[0]-u[0]*v[2], u[0]*v[1]-u[1]*v[0]};
+	iREAL len = std::sqrt(n[0]*n[0]+n[1]*n[1]+n[2]*n[2]);
+	if (len > 0.0)
+	{
+	  /* Direction that moves A away from B: the plane of B's triangle is behind
+	   * PA, so A's outward winding is the right sign here. */
+	  cp.normal[0] = n[0]/len;
+	  cp.normal[1] = n[1]/len;
+	  cp.normal[2] = n[2]/len;
+	}
+  }
+}
+
+}  // namespace
+
 
 #if defined(SharedTBB) && defined(peanoCall)
+
 std::vector<delta::contact::contactpoint> delta::contact::detection::bf(
     const iREAL*    xCoordinatesOfPointsOfGeometryA,
     const iREAL*    yCoordinatesOfPointsOfGeometryA,
@@ -72,14 +106,13 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::bf(
   __assume_aligned(zCoordinatesOfPointsOfGeometryB, byteAlignment);
 #endif
 
-  std::vector<contactpoint> result;
-
   int numberOfTrianglesA = numberOfPointsOfGeometryA * 3;
   int numberOfTrianglesB = numberOfPointsOfGeometryB * 3;
 
-#if defined(SharedTBB) && defined(peanoCall)
-  tarch::multicore::Lock lock(semaphore,false);
-#endif
+  /* One slot per triangle of A. Each iA writes only its own slot, so the loop
+   * needs no lock and the sweep at the end keeps the order of the serial run -
+   * which is what fixes the floating-point accumulation order downstream. */
+  std::vector<std::vector<contactpoint>> perTriangle(numberOfTrianglesA / 3);
 
 #if defined(SharedTBB) && defined(peanoCall)
   // Take care: grain size has to be positive even if loop degenerates
@@ -89,17 +122,17 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::bf(
    {
 	for(std::vector<int>::size_type iA=0; iA<r.size(); iA+=3)
 #else
-  #if defined(OMPTriangle) && defined(OMPProcess)
-	#pragma omp parallel for shared(result) firstprivate(numberOfTrianglesA, numberOfTrianglesB, epsilonA, epsilonB, frictionA, frictionB, particleA, particleB, xCoordinatesOfPointsOfGeometryA, yCoordinatesOfPointsOfGeometryA, zCoordinatesOfPointsOfGeometryA, xCoordinatesOfPointsOfGeometryB, yCoordinatesOfPointsOfGeometryB, zCoordinatesOfPointsOfGeometryB)
-  #endif
+  DELTA_OMP_PARALLEL_FOR_IF(numberOfTrianglesA >= delta::core::parallel::kForkJoinGrain)
   for(int iA=0; iA<numberOfTrianglesA; iA+=3)
 #endif
   {
-    __attribute__ ((aligned(byteAlignment))) iREAL xPA[10000], yPA[10000], zPA[10000], xPB[10000], yPB[10000], zPB[10000], d[10000];
+    /* Heap, not 560 KB of stack: this runs inside a parallel region and the
+     * fixed [10000] bound was never checked against the partner mesh. */
+    const int scratch = numberOfTrianglesB + 3;
+    std::vector<iREAL> xPA(scratch), yPA(scratch), zPA(scratch);
+    std::vector<iREAL> xPB(scratch), yPB(scratch), zPB(scratch), d(scratch);
 
-	#ifdef OMPProcess
-	  #pragma omp simd
-	#endif
+    DELTA_OMP_SIMD
     for(int iB=0; iB<numberOfTrianglesB; iB+=3)
     {
       bfSolver(	xCoordinatesOfPointsOfGeometryA+(iA),
@@ -117,34 +150,34 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::bf(
       d[iB] = std::sqrt(((xPB[iB]-xPA[iB])*(xPB[iB]-xPA[iB]))+((yPB[iB]-yPA[iB])*(yPB[iB]-yPA[iB]))+((zPB[iB]-zPA[iB])*(zPB[iB]-zPA[iB])));
     }
 
-    __attribute__ ((aligned(byteAlignment))) std::vector<contactpoint> nearestContactPoint;
     __attribute__ ((aligned(byteAlignment))) iREAL epsilonMargin = (epsilonA+epsilonB);
 
+    std::vector<contactpoint>& nearestContactPoint = perTriangle[iA / 3];
+    int hits = 0;
     for(int iB=0; iB<numberOfTrianglesB; iB+=3)
+    {
+	  if(d[iB] <= epsilonMargin) hits++;
+    }
+    nearestContactPoint.resize(hits);
+
+    for(int iB=0, next=0; iB<numberOfTrianglesB; iB+=3)
     {
 	  if(d[iB] <= epsilonMargin)
 	  {
-		nearestContactPoint.push_back(contactpoint(xPA[iB], yPA[iB], zPA[iB], epsilonA, particleA, xPB[iB], yPB[iB], zPB[iB], epsilonB, particleB, frictionA && frictionB));
+		contactpoint cp(xPA[iB], yPA[iB], zPA[iB], epsilonA, particleA, xPB[iB], yPB[iB], zPB[iB], epsilonB, particleB, frictionA && frictionB);
+		hardenNormal(cp, xCoordinatesOfPointsOfGeometryA+(iA), d[iB]);
+		nearestContactPoint[next++] = cp;
 	  }
     }
-
-	#if defined(SharedTBB) && defined(peanoCall)
-	  lock.lock();
-		for(int xx=0; xx < nearestContactPoint.size(); xx++)
-		result.push_back(nearestContactPoint[xx]);
-	  lock.free();
-	#else
-	  #ifdef OMPTriangle
-		#pragma omp critical
-	  #endif
-	  for(int xx=0; xx < nearestContactPoint.size(); xx++)
-	  result.push_back(nearestContactPoint[xx]);
-	#endif
   #if defined(SharedTBB) && defined(peanoCall)
   }});
   #else
   }
   #endif
+
+  std::vector<contactpoint> result;
+  for (std::size_t t = 0; t < perTriangle.size(); t++)
+    result.insert(result.end(), perTriangle[t].begin(), perTriangle[t].end());
   return result;
 }
 
