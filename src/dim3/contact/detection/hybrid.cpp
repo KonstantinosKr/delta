@@ -24,6 +24,9 @@
 
 #include "hybrid.h"
 
+#include <memory>
+#include "core/Parallel.h"
+
 namespace {
 
 static int 		_numberOfPenaltyFails;
@@ -56,7 +59,37 @@ iREAL delta::contact::detection::getBatchError() {
   return _batchError;
 }
 
+namespace {
+
+/* Same degenerate-normal guard as bf.cpp: at a face-face touch the two closest
+ * points coincide, the chord direction vanishes and the contact would carry no
+ * force. Fall back to A's triangle winding. */
+void hardenNormal(delta::contact::contactpoint& cp,
+                  const iREAL* triA,
+                  const iREAL& xPA, const iREAL& xPB,
+                  const iREAL& yPA, const iREAL& yPB,
+                  const iREAL& zPA, const iREAL& zPB,
+                  const iREAL  pairDistance)
+{
+  if (!(pairDistance > 0.0))
+  {
+	iREAL u[3] = {triA[3]-triA[0], triA[4]-triA[1], triA[5]-triA[2]};
+	iREAL v[3] = {triA[6]-triA[0], triA[7]-triA[1], triA[8]-triA[2]};
+	iREAL n[3] = {u[1]*v[2]-u[2]*v[1], u[2]*v[0]-u[0]*v[2], u[0]*v[1]-u[1]*v[0]};
+	iREAL len = std::sqrt(n[0]*n[0]+n[1]*n[1]+n[2]*n[2]);
+	if (len > 0.0)
+	{
+	  cp.normal[0] = n[0]/len;
+	  cp.normal[1] = n[1]/len;
+	  cp.normal[2] = n[2]/len;
+	}
+  }
+}
+
+}  // namespace
+
 #if defined(SharedTBB) && defined(peanoCall)
+
 std::vector<delta::contact::contactpoint> delta::contact::detection::hybridWithPerTriangleFallBack(
   const iREAL*    xCoordinatesOfPointsOfGeometryA,
   const iREAL*    yCoordinatesOfPointsOfGeometryA,
@@ -96,7 +129,6 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::hybridWithP
 
   __attribute__ ((aligned(byteAlignment))) iREAL MaxErrorOfPenalty = (epsilonA+epsilonB)/16;
   __attribute__ ((aligned(byteAlignment))) iREAL epsilonMargin = (epsilonA+epsilonB);
-  std::vector<contactpoint> result;
 
   #if defined(__INTEL_COMPILER)
   __assume_aligned(xCoordinatesOfPointsOfGeometryA, byteAlignment);
@@ -112,9 +144,10 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::hybridWithP
   int numberOfTrianglesA = numberOfPointsOfGeometryA * 3;
   int numberOfTrianglesB = numberOfPointsOfGeometryB * 3;
 
-#if defined(SharedTBB) && defined(peanoCall)
-  tarch::multicore::Lock lock(semaphore,false);
-#endif
+  /* One slot per batch (outer iteration). Each batch writes only its own slot,
+   * so the loop needs no lock and the sweep at the end keeps the serial order -
+   * which is what fixes the floating-point accumulation order downstream. */
+  std::vector<std::vector<contactpoint>> perTriangle(numberOfTrianglesB / 3);
 
   #if defined(SharedTBB) && defined(peanoCall)
 	  // Take care: grain size has to be positive even if loop degenerates
@@ -124,16 +157,21 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::hybridWithP
 	   {
 		 for(std::vector<int>::size_type iA=0; iA<r.size(); iA+=3)
   #else
-  #ifdef OMPTriangle
-	#pragma omp parallel for shared(result) firstprivate(numberOfTrianglesA, numberOfTrianglesB, epsilonA, epsilonB, frictionA, frictionB, particleA, particleB, xCoordinatesOfPointsOfGeometryA, yCoordinatesOfPointsOfGeometryA, zCoordinatesOfPointsOfGeometryA, xCoordinatesOfPointsOfGeometryB, yCoordinatesOfPointsOfGeometryB, zCoordinatesOfPointsOfGeometryB)
-  #endif
+  /* shortcut: this walks A's triangles with B's count, so |B|>|A| reads past A
+   * and |A|>|B| misses contacts. Pre-existing; fixing it changes results, so the
+   * slot vector below is sized to this (wrong) bound on purpose. */
+  DELTA_OMP_PARALLEL_FOR_IF(numberOfTrianglesB >= delta::core::parallel::kForkJoinGrain)
   for(int iA=0; iA<numberOfTrianglesB; iA+=3)
   #endif
   {
-    __attribute__ ((aligned(byteAlignment))) iREAL xPA[10000], yPA[10000], zPA[10000], xPB[10000], yPB[10000], zPB[10000], d[10000];
-    __attribute__ ((aligned(byteAlignment))) bool failed[10000];
+    /* Heap, not 560 KB of stack: this runs inside a parallel region and the
+     * fixed [10000] bound was never checked against the partner mesh. */
+    const int scratch = numberOfTrianglesB + 3;
+    std::vector<iREAL> xPA(scratch), yPA(scratch), zPA(scratch);
+    std::vector<iREAL> xPB(scratch), yPB(scratch), zPB(scratch), d(scratch);
+    std::unique_ptr<bool[]> failed(new bool[scratch]());
 
-    #pragma omp simd
+    DELTA_OMP_SIMD
     for (int iB=0; iB<numberOfTrianglesB; iB+=3)
     {
 	  penaltySolver(xCoordinatesOfPointsOfGeometryA+(iA),
@@ -157,7 +195,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::hybridWithP
     // Rerun whole batch if necessary
     if ( oneHasFailed )
     {
-	  #pragma omp simd
+	  DELTA_OMP_SIMD
       for (int iB=0; iB<numberOfTrianglesB; iB+=3)
       {
         bfSolver(	xCoordinatesOfPointsOfGeometryA+(iA),
@@ -173,21 +211,23 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::hybridWithP
     }
 
     // Grab the closest one and insert it into the result
+    std::vector<contactpoint>& nearestContactPoint = perTriangle[iA / 3];
+    int hits = 0;
     for (int iB=0; iB<numberOfTrianglesB; iB+=3)
+    {
+      if (d[iB] < epsilonMargin) hits++;
+    }
+    nearestContactPoint.resize(hits);
+
+    for (int iB=0, next=0; iB<numberOfTrianglesB; iB+=3)
     {
       if (d[iB] < epsilonMargin)
       {
-        delta::contact::contactpoint* nearestContactPoint = new contactpoint(xPA[iB], yPA[iB], zPA[iB], epsilonA, particleA, xPB[iB], yPB[iB], zPB[iB], epsilonB, particleB, frictionA && frictionB);
-	#if defined(SharedTBB) && defined(peanoCall)
-		lock.lock();
-		result.push_back(*nearestContactPoint);
-		lock.free();
-	#else
-		#ifdef OMPTriangle
-		  #pragma omp critical
-		#endif
-		result.push_back(*nearestContactPoint);
-	#endif
+        contactpoint cp(xPA[iB], yPA[iB], zPA[iB], epsilonA, particleA, xPB[iB], yPB[iB], zPB[iB], epsilonB, particleB, frictionA && frictionB);
+
+        hardenNormal(cp, xCoordinatesOfPointsOfGeometryA+(iA), xPA[iB], xPB[iB], yPA[iB], yPB[iB], zPA[iB], zPB[iB], d[iB]);
+
+        nearestContactPoint[next++] = cp;
       }
     }
   #if defined(SharedTBB) && defined(peanoCall)
@@ -196,6 +236,9 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::hybridWithP
   }
   #endif
 
+  std::vector<contactpoint> result;
+  for (std::size_t t = 0; t < perTriangle.size(); t++)
+    result.insert(result.end(), perTriangle[t].begin(), perTriangle[t].end());
   return result;
 }
 
@@ -237,8 +280,12 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::hybridTrian
     __attribute__ ((aligned(byteAlignment))) contactpoint *nearestContactPoint = nullptr;
     __attribute__ ((aligned(byteAlignment))) const iREAL MaxErrorOfPenaltyMethod = (epsilonA+epsilonB)/16;
 
-    __attribute__ ((aligned(byteAlignment))) iREAL xPA[10000], yPA[10000], zPA[10000], xPB[10000], yPB[10000], zPB[10000], d[10000];
-    __attribute__ ((aligned(byteAlignment))) bool failed[10000];
+    /* Heap, not 560 KB of stack: this runs inside a parallel region and the
+     * fixed [10000] bound was never checked against the partner mesh. */
+    const int scratch = numberOfPointsOfGeometryB * 3 + 3;
+    std::vector<iREAL> xPA(scratch), yPA(scratch), zPA(scratch);
+    std::vector<iREAL> xPB(scratch), yPB(scratch), zPB(scratch), d(scratch);
+    std::unique_ptr<bool[]> failed(new bool[scratch]());
     __attribute__ ((aligned(byteAlignment))) iREAL dd = epsilonA+epsilonB;
 
     #ifdef OMPTriangle
@@ -372,7 +419,6 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::hybridWithP
   const int       particleB)
 #endif
 {
-  __attribute__ ((aligned(byteAlignment))) std::vector<contactpoint> result;
   __attribute__ ((aligned(byteAlignment))) iREAL epsilonMargin = (epsilonA+epsilonB);
   __attribute__ ((aligned(byteAlignment))) const iREAL MaxErrorOfPenalty = (epsilonA+epsilonB)/16;
 
@@ -389,9 +435,10 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::hybridWithP
   int numberOfTrianglesA = numberOfPointsOfGeometryA * 3;
   int numberOfTrianglesB = numberOfPointsOfGeometryB * 3;
 
-#if defined(SharedTBB) && defined(peanoCall)
-  tarch::multicore::Lock lock(semaphore,false);
-#endif
+  /* One slot per batch. Each batch writes only its own slot, so the loop needs
+   * no lock and the sweep at the end keeps the order of the serial run - which
+   * is what fixes the floating-point accumulation order downstream. */
+  std::vector<std::vector<contactpoint>> perBatch(numberOfTrianglesA / 3);
 
   #if defined(SharedTBB) && defined(peanoCall)
   // Take care: grain size has to be positive even if loop degenerates
@@ -401,18 +448,18 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::hybridWithP
 	  {
 		for(std::vector<int>::size_type iA=0; iA<r.size(); iA+=3)
   #else
-  #ifdef OMPTriangle
-	#pragma omp parallel for shared(result) firstprivate(numberOfTrianglesA, numberOfTrianglesB, epsilonA, epsilonB, frictionA, frictionB, particleA, particleB, xCoordinatesOfPointsOfGeometryA, yCoordinatesOfPointsOfGeometryA, zCoordinatesOfPointsOfGeometryA, xCoordinatesOfPointsOfGeometryB, yCoordinatesOfPointsOfGeometryB, zCoordinatesOfPointsOfGeometryB)
-  #endif
+  DELTA_OMP_PARALLEL_FOR_IF(numberOfTrianglesA >= delta::core::parallel::kForkJoinGrain)
   for(int iA=0; iA<numberOfTrianglesA; iA+=3)
   #endif
   {
-    __attribute__ ((aligned(byteAlignment))) contactpoint *nearestContactPoint = nullptr;
-    __attribute__ ((aligned(byteAlignment))) iREAL xPA[10000], yPA[10000], zPA[10000], xPB[10000], yPB[10000], zPB[10000], d[10000];
-    __attribute__ ((aligned(byteAlignment))) bool failed[10000] = {0};
-    __attribute__ ((aligned(byteAlignment))) iREAL dd = epsilonA+epsilonB;
+    /* Heap, not 560 KB of stack: this runs inside a parallel region and the
+     * fixed [10000] bound was never checked against the partner mesh. */
+    const int scratch = numberOfTrianglesB + 3;
+    std::vector<iREAL> xPA(scratch), yPA(scratch), zPA(scratch);
+    std::vector<iREAL> xPB(scratch), yPB(scratch), zPB(scratch), d(scratch);
+    std::unique_ptr<bool[]> failed(new bool[scratch]());
 
-    #pragma omp simd
+    DELTA_OMP_SIMD
     for (int iB=0; iB<numberOfTrianglesB; iB+=3)
     {
         penaltySolver(	xCoordinatesOfPointsOfGeometryA+(iA),
@@ -427,7 +474,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::hybridWithP
     }
 
     int counter=0;
-    #pragma omp simd reduction(+:counter)
+    DELTA_OMP_SIMD_REDUCTION(+, counter)
     for (int iB=0; iB<numberOfTrianglesB; iB+=3)
     {
       if(failed[iB]) counter++;
@@ -445,7 +492,7 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::hybridWithP
     // minDistance and then run the interior loop over iB again with bf().
     if(multiFailure)
     {
-	  #pragma omp simd
+	  DELTA_OMP_SIMD
       for (int iB=0; iB<numberOfTrianglesB; iB+=3)
       {
         bfSolver(	xCoordinatesOfPointsOfGeometryA+(iA),
@@ -461,21 +508,23 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::hybridWithP
     }
 
     // Grab the closest one and insert it into the result
+    std::vector<contactpoint>& nearestContactPoint = perBatch[iA / 3];
+    int hits = 0;
     for (int iB=0; iB<numberOfTrianglesB; iB+=3)
+    {
+      if (d[iB] < epsilonMargin) hits++;
+    }
+    nearestContactPoint.resize(hits);
+
+    for (int iB=0, next=0; iB<numberOfTrianglesB; iB+=3)
     {
       if (d[iB] < epsilonMargin)
       {
-        delta::contact::contactpoint* nearestContactPoint = new contactpoint(xPA[iB], yPA[iB], zPA[iB], epsilonA, particleA, xPB[iB], yPB[iB], zPB[iB], epsilonB, particleB, frictionA && frictionB);
-		#if defined(SharedTBB) && defined(peanoCall)
-			lock.lock();
-			  result.push_back(*nearestContactPoint);
-			lock.free();
-		#else
-			#ifdef OMPTriangle
-			  #pragma omp critical
-			#endif
-			result.push_back(*nearestContactPoint);
-		#endif
+        contactpoint cp(xPA[iB], yPA[iB], zPA[iB], epsilonA, particleA, xPB[iB], yPB[iB], zPB[iB], epsilonB, particleB, frictionA && frictionB);
+
+        hardenNormal(cp, xCoordinatesOfPointsOfGeometryA+(iA), xPA[iB], xPB[iB], yPA[iB], yPB[iB], zPA[iB], zPB[iB], d[iB]);
+
+        nearestContactPoint[next++] = cp;
       }
     }
   #if defined(SharedTBB) && defined(peanoCall)
@@ -483,6 +532,10 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::hybridWithP
   #else
   }
   #endif
+
+  std::vector<contactpoint> __attribute__ ((aligned(byteAlignment))) result;
+  for (std::size_t t = 0; t < perBatch.size(); t++)
+    result.insert(result.end(), perBatch[t].begin(), perBatch[t].end());
   return result;
 }
 
@@ -525,8 +578,12 @@ std::vector<delta::contact::contactpoint> delta::contact::detection::hybridBatch
     __attribute__ ((aligned(byteAlignment))) const iREAL MaxErrorOfPenaltyMethod = (epsilonA+epsilonB)/16;
     __attribute__ ((aligned(byteAlignment))) iREAL dd = epsilonA+epsilonB;
 
-    __attribute__ ((aligned(byteAlignment))) iREAL xPA[10000], yPA[10000], zPA[10000], xPB[10000], yPB[10000], zPB[10000], d[10000];
-    __attribute__ ((aligned(byteAlignment))) bool failed[10000];
+    /* Heap, not 560 KB of stack: this runs inside a parallel region and the
+     * fixed [10000] bound was never checked against the partner mesh. */
+    const int scratch = numberOfPointsOfGeometryB * 3 + 3;
+    std::vector<iREAL> xPA(scratch), yPA(scratch), zPA(scratch);
+    std::vector<iREAL> xPB(scratch), yPB(scratch), zPB(scratch), d(scratch);
+    std::unique_ptr<bool[]> failed(new bool[scratch]());
 
     #ifdef OMPTriangle
       #pragma omp critical

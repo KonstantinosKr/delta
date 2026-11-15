@@ -28,6 +28,7 @@
 #include <limits>
 #include <iostream>
 #include "core/algo.h"
+#include "core/Parallel.h"
 
 
 namespace delta {
@@ -84,8 +85,16 @@ namespace delta {
 			 *
 			 * @param xPA Output parameter. x coordinate on triangle A.
 			 */
-			#ifdef OMPProcess
-			#pragma omp declare simd
+			/**
+			 * Vector variant for the inner triangle loop. Only the B pointers take
+			 * a linear clause: the enclosing `omp simd` loop is over triangles of
+			 * B while the A triangle is fixed for the whole call, so declaring A
+			 * linear would tell the compiler that lane k reads A + 3k - a layout
+			 * this call site does not have. The outputs stay per-lane (clang
+			 * rejects `linear` on a reference).
+			 */
+			#if DELTA_OMP
+			#pragma omp declare simd linear(xCoordinatesOfTriangleB:3) linear(yCoordinatesOfTriangleB:3) linear(zCoordinatesOfTriangleB:3) notinbranch
 			#endif
 			void bfSolver(
 			const iREAL   *xCoordinatesOfTriangleA,

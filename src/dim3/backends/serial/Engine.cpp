@@ -25,12 +25,30 @@
 
 #include "Engine.h"
 
+#include "core/Parallel.h"
+
 #include <algorithm>
 #include <cmath>
 #include <set>
 #include <stdexcept>
 #include <utility>
 #include <vector>
+
+namespace {
+
+/* The driver's own parallel region already fills the machine; a kernel region
+ * nested inside it (the detection kernels keep their own pragmas) would fork
+ * again and oversubscribe. One active level makes those inner regions run with
+ * a single thread. */
+void limitActiveLevelsToDriverLevel()
+{
+#if DELTA_OMP
+  static const bool once = (omp_set_max_active_levels(1), true);
+  (void)once;
+#endif
+}
+
+}  // namespace
 
 	delta::core::Engine::Engine()
 {
@@ -289,8 +307,28 @@ int delta::core::Engine::getNumberOfCollisions()
 void delta::core::Engine::evaluateCandidates(
 	std::vector<std::pair<int,int> >& candidates)
 {
+  limitActiveLevelsToDriverLevel();
+
   _collisionsOfNextTraversal.clear();
-  for(unsigned p=0; p<candidates.size(); p++)
+
+  /* The pair loop runs in parallel, but the region touches nothing shared: one
+   * slot per candidate holds that pair's result, and the serial pass at the end
+   * replays the slots in candidate order through addCollision(). The map, the
+   * per-particle lists and the contact order are therefore the serial ones,
+   * whatever the thread count. */
+  struct ResolvedPair
+  {
+	bool                                      evaluated = false;
+	bool                                      unsupportedModel = false;
+	int                                       triangleComparisons = 0;
+	std::vector<delta::contact::contactpoint> contactPoints;
+  };
+
+  const unsigned numberOfCandidates = candidates.size();
+  std::vector<ResolvedPair> resolved(numberOfCandidates);
+
+  DELTA_OMP_PARALLEL_FOR_DYNAMIC_IF(numberOfCandidates >= delta::core::parallel::kForkJoinGrainPairs)
+  for(unsigned p=0; p<numberOfCandidates; p++)
   {
 		delta::core::data::ParticleRecord& particleA = _data.getParticle(candidates[p].first);
 		delta::core::data::ParticleRecord& particleB = _data.getParticle(candidates[p].second);
@@ -310,6 +348,8 @@ void delta::core::Engine::evaluateCandidates(
 
 				if (!overlap) continue;
 			}
+
+			resolved[p].evaluated = true;
 
 			std::vector<delta::contact::contactpoint> newContactPoints;
 	#if defined(SharedTBB) && defined(peanoCall)
@@ -463,16 +503,33 @@ void delta::core::Engine::evaluateCandidates(
 			// PenaltyStat/PenaltyTune/HybridTriangleStat/HybridBatchStat/GJK have no
 			// implementation here. Without this the switch fell through, produced no
 			// contacts, and a free-fall run looked like "no collisions today".
-			throw std::logic_error(
-				"Engine: collision model is not implemented by the serial engine");
+			// Flagged, not thrown: an exception must not unwind out of the region.
+			// The replay below throws for the first such candidate.
+			resolved[p].unsupportedModel = true;
 			}
 	#endif
-			if(!newContactPoints.empty()) {
-			delta::core::Engine::addCollision(newContactPoints, particleA, particleB, _collisionModel == CollisionModel::Sphere);
-			}
+			resolved[p].triangleComparisons = particleA.getNumberOfTriangles() * particleB.getNumberOfTriangles();
+			resolved[p].contactPoints.swap(newContactPoints);
+  }
 
-			_state.incNumberOfTriangleComparisons(particleA.getNumberOfTriangles() * particleB.getNumberOfTriangles());
-			_state.incNumberOfParticleComparisons(1);
+  // Serial replay, in candidate order: the same calls in the same sequence the
+  // loop above used to make inline.
+  for(unsigned p=0; p<numberOfCandidates; p++)
+  {
+	if(resolved[p].unsupportedModel) {
+	  throw std::logic_error(
+		"Engine: collision model is not implemented by the serial engine");
+	}
+	if(!resolved[p].evaluated) {continue;}
+
+	_state.incNumberOfTriangleComparisons(resolved[p].triangleComparisons);
+	_state.incNumberOfParticleComparisons(1);
+
+	if(!resolved[p].contactPoints.empty()) {
+	  delta::core::data::ParticleRecord& particleA = _data.getParticle(candidates[p].first);
+	  delta::core::data::ParticleRecord& particleB = _data.getParticle(candidates[p].second);
+	  delta::core::Engine::addCollision(resolved[p].contactPoints, particleA, particleB, _collisionModel == CollisionModel::Sphere);
+	}
   }
 
   // Promote this pass' collisions to the active set consumed by deriveForces().
@@ -540,6 +597,14 @@ void delta::core::Engine::binnedCandidates(
 	cells[key].push_back(i);
   }
 
+  // Scan in parallel over particles. Each thread appends only to its own
+  // particle's list, so concatenating those lists in particle order below
+  // reproduces the serial candidate sequence exactly, whatever the thread count
+  // or schedule. The cells are read-only here, so the map is shared.
+  const std::map<std::array<int,3>, std::vector<int> >& grid = cells;
+  std::vector<std::vector<std::pair<int,int> > > pairsOfParticle(n);
+
+  DELTA_OMP_PARALLEL_FOR_IF(_data.getNumberOfParticles() >= delta::core::parallel::kForkJoinGrain)
   for(int i=0; i<n; i++)
   {
 	if(_data.getParticle(i).getIsObstacle()) {continue;}
@@ -547,20 +612,26 @@ void delta::core::Engine::binnedCandidates(
 	int bx = (int)std::floor(c[0]/cellSize);
 	int by = (int)std::floor(c[1]/cellSize);
 	int bz = (int)std::floor(c[2]/cellSize);
+	std::vector<std::pair<int,int> >& out = pairsOfParticle[i];
 
 	for(int dx=-1; dx<=1; dx++)
 	for(int dy=-1; dy<=1; dy++)
 	for(int dz=-1; dz<=1; dz++)
 	{
-	  key = {bx+dx, by+dy, bz+dz};
-	  std::map<std::array<int,3>, std::vector<int> >::iterator it = cells.find(key);
-	  if(it == cells.end()) {continue;}
+	  const std::array<int,3> cell = {bx+dx, by+dy, bz+dz};
+	  std::map<std::array<int,3>, std::vector<int> >::const_iterator it = grid.find(cell);
+	  if(it == grid.end()) {continue;}
 	  for(unsigned q=0; q<it->second.size(); q++)
 	  {
 		int j = it->second[q];
-		if(j > i) {candidates.push_back(std::pair<int,int>(i, j));}
+		if(j > i) {out.push_back(std::pair<int,int>(i, j));}
 	  }
 	}
+  }
+
+  for(int i=0; i<n; i++)
+  {
+	candidates.insert(candidates.end(), pairsOfParticle[i].begin(), pairsOfParticle[i].end());
   }
 
   //Static obstacles vs free particles: their halo sphere contains every
@@ -643,19 +714,32 @@ void delta::core::Engine::deriveForces()
   //seen and a diverging step is masked.
   _maxForceMagnitude = 0.0;
 
-  for(int i=0; i<_data.getNumberOfParticles(); i++)
+  const int numberOfParticles = _data.getNumberOfParticles();
+
+  // Forces are parallel over particles: a thread writes only its own particle's
+  // velocities, and the partner data it reads is the snapshot the collision
+  // list stores (Collisions::_copyOfPartnerParticle), not the live record, so
+  // no thread can observe another thread's update. Per-pass magnitudes are
+  // collected and max'ed serially to keep the reduction exact.
+  std::vector<iREAL> magnitudes(numberOfParticles, 0.0);
+
+  DELTA_OMP_PARALLEL_FOR_IF(_data.getNumberOfParticles() >= delta::core::parallel::kForkJoinGrain)
+  for(int i=0; i<numberOfParticles; i++)
   {
 		delta::core::data::ParticleRecord& particle = _data.getParticle(i);
 
 		//if value doesn't exist in map - no collision - skip particle
-		if(_activeCollisions.count(particle.getGlobalParticleID())==0) {continue;}
+		//find() rather than operator[]: a default insertion here would race.
+		std::map<int, std::vector<Collisions> >::iterator collisions =
+			_activeCollisions.find(particle.getGlobalParticleID());
+		if(collisions == _activeCollisions.end()) {continue;}
 
 		iREAL force[3]  = {0.0,0.0,0.0};
 		iREAL torque[3] = {0.0,0.0,0.0};
 
 		//collisions with partner particles
-		for(std::vector<Collisions>::iterator p = _activeCollisions[particle.getGlobalParticleID()].begin();
-							p != _activeCollisions[particle.getGlobalParticleID()].end();
+		for(std::vector<Collisions>::iterator p = collisions->second.begin();
+							p != collisions->second.end();
 							p++)
 		{
 			iREAL rforce[3]  = {0.0,0.0,0.0};
@@ -694,7 +778,7 @@ void delta::core::Engine::deriveForces()
 		}
 
 		iREAL magnitude = std::sqrt(force[0]*force[0]+force[1]*force[1]+force[2]*force[2]);
-		if(magnitude > _maxForceMagnitude) {_maxForceMagnitude = magnitude;}
+		magnitudes[i] = magnitude;
 
 		if(!particle.getIsObstacle())
 		{
@@ -710,6 +794,11 @@ void delta::core::Engine::deriveForces()
 				torque, _state.getStepSize()
 			);
 		}
+  }
+
+  for(int i=0; i<numberOfParticles; i++)
+  {
+	if(magnitudes[i] > _maxForceMagnitude) {_maxForceMagnitude = magnitudes[i];}
   }
 }
 
@@ -740,8 +829,15 @@ void delta::core::Engine::updatePosition()
 			_state.getStepSize()
 		);
 
-		#pragma omp parallel for
-		for(int j=0; j<particle.getNumberOfTriangles()*3; j++)
+		// Hoisted so the OpenMP loop condition is loop-invariant.
+		const int numberOfVertices = particle.getNumberOfTriangles()*3;
+		#if DELTA_OMP
+		// A region per particle only pays for itself on meshes: forking one for the
+		// empty vertex loop of every sphere cost 350 ms/step on the hopper, more
+		// than the whole rest of the step.
+		#pragma omp parallel for if(numberOfVertices > 1024)
+		#endif
+		for(int j=0; j<numberOfVertices; j++)
 		{
 			delta::dynamics::updateVertices(
 				&particle._xCoordinates.data()[j],
